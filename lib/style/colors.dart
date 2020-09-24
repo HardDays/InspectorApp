@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-class ProjectColors {
+abstract class ProjectColors {
   static const blue = Color(0xFF4375A0);
   static const darkBlue = Color(0xFF7391AB);
   static const mediumBlue = Color(0xFFB9C4D0);

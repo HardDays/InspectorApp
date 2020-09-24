@@ -1,7 +1,7 @@
 import 'package:flutter/rendering.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class ProjectTextStyles {
+abstract class ProjectTextStyles {
   static final title = GoogleFonts.montserrat(
     textStyle: TextStyle(
       fontWeight: FontWeight.w600,
