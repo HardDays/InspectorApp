@@ -192,34 +192,6 @@ class ProfilePage extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor: ProjectColors.blue,
-        selectedLabelStyle:
-            ProjectTextStyles.baseBold.apply(color: ProjectColors.blue),
-        unselectedItemColor: ProjectColors.mediumBlue,
-        unselectedLabelStyle:
-            ProjectTextStyles.base.apply(color: ProjectColors.mediumBlue),
-        currentIndex: 3,
-        showUnselectedLabels: true,
-        items: [
-          BottomNavigationBarItem(
-            icon: ProjectIcons.listIcon(),
-            title: Text('Поручения'),
-          ),
-          BottomNavigationBarItem(
-            icon: ProjectIcons.vkIcon(),
-            title: Text('Ведомственный контроль'),
-          ),
-          BottomNavigationBarItem(
-            icon: ProjectIcons.map2Icon(),
-            title: Text('Карта'),
-          ),
-          BottomNavigationBarItem(
-            icon: ProjectIcons.profileIcon(),
-            title: Text('Профиль'),
-          ),
-        ],
-      ),
     );
   }
 

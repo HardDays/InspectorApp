@@ -174,10 +174,13 @@ abstract class ProjectIcons {
 
   static IconBuilder _buildIcon(String path) {
     return (Color color, double width, double height) {
-      return SvgPicture.asset(
-        path,
-        width: width,
-        height: height,
+      return Padding(
+        padding: const EdgeInsets.only(bottom: 5, top: 5),
+        child: SvgPicture.asset(
+          path,
+          width: width,
+          height: height,
+        ),
       );
     };
   }
