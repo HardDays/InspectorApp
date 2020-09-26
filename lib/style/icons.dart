@@ -148,34 +148,38 @@ abstract class ProjectIcons {
     Color color,
     double width = 28.2,
     double height = 36,
+    EdgeInsets padding = EdgeInsets.zero
   }) =>
-      _buildIcon('icons/Menu_icon/List.svg')(color, width, height);
+      _buildIcon('icons/Menu_icon/List.svg', padding: padding)(color, width, height);
 
   static Widget map2Icon({
     Color color,
     double width = 36.0,
     double height = 36.0,
+    EdgeInsets padding = EdgeInsets.zero
   }) =>
-      _buildIcon('icons/Menu_icon/Map.svg')(color, width, height);
+      _buildIcon('icons/Menu_icon/Map.svg', padding: padding)(color, width, height);
 
   static Widget profileIcon({
     Color color,
     double width = 36.0,
     double height = 36.0,
+    EdgeInsets padding = EdgeInsets.zero
   }) =>
-      _buildIcon('icons/Menu_icon/Profile.svg')(color, width, height);
+      _buildIcon('icons/Menu_icon/Profile.svg', padding: padding)(color, width, height);
 
   static Widget vkIcon({
     Color color,
     double width = 41.45,
     double height = 36,
+    EdgeInsets padding = EdgeInsets.zero
   }) =>
-      _buildIcon('icons/Menu_icon/VK.svg')(color, width, height);
+      _buildIcon('icons/Menu_icon/VK.svg', padding: padding)(color, width, height);
 
-  static IconBuilder _buildIcon(String path) {
+  static IconBuilder _buildIcon(String path, {EdgeInsets padding = EdgeInsets.zero}) {
     return (Color color, double width, double height) {
       return Padding(
-        padding: const EdgeInsets.only(bottom: 5, top: 5),
+        padding: padding,
         child: SvgPicture.asset(
           path,
           width: width,

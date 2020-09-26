@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:inspector/pages/assignments_page.dart';
 import 'package:inspector/pages/profile_page.dart';
 import 'package:inspector/style/colors.dart';
 import 'package:inspector/style/icons.dart';
@@ -16,42 +17,52 @@ class MyApp extends StatelessWidget {
         body: Container(
           width: 800.0,
           height: 1280.0,
-          child: ProfilePage(),
+          child: AssignemntsPage(),
         ),
         bottomNavigationBar: BottomNavigationBar(
-            selectedItemColor: ProjectColors.blue,
-            selectedLabelStyle: ProjectTextStyles.baseBold.apply(color: ProjectColors.blue),
-            unselectedItemColor: ProjectColors.mediumBlue,
-            unselectedLabelStyle: ProjectTextStyles.base.apply(color: ProjectColors.mediumBlue),
-            currentIndex: 3,
-            showUnselectedLabels: true,
-            items: [
-              BottomNavigationBarItem(
-                icon: ProjectIcons.listIcon(),
-                title: const Text('Поручения\n', 
-                  maxLines: 2,
-                ),
+          selectedItemColor: ProjectColors.blue,
+          selectedLabelStyle: ProjectTextStyles.baseBold.apply(color: ProjectColors.blue),
+          unselectedItemColor: ProjectColors.mediumBlue,
+          unselectedLabelStyle: ProjectTextStyles.base.apply(color: ProjectColors.mediumBlue),
+          currentIndex: 0,
+          type: BottomNavigationBarType.fixed,
+          showUnselectedLabels: true,
+          backgroundColor: Colors.white,
+          items: [
+            BottomNavigationBarItem(
+              icon: ProjectIcons.listIcon(
+                padding: const EdgeInsets.only(bottom: 10, top: 15)
               ),
-              BottomNavigationBarItem(
-                icon: ProjectIcons.vkIcon(),
-                title: const Text('Ведомственный\nконтроль', 
-                  maxLines: 2, 
-                  textAlign: TextAlign.center,
-                ),
+              title: const Text('Поручения\n', 
+                maxLines: 2,
               ),
-              BottomNavigationBarItem(
-                icon: ProjectIcons.map2Icon(),
-                title: const Text('Карта\n', 
-                  maxLines: 2,
-                ),
+            ),
+            BottomNavigationBarItem(
+              icon: ProjectIcons.vkIcon(
+                padding: const EdgeInsets.only(bottom: 10, top: 15)
               ),
-              BottomNavigationBarItem(
-                icon: ProjectIcons.profileIcon(),
-                title: const Text('Профиль\n', 
-                  maxLines: 2,
-                ),
+              title: const Text('Ведомственный\nконтроль', 
+                maxLines: 2, 
+                textAlign: TextAlign.center,
               ),
-            ],
+            ),
+            BottomNavigationBarItem(
+              icon: ProjectIcons.map2Icon(
+                padding: const EdgeInsets.only(bottom: 10, top: 15)
+              ),
+              title: const Text('Карта\n', 
+                maxLines: 2,
+              ),
+            ),
+            BottomNavigationBarItem(
+              icon: ProjectIcons.profileIcon(
+                padding: const EdgeInsets.only(bottom: 10, top: 15)
+              ),
+              title: const Text('Профиль\n', 
+                maxLines: 2,
+              ),
+            ),
+          ],
         ),
       ),
     );

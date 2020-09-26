@@ -5,85 +5,82 @@ import 'package:inspector/style/button.dart';
 import 'package:inspector/style/colors.dart';
 import 'package:inspector/style/icons.dart';
 import 'package:inspector/style/text_style.dart';
+import 'package:inspector/widgets/assignments/paragraph.dart';
+import 'package:inspector/widgets/assignments/status.dart';
+import 'package:intl/intl.dart';
 
 class AssignemntsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
         elevation: 0.0,
         backgroundColor: ProjectColors.darkBlue,
-        title: Text(
-          'Поручения',
-          style: ProjectTextStyles.title.apply(
-            color: ProjectColors.white,
-          ),
-          textAlign: TextAlign.center,
-        ),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-     
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildSectionItem(String name, Widget child) {
-    return Row(
-      children: [
-        Expanded(
-          flex: 1,
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Text(
-              name,
-              style:
-                  ProjectTextStyles.baseBold.apply(color: ProjectColors.blue),
+        title: Padding(
+          padding: const EdgeInsets.only(left: 12),
+          child: Text(
+            'Поручения',
+            style: ProjectTextStyles.title.apply(
+              color: ProjectColors.white,
             ),
+            textAlign: TextAlign.center,
           ),
         ),
-        Expanded(
-          flex: 1,
-          child: child,
-        ),
-      ],
+      ),
+      body: ListView(
+        padding: const EdgeInsets.only(top: 20),
+        children: [
+          _buildAssignment(),
+          _buildAssignment(),
+           _buildAssignment(),
+          _buildAssignment(),
+           _buildAssignment(),
+          _buildAssignment(),
+           _buildAssignment(),
+          _buildAssignment(),
+           _buildAssignment(),
+          _buildAssignment(),
+           _buildAssignment(),
+          _buildAssignment(),
+           _buildAssignment(),
+          _buildAssignment(),
+        ],
+      ),
     );
   }
 
-  Widget _buildSection(String sectionName, List<Widget> children) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(30.0, 30.0, 30, 0),
+  Widget _buildAssignment() {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border.all(
+          color: ProjectColors.lightBlue, 
+          width: 1,
+        ),
+      ),
+      margin: const EdgeInsets.only(bottom: 20, left: 30, right: 30),
+      padding: const EdgeInsets.all(20),
       child: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(14.0, 30.0, 0, 11),
-            child: Container(
-              width: double.infinity,
-              child: Text(
-                sectionName,
-                style: ProjectTextStyles.subTitle
-                    .apply(color: ProjectColors.black),
-              ),
-            ),
-          ),
-          ...children,
-        ]
-            .map(
-              (e) => Container(
-                child: e,
-                decoration: BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(color: ProjectColors.lightBlue),
-                  ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Flexible(
+                child: Text('Поручение № 20-61-A95-62 от 10.03.2020',
+                  style: ProjectTextStyles.subTitle.apply(color: ProjectColors.black),
                 ),
               ),
-            )
-            .toList(),
+              AssignemntStatusWidget(
+                'Назначено',
+              ),
+            ],
+          ),
+          AssignemntParagraphWidget(ProjectIcons.calendarIcon(), DateFormat('dd.MM.yyyy').format(DateTime.now()),
+            padding: const EdgeInsets.only(left: 8, top: 10),
+          )
+        ],
       ),
     );
   }
+
 }
