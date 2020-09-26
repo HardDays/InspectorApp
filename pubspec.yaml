@@ -15,6 +15,7 @@ dependencies:
   google_fonts: ^1.1.0
   flutter_svg: ^0.19.0
   auto_route: ^0.6.7
+  bloc: ^6.0.3
 
 dev_dependencies:
   flutter_test:
