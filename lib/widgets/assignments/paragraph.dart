@@ -16,13 +16,16 @@ class AssignemntParagraphWidget extends StatelessWidget {
     return Padding(
       padding: padding,
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
             padding: const EdgeInsets.only(right: 10),
             child: icon,
           ),
-          Text(title,
-            style: ProjectTextStyles.base.apply(color: ProjectColors.black),
+          Flexible(
+            child: Text(title,
+              style: ProjectTextStyles.base.apply(color: ProjectColors.black),
+            ),
           ),
         ],
       ),

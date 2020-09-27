@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
         body: Container(
           width: 800.0,
           height: 1280.0,
-          child: AssignemntsPage(),
+          child: AssignmentsPage(),
         ),
         bottomNavigationBar: BottomNavigationBar(
           selectedItemColor: ProjectColors.blue,

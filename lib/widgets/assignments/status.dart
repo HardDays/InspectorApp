@@ -23,7 +23,7 @@ class AssignemntStatusWidget extends StatelessWidget {
         Container(
           width: 12,
           height: 12,
-          margin: const EdgeInsets.only(left: 8, right: 8),
+          margin: const EdgeInsets.only(right: 8),
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: colors[status],

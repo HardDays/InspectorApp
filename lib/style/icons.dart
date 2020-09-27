@@ -44,21 +44,21 @@ abstract class ProjectIcons {
     double width = 16.0,
     double height = 16.0,
   }) =>
-      _buildIcon('icons/Icon/Inspector.svg')(color, width, height);
+      _buildIcon('icons/Icon/Inspector.svg', padding: const EdgeInsets.only(left: 2, right: 2))(color, width, height);
 
   static Widget inspector2Icon({
     Color color,
     double width = 20.0,
     double height = 15.0,
   }) =>
-      _buildIcon('icons/Icon/Inspector2.svg')(color, width, height);
+      _buildIcon('icons/Icon/Inspector2.svg', padding: const EdgeInsets.only(left: 1, right: 1))(color, width, height);
 
   static Widget pointIcon({
     Color color,
     double width = 12.0,
     double height = 20.0,
   }) =>
-      _buildIcon('icons/Icon/Point.svg')(color, width, height);
+      _buildIcon('icons/Icon/Point.svg', padding: const EdgeInsets.only(left: 5, right: 3))(color, width, height);
 
   static Widget exitIcon({
     Color color,
@@ -175,6 +175,22 @@ abstract class ProjectIcons {
     EdgeInsets padding = EdgeInsets.zero
   }) =>
       _buildIcon('icons/Menu_icon/VK.svg', padding: padding)(color, width, height);
+
+   static Widget sortIcon({
+    Color color,
+    double width = 20,
+    double height = 18,
+    EdgeInsets padding = EdgeInsets.zero
+  }) =>
+      _buildIcon('icons/Top_menu_icon/Sort.svg', padding: padding)(color, width, height);
+
+   static Widget filterIcon({
+    Color color,
+    double width = 22,
+    double height = 15,
+    EdgeInsets padding = EdgeInsets.zero
+  }) =>
+      _buildIcon('icons/Top_menu_icon/Filter.svg', padding: padding)(color, width, height);
 
   static IconBuilder _buildIcon(String path, {EdgeInsets padding = EdgeInsets.zero}) {
     return (Color color, double width, double height) {
