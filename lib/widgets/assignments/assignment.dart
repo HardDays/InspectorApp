@@ -69,18 +69,18 @@ class AssignmentWidgetState extends State<AssignmentWidget> with SingleTickerPro
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: _onTap,
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          border: Border.all(
-            color: ProjectColors.lightBlue, 
-            width: 1,
-          ),
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border.all(
+          color: ProjectColors.lightBlue, 
+          width: 1,
         ),
-        margin: const EdgeInsets.only(bottom: 20, left: 30, right: 30),
-        padding: const EdgeInsets.all(20),
+      ),
+      margin: const EdgeInsets.only(bottom: 20, left: 30, right: 30),
+      padding: const EdgeInsets.all(20),
+      child: InkWell(
+        onTap: _onTap,
         child: Column(
           children: [
             Row(
