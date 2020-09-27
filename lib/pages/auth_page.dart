@@ -26,9 +26,7 @@ class AuthPage extends StatelessWidget {
             ),
             RaisedButton(
               child: Text('Перейти дальше', style: ProjectTextStyles.title),
-              onPressed: () {
-                ExtendedNavigator.root.push(Routes.mainPage);
-              },
+              onPressed: () => ExtendedNavigator.root.replace(Routes.mainPage),
             ),
           ],
         ),
