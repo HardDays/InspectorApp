@@ -44,7 +44,7 @@ class AssignmentsPage extends StatelessWidget {
                   borderRadius: BorderRadius.circular(30),
                   color: ProjectColors.blue
                 ),  
-                margin: const EdgeInsets.only(left: 8),
+                margin: const EdgeInsets.only(left: 8, top: 3),
                 child: Row(
                   children: [
                     Container(
@@ -81,6 +81,7 @@ class AssignmentsPage extends StatelessWidget {
         padding: const EdgeInsets.only(top: 20),
         children: [
           AssignmentWidget(
+            'Назначено',
             [
               {
                 'task': 'task task taks',
@@ -93,6 +94,7 @@ class AssignmentsPage extends StatelessWidget {
             ]
           ),
           AssignmentWidget(
+            'На исполнении',
             [
               {
                 'task': 'task task taks',

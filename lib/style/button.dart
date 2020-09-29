@@ -6,6 +6,7 @@ abstract class ProjectButton {
   static Widget builtFlatButton(
     String data, {
     VoidCallback onPressed,
+    TextStyle style,
     Color textColor = ProjectColors.white,
     Color color = ProjectColors.blue,
     Color disabledColor = ProjectColors.lightBlue,
@@ -17,20 +18,22 @@ abstract class ProjectButton {
       color: color,
       splashColor: Color(0x00000000),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+        borderRadius: BorderRadius.all(Radius.circular(5.0)),
       ),
       disabledColor: disabledColor,
       disabledTextColor: disabledTextColor,
       padding: EdgeInsets.symmetric(vertical: 10.5, horizontal: 20.0),
       child: Text(
         data,
-        style: ProjectTextStyles.title,
+        style: style ?? ProjectTextStyles.title,
       ),
     );
   }
 
   static Widget buildOutlineButton(
     String data, {
+    Widget icon,
+    TextStyle style,
     Color color = ProjectColors.blue,
     Color disabledColor = ProjectColors.lightBlue,
     VoidCallback onPressed,
@@ -46,9 +49,19 @@ abstract class ProjectButton {
         borderRadius: BorderRadius.all(Radius.circular(10.0)),
       ),
       padding: EdgeInsets.symmetric(vertical: 10.5, horizontal: 20.0),
-      child: Text(
-        data,
-        style: ProjectTextStyles.title,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(right: 10),
+            child: icon,
+          ),
+          Text(
+            data,
+            style: style ?? ProjectTextStyles.title,
+          ),
+        ],
       ),
     );
   }

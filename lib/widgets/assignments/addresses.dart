@@ -11,8 +11,6 @@ class AssignemntAddressesWidget extends StatelessWidget {
   final List<String> addresses;
   final EdgeInsets padding;
 
-  final _taskKey = GlobalKey();
-
   AssignemntAddressesWidget(this.addresses, this.task, {this.padding = EdgeInsets.zero,});
 
   @override
@@ -35,13 +33,6 @@ class AssignemntAddressesWidget extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: List.generate(addresses.length, (index) => _buildParagraph(ProjectIcons.mapIcon(), addresses[index], index == 10 ? 0 : 10)),
-                    // children: [
-                    //   Column(
-                    //     crossAxisAlignment: CrossAxisAlignment.start,
-                    //     children: List.generate(addresses.length, (index) => _buildParagraph(ProjectIcons.mapIcon(), addresses[index])),
-                    //   ),
-                    //   //_buildParagraph(ProjectIcons.themeIcon(), task),
-                    // ],
                   ),
                 ),
               ],

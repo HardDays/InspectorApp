@@ -6,7 +6,7 @@ import 'package:inspector/style/text_style.dart';
 class AssignemntStatusWidget extends StatelessWidget {
 
   //todo: map with api
-  final colors = const {
+  static const colors = const {
     'Назначено': ProjectColors.cyan,
     'На исполнении': ProjectColors.yellow,
     'Исполнено': ProjectColors.green

@@ -1,6 +1,8 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:inspector/navigation.gr.dart';
 import 'package:inspector/pages/assignment_page.dart';
 import 'package:inspector/style/button.dart';
 import 'package:inspector/style/colors.dart';
@@ -14,10 +16,11 @@ import 'package:intl/intl.dart';
 class AssignmentWidget extends StatefulWidget {
 
   //todo: make according api model
+  final String status;
 
   final List<Map<String, dynamic>> tasks;
 
-  AssignmentWidget(this.tasks);
+  AssignmentWidget(this.status, this.tasks);
 
   @override
   AssignmentWidgetState createState() => AssignmentWidgetState();
@@ -64,7 +67,7 @@ class AssignmentWidgetState extends State<AssignmentWidget> with SingleTickerPro
   }
 
   void _onTap() {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => AssignmentPage()));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => AssignmentPage(widget.status)));
   }
 
   @override
@@ -92,7 +95,7 @@ class AssignmentWidgetState extends State<AssignmentWidget> with SingleTickerPro
                   ),
                 ),
                 AssignemntStatusWidget(
-                  'Назначено',
+                  widget.status,
                 ),
               ],
             ),

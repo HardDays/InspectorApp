@@ -200,6 +200,7 @@ abstract class ProjectIcons {
           path,
           width: width,
           height: height,
+          color: color,
         ),
       );
     };
