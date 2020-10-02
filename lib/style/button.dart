@@ -54,7 +54,7 @@ abstract class ProjectButton {
         mainAxisSize: MainAxisSize.min,
         children: [
           Padding(
-            padding: const EdgeInsets.only(right: 10),
+            padding: EdgeInsets.only(right: icon != null ? 10 : 0),
             child: icon,
           ),
           Text(

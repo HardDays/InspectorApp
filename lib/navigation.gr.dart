@@ -9,13 +9,13 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
-import 'pages/assignments_page.dart';
+import 'pages/assignment_list_page.dart';
 import 'pages/auth_page.dart';
 import 'pages/main_page.dart';
 import 'pages/map_page.dart';
 import 'pages/profile_page.dart';
 import 'pages/test_page.dart';
-import 'pages/vk_page.dart';
+import 'pages/control_list_page.dart';
 
 class Routes {
   static const String authPage = '/';
@@ -72,11 +72,11 @@ class MainPageRouter extends RouterBase {
   @override
   List<RouteDef> get routes => _routes;
   final _routes = <RouteDef>[
-    RouteDef(MainPageRoutes.assignemntsPage, page: AssignmentsPage),
+    RouteDef(MainPageRoutes.assignemntsPage, page: AssignmentListPage),
     RouteDef(MainPageRoutes.mapPage, page: MapPage),
     RouteDef(
       MainPageRoutes.vKSreen,
-      page: VKSreen,
+      page: ControlSreen,
       generator: VKSreenRouter(),
     ),
     RouteDef(MainPageRoutes.profilePage, page: ProfilePage),
@@ -84,9 +84,9 @@ class MainPageRouter extends RouterBase {
   @override
   Map<Type, AutoRouteFactory> get pagesMap => _pagesMap;
   final _pagesMap = <Type, AutoRouteFactory>{
-    AssignmentsPage: (data) {
+    AssignmentListPage: (data) {
       return MaterialPageRoute<dynamic>(
-        builder: (context) => AssignmentsPage(),
+        builder: (context) => AssignmentListPage(),
         settings: data,
       );
     },
@@ -96,9 +96,9 @@ class MainPageRouter extends RouterBase {
         settings: data,
       );
     },
-    VKSreen: (data) {
+    ControlSreen: (data) {
       return MaterialPageRoute<dynamic>(
-        builder: (context) => const VKSreen(),
+        builder: (context) => const ControlSreen(),
         settings: data,
       );
     },
@@ -125,7 +125,7 @@ class VKSreenRouter extends RouterBase {
   List<RouteDef> get routes => _routes;
   final _routes = <RouteDef>[
     RouteDef(VKSreenRoutes.testPage, page: TestPage),
-    RouteDef(VKSreenRoutes.vKPage, page: VKPage),
+    RouteDef(VKSreenRoutes.vKPage, page: ControlListPage),
   ];
   @override
   Map<Type, AutoRouteFactory> get pagesMap => _pagesMap;
@@ -136,9 +136,9 @@ class VKSreenRouter extends RouterBase {
         settings: data,
       );
     },
-    VKPage: (data) {
+    ControlListPage: (data) {
       return MaterialPageRoute<dynamic>(
-        builder: (context) => const VKPage(),
+        builder: (context) => const ControlListPage(),
         settings: data,
       );
     },

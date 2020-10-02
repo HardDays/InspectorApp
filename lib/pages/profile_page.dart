@@ -44,8 +44,7 @@ class ProfilePage extends StatelessWidget {
                       SizedBox(width: 8.46),
                       Text(
                         'Выйти',
-                        style: ProjectTextStyles.base
-                            .apply(color: ProjectColors.darkBlue),
+                        style: ProjectTextStyles.base.apply(color: ProjectColors.darkBlue),
                       ),
                     ],
                   ),

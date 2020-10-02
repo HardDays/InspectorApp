@@ -18,6 +18,30 @@ abstract class ProjectIcons {
   }) =>
       _buildIcon('icons/Icon/Theme.svg')(color, width, height);
 
+  static Widget thumbUpIcon({
+    Color color,
+    double width = 22.0,
+    double height = 20.0,
+    EdgeInsets padding = EdgeInsets.zero
+  }) =>
+      _buildIcon('icons/Icon/ThumbUp.svg', padding: padding)(color, width, height);
+
+   static Widget thumbDownIcon({
+    Color color,
+    double width = 22.0,
+    double height = 20.0,
+    EdgeInsets padding = EdgeInsets.zero
+  }) =>
+      _buildIcon('icons/Icon/ThumbDown.svg', padding: padding)(color, width, height);
+
+   static Widget pinIcon({
+    Color color,
+    double width = 14.0,
+    double height = 20.0,
+    EdgeInsets padding = EdgeInsets.zero
+  }) =>
+      _buildIcon('icons/Icon/Pin.svg', padding: padding)(color, width, height);
+
   static Widget mapIcon({
     Color color,
     double width = 20.0,
@@ -29,8 +53,9 @@ abstract class ProjectIcons {
     Color color,
     double width = 20.0,
     double height = 15.0,
+    EdgeInsets padding = EdgeInsets.zero
   }) =>
-      _buildIcon('icons/Icon/View.svg')(color, width, height);
+      _buildIcon('icons/Icon/View.svg', padding: padding)(color, width, height);
 
   static Widget deleteIcon({
     Color color,

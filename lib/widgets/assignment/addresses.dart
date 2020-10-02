@@ -2,8 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:inspector/style/colors.dart';
 import 'package:inspector/style/icons.dart';
-import 'package:inspector/style/text_style.dart';
-import 'package:inspector/widgets/assignments/paragraph.dart';
+import 'package:inspector/widgets/assignment/paragraph.dart';
 
 class AssignemntAddressesWidget extends StatelessWidget {
 

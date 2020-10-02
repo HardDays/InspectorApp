@@ -12,4 +12,5 @@ abstract class ProjectColors {
   static const green = Color(0xFF58AA43);
   static const yellow = Color(0xFFFDA91A);
   static const cyan = Color(0xFF07A6BA);
+  static const brown = Color(0xFF79390B);
 }

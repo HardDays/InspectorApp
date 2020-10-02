@@ -7,9 +7,9 @@ import 'package:inspector/style/button.dart';
 import 'package:inspector/style/colors.dart';
 import 'package:inspector/style/icons.dart';
 import 'package:inspector/style/text_style.dart';
-import 'package:inspector/widgets/assignments/assignment.dart';
-import 'package:inspector/widgets/assignments/paragraph.dart';
-import 'package:inspector/widgets/assignments/status.dart';
+import 'package:inspector/widgets/assignment/assignment.dart';
+import 'package:inspector/widgets/assignment/paragraph.dart';
+import 'package:inspector/widgets/assignment/status.dart';
 import 'package:inspector/widgets/section.dart';
 import 'package:intl/intl.dart';
 
