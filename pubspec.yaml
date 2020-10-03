@@ -18,6 +18,7 @@ dependencies:
   auto_route: ^0.6.7
   bloc: ^6.0.3
   flutter_bloc: ^6.0.5
+  custom_switch_button: ^0.5.0
 
 dev_dependencies:
   flutter_test:
