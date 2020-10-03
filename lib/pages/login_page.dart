@@ -30,6 +30,7 @@ class LoginPage extends StatelessWidget {
         button = CircularProgressIndicator();
       }
       return Scaffold(
+        backgroundColor: ProjectColors.white,
         body: Center(
           child: Container(
             width: 400.0,

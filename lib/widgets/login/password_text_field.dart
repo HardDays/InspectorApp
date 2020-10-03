@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:inspector/style/colors.dart';
+import 'package:inspector/style/icons.dart';
 import 'package:inspector/style/text_style.dart';
 
 class PasswordTextField extends StatefulWidget {
@@ -42,7 +43,7 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
             onPressed: () => setState(() {
               showPassword = !showPassword;
             }),
-            icon: Icon(Icons.visibility),
+            icon: ProjectIcons.viewIcon(color: ProjectColors.darkBlue),
           ),
         ),
       ],
