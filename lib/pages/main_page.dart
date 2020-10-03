@@ -10,7 +10,7 @@ import 'package:inspector/widgets/bottom_navigation_bar.dart';
 
 class MainPage extends StatelessWidget {
   final _pagesMap = {
-    Screens.AssignmentsScreen: MainPageRoutes.assignemntsPage,
+    Screens.AssignmentsScreen: MainPageRoutes.assignmentsPage,
     Screens.MapScreen: MainPageRoutes.mapPage,
     Screens.VKScreen: MainPageRoutes.vKSreen,
     Screens.ProfileScreen: MainPageRoutes.profilePage,
