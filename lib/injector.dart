@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:inspector/services/auth_service.dart';
+import 'package:inspector/services/hive/hive_persistance_service.dart';
 import 'package:inspector/services/mock_auth_service.dart';
 import 'package:inspector/services/mock_persistance_service.dart';
 import 'package:inspector/services/persistance_service.dart';
@@ -14,7 +15,7 @@ class InjectorWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Provider<PersistanceService>(
-      create: (_) => MockPersistanceService(),
+      create: (_) => HivePersistanceService(),
       child: Provider<AuthService>(
         create: (context) => MockAuthService(Provider.of<PersistanceService>(context, listen: false)),
         child: child,
