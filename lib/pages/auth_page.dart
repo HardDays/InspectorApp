@@ -5,12 +5,13 @@ import 'package:inspector/blocs/auth/bloc.dart';
 import 'package:inspector/blocs/auth/states.dart';
 import 'package:inspector/navigation.gr.dart';
 import 'package:inspector/services/mock_auth_service.dart';
+import 'package:inspector/services/mock_persistance_service.dart';
 
 class AuthPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<AuthBloc>(
-      create: (context) => AuthBloc(InitialAuthBlocState(), MockAuthService()),
+      create: (context) => AuthBloc(InitialAuthBlocState(), MockAuthService(MockPersistanceService())),
       child: BlocListener<AuthBloc, AuthBlocStates>(
         child: ExtendedNavigator(name: 'authNavigator'),
         listener: (context, state) {

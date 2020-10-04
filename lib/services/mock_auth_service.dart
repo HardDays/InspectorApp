@@ -1,38 +1,18 @@
 import 'package:inspector/model/user.dart';
 import 'package:inspector/services/auth_exception.dart';
 import 'package:inspector/services/auth_service.dart';
+import 'package:inspector/services/persistance_service.dart';
 
 class MockAuthService extends AuthService {
-  String _pin;
-  bool isLoggined = false;
-
-  @override
-  Future<bool> isPinCorrect(String pin) async {
-    return _pin != null && pin == _pin;
-  }
-
-  @override
-  Future<bool> isPinSetted() async {
-    return _pin != null;
-  }
-
-  @override
-  Future<void> setPin(String pin) async {
-    _pin = pin;
-  }
-
-  @override
-  Future<bool> isAuthentificated() async {
-    return isLoggined;
-  }
+  
+  MockAuthService(PersistanceService persistanceService) : super(persistanceService);
 
   @override
   Future<User> authentificate(String login, String password) async {
     await Future.delayed(Duration(seconds: 5));
     if (login != 'test' || password != 'test')
       throw AuthException('Неверный логин или пароль');
-    isLoggined = true;
-    return User(
+    User user = User(
       id: 1,
       code: 'asdf',
       surname: 'qwer',
@@ -40,5 +20,7 @@ class MockAuthService extends AuthService {
       middleName: 'zcv',
       position: 'qwe',
     );
+    await persistanceService.saveUser(user);
+    return user;
   }
 }
