@@ -11,7 +11,7 @@ class InstructionService {
     try {
       final res = await api.getInstructions();
 
-      return List<Instruction>.from(res.data.map((d) => Instruction.fromJson(d)));
+      return List<Instruction>.from(res.data['data'].map((d) => Instruction.fromJson(d)));
     } catch (ex) {
 
     }
