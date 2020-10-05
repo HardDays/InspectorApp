@@ -130,18 +130,18 @@ class ControlViolationPage extends StatelessWidget {
     );
   }
 
-  Widget _buildIcon(Widget icon, String title) {
-    return Row(
-      children: [
-        icon,
-        Padding(
-          padding: const EdgeInsets.only(left: 10),
-          child: Text(title,
-            style: ProjectTextStyles.small.apply(color: ProjectColors.black),
-          ),
-        )
-      ],
-    );
+  Widget _buildMark() {
+    // return Row(
+    //   children: [
+    //     icon,
+    //     Padding(
+    //       padding: const EdgeInsets.only(left: 10),
+    //       child: Text(title,
+    //         style: ProjectTextStyles.small.apply(color: ProjectColors.black),
+    //       ),
+    //     )
+    //   ],
+    // );
   }
 
   Widget _buildTitle(String title, {Widget icon}) {
