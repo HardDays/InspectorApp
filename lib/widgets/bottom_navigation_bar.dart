@@ -19,16 +19,20 @@ class ProjectBottomNavigationBar extends StatelessWidget {
     Screens.MapScreen,
     Screens.ProfileScreen,
   ];
+
   int get currentIndex => screenslist.indexOf(screen);
+
+  Color _getColor(int index) =>
+      index == currentIndex ? ProjectColors.blue : ProjectColors.mediumBlue;
+
+  TextStyle _getTextStyle(int index) => index == currentIndex
+      ? ProjectTextStyles.baseBold.apply(color: ProjectColors.blue)
+      : ProjectTextStyles.base.apply(color: ProjectColors.mediumBlue);
 
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
       onTap: (x) => onTap(screenslist[x]),
-      selectedItemColor: ProjectColors.blue,
-      selectedLabelStyle: ProjectTextStyles.baseBold.apply(color: ProjectColors.blue),
-      unselectedItemColor: ProjectColors.mediumBlue,
-      unselectedLabelStyle: ProjectTextStyles.base.apply(color: ProjectColors.mediumBlue),
       currentIndex: currentIndex,
       type: BottomNavigationBarType.fixed,
       showUnselectedLabels: true,
@@ -36,35 +40,47 @@ class ProjectBottomNavigationBar extends StatelessWidget {
       items: [
         BottomNavigationBarItem(
           icon: ProjectIcons.listIcon(
-            padding: const EdgeInsets.only(bottom: 10, top: 15)
+            color: _getColor(0),
+            padding: const EdgeInsets.only(bottom: 10, top: 15),
           ),
-          title: const Text('Поручения\n', 
+          title: Text(
+            'Поручения\n',
             maxLines: 2,
+            style: _getTextStyle(0),
           ),
         ),
         BottomNavigationBarItem(
           icon: ProjectIcons.vkIcon(
-            padding: const EdgeInsets.only(bottom: 10, top: 15)
+            color: _getColor(1),
+            padding: const EdgeInsets.only(bottom: 10, top: 15),
           ),
-          title: const Text('Ведомственный\nконтроль', 
-            maxLines: 2, 
+          title: Text(
+            'Ведомственный\nконтроль',
+            maxLines: 2,
             textAlign: TextAlign.center,
+            style: _getTextStyle(1),
           ),
         ),
         BottomNavigationBarItem(
           icon: ProjectIcons.map2Icon(
-            padding: const EdgeInsets.only(bottom: 10, top: 15)
+            color: _getColor(2),
+            padding: const EdgeInsets.only(bottom: 10, top: 15),
           ),
-          title: const Text('Карта\n', 
+          title: Text(
+            'Карта\n',
             maxLines: 2,
+            style: _getTextStyle(2),
           ),
         ),
         BottomNavigationBarItem(
           icon: ProjectIcons.profileIcon(
-            padding: const EdgeInsets.only(bottom: 10, top: 15)
+            color: _getColor(3),
+            padding: const EdgeInsets.only(bottom: 10, top: 15),
           ),
-          title: const Text('Профиль\n', 
+          title: Text(
+            'Профиль\n',
             maxLines: 2,
+            style: _getTextStyle(3),
           ),
         ),
       ],

@@ -60,13 +60,12 @@ class ImagePickerState extends State<ImagePicker> with SingleTickerProviderState
           width: MediaQuery.of(context).size.width,
           child: Wrap(
             alignment: WrapAlignment.spaceBetween,
-            //mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: List.generate(files.length, 
               (index) => Column(
                 children: [
                   SizedBox(
-                    width: width,
-                    height: width,
+                    width: 210,
+                    height: 140,
                     child: Image(
                       fit: BoxFit.cover,
                       image: FileImage(files[index],)
@@ -83,7 +82,7 @@ class ImagePickerState extends State<ImagePicker> with SingleTickerProviderState
                   ),
                 ]
               ),
-            )..add((files.length - 2) % 3 == 0 ? SizedBox(width: width) : Container()),
+            )..add((files.length - 2) % 3 == 0 ? SizedBox(width: 210) : Container()),
           ),
         ),
         Container(

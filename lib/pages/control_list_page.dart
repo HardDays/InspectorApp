@@ -3,13 +3,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:inspector/navigation.gr.dart';
-import 'package:inspector/pages/control_page.dart';
+import 'package:inspector/pages/control_object_page.dart';
 import 'package:inspector/style/button.dart';
 import 'package:inspector/style/colors.dart';
 import 'package:inspector/style/icons.dart';
 import 'package:inspector/style/text_style.dart';
 import 'package:inspector/widgets/control/status.dart';
-import 'package:inspector/widgets/control/task.dart';
+import 'package:inspector/widgets/control/violation.dart';
 import 'package:inspector/widgets/filter_appbar.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -26,10 +26,10 @@ class ControlListPage extends StatefulWidget {
 
 class ControlListPageState extends State<ControlListPage> {
 
-  bool mapContent = true;
+  bool mapContent = false;
 
   void _onControl() {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => ControlPage()));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => ControlObjectPage()));
   }
 
   void _onMap(bool value) {
@@ -259,8 +259,8 @@ class ControlListPageState extends State<ControlListPage> {
           ),
           Column(
             children: [
-              ControlTaskWidget(),
-              ControlTaskWidget()
+              ControlViolationWidget(),
+              ControlViolationWidget()
             ],
           )
         ],

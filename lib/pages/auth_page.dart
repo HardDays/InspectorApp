@@ -1,35 +1,33 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:inspector/blocs/auth/bloc.dart';
+import 'package:inspector/blocs/auth/states.dart';
 import 'package:inspector/navigation.gr.dart';
-import 'package:inspector/style/text_style.dart';
+import 'package:inspector/services/auth_service.dart';
+import 'package:provider/provider.dart';
 
 class AuthPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(30.0),
-              child: Text(
-                'Здесь скоро появится страница авторизации/аутентификации',
-                style: ProjectTextStyles.title,
-                overflow: TextOverflow.ellipsis,
-                textAlign: TextAlign.center,
-                maxLines: 5,
-              ),
-            ),
-            SizedBox(
-              height: 20.0,
-            ),
-            RaisedButton(
-              child: Text('Перейти дальше', style: ProjectTextStyles.title),
-              onPressed: () => ExtendedNavigator.root.replace(Routes.mainPage),
-            ),
-          ],
-        ),
+    return BlocProvider<AuthBloc>(
+      create: (context) => AuthBloc(
+        InitialAuthBlocState(),
+        Provider.of<AuthService>(context, listen: false),
+      ),
+      child: BlocListener<AuthBloc, AuthBlocStates>(
+        child: ExtendedNavigator(name: 'authNavigator'),
+        listener: (context, state) {
+          if (state is PinCodeState && state.needRebuild)
+            ExtendedNavigator.named('authNavigator')
+                .replace(AuthPageRoutes.pinCodePage);
+          else if (state is ShowLoginScreen)
+            ExtendedNavigator.named('authNavigator')
+                .replace(AuthPageRoutes.loginPage);
+          else if (state is AutorizedState) {
+            ExtendedNavigator.root.replace(Routes.mainPage);
+          }
+        },
       ),
     );
   }

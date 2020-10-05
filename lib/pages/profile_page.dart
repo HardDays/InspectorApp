@@ -4,6 +4,7 @@ import 'package:inspector/style/button.dart';
 import 'package:inspector/style/colors.dart';
 import 'package:inspector/style/icons.dart';
 import 'package:inspector/style/text_style.dart';
+import 'package:inspector/style/switch.dart';
 
 class ProfilePage extends StatelessWidget {
   @override
@@ -123,12 +124,7 @@ class ProfilePage extends StatelessWidget {
                       ),
                       Padding(
                         padding: const EdgeInsets.fromLTRB(8.1, 0.0, 10.0, 0.0),
-                        child: CupertinoSwitch(
-                          onChanged: (value) {},
-                          value: false,
-                          trackColor: ProjectColors.white,
-                          activeColor: ProjectColors.darkBlue,
-                        ),
+                        child: ProjectSwitch(checked: false, onChanged: (value) {}),
                       ),
                       Text(
                         'Автоматический',
@@ -149,12 +145,7 @@ class ProfilePage extends StatelessWidget {
                       ),
                       Padding(
                         padding: const EdgeInsets.fromLTRB(8.1, 0.0, 10.0, 0.0),
-                        child: CupertinoSwitch(
-                          onChanged: (value) {},
-                          value: true,
-                          trackColor: ProjectColors.white,
-                          activeColor: ProjectColors.darkBlue,
-                        ),
+                        child: ProjectSwitch(checked: true, onChanged: (value) {},),
                       ),
                       Text(
                         'Выключен',
