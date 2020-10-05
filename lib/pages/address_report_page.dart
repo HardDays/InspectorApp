@@ -4,7 +4,7 @@ import 'package:inspector/style/button.dart';
 import 'package:inspector/style/colors.dart';
 import 'package:inspector/style/text_style.dart';
 import 'package:inspector/widgets/image_picker.dart';
-import 'package:inspector/widgets/section.dart';
+import 'package:inspector/style/section.dart';
 
 
 class AddressReportPage extends StatefulWidget {
@@ -60,9 +60,9 @@ class AddressReportPageState extends State<AddressReportPage> with SingleTickerP
           child: Column(
             children: [
               _buildTitle('Обследование факта окончания работ и восстановления благоустройства'),
-              SectionWidget('Номер разрытия', description: 'У093923453455'),
+              ProjectSection('Номер разрытия', description: 'У093923453455'),
               _buildDivider(),
-              SectionWidget('Адрес', description: 'ЮЗАО, район Академический, Вавилова ул. 11, стр. 2'),
+              ProjectSection('Адрес', description: 'ЮЗАО, район Академический, Вавилова ул. 11, стр. 2'),
               _buildDivider(),
               Padding(
                 padding: const EdgeInsets.only(top: 24),

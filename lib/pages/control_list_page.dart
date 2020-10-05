@@ -10,7 +10,7 @@ import 'package:inspector/style/icons.dart';
 import 'package:inspector/style/text_style.dart';
 import 'package:inspector/widgets/control/status.dart';
 import 'package:inspector/widgets/control/violation.dart';
-import 'package:inspector/widgets/filter_appbar.dart';
+import 'package:inspector/style/filter_appbar.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong/latlong.dart';

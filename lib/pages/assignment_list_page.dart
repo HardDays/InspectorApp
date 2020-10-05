@@ -1,9 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:inspector/style/colors.dart';
-import 'package:inspector/style/text_style.dart';
+import 'package:inspector/style/filter_appbar.dart';
 import 'package:inspector/widgets/assignment/assignment.dart';
-import 'package:inspector/widgets/filter_appbar.dart';
 
 class AssignmentListPage extends StatelessWidget {
 

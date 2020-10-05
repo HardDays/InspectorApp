@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:inspector/style/colors.dart';
 import 'package:inspector/style/text_style.dart';
 
-class SectionWidget extends StatelessWidget { 
+class ProjectSection extends StatelessWidget { 
 
   final String title;
   final String description;
   final Widget child;
 
-  SectionWidget(this.title, {this.description, this.child});
+  ProjectSection(this.title, {this.description, this.child});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +16,7 @@ class SectionWidget extends StatelessWidget {
       children: [
         Container(
           width: MediaQuery.of(context).size.width * 0.3,
-          margin: const EdgeInsets.all(16.0),
+          margin: const EdgeInsets.all(16),
           child: Text(title,
             style: ProjectTextStyles.baseBold.apply(color: ProjectColors.blue),
           ),

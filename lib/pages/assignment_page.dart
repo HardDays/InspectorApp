@@ -10,7 +10,7 @@ import 'package:inspector/style/text_style.dart';
 import 'package:inspector/widgets/assignment/assignment.dart';
 import 'package:inspector/widgets/assignment/paragraph.dart';
 import 'package:inspector/widgets/assignment/status.dart';
-import 'package:inspector/widgets/section.dart';
+import 'package:inspector/style/section.dart';
 import 'package:intl/intl.dart';
 
 class AssignmentPage extends StatelessWidget {
@@ -51,13 +51,13 @@ class AssignmentPage extends StatelessWidget {
           padding: const EdgeInsets.only(left: 30, right: 30, top: 20),
           child: Column(
             children: [
-              SectionWidget('Статус поручения', child: AssignemntStatusWidget(status)),
+              ProjectSection('Статус поручения', child: AssignemntStatusWidget(status)),
               _buildDivider(),
-              SectionWidget('Способ наблюдения', description: 'Обследование методом визуального наблюдения'),
+              ProjectSection('Способ наблюдения', description: 'Обследование методом визуального наблюдения'),
               _buildDivider(),
-              SectionWidget('Нормативно-правовой акт', description: 'Правила проведения земляных работ, установки временных ограждений, размещения временных объектов в городе Москве'),
+              ProjectSection('Нормативно-правовой акт', description: 'Правила проведения земляных работ, установки временных ограждений, размещения временных объектов в городе Москве'),
               _buildDivider(),
-              SectionWidget('Срок предоставления документов, фиксирующих факты и события нарушения', description: '11.03.2020 16:30'),
+              ProjectSection('Срок предоставления документов, фиксирующих факты и события нарушения', description: '11.03.2020 16:30'),
               Container(
                 decoration: BoxDecoration(
                   color: Colors.white,
