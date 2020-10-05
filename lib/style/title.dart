@@ -6,22 +6,26 @@ import 'package:inspector/style/text_style.dart';
 class ProjectTitle extends StatelessWidget { 
 
   final String title;
+  final EdgeInsets margin;
 
-  ProjectTitle(this.title);
+  ProjectTitle(this.title, {this.margin = const EdgeInsets.only(top: 24)});
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(title,
-          style: ProjectTextStyles.subTitle.apply(color: ProjectColors.black),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(top: 7),
-          child: ProjectDivider(),
-        ),
-      ],
+    return Padding(
+      padding: margin,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(title,
+            style: ProjectTextStyles.subTitle.apply(color: ProjectColors.black),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 7),
+            child: ProjectDivider(),
+          ),
+        ],
+      ),
     );
   }
 

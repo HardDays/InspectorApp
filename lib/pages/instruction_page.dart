@@ -4,6 +4,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:inspector/pages/address_report_page.dart';
 import 'package:inspector/pages/total_report_page.dart';
 import 'package:inspector/style/button.dart';
+import 'package:inspector/style/card.dart';
 import 'package:inspector/style/colors.dart';
 import 'package:inspector/style/icons.dart';
 import 'package:inspector/style/text_style.dart';
@@ -13,12 +14,12 @@ import 'package:inspector/widgets/assignment/status.dart';
 import 'package:inspector/style/section.dart';
 import 'package:intl/intl.dart';
 
-class AssignmentPage extends StatelessWidget {
+class InstructionPage extends StatelessWidget {
 
   // todo: сделать нормально (enum и тд, как в api)
   final String status;
 
-  AssignmentPage(this.status);
+  InstructionPage(this.status);
 
   void _onTotalReport(BuildContext context) {
     Navigator.push(context, MaterialPageRoute(builder: (context) => TotalReportPage(status)));
@@ -52,20 +53,10 @@ class AssignmentPage extends StatelessWidget {
           child: Column(
             children: [
               ProjectSection('Статус поручения', child: AssignemntStatusWidget(status)),
-              _buildDivider(),
               ProjectSection('Способ наблюдения', description: 'Обследование методом визуального наблюдения'),
-              _buildDivider(),
               ProjectSection('Нормативно-правовой акт', description: 'Правила проведения земляных работ, установки временных ограждений, размещения временных объектов в городе Москве'),
-              _buildDivider(),
               ProjectSection('Срок предоставления документов, фиксирующих факты и события нарушения', description: '11.03.2020 16:30'),
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(
-                    color: ProjectColors.lightBlue, 
-                    width: 1,
-                  ),
-                ),
+              ProjectCard(
                 margin: const EdgeInsets.only(top: 20),
                 child: Stack(
                   children: [

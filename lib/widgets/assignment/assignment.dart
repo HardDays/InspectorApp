@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:inspector/pages/assignment_page.dart';
+import 'package:inspector/pages/instruction_page.dart';
+import 'package:inspector/style/card.dart';
 import 'package:inspector/style/colors.dart';
 import 'package:inspector/style/icons.dart';
 import 'package:inspector/style/text_style.dart';
@@ -63,21 +64,13 @@ class AssignmentWidgetState extends State<AssignmentWidget> with SingleTickerPro
   }
 
   void _onTap() {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => AssignmentPage(widget.status)));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => InstructionPage(widget.status)));
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border.all(
-          color: ProjectColors.lightBlue, 
-          width: 1,
-        ),
-      ),
+    return ProjectCard(
       margin: const EdgeInsets.only(bottom: 20, left: 30, right: 30),
-      padding: const EdgeInsets.all(20),
       child: InkWell(
         onTap: _onTap,
         child: Column(

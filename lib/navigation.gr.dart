@@ -9,7 +9,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
-import 'pages/assignment_list_page.dart';
+import 'pages/instruction_list_page.dart';
 import 'pages/auth_page.dart';
 import 'pages/login_page.dart';
 import 'pages/main_page.dart';
@@ -122,7 +122,7 @@ class MainPageRouter extends RouterBase {
   @override
   List<RouteDef> get routes => _routes;
   final _routes = <RouteDef>[
-    RouteDef(MainPageRoutes.assignmentsPage, page: AssignmentListPage),
+    RouteDef(MainPageRoutes.assignmentsPage, page: InstructionListPage),
     RouteDef(MainPageRoutes.mapPage, page: MapPage),
     RouteDef(
       MainPageRoutes.vKSreen,
@@ -134,9 +134,9 @@ class MainPageRouter extends RouterBase {
   @override
   Map<Type, AutoRouteFactory> get pagesMap => _pagesMap;
   final _pagesMap = <Type, AutoRouteFactory>{
-    AssignmentListPage: (data) {
+    InstructionListPage: (data) {
       return MaterialPageRoute<dynamic>(
-        builder: (context) => AssignmentListPage(),
+        builder: (context) => InstructionListPage(),
         settings: data,
       );
     },
