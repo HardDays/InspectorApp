@@ -6,24 +6,33 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: ">=2.10.0 <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
-  cupertino_icons: ^0.1.3
+  cupertino_icons: ^1.0.0
   google_fonts: ^1.1.0
   flutter_svg: ^0.19.0
   intl: ^0.16.1
   auto_route: ^0.6.7
   bloc: ^6.0.3
   flutter_bloc: ^6.0.5
+  flutter_slidable: ^0.5.7
+  flutter_map: ^0.10.1+1
+  image_picker: ^0.6.7+11
+  cached_network_image: ^2.3.2+1
+  custom_switch_button: ^0.5.0
+  provider: ^4.3.2+2
+  hive: ^1.4.4+1
+  hive_flutter: ^0.3.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   auto_route_generator: ^0.6.7
   build_runner:
+  hive_generator: ^0.7.2+1
 
 flutter:
   uses-material-design: true
@@ -32,3 +41,4 @@ flutter:
     - icons/Icon/
     - icons/Top_menu_icon/
     - icons/Menu_icon/
+    - images/logo.png

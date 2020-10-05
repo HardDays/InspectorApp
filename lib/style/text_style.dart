@@ -58,6 +58,15 @@ abstract class ProjectTextStyles {
     ),
   );
 
+    static final smallAction = GoogleFonts.montserrat(
+    textStyle: TextStyle(
+      fontWeight: FontWeight.w400,
+      fontSize: 11,
+      height: 13.0/11.0,
+    ),
+  );
+
+
   static final smallBold = GoogleFonts.montserrat(
     textStyle: TextStyle(
       fontWeight: FontWeight.w600,
