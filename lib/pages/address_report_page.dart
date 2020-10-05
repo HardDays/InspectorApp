@@ -6,7 +6,6 @@ import 'package:inspector/style/text_style.dart';
 import 'package:inspector/widgets/image_picker.dart';
 import 'package:inspector/style/section.dart';
 
-
 class AddressReportPage extends StatefulWidget {
 
   //todo: make according api model

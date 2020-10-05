@@ -14,13 +14,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(
-        scaffoldBackgroundColor: ProjectColors.grey
+      theme: ThemeData(scaffoldBackgroundColor: ProjectColors.grey),
+      //home: ControlListPage()
+      home: InjectorWidget(
+        child: ExtendedNavigator<InspectorRouter>(
+          router: InspectorRouter(),
+        ),
       ),
-      home: ControlListPage()
-      // builder: ExtendedNavigator<InspectorRouter>(
-      //   router: InspectorRouter(),
-      // ),
     );
   }
 }
