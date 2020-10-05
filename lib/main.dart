@@ -17,10 +17,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         scaffoldBackgroundColor: ProjectColors.grey
       ),
-      home: ControlListPage()
-      // builder: ExtendedNavigator<InspectorRouter>(
-      //   router: InspectorRouter(),
-      // ),
+      //home: ControlListPage()
+      builder: ExtendedNavigator<InspectorRouter>(
+        router: InspectorRouter(),
+      ),
     );
   }
 }
