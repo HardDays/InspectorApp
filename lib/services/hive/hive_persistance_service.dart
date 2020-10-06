@@ -56,4 +56,14 @@ class HivePersistanceService extends PersistanceService {
   Future<void> saveUser(User user) async {
     (await _cached).put('user', user);
   }
+
+  @override
+  Future<DateTime> getLastDataSendingDate() async {
+    return (await _cached).get('lastDataSendingDate');
+  }
+
+  @override
+  Future<void> saveLastDataSendingDate(DateTime dateTime) async {
+    (await _cached).put('lastDataSendingDate', dateTime);
+  }
 }

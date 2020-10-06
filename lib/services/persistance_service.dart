@@ -9,4 +9,6 @@ abstract class PersistanceService {
   Future<void> saveDataSendingState(bool state);
   Future<bool> getFingerprintState();
   Future<bool> getDataSendingState();
+  Future<void> saveLastDataSendingDate(DateTime dateTime);
+  Future<DateTime> getLastDataSendingDate();
 }

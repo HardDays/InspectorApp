@@ -6,6 +6,7 @@ class MockPersistanceService extends PersistanceService {
   bool _useFingerprint = true;
   User _user;
   String _pin;
+  DateTime _dateTime;
 
   @override
   Future<bool> getDataSendingState() async {
@@ -46,4 +47,16 @@ class MockPersistanceService extends PersistanceService {
   Future<void> saveUser(User user) {
     _user = user;
   }
+
+  @override
+  Future<DateTime> getLastDataSendingDate() async {
+    return _dateTime;
+  }
+
+  @override
+  Future<void> saveLastDataSendingDate(DateTime dateTime) async {
+    _dateTime = dateTime;
+  }
+
+  
 }
