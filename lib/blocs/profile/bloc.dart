@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:inspector/blocs/profile/event.dart';
 import 'package:inspector/blocs/profile/state.dart';
@@ -8,6 +9,8 @@ class ProfileBloc extends Bloc<ProfileBlocEvent, ProfileBlocState> {
   ProfileBloc(ProfileBlocState initialState, this._persistanceService)
       : super(initialState);
 
+  static const platform = const MethodChannel('com.example.inspector/mainChannel');
+  
   final PersistanceService _persistanceService;
 
   @override
@@ -58,6 +61,6 @@ class ProfileBloc extends Bloc<ProfileBlocEvent, ProfileBlocState> {
   }
 
   Future<DateTime> _getInstallDate() async {
-    return DateTime(2020, 7, 15, 21, 55);
+    return DateTime.fromMillisecondsSinceEpoch(await platform.invokeMethod('getInstallDate'));
   }
 }
