@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -5,8 +7,10 @@ import 'package:inspector/blocs/instruction_list/bloc.dart';
 import 'package:inspector/blocs/instruction_list/states.dart';
 import 'package:inspector/blocs/instruction_list/events.dart';
 import 'package:inspector/model/instruction.dart';
+import 'package:inspector/style/colors.dart';
 import 'package:inspector/style/filter_appbar.dart';
 import 'package:inspector/widgets/instruction/instruction.dart';
+import 'package:inspector/widgets/sort_dialog.dart';
 
 
 class InstructionListPage extends StatefulWidget {
@@ -17,29 +21,86 @@ class InstructionListPage extends StatefulWidget {
 
 class InstructionListPageState extends State<InstructionListPage> with AutomaticKeepAliveClientMixin {
 
+  final sortTitles = {
+    InstructionSortStrings.instructionDate: 'По дате поручения', 
+    InstructionSortStrings.checkDate: 'По дате обследования', 
+    InstructionSortStrings.instructionStatus: 'По статусу поручения', 
+    InstructionSortStrings.instructionNum: 'По номеру поручения'
+  };
+
   @override
   bool get wantKeepAlive => true;
+
+  Future _onUpdate(BuildContext context) async {
+    BlocProvider.of<InstructionListBloc>(context).add(RefreshEvent());  
+    _showSnackBar('Данные обновляются...', ProjectColors.darkBlue);
+    return Completer().complete();
+  }
+
+  Future _onSort(BuildContext context, String value) async {
+    final sort = await showModalBottomSheet(
+      context: context, 
+      backgroundColor: Colors.transparent,
+      builder: (context) => SortDialog(
+        value ?? InstructionSortStrings.instructionStatus,
+        InstructionSortStrings.all,
+        sortTitles.values.toList()
+      ),
+    );
+
+    if (sort != null) {
+      BlocProvider.of<InstructionListBloc>(context).add(SortEvent(sort));  
+    }
+  }
+
+  void _showSnackBar(String title, Color color) {
+    WidgetsBinding.instance.addPostFrameCallback((_) => 
+      Scaffold.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: color,
+          content: Text(title),
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Scaffold(
-      appBar: FilterAppbar('Поручения'),
-      body: BlocProvider(
-        create: (context)=> InstructionListBloc(LoadingState())..add(LoadEvent()),
-        child: BlocBuilder<InstructionListBloc, InstructionListBlocState>(
-          builder: (context, state) {
-            if (state is LoadingState) {
-              return _buildLoader();
-            } else if (state is LoadedState) { 
-              return _buildList(state.instructions);
-            } else {
-              return Container();
-            }
-          },
-        ),
+    return BlocProvider(
+      create: (context)=> InstructionListBloc(LoadingState())..add(LoadEvent()),
+      child: BlocBuilder<InstructionListBloc, InstructionListBlocState>(
+        builder: (context, state) {
+          return Scaffold(
+            appBar: FilterAppbar('Поручения', 
+              state.date ?? 'Не обновлялось',
+              sortTitles[state.sort ?? InstructionSortStrings.instructionStatus],
+              onUpdate: ()=> _onUpdate(context),
+              onSort: ()=> _onSort(context, state.sort),
+            ),
+            body: RefreshIndicator(
+              onRefresh: ()=> _onUpdate(context),
+              child: _buildBody(state)  
+            ),
+          );
+        },
       ),
     );
+  }
+
+  Widget _buildBody(InstructionListBlocState state) {
+    if (state is NewDataState) { 
+      _showSnackBar('Загружены новые данные', ProjectColors.green);
+    } else if (state is OldDataState) {
+      _showSnackBar('Загружены старые данные', ProjectColors.yellow);
+    } 
+    if (state is LoadingState) {
+      return _buildLoader();
+    } else if (state is DataState) { 
+      return _buildList(state.instructions);
+    }  else {
+      return Container();
+    }
   }
 
   Widget _buildLoader() {

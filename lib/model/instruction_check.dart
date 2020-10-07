@@ -9,7 +9,7 @@ import 'package:inspector/services/hive/hive_type_ids.dart';
 part 'instruction_check.g.dart';
 
 @HiveType(typeId: HiveTypeId.InstructionCheckId)
-class InstructionCheck {
+class InstructionCheck extends HiveObject {
   @HiveField(0)
   final int id;
   @HiveField(1)
@@ -37,5 +37,15 @@ class InstructionCheck {
       checkStatus: CheckStatus.fromJson(json['checkStatus']), 
       checkParticipants: List<CheckParticipant>.from(json['checkParticipants'].map((p) => CheckParticipant.fromJson(p)))
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'checkSubject': checkSubject,
+      'diggRequest': diggRequest,
+      'checkStatus': checkStatus.toJson(),
+      'checkParticipants': checkParticipants.map((e) => e.toJson()).toList()
+    };
   }
 }

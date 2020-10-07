@@ -5,7 +5,7 @@ import 'package:inspector/services/hive/hive_type_ids.dart';
 part 'check_type.g.dart';
 
 @HiveType(typeId: HiveTypeId.CheckTypeId)
-class CheckType {
+class CheckType extends HiveObject {
   @HiveField(0)
   final int id;
   @HiveField(1)
@@ -25,5 +25,13 @@ class CheckType {
       name: json['name'], 
       code: json['code']
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'code': code
+    };
   }
 }

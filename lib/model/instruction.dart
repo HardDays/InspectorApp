@@ -9,8 +9,20 @@ import 'package:inspector/services/hive/hive_type_ids.dart';
 
 part 'instruction.g.dart';
 
+abstract class InstructionSortStrings {
+  static const instructionDate = 'instructionDate';
+  static const checkDate = 'checkDate';
+  static const instructionStatus = 'instructionStatus';
+  static const instructionNum = 'instructionNum';
+
+  static const List<String> all = const [
+    instructionDate, checkDate, instructionStatus, instructionNum
+  ];
+}
+
+
 @HiveType(typeId: HiveTypeId.InstructionId)
-class Instruction {
+class Instruction extends HiveObject {
   @HiveField(0)
   final int id;
   @HiveField(1)
@@ -55,8 +67,23 @@ class Instruction {
       checkType: CheckType.fromJson(json['checkType']),
       instructionCreator: User.fromJson(json['instructionCreator']),
       instructionStatus: InstructionStatus.fromJson(json['instructionStatus']),
-      instructionChecks: [],//List<InstructionCheck>.from(json['instructionChecks'].map((p) => InstructionCheck.fromJson(p))),
+      instructionChecks: List<InstructionCheck>.from(json['instructionChecks'].map((p) => InstructionCheck.fromJson(p))),
       normativeActs: List<NormativeAct>.from(json['normativeActs'].map((p) => NormativeAct.fromJson(p))),
     );
+  }
+
+   Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'instructionNum': instructionNum,
+      'instructionDate': instructionDate,
+      'reportDate': reportDate,
+      'checkDate': checkDate,
+      'checkType': checkType.toJson(),
+      'instructionCreator': instructionCreator.toJson(),
+      'instructionStatus': instructionStatus.toJson(),
+      'instructionChecks': instructionChecks.map((e) => e.toJson()).toList(),
+      'normativeActs': normativeActs.map((e) => e.toJson()).toList()
+    };
   }
 }

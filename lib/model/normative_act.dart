@@ -5,7 +5,8 @@ import 'package:inspector/services/hive/hive_type_ids.dart';
 part 'normative_act.g.dart';
 
 @HiveType(typeId: HiveTypeId.NormativeActId)
-class NormativeAct {
+class NormativeAct extends HiveObject {
+  
   @HiveField(0)
   final int id;
   @HiveField(1)
@@ -26,4 +27,13 @@ class NormativeAct {
       code: json['code']
     );
   }
+  
+   Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'code': code
+    };
+  }
+
 }

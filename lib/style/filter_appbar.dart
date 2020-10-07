@@ -8,16 +8,20 @@ import 'package:intl/intl.dart';
 class FilterAppbar extends StatelessWidget implements PreferredSizeWidget {
   
   final String title;
+  final String date;
+  final String sort;
+  final Function onUpdate;
+  final Function onSort;
 
-  FilterAppbar(this.title);
+  FilterAppbar(
+    this.title, 
+    this.date, 
+    this.sort, {
+      this.onUpdate,
+      this.onSort
+    }
+  );
 
-  void onSort(BuildContext context) async {
-    await showModalBottomSheet(
-      context: context, 
-      backgroundColor: Colors.transparent,
-      builder: (context) => _buildSort(context),
-    );
-  }
 
   @override
   final Size preferredSize = Size.fromHeight(kToolbarHeight);
@@ -72,17 +76,17 @@ class FilterAppbar extends StatelessWidget implements PreferredSizeWidget {
         ),
       ),
       actions: [
-        _buildIcon(context, Icon(Icons.refresh, size: 25), DateFormat('dd.MM.yyyy').format(DateTime.now())),
-        _buildIcon(context, ProjectIcons.sortIcon(color: Colors.white), 'По дате получения'),
-        _buildIcon(context, ProjectIcons.filterIcon(color: Colors.white), 'Фильтр'),
+        _buildIcon(Icon(Icons.refresh, size: 25), date, onUpdate),
+        _buildIcon(ProjectIcons.sortIcon(color: Colors.white), sort, onSort),
+        _buildIcon(ProjectIcons.filterIcon(color: Colors.white), 'Фильтр', ()=> {}),
         Padding(padding: const EdgeInsets.only(right: 15))
       ],
     );
   }
 
-  Widget _buildIcon(BuildContext context, Widget icon, String title) {
+  Widget _buildIcon(Widget icon, String title, Function onTap) {
     return InkWell(
-      onTap: ()=> onSort(context),
+      onTap: onTap,
       child: Row(
         children: [
           icon,
@@ -97,55 +101,4 @@ class FilterAppbar extends StatelessWidget implements PreferredSizeWidget {
     );
   }
 
-  Widget _buildSort(BuildContext context) {
-    final titles = ['по дате поручения', 'по дате обследования', 'по статусу поручения', 'по номеру поручения'];
-    final selected = 0;
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.end,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          color: Colors.white,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 20, left: 30, bottom: 15),
-                child: Text('Сортировать...',
-                  style: ProjectTextStyles.title.apply(color: ProjectColors.blue)
-                )
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: List.generate(titles.length, 
-                  (index) => InkWell(
-                    onTap: ()=> Navigator.pop(context),
-                    child: Container(
-                      width: MediaQuery.of(context).size.width,
-                      padding: const EdgeInsets.only(left: 30, right: 30, top: 10, bottom: 10),
-                      margin: const EdgeInsets.only(top: 5, bottom: 5),
-                      color: index == selected ? ProjectColors.blue : Colors.white,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(titles[index],
-                            style: ProjectTextStyles.base.apply(color: index == selected ? Colors.white : ProjectColors.black),
-                          ),
-                          Icon(Icons.check,
-                            size: 18,
-                            color: index == selected ? Colors.white : Colors.transparent,
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
 }

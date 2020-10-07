@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:inspector/model/check_participant_branch.dart';
-import 'package:inspector/model/user.dart';
 import 'package:inspector/services/hive/hive_type_ids.dart';
 
 part 'check_participant.g.dart';
 
 @HiveType(typeId: HiveTypeId.CheckParticipantId)
-class CheckParticipant {
+class CheckParticipant extends HiveObject {
   @HiveField(0)
   final int id;
   @HiveField(1)
@@ -51,5 +50,17 @@ class CheckParticipant {
     );
   }
 
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'code': code,
+      'surname': surname,
+      'middleName': middleName,
+      'position': position,
+      'responsible': responsible,
+      'checkParticipantBranch': checkParticipantBranch.toJson()
+    };
+  }
 
 }

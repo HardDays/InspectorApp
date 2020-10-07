@@ -4,6 +4,12 @@ class LoadEvent extends InstructionListBlocEvent {
   
 }
 
-class ScrollEvent extends InstructionListBlocEvent {
+class RefreshEvent extends InstructionListBlocEvent {
   
+}
+
+class SortEvent extends InstructionListBlocEvent {
+  final String sort;
+
+  SortEvent(this.sort);
 }

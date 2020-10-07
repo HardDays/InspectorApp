@@ -6,11 +6,11 @@ import 'package:inspector/style/icons.dart';
 import 'package:inspector/style/paragraph.dart';
 
 class InstructionCheckWidget extends StatelessWidget {
-
+  final Color color;
   final EdgeInsets padding;
   final InstructionCheck instructionCheck;
 
-  InstructionCheckWidget(this.instructionCheck, {this.padding = EdgeInsets.zero,});
+  InstructionCheckWidget(this.instructionCheck, {this.padding = EdgeInsets.zero, this.color = ProjectColors.black});
 
   @override
   Widget build(BuildContext context) {
@@ -80,6 +80,7 @@ class InstructionCheckWidget extends StatelessWidget {
           ) : Container(),
           ProjectParagraph(icon, title,
             padding: const EdgeInsets.only(left: 6),
+            color: color
           ),
         ],
       ),

@@ -5,7 +5,7 @@ import 'package:inspector/services/hive/hive_type_ids.dart';
 part 'check_participant_branch.g.dart';
 
 @HiveType(typeId: HiveTypeId.CheckParticipantBranchId)
-class CheckParticipantBranch {
+class CheckParticipantBranch extends HiveObject {
   @HiveField(0)
   final int id;
   @HiveField(1)
@@ -25,5 +25,13 @@ class CheckParticipantBranch {
       name: json['name'], 
       code: json['code']
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'code': code
+    };
   }
 }

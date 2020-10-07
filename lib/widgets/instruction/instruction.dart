@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:inspector/model/instruction.dart';
 import 'package:inspector/model/instruction_check.dart';
+import 'package:inspector/model/instruction_status.dart';
 import 'package:inspector/pages/instruction_page.dart';
 import 'package:inspector/style/card.dart';
 import 'package:inspector/style/colors.dart';
@@ -66,9 +67,12 @@ class InstructionWidgetState extends State<InstructionWidget> with SingleTickerP
     Navigator.push(context, MaterialPageRoute(builder: (context) => InstructionPage(widget.instruction)));
   }
 
+  Color get _color => widget.instruction.instructionStatus.name == InstructionStatusStrings.complete ? ProjectColors.mediumBlue : Colors.black;
+
   @override
   Widget build(BuildContext context) {
     return ProjectCard(
+      color: widget.instruction.instructionStatus.name == InstructionStatusStrings.complete ? Colors.transparent : Colors.white,
       margin: const EdgeInsets.only(bottom: 20, left: 30, right: 30),
       child: InkWell(
         onTap: _onTap,
@@ -94,7 +98,7 @@ class InstructionWidgetState extends State<InstructionWidget> with SingleTickerP
   Widget _buildTitle() {
     return Flexible(
       child: Text('Поручение № ${widget.instruction.instructionNum} от ${widget.instruction.instructionDate}',
-        style: ProjectTextStyles.subTitle.apply(color: ProjectColors.black),
+        style: ProjectTextStyles.subTitle.apply(color: _color),
       ),
     );
   }
@@ -108,13 +112,15 @@ class InstructionWidgetState extends State<InstructionWidget> with SingleTickerP
   Widget _buildDate() {
     return ProjectParagraph(ProjectIcons.calendarIcon(), widget.instruction.checkDate,
       padding: const EdgeInsets.only(top: 12, left: 8),
+      color: _color,
     );
   }
 
   Widget _buildFirstCheck() {
     if (widget.instruction.instructionChecks.isNotEmpty) {
       return InstructionCheckWidget(widget.instruction.instructionChecks.first, 
-        padding: const EdgeInsets.only(top: 10, bottom: 12)
+        padding: const EdgeInsets.only(top: 10, bottom: 12),
+        color: _color
       );
     } else {
       return Container();
@@ -137,6 +143,7 @@ class InstructionWidgetState extends State<InstructionWidget> with SingleTickerP
                 ProjectDivider(),
                 InstructionCheckWidget(checks[index + 1],
                   padding: const EdgeInsets.only(top: 3, bottom: 12),
+                  color: _color
                 ),
               ],
             ),
@@ -190,6 +197,7 @@ class InstructionWidgetState extends State<InstructionWidget> with SingleTickerP
       );
     }
   }
+
   Widget _buildInkText() {
     return Text(_expanded ? 'Скрыть все' : 'Показать все',
       style: ProjectTextStyles.small.apply(color: ProjectColors.darkBlue, decoration: TextDecoration.underline),

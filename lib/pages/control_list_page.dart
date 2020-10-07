@@ -42,7 +42,7 @@ class ControlListPageState extends State<ControlListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: FilterAppbar('Ведомственный контроль'),
+      appBar: FilterAppbar('Ведомственный контроль', '', ''),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [

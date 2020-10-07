@@ -5,7 +5,7 @@ import 'package:inspector/services/hive/hive_type_ids.dart';
 part 'user.g.dart';
 
 @HiveType(typeId: HiveTypeId.UserId)
-class User {
+class User extends HiveObject {
   @HiveField(0)
   final int id;
   @HiveField(1)
@@ -39,5 +39,16 @@ class User {
       middleName: json['middleName'],
       position: json['position'], 
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'code': code,
+      'surname': surname,
+      'middleName': middleName,
+      'position': position,
+    };
   }
 }
