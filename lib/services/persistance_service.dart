@@ -1,3 +1,4 @@
+import 'package:inspector/model/instruction.dart';
 import 'package:inspector/model/user.dart';
 
 abstract class PersistanceService {

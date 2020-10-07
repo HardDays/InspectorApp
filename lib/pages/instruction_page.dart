@@ -1,28 +1,32 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:inspector/model/check_status.dart';
+import 'package:inspector/model/instruction.dart';
+import 'package:inspector/model/instruction_check.dart';
 import 'package:inspector/pages/address_report_page.dart';
 import 'package:inspector/pages/total_report_page.dart';
+import 'package:inspector/style/appbar.dart';
 import 'package:inspector/style/button.dart';
 import 'package:inspector/style/card.dart';
 import 'package:inspector/style/colors.dart';
+import 'package:inspector/style/divider.dart';
 import 'package:inspector/style/icons.dart';
 import 'package:inspector/style/text_style.dart';
-import 'package:inspector/widgets/assignment/assignment.dart';
-import 'package:inspector/widgets/assignment/paragraph.dart';
-import 'package:inspector/widgets/assignment/status.dart';
 import 'package:inspector/style/section.dart';
+import 'package:inspector/widgets/instruction/status.dart';
+import 'package:inspector/style/paragraph.dart';
 import 'package:intl/intl.dart';
 
 class InstructionPage extends StatelessWidget {
 
   // todo: сделать нормально (enum и тд, как в api)
-  final String status;
+  final Instruction instruction;
 
-  InstructionPage(this.status);
+  InstructionPage(this.instruction);
 
   void _onTotalReport(BuildContext context) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => TotalReportPage(status)));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => TotalReportPage('Назначено')));
   }
 
   void _onAddressReport(BuildContext context, String status) {
@@ -32,91 +36,25 @@ class InstructionPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0.0,
-        backgroundColor: ProjectColors.darkBlue,
-        centerTitle: true,
-        title: Padding(
-          padding: const EdgeInsets.only(left: 12),
-          child: Text(
-            'Поручение № 20-61-A95-62 от 10.03.2020',
-            style: ProjectTextStyles.title.apply(
-              color: ProjectColors.white,
-            ),
-            textAlign: TextAlign.center,
-          ),
-        ),
-      ),
+      appBar: ProjectAppbar('Поручение № ${instruction.instructionNum} от ${instruction.instructionDate}'),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.only(left: 30, right: 30, top: 20),
           child: Column(
             children: [
-              ProjectSection('Статус поручения', child: AssignemntStatusWidget(status)),
-              ProjectSection('Способ наблюдения', description: 'Обследование методом визуального наблюдения'),
-              ProjectSection('Нормативно-правовой акт', description: 'Правила проведения земляных работ, установки временных ограждений, размещения временных объектов в городе Москве'),
-              ProjectSection('Срок предоставления документов, фиксирующих факты и события нарушения', description: '11.03.2020 16:30'),
-              ProjectCard(
-                margin: const EdgeInsets.only(top: 20),
-                child: Stack(
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        AssignemntParagraphWidget(ProjectIcons.inspectorIcon(), 'К21 Комаров И.Н.', padding: const EdgeInsets.only(top: 20, left: 20, right: 20)),
-                        AssignemntParagraphWidget(ProjectIcons.inspector2Icon(), 'A95 Аверин А.П.', padding: const EdgeInsets.only(top: 15, left: 20, right: 20)),
-                        AssignemntParagraphWidget(ProjectIcons.mapIcon(), 'ЮЗАО, район Академический', padding: const EdgeInsets.only(top: 15, left: 20, right: 20)),
-                        AssignemntParagraphWidget(ProjectIcons.pointIcon(), 'Слева от магазина Пятерочка', padding: const EdgeInsets.only(top: 15, left: 20, right: 20)),
-                        AssignemntParagraphWidget(ProjectIcons.themeIcon(), 'Благоустройство и санитарное содержание территории, внешний вид объектов, состояние аварийных раскопок и строительных объектов; объекты, выявленные видеонаблюдением', padding: const EdgeInsets.only(top: 15, left: 20, right: 20)),
-                        status != 'Назначено' ? Padding(
-                          padding: const EdgeInsets.only(top: 15, bottom: 5),
-                          child: Row(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(left: 21, right: 10),
-                                child: ProjectIcons.raportIcon(color: ProjectColors.blue.withOpacity(0.35)), 
-                              ),
-                              SizedBox(
-                                height: 38,
-                                child: ProjectButton.builtFlatButton('+ Добавить рапорт', onPressed: ()=> _onTotalReport(context), style: ProjectTextStyles.baseBold),
-                              ),
-                            ],
-                          ),
-                        ) : Container(),
-                        Container(
-                          color: ProjectColors.darkBlue,
-                          width: MediaQuery.of(context).size.width,
-                          margin: const EdgeInsets.only(top: 15),
-                          padding: const EdgeInsets.only(left: 20, right: 20, top: 7, bottom: 7),
-                          child: Text('Обследование факта окончания работ и восстановления благоустройства',
-                            style: ProjectTextStyles.baseBold.apply(color: Colors.white),
-                          ),
-                        ),
-                        _buildAddress(context, status == 'На исполнении'),
-                        _buildDivider(),
-                        _buildAddress(context, status == 'На исполнении' && false)
-                      ],
-                    ),
-                    Container(
-                      alignment: Alignment.topRight,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          border: Border(left: BorderSide(color:  AssignemntStatusWidget.colors[status]), top: BorderSide(color:  AssignemntStatusWidget.colors[status]), bottom: BorderSide(color:  AssignemntStatusWidget.colors[status]))
-                        ),
-                        padding: const EdgeInsets.only(left: 10, right: 10, top: 2, bottom: 4),
-                        margin: const EdgeInsets.only(top: 20),
-                        child: Text(status,
-                          style: ProjectTextStyles.smallBold.apply(color: AssignemntStatusWidget.colors[status]),
-                        ),
-                      ),
-                    ),
-                  ],
+              _buildStatus(),
+              _buildSection('Способ наблюдения', toBeginningOfSentenceCase(instruction.checkType.name)),
+              _buildNormativeActs(),
+              _buildSection('Срок предоставления документов, фиксирующих факты и события нарушения', instruction.reportDate),
+              Column(
+                children: List.generate(instruction.instructionChecks.length, 
+                  (index) => _buildInstructionCheck(context, instruction.instructionChecks[index]),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 20, bottom: 20),
-                child: ProjectButton.builtFlatButton(status == 'Назначено' ? 'Принять на исполнение' : 'Подтвердить исполнение',
-                  onPressed: status == 'На исполнении' ? () {} : null,
+                child: ProjectButton.builtFlatButton(instruction.instructionStatus.name == 'Назначено' ? 'Принять на исполнение' : 'Подтвердить исполнение',
+                  onPressed: instruction.instructionStatus.name == 'На исполнении' ? () {} : null,
                 ),
               ),
             ],
@@ -127,9 +65,116 @@ class InstructionPage extends StatelessWidget {
   }
 
   Widget _buildDivider() {
-    return Divider(
-      height: 1,
-      color: ProjectColors.lightBlue,
+    return ProjectDivider();
+  }
+
+  Widget _buildStatus() {
+    return ProjectSection('Статус поручения',
+      child: InstructionStatusWidget(instruction.instructionStatus),
+    );
+  }
+
+  Widget _buildNormativeActs() {
+    final acts = instruction.normativeActs;
+    if (acts.isNotEmpty) {
+      return Column(
+        children: List.generate(acts.length, 
+          (index) => _buildSection('Нормативно-правовой акт', acts[index].name),
+        ),
+      );
+    } else {
+      return Container();
+    }
+  }
+
+  Widget _buildSection(String title, String description) {
+    if (description != null && description.isNotEmpty) {
+      return ProjectSection(title,
+        description: description,
+      );
+    } else {
+      return Container();
+    }
+  }
+
+  Widget _buildParagraph(Widget icon, String title) {
+    if (title != null && title.isNotEmpty) {
+      return ProjectParagraph(icon, title,
+        padding: const EdgeInsets.only(top: 15, left: 18, right: 20)
+      );
+    } else {
+      return Container();
+    }
+  }
+
+  Widget _buildInstructionCheckStatus(CheckStatus checkStatus) {
+    // todo: new colors map
+    final color = InstructionStatusColors.color(checkStatus.name);
+    return Container(
+      alignment: Alignment.topRight,
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border(left: BorderSide(color: color), top: BorderSide(color: color), bottom: BorderSide(color: color)),
+        ),
+        padding: const EdgeInsets.only(left: 10, right: 10, top: 2, bottom: 4),
+        margin: const EdgeInsets.only(top: 20),
+        child: Text(checkStatus.name,
+          style: ProjectTextStyles.smallBold.apply(color: color),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildInstructionCheck(BuildContext context, InstructionCheck instructionCheck) {
+    return ProjectCard(
+      margin: const EdgeInsets.only(top: 20),
+      padding: const EdgeInsets.only(top: 5),
+      child: Stack(
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildParagraph(ProjectIcons.inspectorIcon(), toBeginningOfSentenceCase(instruction.instructionCreator.formattedName)),
+              Column(
+                children: List.generate(instructionCheck.checkParticipants.length, 
+                  (index) => _buildParagraph(ProjectIcons.inspector2Icon(),  toBeginningOfSentenceCase(instructionCheck.checkParticipants[index].formattedName)),
+                ),
+              ),
+              //_buildParagraph(ProjectIcons.mapIcon(), 'ЮЗАО, район Академический'),
+              //_buildParagraph(ProjectIcons.pointIcon(), 'Слева от магазина Пятерочка'),
+              _buildParagraph(ProjectIcons.themeIcon(), instructionCheck.checkSubject),
+              Padding(
+                padding: const EdgeInsets.only(top: 15, bottom: 5),
+                child: Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 21, right: 10),
+                      child: ProjectIcons.raportIcon(color: ProjectColors.blue.withOpacity(0.35)), 
+                    ),
+                    SizedBox(
+                      height: 38,
+                      child: ProjectButton.builtFlatButton('Добавить рапорт', onPressed: ()=> _onTotalReport(context), style: ProjectTextStyles.baseBold),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                color: ProjectColors.darkBlue,
+                width: MediaQuery.of(context).size.width,
+                margin: const EdgeInsets.only(top: 15),
+                padding: const EdgeInsets.only(left: 20, right: 20, top: 7, bottom: 7),
+                child: Text('Обследование факта окончания работ и восстановления благоустройства',
+                  style: ProjectTextStyles.baseBold.apply(color: Colors.white),
+                ),
+              ),
+              _buildAddress(context, instruction.instructionStatus.name == 'На исполнении'),
+              _buildDivider(),
+              _buildAddress(context, instruction.instructionStatus.name == 'На исполнении' && false)
+            ],
+          ),
+          _buildInstructionCheckStatus(instructionCheck.checkStatus)
+        ],
+      ),
     );
   }
 
@@ -141,7 +186,7 @@ class InstructionPage extends StatelessWidget {
           actionExtentRatio: 0.17,
           actionPane: SlidableDrawerActionPane(),
           child: Padding(
-            padding: const EdgeInsets.only(top: 15, right: 20, left: 20, bottom: 15),
+            padding: const EdgeInsets.only(top: 15, right: 19, left: 19, bottom: 15),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -187,7 +232,7 @@ class InstructionPage extends StatelessWidget {
               ],
             ),
           ),
-          enabled: status == 'На исполнении',
+          // enabled: instruction.instructionStatus.name == 'На исполнении',
           secondaryActions: [
             _buildAction(
               context,

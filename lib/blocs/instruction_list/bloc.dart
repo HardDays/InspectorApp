@@ -13,7 +13,10 @@ class InstructionListBloc extends Bloc<InstructionListBlocEvent, InstructionList
   @override
   Stream<InstructionListBlocState> mapEventToState(InstructionListBlocEvent event) async* {
     if (event is LoadEvent) {
-      service.getAll();
+      final result = await service.getAll();
+      yield LoadedState(result, 0, 10);
+    } else if (event is ScrollEvent) {
+      
     }
   }
 

@@ -77,7 +77,7 @@ abstract class ProjectIcons {
     double width = 20.0,
     double height = 15.0,
   }) =>
-      _buildIcon('icons/Icon/Inspector2.svg', padding: const EdgeInsets.only(left: 1, right: 1))(color, width, height);
+      _buildIcon('icons/Icon/Inspector2.svg', padding: const EdgeInsets.only(left: 1, right: 1, top: 1))(color, width, height);
 
   static Widget pointIcon({
     Color color = ProjectColors.mediumBlue,

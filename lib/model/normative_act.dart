@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:inspector/services/hive/hive_type_ids.dart';
 
-part 'check_type.g.dart';
+part 'normative_act.g.dart';
 
-@HiveType(typeId: HiveTypeId.CheckTypeId)
-class CheckType {
+@HiveType(typeId: HiveTypeId.NormativeActId)
+class NormativeAct {
   @HiveField(0)
   final int id;
   @HiveField(1)
@@ -13,14 +13,14 @@ class CheckType {
   @HiveField(2)
   final String code;
   
-  CheckType({
+  NormativeAct({
     @required this.id,
     @required this.name,
     @required this.code,
   });
 
-  factory CheckType.fromJson(Map<String, dynamic> json) {
-    return CheckType(
+  factory NormativeAct.fromJson(Map<String, dynamic> json) {
+    return NormativeAct(
       id: json['id'], 
       name: json['name'], 
       code: json['code']

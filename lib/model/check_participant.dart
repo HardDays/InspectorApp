@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:inspector/model/check_participant_branch.dart';
+import 'package:inspector/model/user.dart';
 import 'package:inspector/services/hive/hive_type_ids.dart';
 
-part 'user.g.dart';
+part 'check_participant.g.dart';
 
-@HiveType(typeId: HiveTypeId.UserId)
-class User {
+@HiveType(typeId: HiveTypeId.CheckParticipantId)
+class CheckParticipant {
   @HiveField(0)
   final int id;
   @HiveField(1)
@@ -16,28 +18,38 @@ class User {
   final String name;
   @HiveField(4)
   final String middleName;
-  @HiveField(5) 
+  @HiveField(5)
   final String position;
+  @HiveField(6)
+  final bool responsible;
+  @HiveField(7)
+  final CheckParticipantBranch checkParticipantBranch;
 
-  User({
+  CheckParticipant({
     @required this.id,
     @required this.code,
     @required this.surname,
     @required this.name,
     @required this.middleName,
     @required this.position,
+    @required this.responsible,
+    @required this.checkParticipantBranch,
   });
-  
+
   String get formattedName => '$surname ${name.substring(0, 1)}.${middleName.substring(0, 1)}.';
 
-  factory User.fromJson(Map<String, dynamic> json) {
-    return User(
+  factory CheckParticipant.fromJson(Map<String, dynamic> json) {
+    return CheckParticipant(
       id: json['id'], 
       code: json['code'], 
       surname: json['surname'], 
       name: json['name'],
       middleName: json['middleName'],
-      position: json['position'], 
+      position: json['position'],
+      responsible: json['responsible'],
+      checkParticipantBranch: CheckParticipantBranch.fromJson(json['checkParticipantBranch']), 
     );
   }
+
+
 }
