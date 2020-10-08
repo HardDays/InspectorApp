@@ -12,13 +12,15 @@ class FilterAppbar extends StatelessWidget implements PreferredSizeWidget {
   final String sort;
   final Function onUpdate;
   final Function onSort;
+  final Function onFilter;
 
   FilterAppbar(
     this.title, 
     this.date, 
     this.sort, {
       this.onUpdate,
-      this.onSort
+      this.onSort,
+      this.onFilter
     }
   );
 
@@ -78,7 +80,7 @@ class FilterAppbar extends StatelessWidget implements PreferredSizeWidget {
       actions: [
         _buildIcon(Icon(Icons.refresh, size: 25), date, onUpdate),
         _buildIcon(ProjectIcons.sortIcon(color: Colors.white), sort, onSort),
-        _buildIcon(ProjectIcons.filterIcon(color: Colors.white), 'Фильтр', ()=> {}),
+        _buildIcon(ProjectIcons.filterIcon(color: Colors.white), 'Фильтр', onFilter),
         Padding(padding: const EdgeInsets.only(right: 15))
       ],
     );

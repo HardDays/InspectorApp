@@ -8,9 +8,10 @@ class ProjectParagraph extends StatelessWidget {
   final String title;
   final Widget icon;
   final EdgeInsets padding;
+  final int maxLines;
   final Color color;
 
-  const ProjectParagraph(this.icon, this.title, {this.padding = EdgeInsets.zero, this.color = ProjectColors.black});
+  const ProjectParagraph(this.icon, this.title, {this.maxLines, this.padding = EdgeInsets.zero, this.color = ProjectColors.black});
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +26,7 @@ class ProjectParagraph extends StatelessWidget {
           ),
           Flexible(
             child: Text(title,
+              maxLines: maxLines,
               style: ProjectTextStyles.base.apply(color: color),
             ),
           ),

@@ -47,8 +47,9 @@ abstract class ProjectIcons {
     Color color = ProjectColors.mediumBlue,
     double width = 20.0,
     double height = 20.0,
+    EdgeInsets padding = EdgeInsets.zero
   }) =>
-      _buildIcon('icons/Icon/Map.svg')(color, width, height);
+      _buildIcon('icons/Icon/Map.svg', padding: padding)(color, width, height);
 
   static Widget viewIcon({
     Color color = ProjectColors.mediumBlue,

@@ -39,5 +39,4 @@ class ProjectSection extends StatelessWidget {
       ],
     );
   }
-
 }

@@ -9,7 +9,11 @@ class ApiInstructionService {
 
   //final dbService = ObjectDBInstructionService();
   Future init() async {
-    return await api.init();
+    try {
+      return await api.init();
+    } catch (ex) {
+
+    }
   }
 
   Future<List<Instruction>> getAll() async {

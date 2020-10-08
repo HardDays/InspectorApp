@@ -10,14 +10,28 @@ import 'package:inspector/services/hive/hive_type_ids.dart';
 part 'instruction.g.dart';
 
 abstract class InstructionSortStrings {
-  static const instructionDate = 'instructionDate';
-  static const checkDate = 'checkDate';
-  static const instructionStatus = 'instructionStatus';
-  static const instructionNum = 'instructionNum';
+  static const instructionDate = 'По дате поручения';
+  static const checkDate = 'По дате обследования';
+  static const instructionStatus = 'По статусу поручения';
+  static const instructionNum = 'По номеру поручения';
 
   static const List<String> all = const [
     instructionDate, checkDate, instructionStatus, instructionNum
   ];
+}
+
+class InstructionFilters {
+  final String instructionNum;
+  final String instructionStatus;
+  final List<DateTime> instructionDates;
+  final List<DateTime> checkDates;
+
+  InstructionFilters({
+    this.instructionNum,
+    this.instructionStatus,
+    this.instructionDates,
+    this.checkDates
+  });
 }
 
 

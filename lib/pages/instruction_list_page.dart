@@ -9,6 +9,8 @@ import 'package:inspector/blocs/instruction_list/events.dart';
 import 'package:inspector/model/instruction.dart';
 import 'package:inspector/style/colors.dart';
 import 'package:inspector/style/filter_appbar.dart';
+import 'package:inspector/style/top_dialog.dart';
+import 'package:inspector/widgets/instruction/filters.dart';
 import 'package:inspector/widgets/instruction/instruction.dart';
 import 'package:inspector/widgets/sort_dialog.dart';
 
@@ -20,13 +22,6 @@ class InstructionListPage extends StatefulWidget {
 }
 
 class InstructionListPageState extends State<InstructionListPage> with AutomaticKeepAliveClientMixin {
-
-  final sortTitles = {
-    InstructionSortStrings.instructionDate: 'По дате поручения', 
-    InstructionSortStrings.checkDate: 'По дате обследования', 
-    InstructionSortStrings.instructionStatus: 'По статусу поручения', 
-    InstructionSortStrings.instructionNum: 'По номеру поручения'
-  };
 
   @override
   bool get wantKeepAlive => true;
@@ -44,13 +39,28 @@ class InstructionListPageState extends State<InstructionListPage> with Automatic
       builder: (context) => SortDialog(
         value ?? InstructionSortStrings.instructionStatus,
         InstructionSortStrings.all,
-        sortTitles.values.toList()
+        InstructionSortStrings.all,
       ),
     );
 
     if (sort != null) {
       BlocProvider.of<InstructionListBloc>(context).add(SortEvent(sort));  
     }
+  }
+
+  Future _onFilter(BuildContext context) {
+    showGeneralDialog(
+      context: context,
+      barrierDismissible: true,
+      transitionDuration: Duration(milliseconds: 100),
+      barrierLabel: MaterialLocalizations.of(context).dialogLabel,
+      barrierColor: Colors.transparent,
+      pageBuilder: (context, animation1, animation2) {
+        return ProjectTopDialog(
+          child: InstructionFiltersWidget(),
+        );
+      },
+    );
   }
 
   void _showSnackBar(String title, Color color) {
@@ -74,9 +84,10 @@ class InstructionListPageState extends State<InstructionListPage> with Automatic
           return Scaffold(
             appBar: FilterAppbar('Поручения', 
               state.date ?? 'Не обновлялось',
-              sortTitles[state.sort ?? InstructionSortStrings.instructionStatus],
+              state.sort ?? InstructionSortStrings.instructionStatus,
               onUpdate: ()=> _onUpdate(context),
               onSort: ()=> _onSort(context, state.sort),
+              onFilter: ()=> _onFilter(context)
             ),
             body: RefreshIndicator(
               onRefresh: ()=> _onUpdate(context),

@@ -35,8 +35,6 @@ class CheckParticipant extends HiveObject {
     @required this.checkParticipantBranch,
   });
 
-  String get formattedName => '$surname ${name.substring(0, 1)}.${middleName.substring(0, 1)}.';
-
   factory CheckParticipant.fromJson(Map<String, dynamic> json) {
     return CheckParticipant(
       id: json['id'], 
@@ -61,6 +59,11 @@ class CheckParticipant extends HiveObject {
       'responsible': responsible,
       'checkParticipantBranch': checkParticipantBranch.toJson()
     };
+  }
+
+  @override
+  String toString() {
+    return '$surname ${name.substring(0, 1)}.${middleName.substring(0, 1)}';
   }
 
 }

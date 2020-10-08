@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:inspector/model/address.dart';
 import 'package:inspector/model/check_participant.dart';
 import 'package:inspector/model/check_status.dart';
 import 'package:inspector/model/check_type.dart';
@@ -20,13 +21,16 @@ class InstructionCheck extends HiveObject {
   final CheckStatus checkStatus;
   @HiveField(4)
   final List<CheckParticipant> checkParticipants;
+  @HiveField(5)
+  final List<Address> checkAddresses;
 
   InstructionCheck({
     @required this.id,
     @required this.checkSubject,
     @required this.diggRequest,
     @required this.checkStatus,
-    @required this.checkParticipants
+    @required this.checkParticipants,
+    @required this.checkAddresses
   });
 
   factory InstructionCheck.fromJson(Map<String, dynamic> json) {
@@ -35,7 +39,8 @@ class InstructionCheck extends HiveObject {
       checkSubject: json['checkSubject'], 
       diggRequest: json['diggRequest'], 
       checkStatus: CheckStatus.fromJson(json['checkStatus']), 
-      checkParticipants: List<CheckParticipant>.from(json['checkParticipants'].map((p) => CheckParticipant.fromJson(p)))
+      checkParticipants: List<CheckParticipant>.from(json['checkParticipants'].map((p) => CheckParticipant.fromJson(p))),
+      checkAddresses: List<Address>.from(json['checkAddresses'].map((p) => Address.fromJson(p)))
     );
   }
 
@@ -45,7 +50,8 @@ class InstructionCheck extends HiveObject {
       'checkSubject': checkSubject,
       'diggRequest': diggRequest,
       'checkStatus': checkStatus.toJson(),
-      'checkParticipants': checkParticipants.map((e) => e.toJson()).toList()
+      'checkParticipants': checkParticipants.map((e) => e.toJson()).toList(),
+      'checkAddresses': checkAddresses.map((e) => e.toJson()).toList(),
     };
   }
 }

@@ -67,7 +67,7 @@ class InstructionWidgetState extends State<InstructionWidget> with SingleTickerP
     Navigator.push(context, MaterialPageRoute(builder: (context) => InstructionPage(widget.instruction)));
   }
 
-  Color get _color => widget.instruction.instructionStatus.name == InstructionStatusStrings.complete ? ProjectColors.mediumBlue : Colors.black;
+  Color get _color => widget.instruction.instructionStatus.name == InstructionStatusStrings.complete ? ProjectColors.mediumBlue : ProjectColors.black;
 
   @override
   Widget build(BuildContext context) {

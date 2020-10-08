@@ -29,7 +29,9 @@ class InstructionCheckWidget extends StatelessWidget {
                 Flexible(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: List.generate(0, (index) => _buildParagraph(ProjectIcons.mapIcon(),' addresses[index]', index == 10 ? 0 : 10)),
+                    children: List.generate(instructionCheck.checkAddresses.length, 
+                      (index) => _buildParagraph(ProjectIcons.mapIcon(), instructionCheck.checkAddresses[index].toString(), index == 10 ? 0 : 10),
+                    ),
                   ),
                 ),
               ],
@@ -52,7 +54,7 @@ class InstructionCheckWidget extends StatelessWidget {
   }
 
   Widget _buildVertical({double height, EdgeInsets margin = EdgeInsets.zero}) {
-    final count = 0;
+    final count = instructionCheck.checkAddresses.length;
     if (count > 0) {
       return Container(
         width: 2,
@@ -66,13 +68,13 @@ class InstructionCheckWidget extends StatelessWidget {
   }
 
   Widget _buildParagraph(Widget icon, String title, double topPadding) {
-    final count = 0;
+    final count = instructionCheck.checkAddresses.length;
     return Padding(
       padding: EdgeInsets.only(top: topPadding),
       child: Stack(
         alignment: Alignment.topLeft,
         children: [
-          count > 0 ?Container(
+          count > 0 ? Container(
             height: 2,
             width: 8,
             color: ProjectColors.mediumBlue,

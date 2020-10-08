@@ -4,7 +4,6 @@ import 'package:inspector/blocs/instruction_list/events.dart';
 import 'package:inspector/blocs/instruction_list/states.dart';
 import 'package:inspector/model/instruction.dart';
 import 'package:inspector/model/instruction_status.dart';
-import 'package:inspector/providers/exceptions/api_exception.dart';
 import 'package:inspector/services/api/instruction_service.dart';
 import 'package:inspector/services/objectdb/instruction_service.dart';
 import 'package:inspector/services/objectdb/persistance_service.dart';

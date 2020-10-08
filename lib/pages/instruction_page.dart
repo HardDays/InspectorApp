@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:inspector/model/address.dart';
 import 'package:inspector/model/check_status.dart';
 import 'package:inspector/model/instruction.dart';
 import 'package:inspector/model/instruction_check.dart';
+import 'package:inspector/model/instruction_status.dart';
 import 'package:inspector/pages/address_report_page.dart';
 import 'package:inspector/pages/total_report_page.dart';
 import 'package:inspector/style/appbar.dart';
@@ -125,6 +127,46 @@ class InstructionPage extends StatelessWidget {
     );
   }
 
+  Widget _buildReportButton(BuildContext context) {
+    if (instruction.instructionStatus.name == InstructionStatusStrings.inProgress || instruction.instructionStatus.name == InstructionStatusStrings.partInProgress) {
+      return Padding(
+        padding: const EdgeInsets.only(top: 15, bottom: 5),
+        child: Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 21, right: 10),
+              child: ProjectIcons.raportIcon(color: ProjectColors.blue.withOpacity(0.35)), 
+            ),
+            SizedBox(
+              height: 38,
+              child: ProjectButton.builtFlatButton('+ Добавить рапорт ', onPressed: ()=> _onTotalReport(context), style: ProjectTextStyles.baseBold),
+            ),
+          ],
+        ),
+      );
+    } else {
+      return Container();
+    }
+  }
+
+  Widget _buildAddress(Address address, bool line) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        ProjectParagraph(ProjectIcons.mapIcon(), address.toString(),
+          maxLines: 1,
+          padding: const EdgeInsets.only(left: 18, right: 20)
+        ),
+        line ? Container(
+          height: 15,
+          width: 2,
+          margin: const EdgeInsets.only(left: 28),
+          color: ProjectColors.mediumBlue,
+        ) : Container()
+      ],
+    );
+  }
+
   Widget _buildInstructionCheck(BuildContext context, InstructionCheck instructionCheck) {
     return ProjectCard(
       margin: const EdgeInsets.only(top: 20),
@@ -137,27 +179,20 @@ class InstructionPage extends StatelessWidget {
               _buildParagraph(ProjectIcons.inspectorIcon(), toBeginningOfSentenceCase(instruction.instructionCreator.formattedName)),
               Column(
                 children: List.generate(instructionCheck.checkParticipants.length, 
-                  (index) => _buildParagraph(ProjectIcons.inspector2Icon(),  toBeginningOfSentenceCase(instructionCheck.checkParticipants[index].formattedName)),
+                  (index) => _buildParagraph(ProjectIcons.inspector2Icon(),  instructionCheck.checkParticipants[index].toString()),
                 ),
               ),
-              //_buildParagraph(ProjectIcons.mapIcon(), 'ЮЗАО, район Академический'),
-              //_buildParagraph(ProjectIcons.pointIcon(), 'Слева от магазина Пятерочка'),
-              _buildParagraph(ProjectIcons.themeIcon(), instructionCheck.checkSubject),
               Padding(
-                padding: const EdgeInsets.only(top: 15, bottom: 5),
-                child: Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 21, right: 10),
-                      child: ProjectIcons.raportIcon(color: ProjectColors.blue.withOpacity(0.35)), 
-                    ),
-                    SizedBox(
-                      height: 38,
-                      child: ProjectButton.builtFlatButton('Добавить рапорт', onPressed: ()=> _onTotalReport(context), style: ProjectTextStyles.baseBold),
-                    ),
-                  ],
+                padding: const EdgeInsets.only(top: 15),
+                child: Column(
+                  children: List.generate(instructionCheck.checkAddresses.length, 
+                    (index) => _buildAddress(instructionCheck.checkAddresses[index], index < instructionCheck.checkAddresses.length - 1),
+                  ),
                 ),
               ),
+              //_buildParagraph(ProjectIcons.pointIcon(), instructionCheck.checkAddresses.first.),
+              _buildParagraph(ProjectIcons.themeIcon(), instructionCheck.checkSubject),
+              _buildReportButton(context),
               Container(
                 color: ProjectColors.darkBlue,
                 width: MediaQuery.of(context).size.width,
@@ -167,9 +202,9 @@ class InstructionPage extends StatelessWidget {
                   style: ProjectTextStyles.baseBold.apply(color: Colors.white),
                 ),
               ),
-              _buildAddress(context, instruction.instructionStatus.name == 'На исполнении'),
+              _buildDig(context, instruction.instructionStatus.name == 'На исполнении'),
               _buildDivider(),
-              _buildAddress(context, instruction.instructionStatus.name == 'На исполнении' && false)
+              _buildDig(context, instruction.instructionStatus.name == 'На исполнении' && false)
             ],
           ),
           _buildInstructionCheckStatus(instructionCheck.checkStatus)
@@ -178,7 +213,7 @@ class InstructionPage extends StatelessWidget {
     );
   }
 
-  Widget _buildAddress(BuildContext context, bool showRaport) {
+  Widget _buildDig(BuildContext context, bool showRaport) {
     return ClipRect(
       child: Container(
         width: MediaQuery.of(context).size.width,
