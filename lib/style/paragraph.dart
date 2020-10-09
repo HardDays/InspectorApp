@@ -3,13 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:inspector/style/colors.dart';
 import 'package:inspector/style/text_style.dart';
 
-class AssignemntParagraphWidget extends StatelessWidget {
+class ProjectParagraph extends StatelessWidget {
 
   final String title;
   final Widget icon;
   final EdgeInsets padding;
+  final int maxLines;
+  final Color color;
 
-  const AssignemntParagraphWidget(this.icon, this.title, {this.padding = EdgeInsets.zero,});
+  const ProjectParagraph(this.icon, this.title, {this.maxLines, this.padding = EdgeInsets.zero, this.color = ProjectColors.black});
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +26,8 @@ class AssignemntParagraphWidget extends StatelessWidget {
           ),
           Flexible(
             child: Text(title,
-              style: ProjectTextStyles.base.apply(color: ProjectColors.black),
+              maxLines: maxLines,
+              style: ProjectTextStyles.base.apply(color: color),
             ),
           ),
         ],

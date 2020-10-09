@@ -6,8 +6,6 @@ import 'package:inspector/style/colors.dart';
 import 'package:inspector/style/text_style.dart';
 import 'package:latlong/latlong.dart';
 import 'package:inspector/widgets/image_picker.dart';
-import 'package:inspector/widgets/section.dart';
-
 
 class TotalReportPage extends StatefulWidget {
 

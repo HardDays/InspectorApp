@@ -11,6 +11,10 @@ import 'package:image_picker/image_picker.dart' as p;
 
 class ImagePicker extends StatefulWidget {
 
+  final EdgeInsets margin;
+
+  ImagePicker({this.margin = const EdgeInsets.only(top: 20)});
+
   @override
   ImagePickerState createState() => ImagePickerState();
 }
@@ -53,48 +57,51 @@ class ImagePickerState extends State<ImagePicker> with SingleTickerProviderState
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width * 0.27;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          width: MediaQuery.of(context).size.width,
-          child: Wrap(
-            alignment: WrapAlignment.spaceBetween,
-            children: List.generate(files.length, 
-              (index) => Column(
-                children: [
-                  SizedBox(
-                    width: 210,
-                    height: 140,
-                    child: Image(
-                      fit: BoxFit.cover,
-                      image: FileImage(files[index],)
-                    ),
-                  ),
-                  InkWell(
-                    onTap: ()=> _onDelete(index),
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 7, bottom: 15),
-                      child: Text('Удалить',
-                        style: ProjectTextStyles.base.apply(color: ProjectColors.red),
+    return Padding(
+      padding: widget.margin,
+        child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: MediaQuery.of(context).size.width,
+            child: Wrap(
+              alignment: WrapAlignment.spaceBetween,
+              children: List.generate(files.length, 
+                (index) => Column(
+                  children: [
+                    SizedBox(
+                      width: 210,
+                      height: 140,
+                      child: Image(
+                        fit: BoxFit.cover,
+                        image: FileImage(files[index],)
                       ),
                     ),
-                  ),
-                ]
-              ),
-            )..add((files.length - 2) % 3 == 0 ? SizedBox(width: 210) : Container()),
+                    InkWell(
+                      onTap: ()=> _onDelete(index),
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 7, bottom: 15),
+                        child: Text('Удалить',
+                          style: ProjectTextStyles.base.apply(color: ProjectColors.red),
+                        ),
+                      ),
+                    ),
+                  ]
+                ),
+              )..add((files.length - 2) % 3 == 0 ? SizedBox(width: 210) : Container()),
+            ),
           ),
-        ),
-        Container(
-          alignment: Alignment.topLeft,
-          padding: const EdgeInsets.only(bottom: 2),
-          child: ProjectButton.buildOutlineButton('Добавить фото',
-            icon: ProjectIcons.camera2Icon(),
-            onPressed: _onPick,
-            style: ProjectTextStyles.subTitle
+          Container(
+            alignment: Alignment.topLeft,
+            padding: const EdgeInsets.only(bottom: 2),
+            child: ProjectButton.buildOutlineButton('Добавить фото',
+              icon: ProjectIcons.camera2Icon(),
+              onPressed: _onPick,
+              style: ProjectTextStyles.subTitle
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 

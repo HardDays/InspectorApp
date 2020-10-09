@@ -1,11 +1,14 @@
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:inspector/model/instruction.dart';
 import 'package:inspector/model/user.dart';
 import 'package:inspector/services/hive/hive_type_ids.dart';
 import 'package:inspector/services/persistance_service.dart';
 
 class HivePersistanceService extends PersistanceService {
   Box __cached;
+  LazyBox _box;
+
 
   Future<Box> get _cached async {
     if (__cached == null) {

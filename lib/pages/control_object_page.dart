@@ -5,7 +5,7 @@ import 'package:inspector/style/icons.dart';
 import 'package:inspector/style/text_style.dart';
 import 'package:inspector/widgets/control/status.dart';
 import 'package:inspector/widgets/control/violation.dart';
-import 'package:inspector/widgets/section.dart';
+import 'package:inspector/style/section.dart';
 
 class ControlObjectPage extends StatelessWidget {
 
@@ -35,13 +35,13 @@ class ControlObjectPage extends StatelessWidget {
           padding: const EdgeInsets.only(left: 30, right: 30, top: 20),
           child: Column(
             children: [
-              SectionWidget('Объект', child: ControlStatusWidget('КП', '1995126')),
+              ProjectSection('Объект', child: ControlStatusWidget('КП', '1995126')),
               _buildDivider(),
-              SectionWidget('Адрес', description: 'СВАО / Останкинский / Проспект Мира, 81'),
+              ProjectSection('Адрес', description: 'СВАО / Останкинский / Проспект Мира, 81'),
               _buildDivider(),
-              SectionWidget('Вид объекта', description: 'Контейнер'),
+              ProjectSection('Вид объекта', description: 'Контейнер'),
               _buildDivider(),
-              SectionWidget('Балансодержатель', description: 'ГБУ “Жилищник Останкинского района”'),
+              ProjectSection('Балансодержатель', description: 'ГБУ “Жилищник Останкинского района”'),
               Padding(
                 padding: const EdgeInsets.only(top: 30),
                 child: Row(

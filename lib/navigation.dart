@@ -1,5 +1,5 @@
 import 'package:auto_route/auto_route_annotations.dart';
-import 'package:inspector/pages/assignment_list_page.dart';
+import 'package:inspector/pages/instruction_list_page.dart';
 import 'package:inspector/pages/auth_page.dart';
 import 'package:inspector/pages/login_page.dart';
 import 'package:inspector/pages/main_page.dart';
@@ -33,7 +33,7 @@ import 'package:inspector/pages/control_list_page.dart';
       children: <AutoRoute>[
         MaterialRoute(
           initial: true,
-          page: AssignmentListPage,
+          page: InstructionListPage,
         ),
         MaterialRoute(
           page: MapPage,

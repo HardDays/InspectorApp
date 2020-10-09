@@ -15,7 +15,7 @@ class ProjectSwitch extends StatelessWidget {
       child: CustomSwitchButton(
         checked: checked,
         backgroundColor: ProjectColors.darkBlue,
-        animationDuration: Duration(milliseconds: 400),
+        animationDuration: Duration(milliseconds: 300),
         checkedColor: ProjectColors.white,
         unCheckedColor: ProjectColors.white,
         indicatorWidth: 17.25,

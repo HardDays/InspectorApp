@@ -9,8 +9,9 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
-import 'pages/assignment_list_page.dart';
 import 'pages/auth_page.dart';
+import 'pages/control_list_page.dart';
+import 'pages/instruction_list_page.dart';
 import 'pages/login_page.dart';
 import 'pages/main_page.dart';
 import 'pages/map_page.dart';
@@ -18,7 +19,6 @@ import 'pages/pin_code_page.dart';
 import 'pages/profile_page.dart';
 import 'pages/splash_screen_page.dart';
 import 'pages/test_page.dart';
-import 'pages/control_list_page.dart';
 
 class Routes {
   static const String authPage = '/';
@@ -106,14 +106,14 @@ class AuthPageRouter extends RouterBase {
 }
 
 class MainPageRoutes {
-  static const String assignmentsPage = '/';
+  static const String instructionListPage = '/';
   static const String mapPage = '/map-page';
-  static const String vKSreen = '/v-kSreen';
+  static const String controlSreen = '/control-sreen';
   static const String profilePage = '/profile-page';
   static const all = <String>{
-    assignmentsPage,
+    instructionListPage,
     mapPage,
-    vKSreen,
+    controlSreen,
     profilePage,
   };
 }
@@ -122,21 +122,21 @@ class MainPageRouter extends RouterBase {
   @override
   List<RouteDef> get routes => _routes;
   final _routes = <RouteDef>[
-    RouteDef(MainPageRoutes.assignmentsPage, page: AssignmentListPage),
+    RouteDef(MainPageRoutes.instructionListPage, page: InstructionListPage),
     RouteDef(MainPageRoutes.mapPage, page: MapPage),
     RouteDef(
-      MainPageRoutes.vKSreen,
+      MainPageRoutes.controlSreen,
       page: ControlSreen,
-      generator: VKSreenRouter(),
+      generator: ControlSreenRouter(),
     ),
     RouteDef(MainPageRoutes.profilePage, page: ProfilePage),
   ];
   @override
   Map<Type, AutoRouteFactory> get pagesMap => _pagesMap;
   final _pagesMap = <Type, AutoRouteFactory>{
-    AssignmentListPage: (data) {
+    InstructionListPage: (data) {
       return MaterialPageRoute<dynamic>(
-        builder: (context) => AssignmentListPage(),
+        builder: (context) => InstructionListPage(),
         settings: data,
       );
     },
@@ -161,21 +161,21 @@ class MainPageRouter extends RouterBase {
   };
 }
 
-class VKSreenRoutes {
+class ControlSreenRoutes {
   static const String testPage = '/test-page';
-  static const String vKPage = '/';
+  static const String controlListPage = '/';
   static const all = <String>{
     testPage,
-    vKPage,
+    controlListPage,
   };
 }
 
-class VKSreenRouter extends RouterBase {
+class ControlSreenRouter extends RouterBase {
   @override
   List<RouteDef> get routes => _routes;
   final _routes = <RouteDef>[
-    RouteDef(VKSreenRoutes.testPage, page: TestPage),
-    RouteDef(VKSreenRoutes.vKPage, page: ControlListPage),
+    RouteDef(ControlSreenRoutes.testPage, page: TestPage),
+    RouteDef(ControlSreenRoutes.controlListPage, page: ControlListPage),
   ];
   @override
   Map<Type, AutoRouteFactory> get pagesMap => _pagesMap;
@@ -188,7 +188,7 @@ class VKSreenRouter extends RouterBase {
     },
     ControlListPage: (data) {
       return MaterialPageRoute<dynamic>(
-        builder: (context) => const ControlListPage(),
+        builder: (context) => ControlListPage(),
         settings: data,
       );
     },
