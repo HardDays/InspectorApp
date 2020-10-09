@@ -58,9 +58,16 @@ class ProfileBloc extends Bloc<ProfileBlocEvent, ProfileBlocState> {
         userName: name,
       );
     }
+    if(event is SendEmailEvent) {
+      await _sendEmail();
+    }
   }
 
   Future<DateTime> _getInstallDate() async {
     return DateTime.fromMillisecondsSinceEpoch(await platform.invokeMethod('getInstallDate'));
+  }
+
+  Future<void> _sendEmail() async {
+    await platform.invokeMethod('sendEmail');
   }
 }

@@ -186,20 +186,26 @@ class ProfilePage extends StatelessWidget {
                   _buildSection(
                     'Техподдержка',
                     [
-                      Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Row(
-                          children: [
-                            ProjectIcons.mailIcon(),
-                            SizedBox(
-                              width: 6.5,
-                            ),
-                            Text(
-                              'Отправить сообщение в техподдержку',
-                              style: ProjectTextStyles.baseBold
-                                  .apply(color: ProjectColors.blue),
-                            ),
-                          ],
+                      GestureDetector(
+                        onTap: () {
+                          BlocProvider.of<ProfileBloc>(context)
+                              .add(SendEmailEvent());
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Row(
+                            children: [
+                              ProjectIcons.mailIcon(),
+                              SizedBox(
+                                width: 6.5,
+                              ),
+                              Text(
+                                'Отправить сообщение в техподдержку',
+                                style: ProjectTextStyles.baseBold
+                                    .apply(color: ProjectColors.blue),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ],

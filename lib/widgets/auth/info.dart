@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:inspector/style/colors.dart';
 import 'package:inspector/style/text_style.dart';
 
@@ -26,21 +27,26 @@ class Info extends StatelessWidget {
               ],
             ),
           ),
-          RichText(
-            text: TextSpan(
-              text: 'Email: ',
-              style: ProjectTextStyles.medium.apply(color: ProjectColors.black),
-              children: [
-                TextSpan(
-                  text: 'oati_support@mos.ru',
-                  style: ProjectTextStyles.medium.merge(
-                    TextStyle(
-                      color: ProjectColors.blue,
-                      decoration: TextDecoration.underline,
+          GestureDetector(
+            onTap: () {
+              MethodChannel('com.example.inspector/mainChannel').invokeMethod('sendEmail');
+            },
+            child: RichText(
+              text: TextSpan(
+                text: 'Email: ',
+                style: ProjectTextStyles.medium.apply(color: ProjectColors.black),
+                children: [
+                  TextSpan(
+                    text: 'oati_support@mos.ru',
+                    style: ProjectTextStyles.medium.merge(
+                      TextStyle(
+                        color: ProjectColors.blue,
+                        decoration: TextDecoration.underline,
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ],
