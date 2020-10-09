@@ -20,6 +20,10 @@ class MainActivity: FlutterActivity() {
                 "getInstallDate" -> {
                     result.success(getInstallDate())
                 }
+                "sendEmail" -> {
+                    sendEmail()
+                    result.success(null)
+                }
             }
         }
     }
@@ -35,4 +39,11 @@ class MainActivity: FlutterActivity() {
             .getPackageInfo(context.packageName, 0)
             .firstInstallTime
 
+    private fun sendEmail() {
+        val emailIntent = Intent(Intent.ACTION_SENDTO).apply {
+            data = Uri.parse("mailto:oati_support@mos.ru")
+            putExtra(Intent.EXTRA_SUBJECT, "Мобильное приложение ЕИС ОАТИ")
+        }
+        startActivity(emailIntent)
+    }
 }
