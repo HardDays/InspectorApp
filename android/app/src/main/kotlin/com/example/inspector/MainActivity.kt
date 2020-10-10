@@ -2,11 +2,11 @@ package com.example.inspector
 
 import android.content.Intent
 import android.net.Uri
-import io.flutter.embedding.android.FlutterActivity
+import io.flutter.embedding.android.FlutterFragmentActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 
-class MainActivity: FlutterActivity() {
+class MainActivity: FlutterFragmentActivity() {
     private val CHANNEL = "com.example.inspector/mainChannel"
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
@@ -34,9 +34,9 @@ class MainActivity: FlutterActivity() {
         startActivity(intent);
     }
 
-    private fun getInstallDate() = context
+    private fun getInstallDate() = getApplicationContext()
             .packageManager
-            .getPackageInfo(context.packageName, 0)
+            .getPackageInfo(getApplicationContext().packageName, 0)
             .firstInstallTime
 
     private fun sendEmail() {
