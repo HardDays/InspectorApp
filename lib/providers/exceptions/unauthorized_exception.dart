@@ -1,5 +1,5 @@
 import 'package:inspector/providers/exceptions/api_exception.dart';
 
-class UnauthorizedException implements ApiException {
-
+class UnauthorizedException extends ApiException {
+  UnauthorizedException(): super('Не авторизован');
 }

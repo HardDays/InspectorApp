@@ -48,8 +48,8 @@ class InstructionListPageState extends State<InstructionListPage> with Automatic
     }
   }
 
-  Future _onFilter(BuildContext context) {
-    showGeneralDialog(
+  Future _onFilter(BuildContext context, InstructionFilters filters) async {
+    final result = await showGeneralDialog(
       context: context,
       barrierDismissible: true,
       transitionDuration: Duration(milliseconds: 100),
@@ -57,10 +57,16 @@ class InstructionListPageState extends State<InstructionListPage> with Automatic
       barrierColor: Colors.transparent,
       pageBuilder: (context, animation1, animation2) {
         return ProjectTopDialog(
-          child: InstructionFiltersWidget(),
+          child: InstructionFiltersWidget(
+            filters
+          ),
         );
       },
     );
+
+    if (result != null) {
+      BlocProvider.of<InstructionListBloc>(context).add(FilterEvent(result));  
+    }
   }
 
   void _showSnackBar(String title, Color color) {
@@ -87,7 +93,7 @@ class InstructionListPageState extends State<InstructionListPage> with Automatic
               state.sort ?? InstructionSortStrings.instructionStatus,
               onUpdate: ()=> _onUpdate(context),
               onSort: ()=> _onSort(context, state.sort),
-              onFilter: ()=> _onFilter(context)
+              onFilter: ()=> _onFilter(context, state.filters),
             ),
             body: RefreshIndicator(
               onRefresh: ()=> _onUpdate(context),

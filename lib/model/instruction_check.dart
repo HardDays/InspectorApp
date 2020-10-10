@@ -4,6 +4,7 @@ import 'package:inspector/model/address.dart';
 import 'package:inspector/model/check_participant.dart';
 import 'package:inspector/model/check_status.dart';
 import 'package:inspector/model/check_type.dart';
+import 'package:inspector/model/digg_request_check.dart';
 import 'package:inspector/model/instruction_status.dart';
 import 'package:inspector/services/hive/hive_type_ids.dart';
 
@@ -23,6 +24,8 @@ class InstructionCheck extends HiveObject {
   final List<CheckParticipant> checkParticipants;
   @HiveField(5)
   final List<Address> checkAddresses;
+  @HiveField(6)
+  final List<DiggRequestCheck> diggRequestChecks;
 
   InstructionCheck({
     @required this.id,
@@ -30,7 +33,8 @@ class InstructionCheck extends HiveObject {
     @required this.diggRequest,
     @required this.checkStatus,
     @required this.checkParticipants,
-    @required this.checkAddresses
+    @required this.checkAddresses,
+    @required this.diggRequestChecks,
   });
 
   factory InstructionCheck.fromJson(Map<String, dynamic> json) {
@@ -39,8 +43,9 @@ class InstructionCheck extends HiveObject {
       checkSubject: json['checkSubject'], 
       diggRequest: json['diggRequest'], 
       checkStatus: CheckStatus.fromJson(json['checkStatus']), 
-      checkParticipants: List<CheckParticipant>.from(json['checkParticipants'].map((p) => CheckParticipant.fromJson(p))),
-      checkAddresses: List<Address>.from(json['checkAddresses'].map((p) => Address.fromJson(p)))
+      checkParticipants: json['checkParticipants'] != null ? List<CheckParticipant>.from(json['checkParticipants'].map((p) => CheckParticipant.fromJson(p))) : [],
+      checkAddresses: json['checkAddresses'] != null ? List<Address>.from(json['checkAddresses'].map((p) => Address.fromJson(p))) : [],
+      diggRequestChecks: json['diggRequestChecks'] != null ? List<DiggRequestCheck>.from(json['diggRequestChecks'].map((p) => DiggRequestCheck.fromJson(p))) : [],
     );
   }
 
@@ -52,6 +57,7 @@ class InstructionCheck extends HiveObject {
       'checkStatus': checkStatus.toJson(),
       'checkParticipants': checkParticipants.map((e) => e.toJson()).toList(),
       'checkAddresses': checkAddresses.map((e) => e.toJson()).toList(),
+      'diggRequestChecks': diggRequestChecks.map((e) => e.toJson()).toList(),
     };
   }
 }

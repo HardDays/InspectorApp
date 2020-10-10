@@ -3,6 +3,7 @@ import 'package:inspector/providers/exceptions/api_exception.dart';
 import 'package:inspector/providers/exceptions/server_exception.dart';
 import 'package:inspector/providers/exceptions/timeout_exception.dart';
 import 'package:inspector/providers/exceptions/unauthorized_exception.dart';
+import 'package:inspector/providers/exceptions/unhadled_exception.dart';
 
 class ApiProvider {
   
@@ -26,8 +27,8 @@ class ApiProvider {
 
   Future<dynamic> _request(Function request) async {
     try {
-      final t = (await request()).data;
-      return t;
+      final result = (await request()).data;
+      return result;
     } on DioError catch (ex) {
       if (ex.type == DioErrorType.RESPONSE) {
         if (ex.response.statusCode == 401)  {
@@ -41,16 +42,16 @@ class ApiProvider {
       } else if (ex.type == DioErrorType.CONNECT_TIMEOUT || ex.type == DioErrorType.RECEIVE_TIMEOUT || ex.type == DioErrorType.SEND_TIMEOUT) {
         throw TimeoutException();
       } else {
-        throw ApiException();
+        throw UnhandledException(ex.message);
       }
     }
   }
 
   // todo: read token from localstorage etc and call it somewhere, just test login
-  Future init() async {
-    final data = await login('test_51_insp', 'TEST_51_INSP');
+  Future init(String token) async {
+    //final data = await login('test_51_insp', 'TEST_51_INSP');
     dio.options.headers = {
-      'Authorization': "Bearer " + data['token']
+      'Authorization': "Bearer " + token//data['token']
     };
   }
 
@@ -74,5 +75,17 @@ class ApiProvider {
       )
     );
   }
+
+  Future<dynamic> updateInstruction(String user, String password) async {
+    return _request(
+      ()=> dio.post(_loginPath,
+        data: {
+          'user': user,
+          'password': password
+        }
+      )
+    );
+  }
+
 
 }

@@ -1,8 +1,10 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:inspector/blocs/auth/events.dart';
 import 'package:inspector/blocs/auth/states.dart';
+import 'package:inspector/providers/api_provider.dart';
 import 'package:inspector/services/auth_exception.dart';
 import 'package:inspector/services/auth_service.dart';
+import 'package:inspector/services/objectdb/persistance_service.dart';
 
 typedef Stream<S> Dispatcher<E, S>(E event);
 
@@ -37,6 +39,10 @@ class AuthBloc extends Bloc<AuthBlocEvent, AuthBlocStates> {
   Stream<AuthBlocStates> _onEnterAuthScreenEvent(
       EnterAuthScreenEvent event) async* {
     if (await _authService.isAuthentificated()) {
+      final service = ObjectDBPersistanceService();
+      await service.init();
+      ApiProvider().init(await service.getToken());
+
       if(await _authService.isPinSetted()) {
         yield ShowPinCodeField(true);
       } else {

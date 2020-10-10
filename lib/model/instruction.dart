@@ -32,6 +32,24 @@ class InstructionFilters {
     this.instructionDates,
     this.checkDates
   });
+
+  factory InstructionFilters.fromJson(Map<String, dynamic> json) {
+    return InstructionFilters(
+      instructionNum: json['instructionNum'], 
+      instructionStatus: json['instructionStatus'], 
+      instructionDates: json['instructionDates'] != null ? List<DateTime>.from(json['instructionDates'].map((e)=> DateTime.parse(e))) : null, 
+      checkDates: json['checkDates'] != null ? List<DateTime>.from(json['checkDates'].map((e)=> DateTime.parse(e))) : null, 
+    );
+  }
+
+   Map<String, dynamic> toJson() {
+    return {
+      'instructionStatus': instructionStatus,
+      'instructionNum': instructionNum,
+      'instructionDates': instructionDates?.map((e) => e.toString())?.toList(),
+      'checkDates': checkDates?.map((e) => e.toString())?.toList(),
+    };
+  }
 }
 
 

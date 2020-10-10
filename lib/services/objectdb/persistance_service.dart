@@ -11,14 +11,18 @@ class ObjectDBPersistanceService extends ObjectDBService {
   }
 
   Future _saveKeyValue(String key, dynamic value) async {
-    await db.remove({
-      'key': key,
-    });
-    await db.insert({
-      'key': key,
-      'value': value
-    });
-    await db.tidy();
+    try {
+      await db.remove({
+        'key': key,
+      });
+      await db.insert({
+        'key': key,
+        'value': value
+      });
+      await db.tidy();
+    } catch (ex) {
+      print(ex);
+    }
   }
 
   Future<dynamic> _getKeyValue(String key) async {
@@ -44,6 +48,22 @@ class ObjectDBPersistanceService extends ObjectDBService {
 
   Future<String> getInstructionsSort() async {
     return await _getKeyValue('instructionSort');
+  }
+
+  Future saveInstructionFilters(InstructionFilters value) async {
+    await _saveKeyValue('instructionFilters', value.toJson());
+  }
+
+  Future<InstructionFilters> getInstructionFilters() async {
+    return InstructionFilters.fromJson(await _getKeyValue('instructionFilters') ?? {});
+  }
+
+  Future saveToken(String value) async {
+    await _saveKeyValue('token', value);
+  }
+
+  Future<String> getToken() async {
+    return await _getKeyValue('token');
   }
 
 }

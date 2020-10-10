@@ -7,7 +7,7 @@ class ProjectInputTitle extends StatelessWidget {
   final String title;
   final Widget child;
 
-  ProjectInputTitle(this.title, {this.child});
+  ProjectInputTitle(this.title, { this.child});
 
   @override
   Widget build(BuildContext context) {

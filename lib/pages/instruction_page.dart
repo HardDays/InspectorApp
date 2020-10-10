@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:inspector/model/address.dart';
 import 'package:inspector/model/check_status.dart';
+import 'package:inspector/model/digg_request_check.dart';
 import 'package:inspector/model/instruction.dart';
 import 'package:inspector/model/instruction_check.dart';
 import 'package:inspector/model/instruction_status.dart';
@@ -167,53 +168,19 @@ class InstructionPage extends StatelessWidget {
     );
   }
 
-  Widget _buildInstructionCheck(BuildContext context, InstructionCheck instructionCheck) {
-    return ProjectCard(
-      margin: const EdgeInsets.only(top: 20),
-      padding: const EdgeInsets.only(top: 5),
-      child: Stack(
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildParagraph(ProjectIcons.inspectorIcon(), toBeginningOfSentenceCase(instruction.instructionCreator.formattedName)),
-              Column(
-                children: List.generate(instructionCheck.checkParticipants.length, 
-                  (index) => _buildParagraph(ProjectIcons.inspector2Icon(),  instructionCheck.checkParticipants[index].toString()),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 15),
-                child: Column(
-                  children: List.generate(instructionCheck.checkAddresses.length, 
-                    (index) => _buildAddress(instructionCheck.checkAddresses[index], index < instructionCheck.checkAddresses.length - 1),
-                  ),
-                ),
-              ),
-              //_buildParagraph(ProjectIcons.pointIcon(), instructionCheck.checkAddresses.first.),
-              _buildParagraph(ProjectIcons.themeIcon(), instructionCheck.checkSubject),
-              _buildReportButton(context),
-              Container(
-                color: ProjectColors.darkBlue,
-                width: MediaQuery.of(context).size.width,
-                margin: const EdgeInsets.only(top: 15),
-                padding: const EdgeInsets.only(left: 20, right: 20, top: 7, bottom: 7),
-                child: Text('Обследование факта окончания работ и восстановления благоустройства',
-                  style: ProjectTextStyles.baseBold.apply(color: Colors.white),
-                ),
-              ),
-              _buildDig(context, instruction.instructionStatus.name == 'На исполнении'),
-              _buildDivider(),
-              _buildDig(context, instruction.instructionStatus.name == 'На исполнении' && false)
-            ],
-          ),
-          _buildInstructionCheckStatus(instructionCheck.checkStatus)
-        ],
+  Widget _buildSplitter(BuildContext context) {
+    return Container(
+      color: ProjectColors.darkBlue,
+      width: MediaQuery.of(context).size.width,
+      margin: const EdgeInsets.only(top: 15),
+      padding: const EdgeInsets.only(left: 20, right: 20, top: 7, bottom: 7),
+      child: Text('Обследование факта окончания работ и восстановления благоустройства',
+        style: ProjectTextStyles.baseBold.apply(color: Colors.white),
       ),
     );
   }
 
-  Widget _buildDig(BuildContext context, bool showRaport) {
+  Widget _buildDiggReuestCheck(BuildContext context, DiggRequestCheck diggRequestCheck, bool divider) {
     return ClipRect(
       child: Container(
         width: MediaQuery.of(context).size.width,
@@ -226,44 +193,45 @@ class InstructionPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  child: Text('У09392399123',
+                  child: Text(diggRequestCheck.diggNum,
                     style: ProjectTextStyles.base.apply(color: ProjectColors.black),
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 15),
-                  child: Text('ЮЗАО, район Академический, Вавилова ул. 11, стр. 1 ЮЗАО еский, Вавилова ул. 11, стр. 1',
+                  child: Text(diggRequestCheck.diggAddress,
                     style: ProjectTextStyles.base.apply(color: ProjectColors.black),
                   ),
                 ),
-                showRaport  ? Padding(
-                  padding: const EdgeInsets.only(top: 15),
-                  child: Row(
-                    children: [
-                      ProjectIcons.raportIcon(color: ProjectColors.blue.withOpacity(0.35)),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 10),
-                        child: Text('Рапорт № 20-61-К21 от 11.03.2020',
-                          style: ProjectTextStyles.baseBold.apply(color: ProjectColors.blue, decoration: TextDecoration.underline),
-                        ),
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(color: ProjectColors.yellow),
-                          borderRadius: BorderRadius.circular(5)
-                        ),
-                        margin: const EdgeInsets.only(left: 10, right: 10),
-                        padding: const EdgeInsets.only(left: 10, right: 10, top: 3, bottom: 3),
-                        child: Text('На согласовании',
-                          style: ProjectTextStyles.smallBold.apply(color: ProjectColors.yellow),
-                        ),
-                      ),
-                      Text(DateFormat('dd.MM.yyyy HH:mm').format(DateTime.now()),
-                        style: ProjectTextStyles.baseBold.apply(color: ProjectColors.black),
-                      )
-                    ],
-                  ),
-                ) : Container(),
+                divider ? _buildDivider() : Container(),
+                // showRaport  ? Padding(
+                //   padding: const EdgeInsets.only(top: 15),
+                //   child: Row(
+                //     children: [
+                //       ProjectIcons.raportIcon(color: ProjectColors.blue.withOpacity(0.35)),
+                //       Padding(
+                //         padding: const EdgeInsets.only(left: 10),
+                //         child: Text('Рапорт № 20-61-К21 от 11.03.2020',
+                //           style: ProjectTextStyles.baseBold.apply(color: ProjectColors.blue, decoration: TextDecoration.underline),
+                //         ),
+                //       ),
+                //       Container(
+                //         decoration: BoxDecoration(
+                //           border: Border.all(color: ProjectColors.yellow),
+                //           borderRadius: BorderRadius.circular(5)
+                //         ),
+                //         margin: const EdgeInsets.only(left: 10, right: 10),
+                //         padding: const EdgeInsets.only(left: 10, right: 10, top: 3, bottom: 3),
+                //         child: Text('На согласовании',
+                //           style: ProjectTextStyles.smallBold.apply(color: ProjectColors.yellow),
+                //         ),
+                //       ),
+                //       Text(DateFormat('dd.MM.yyyy HH:mm').format(DateTime.now()),
+                //         style: ProjectTextStyles.baseBold.apply(color: ProjectColors.black),
+                //       )
+                //     ],
+                //   ),
+                // ) : Container(),
               ],
             ),
           ),
@@ -323,6 +291,46 @@ class InstructionPage extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildInstructionCheck(BuildContext context, InstructionCheck instructionCheck) {
+    return ProjectCard(
+      margin: const EdgeInsets.only(top: 20),
+      padding: const EdgeInsets.only(top: 5),
+      child: Stack(
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildParagraph(ProjectIcons.inspectorIcon(), toBeginningOfSentenceCase(instruction.instructionCreator.formattedName)),
+              Column(
+                children: List.generate(instructionCheck.checkParticipants.length, 
+                  (index) => _buildParagraph(ProjectIcons.inspector2Icon(),  instructionCheck.checkParticipants[index].toString()),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 15),
+                child: Column(
+                  children: List.generate(instructionCheck.checkAddresses.length, 
+                    (index) => _buildAddress(instructionCheck.checkAddresses[index], index < instructionCheck.checkAddresses.length - 1),
+                  ),
+                ),
+              ),
+              //_buildParagraph(ProjectIcons.pointIcon(), instructionCheck.checkAddresses.first.),
+              _buildParagraph(ProjectIcons.themeIcon(), instructionCheck.checkSubject),
+              _buildReportButton(context),
+              _buildSplitter(context),
+              Column(
+                children: List.generate(instructionCheck.diggRequestChecks.length, 
+                  (index) => _buildDiggReuestCheck(context, instructionCheck.diggRequestChecks[index], index < instructionCheck.diggRequestChecks.length - 1),
+                ),
+              ),
+            ],
+          ),
+          _buildInstructionCheckStatus(instructionCheck.checkStatus)
+        ],
       ),
     );
   }

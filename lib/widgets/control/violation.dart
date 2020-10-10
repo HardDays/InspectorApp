@@ -5,9 +5,37 @@ import 'package:inspector/pages/control_violation_page.dart';
 import 'package:inspector/style/colors.dart';
 import 'package:inspector/style/text_style.dart';
 
-class ControlViolationWidget extends StatelessWidget {
+class ControlViolationWidget extends StatefulWidget {
+
+
+
+  @override
+  ControlViolationWidgetState createState() => ControlViolationWidgetState();
+}
+
+
+class ControlViolationWidgetState extends State<ControlViolationWidget> {
   
-  const ControlViolationWidget();
+  SlidableController _controller;
+
+  bool _actions = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _controller = SlidableController(
+      onSlideIsOpenChanged: _onSlideableChange,
+      onSlideAnimationChanged: (t)=> {}
+    );
+  }
+
+  void _onSlideableChange(bool value) {
+    setState(() {
+      print(value);
+      _actions = value;
+    });
+  }
 
   void _onTap(BuildContext context) {
     Navigator.push(context, MaterialPageRoute(builder: (context) => ControlViolationPage()));
@@ -41,6 +69,7 @@ class ControlViolationWidget extends StatelessWidget {
               Flexible(
                 child: ClipRect(
                   child: Slidable(
+                    controller: _controller,
                     actionExtentRatio: 0.15,
                     actionPane: SlidableDrawerActionPane(),
                     child: Row(
@@ -85,10 +114,15 @@ class ControlViolationWidget extends StatelessWidget {
                               alignment: Alignment.topRight,
                               child: Container(
                                 decoration: BoxDecoration(
-                                  border: Border(left: BorderSide(color: ProjectColors.cyan), top: BorderSide(color: ProjectColors.cyan), bottom: BorderSide(color: ProjectColors.cyan))
+                                  border: Border(
+                                    left: BorderSide(color: ProjectColors.cyan), 
+                                    top: BorderSide(color: ProjectColors.cyan), 
+                                    bottom: BorderSide(color: ProjectColors.cyan),
+                                    right: _actions ? BorderSide(color: ProjectColors.cyan) : BorderSide(width: 0, color: Colors.transparent)
+                                  )
                                 ),
                                 padding: const EdgeInsets.only(left: 10, right: 10, top: 2, bottom: 4),
-                                margin: const EdgeInsets.only(top: 15),
+                                margin: EdgeInsets.only(top: 15, right: _actions ? 15 : 0),
                                 child: Text('На контроле',
                                   style: ProjectTextStyles.smallBold.apply(color: ProjectColors.cyan),
                                 ),
