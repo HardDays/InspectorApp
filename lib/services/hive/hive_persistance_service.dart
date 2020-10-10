@@ -79,4 +79,27 @@ class HivePersistanceService extends PersistanceService {
   Future<void> setToken(String token) async {
     (await _cached).put('token', token);
   }
+
+  @override
+  Future<void> clearAllData() async {
+    (await _cached).clear();
+  }
+
+  @override
+  Future<void> clearUserData() async {
+    final box = (await _cached);
+    await box.delete('user');
+    await box.delete('pin');
+    await box.delete('token');
+  }
+
+  @override
+  Future<User> getPreviousUser() async {
+    return (await _cached).get('previousUser');
+  }
+
+  @override
+  Future<void> savePreviousUser(User user) async {
+    (await _cached).put('previousUser', user);
+  }
 }

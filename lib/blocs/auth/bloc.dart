@@ -45,7 +45,8 @@ class AuthBloc extends Bloc<AuthBlocEvent, AuthBlocStates> {
     if (await _authService.isAuthentificated()) {
       if (await _authService.isPinSetted()) {
         yield ShowPinCodeField(true);
-        if (!await _persistanceService.getFingerprintState() &&
+        final useFingerPrint = await _persistanceService.getFingerprintState();
+        if (useFingerPrint != null && !useFingerPrint &&
             await _checkBiometric()) {
           yield AutorizedState();
         }

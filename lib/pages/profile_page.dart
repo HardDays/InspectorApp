@@ -1,9 +1,12 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:inspector/blocs/profile/bloc.dart';
 import 'package:inspector/blocs/profile/event.dart';
 import 'package:inspector/blocs/profile/state.dart';
+import 'package:inspector/navigation.gr.dart';
+import 'package:inspector/services/auth_service.dart';
 import 'package:inspector/services/persistance_service.dart';
 import 'package:inspector/style/button.dart';
 import 'package:inspector/style/colors.dart';
@@ -54,16 +57,22 @@ class ProfilePage extends StatelessWidget {
                       ),
                       Padding(
                         padding: EdgeInsets.fromLTRB(0.0, 20.0, 28.0, 0.0),
-                        child: Row(
-                          children: [
-                            ProjectIcons.exitIcon(),
-                            SizedBox(width: 8.46),
-                            Text(
-                              'Выйти',
-                              style: ProjectTextStyles.base
-                                  .apply(color: ProjectColors.darkBlue),
-                            ),
-                          ],
+                        child: GestureDetector(
+                          onTap: () {
+                            Provider.of<AuthService>(context, listen: false).logout();
+                            ExtendedNavigator.root.replace(Routes.authPage);
+                          },
+                          child: Row(
+                            children: [
+                              ProjectIcons.exitIcon(),
+                              SizedBox(width: 8.46),
+                              Text(
+                                'Выйти',
+                                style: ProjectTextStyles.base
+                                    .apply(color: ProjectColors.darkBlue),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ],
@@ -95,7 +104,10 @@ class ProfilePage extends StatelessWidget {
                       _buildSectionItem(
                         'Дата и время последней передачи данных',
                         Text(
-                          state.lastDataSendingDate == null ? '' : DateFormat('dd.MM.yyyy HH:mm').format(state.lastDataSendingDate),
+                          state.lastDataSendingDate == null
+                              ? ''
+                              : DateFormat('dd.MM.yyyy HH:mm')
+                                  .format(state.lastDataSendingDate),
                           style: ProjectTextStyles.base
                               .apply(color: ProjectColors.black),
                         ),

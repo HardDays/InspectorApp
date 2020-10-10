@@ -29,10 +29,24 @@ class AuthService {
     return (await persistanceService.getPin()) != null;
   }
 
+  Future<void> changePin() async {
+    final prev = await persistanceService.getUser();
+    await persistanceService.clearUserData();
+    await persistanceService.savePreviousUser(prev);
+  }
+
+  Future<void> logout() async {
+    await persistanceService.clearAllData();
+  }
+
   Future<User> authentificate(String login, String password) async {
     final response = await apiProvider.login(login, password);
     try {
       final user = User.fromJson(response['employee']);
+      final prev = await persistanceService.getPreviousUser();
+      if(prev != null && prev.id != user.id) {
+        persistanceService.clearAllData();
+      }
       persistanceService.saveUser(user);
       persistanceService.setToken(response['token']);
       apiProvider.setToken(response['token']);

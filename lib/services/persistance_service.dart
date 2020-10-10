@@ -14,4 +14,9 @@ abstract class PersistanceService {
   Future<DateTime> getLastDataSendingDate();
   Future<String> getToken();
   Future<void> setToken(String token);
+
+  Future<void> clearUserData();
+  Future<User> getPreviousUser();
+  Future<void> savePreviousUser(User user);
+  Future<void> clearAllData();
 }
