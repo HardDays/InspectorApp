@@ -5,6 +5,7 @@ import 'package:inspector/blocs/auth/bloc.dart';
 import 'package:inspector/blocs/auth/states.dart';
 import 'package:inspector/navigation.gr.dart';
 import 'package:inspector/services/auth_service.dart';
+import 'package:inspector/services/persistance_service.dart';
 import 'package:provider/provider.dart';
 
 class AuthPage extends StatelessWidget {
@@ -14,6 +15,7 @@ class AuthPage extends StatelessWidget {
       create: (context) => AuthBloc(
         InitialAuthBlocState(),
         Provider.of<AuthService>(context, listen: false),
+        Provider.of<PersistanceService>(context, listen: false),
       ),
       child: BlocListener<AuthBloc, AuthBlocStates>(
         child: ExtendedNavigator(name: 'authNavigator'),
