@@ -29,6 +29,7 @@ dependencies:
   dio: ^3.0.10
   objectdb: ^1.0.10+1
   date_range_picker: ^1.0.6
+  local_auth: ^0.6.3+2
 
 
 dev_dependencies:
