@@ -10,6 +10,7 @@ import 'package:inspector/style/colors.dart';
 import 'package:inspector/style/icons.dart';
 import 'package:inspector/style/text_style.dart';
 import 'package:inspector/style/switch.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -81,7 +82,7 @@ class ProfilePage extends StatelessWidget {
                       _buildSectionItem(
                         'Дата установки',
                         Text(
-                          state.installDate.toIso8601String(),
+                          DateFormat('dd.MM.yyyy').format(state.installDate),
                           style: ProjectTextStyles.base
                               .apply(color: ProjectColors.black),
                         ),
@@ -94,7 +95,7 @@ class ProfilePage extends StatelessWidget {
                       _buildSectionItem(
                         'Дата и время последней передачи данных',
                         Text(
-                          state.lastDataSendingDate == null ? '' : state.lastDataSendingDate.toIso8601String(),
+                          state.lastDataSendingDate == null ? '' : DateFormat('dd.MM.yyyy HH:mm').format(state.lastDataSendingDate),
                           style: ProjectTextStyles.base
                               .apply(color: ProjectColors.black),
                         ),
