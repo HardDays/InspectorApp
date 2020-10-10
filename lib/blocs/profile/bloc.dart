@@ -43,7 +43,7 @@ class ProfileBloc extends Bloc<ProfileBlocEvent, ProfileBlocState> {
     if (event is InitEvent) {
       User user = await _persistanceService.getUser();
       String name =
-          '${user.position} ${user.surname} ${user.name} ${user.middleName}';
+          '${user.code} ${user.surname} ${user.name} ${user.middleName}';
       DateTime lastDataSendingDate =
           await _persistanceService.getLastDataSendingDate();
       bool useFingerPrint = await _persistanceService.getFingerprintState();

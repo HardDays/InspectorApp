@@ -12,4 +12,6 @@ abstract class PersistanceService {
   Future<bool> getDataSendingState();
   Future<void> saveLastDataSendingDate(DateTime dateTime);
   Future<DateTime> getLastDataSendingDate();
+  Future<String> getToken();
+  Future<void> setToken(String token);
 }

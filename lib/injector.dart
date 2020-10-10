@@ -17,7 +17,7 @@ class InjectorWidget extends StatelessWidget {
     return Provider<PersistanceService>(
       create: (_) => HivePersistanceService(),
       child: Provider<AuthService>(
-        create: (context) => MockAuthService(Provider.of<PersistanceService>(context, listen: false)),
+        create: (context) => AuthService(Provider.of<PersistanceService>(context, listen: false)),
         child: child,
       ),
     );

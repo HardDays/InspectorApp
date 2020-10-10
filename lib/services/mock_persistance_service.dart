@@ -7,6 +7,7 @@ class MockPersistanceService extends PersistanceService {
   User _user;
   String _pin;
   DateTime _dateTime;
+  String _token;
 
   @override
   Future<bool> getDataSendingState() async {
@@ -58,5 +59,14 @@ class MockPersistanceService extends PersistanceService {
     _dateTime = dateTime;
   }
 
+  @override
+  Future<String> getToken() async {
+    return _token;
+  }
+
+  @override
+  Future<void> setToken(String token) async {
+    _token = token;
+  }
   
 }

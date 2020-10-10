@@ -48,9 +48,15 @@ class ApiProvider {
 
   // todo: read token from localstorage etc and call it somewhere, just test login
   Future init() async {
-    final data = await login('test_51_insp', 'TEST_51_INSP');
+    // final data = await login('test_51_insp', 'TEST_51_INSP');
+    // dio.options.headers = {
+    //   'Authorization': "Bearer " + data['token']
+    // };
+  }
+
+  void setToken(String token) {
     dio.options.headers = {
-      'Authorization': "Bearer " + data['token']
+      'Authorization': "Bearer " + token
     };
   }
 
