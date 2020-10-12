@@ -30,12 +30,10 @@ class ObjectDBInstructionService extends ObjectDBService {
   //   }
   // }
 
-
-  Future init() async {
-    return await initNamed('instructions.db');
-  }
+  String get name => 'instructions.db';
 
   Future save(List<Instruction> instructions) async {
+    await init();
     try {
       await db.remove({});
       await db.insertMany(instructions.map((e) => e.toJson()).toList());
@@ -45,6 +43,7 @@ class ObjectDBInstructionService extends ObjectDBService {
   }
 
   Future<List<Instruction>> getAll() async {
+    await init();
     try {
       final data = await db.find({});
       return List<Instruction>.from(data.map((e) => Instruction.fromJson(e)));

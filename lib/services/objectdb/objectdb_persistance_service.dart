@@ -7,11 +7,10 @@ import 'package:intl/intl.dart';
 class ObjectDbPersistanceService extends ObjectDBService
     implements PersistanceService {
 
-  Future init() async {
-    return await initNamed('persistance.db');
-  }
+  String get name => 'persistance.db';
 
   Future _saveKeyValue(String key, dynamic value) async {
+    await init();
     try {
       await db.remove({
         'key': key,
@@ -27,6 +26,7 @@ class ObjectDbPersistanceService extends ObjectDBService
   }
 
   Future<dynamic> _getKeyValue(String key) async {
+    await init();
     try {
       final data = await db.find({
         'key': key,
@@ -43,17 +43,20 @@ class ObjectDbPersistanceService extends ObjectDBService
   }
 
   Future<void> _removeKeyValue(String key) async {
+    await init();
     await db.remove({'key': key});
   }
 
   @override
   Future<void> clearAllData() async {
+    await init();
     await db.remove({});
     await db.tidy();
   }
 
   @override
   Future<void> clearUserData() async {
+    await init();
     await _removeKeyValue('user');
     await _removeKeyValue('pin');
     await _removeKeyValue('token');

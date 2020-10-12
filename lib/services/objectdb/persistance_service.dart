@@ -1,16 +1,13 @@
 
-import 'package:inspector/model/instruction.dart';
-import 'package:inspector/providers/exceptions/parse_exception.dart';
 import 'package:inspector/services/objectdb/objectdb_service.dart';
 import 'package:intl/intl.dart';
 
 class ObjectDBPersistanceService extends ObjectDBService {
 
-  Future init() async {
-    return await initNamed('percistance.db');
-  }
+  String get name => 'persistance.db';
 
   Future _saveKeyValue(String key, dynamic value) async {
+    await init();
     await db.remove({
       'key': key,
     });
@@ -22,6 +19,7 @@ class ObjectDBPersistanceService extends ObjectDBService {
   }
 
   Future<dynamic> _getKeyValue(String key) async {
+    await init();
     final data = await db.find({
       'key': key,
     });
