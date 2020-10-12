@@ -5,7 +5,7 @@ import 'package:inspector/model/user.dart';
 import 'package:inspector/services/hive/hive_type_ids.dart';
 import 'package:inspector/services/persistance_service.dart';
 
-class HivePersistanceService extends PersistanceService {
+class HivePersistanceService { // extends PersistanceService {
   Box __cached;
   LazyBox _box;
 
