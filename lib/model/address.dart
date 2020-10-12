@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:inspector/model/area.dart';
-import 'package:inspector/model/check_participant_branch.dart';
 import 'package:inspector/model/district.dart';
 import 'package:inspector/model/street.dart';
-import 'package:inspector/services/hive/hive_type_ids.dart';
-
 
 class Address {
   

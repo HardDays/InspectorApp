@@ -1,16 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
-import 'package:inspector/services/hive/hive_type_ids.dart';
 
-part 'check_participant_branch.g.dart';
+class CheckParticipantBranch {
 
-@HiveType(typeId: HiveTypeId.CheckParticipantBranchId)
-class CheckParticipantBranch extends HiveObject {
-  @HiveField(0)
   final int id;
-  @HiveField(1)
   final String name;
-  @HiveField(2)
   final String code;
   
   CheckParticipantBranch({

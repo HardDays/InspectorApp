@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:inspector/pages/splash_screen_page.dart';
 import 'package:inspector/services/auth_service.dart';
-import 'package:inspector/services/hive/hive_persistance_service.dart';
 import 'package:inspector/services/objectdb/objectdb_persistance_service.dart';
 import 'package:inspector/services/persistance_service.dart';
 import 'package:provider/provider.dart';

@@ -1,8 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
-import 'package:inspector/services/hive/hive_type_ids.dart';
-
-part 'instruction_status.g.dart';
 
 abstract class InstructionStatusStrings {
   
@@ -18,11 +14,9 @@ abstract class InstructionStatusStrings {
   ];
 }
 
-@HiveType(typeId: HiveTypeId.InstructionStatusId)
-class InstructionStatus extends HiveObject {
-  @HiveField(0)
+class InstructionStatus {
+
   final int id;
-  @HiveField(1)
   final String name;
   
   InstructionStatus({

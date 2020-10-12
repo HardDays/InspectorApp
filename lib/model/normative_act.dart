@@ -1,17 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
-import 'package:inspector/services/hive/hive_type_ids.dart';
 
-part 'normative_act.g.dart';
-
-@HiveType(typeId: HiveTypeId.NormativeActId)
-class NormativeAct extends HiveObject {
+class NormativeAct {
   
-  @HiveField(0)
   final int id;
-  @HiveField(1)
   final String name;
-  @HiveField(2)
   final String code;
   
   NormativeAct({

@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:inspector/model/check_type.dart';
 import 'package:inspector/model/instruction_check.dart';
 import 'package:inspector/model/instruction_status.dart';
 import 'package:inspector/model/normative_act.dart';
 import 'package:inspector/model/user.dart';
-import 'package:inspector/services/hive/hive_type_ids.dart';
-
-part 'instruction.g.dart';
 
 abstract class InstructionSortStrings {
   static const instructionDate = 'По дате поручения';
@@ -34,28 +30,17 @@ class InstructionFilters {
   });
 }
 
+class Instruction {
 
-@HiveType(typeId: HiveTypeId.InstructionId)
-class Instruction extends HiveObject {
-  @HiveField(0)
   final int id;
-  @HiveField(1)
   final String instructionNum;
-  @HiveField(2)
   final String instructionDate;
-  @HiveField(3)
   final String reportDate;
-  @HiveField(4)
   final String checkDate;
-  @HiveField(5)
   final CheckType checkType;
-  @HiveField(6)
   final User instructionCreator;
-  @HiveField(7)
   final InstructionStatus instructionStatus;
-  @HiveField(8)
   final List<InstructionCheck> instructionChecks;
-  @HiveField(9)
   final List<NormativeAct> normativeActs;
 
   Instruction({
