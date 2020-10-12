@@ -40,8 +40,8 @@ class AuthService {
   }
 
   Future<User> authentificate(String login, String password) async {
-    final response = await apiProvider.login(login, password);
     try {
+      final response = await apiProvider.login(login, password);
       final user = User.fromJson(response['employee']);
       final prev = await persistanceService.getPreviousUser();
       if(prev != null && prev.id != user.id) {
@@ -52,7 +52,7 @@ class AuthService {
       apiProvider.setToken(response['token']);
       return user;
     } catch (e) {
-      throw AuthException(response['errorText']);
+      throw AuthException('');
     }
   }
 }
