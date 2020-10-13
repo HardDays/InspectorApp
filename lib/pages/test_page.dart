@@ -1,12 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:inspector/blocs/instruction_list/states.dart';
+import 'package:inspector/model/address.dart';
+import 'package:inspector/model/check_status.dart';
+import 'package:inspector/model/check_type.dart';
+import 'package:inspector/model/department_code.dart';
+import 'package:inspector/model/employee.dart';
+import 'package:inspector/model/instruction_status.dart';
+import 'package:inspector/model/normative_act.dart';
+import 'package:inspector/model/oati_department.dart';
+import 'package:inspector/model/object_category.dart';
+import 'package:inspector/model/report_status.dart';
+import 'package:inspector/model/special_object.dart';
+import 'package:inspector/model/violation_kind.dart';
+import 'package:inspector/model/violation_status.dart';
+import 'package:inspector/model/violation_type.dart';
+import 'package:inspector/model/violator_doc_type.dart';
+import 'package:inspector/model/violator_type.dart';
+import 'package:inspector/services/api/dictionary_service.dart';
 import 'package:inspector/style/button.dart';
 import 'package:inspector/style/colors.dart';
 import 'package:inspector/style/icons.dart';
 import 'package:inspector/style/text_style.dart';
 
 class TestPage extends StatelessWidget {
-  const TestPage({Key key}) : super(key: key);
+  TestPage({Key key}) : super(key: key);
+
+  final DictionaryService dictionaryService = DictionaryService();
 
   static const _colorsMap = {
     '1. Blue': ProjectColors.blue,
@@ -242,6 +262,111 @@ class TestPage extends StatelessWidget {
                 ],
               ),
             ),
+            DictionaryWidget<CheckStatus>(
+              dictionaryName: 'Check Statuses',
+              loader: dictionaryService.getCheckStatuses,
+              mapping: (item) => item
+                  .toJson()
+                  .map((key, value) => MapEntry(key, value.toString())),
+            ),
+            DictionaryWidget<Address>(
+              dictionaryName: 'Addresses',
+              loader: dictionaryService.getAddresses,
+              mapping: (item) => item
+                  .toJson()
+                  .map((key, value) => MapEntry(key, value.toString())),
+            ),
+            DictionaryWidget<CheckType>(
+              dictionaryName: 'Check Types',
+              loader: dictionaryService.getCheckTypes,
+              mapping: (item) => item
+                  .toJson()
+                  .map((key, value) => MapEntry(key, value.toString())),
+            ),
+            DictionaryWidget<NormativeAct>(
+              dictionaryName: 'Normative Acts',
+              loader: dictionaryService.getNormativeActs,
+              mapping: (item) => item
+                  .toJson()
+                  .map((key, value) => MapEntry(key, value.toString())),
+            ),
+            DictionaryWidget<ViolationKind>(
+              dictionaryName: 'Violation Kinds',
+              loader: dictionaryService.getViolationKinds,
+              mapping: (item) => item
+                  .toJson()
+                  .map((key, value) => MapEntry(key, value.toString())),
+            ),
+            DictionaryWidget<ViolationType>(
+              dictionaryName: 'Violation Types',
+              loader: dictionaryService.getViolationTypes,
+              mapping: (item) => item
+                  .toJson()
+                  .map((key, value) => MapEntry(key, value.toString())),
+            ),
+            DictionaryWidget<Employee>(
+              dictionaryName: 'Employees',
+              loader: dictionaryService.getEmployees,
+              mapping: (item) => item
+                  .toJson()
+                  .map((key, value) => MapEntry(key, value.toString())),
+            ),
+            DictionaryWidget<ReportStatus>(
+              dictionaryName: 'Report Statuses',
+              loader: dictionaryService.getReportStatuses,
+              mapping: (item) => item
+                  .toJson()
+                  .map((key, value) => MapEntry(key, value.toString())),
+            ),
+            DictionaryWidget<ViolatorType>(
+              dictionaryName: 'Violator Types',
+              loader: dictionaryService.getViolatorTypes,
+              mapping: (item) => item
+                  .toJson()
+                  .map((key, value) => MapEntry(key, value.toString())),
+            ),
+            DictionaryWidget<InstructionStatus>(
+              dictionaryName: 'Instruction Statuses',
+              loader: dictionaryService.getInstructionStatuses,
+              mapping: (item) => item
+                  .toJson()
+                  .map((key, value) => MapEntry(key, value.toString())),
+            ),
+            DictionaryWidget<OatiDepartment>(
+              dictionaryName: 'Oati Departments',
+              loader: dictionaryService.getOatiDepartments,
+              mapping: (item) => item
+                  .toJson()
+                  .map((key, value) => MapEntry(key, value.toString())),
+            ),
+            DictionaryWidget<SpecialObject>(
+              dictionaryName: 'Special Objects',
+              loader: dictionaryService.getSpecialObjects,
+              mapping: (item) => item
+                  .toJson()
+                  .map((key, value) => MapEntry(key, value.toString())),
+            ),
+            DictionaryWidget<ObjectCategory>(
+              dictionaryName: 'Object Categories',
+              loader: dictionaryService.getObjectCategories,
+              mapping: (item) => item
+                  .toJson()
+                  .map((key, value) => MapEntry(key, value.toString())),
+            ),
+            DictionaryWidget<DepartmentCode>(
+              dictionaryName: 'Department Codes',
+              loader: dictionaryService.getDepartmentCodes,
+              mapping: (item) => item
+                  .toJson()
+                  .map((key, value) => MapEntry(key, value.toString())),
+            ),
+            DictionaryWidget<ViolatorDocumentType>(
+              dictionaryName: 'Violator Document Types',
+              loader: dictionaryService.getViolatorDocumentTypes,
+              mapping: (item) => item
+                  .toJson()
+                  .map((key, value) => MapEntry(key, value.toString())),
+            ),
           ],
         ),
       ),
@@ -297,5 +422,132 @@ class TestPage extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+typedef Map<String, String> FieldMapper<T>(T item);
+
+class DictionaryWidget<T> extends StatelessWidget {
+  final String dictionaryName;
+  final FieldMapper<T> mapping;
+  final DictionaryLoader<T> loader;
+
+  const DictionaryWidget(
+      {Key key, this.dictionaryName, this.mapping, this.loader})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Column(
+        children: [
+          Text(dictionaryName, style: ProjectTextStyles.title),
+          DictionaryShowWidget(
+            loader: loader,
+            widgetBuilder: (item) => Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: Container(
+                    width: double.infinity,
+                    height: 2,
+                    color: ProjectColors.mediumBlue,
+                  ),
+                ),
+                ...mapping(item)
+                    .map((key, value) => MapEntry(
+                          key,
+                          Container(
+                            width: double.infinity,
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  flex: 1,
+                                  child: Text(key,
+                                      style: ProjectTextStyles.subTitle),
+                                ),
+                                Expanded(
+                                  flex: 5,
+                                  child: Text(
+                                    value,
+                                    style: ProjectTextStyles.base,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ))
+                    .values
+                    .cast<Widget>()
+                    .toList(),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+typedef Widget WidgetBuilder<S>(S item);
+typedef Future<List<T>> DictionaryLoader<T>();
+
+class DictionaryShowWidget<T> extends StatefulWidget {
+  final WidgetBuilder<T> widgetBuilder;
+  final DictionaryLoader<T> loader;
+
+  const DictionaryShowWidget({Key key, this.widgetBuilder, this.loader})
+      : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() {
+    return DictionaryShowWidgetState<T>();
+  }
+}
+
+enum LoadingState { initial, loading, loaded }
+
+class DictionaryShowWidgetState<T> extends State<DictionaryShowWidget<T>> {
+  List<T> data;
+  LoadingState state = LoadingState.initial;
+
+  @override
+  Widget build(BuildContext context) {
+    switch (state) {
+      case LoadingState.initial:
+        return Padding(
+          padding: const EdgeInsets.all(30.0),
+          child: RaisedButton(
+            onPressed: () async {
+              setState(() {
+                state = LoadingState.loading;
+              });
+              data = await widget.loader();
+              setState(() {
+                state = LoadingState.loaded;
+              });
+            },
+            child: Text('Start Loading'),
+          ),
+        );
+        break;
+      case LoadingState.loading:
+        return Padding(
+          padding: const EdgeInsets.all(30.0),
+          child: CircularProgressIndicator(),
+        );
+        break;
+      case LoadingState.loaded:
+        return Padding(
+          padding: const EdgeInsets.all(30.0),
+          child: ListView(
+            shrinkWrap: true,
+            physics: ScrollPhysics(),
+            children: data.map((e) => widget.widgetBuilder(e)).toList(),
+          ),
+        );
+        break;
+    }
   }
 }
