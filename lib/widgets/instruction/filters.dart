@@ -69,9 +69,10 @@ class InstructionFiltersWidget extends StatelessWidget {
                   Padding(padding: const EdgeInsets.only(left: 35)),
                   Flexible(
                     child: ProjectSelect(
+                      InstructionStatusStrings.all.length,
                       state.filters.instructionStatus,
-                      InstructionStatusStrings.all,
-                      InstructionStatusStrings.all,
+                      (index) => InstructionStatusStrings.all[index],
+                      (index) => InstructionStatusStrings.all[index],
                       title: 'Статус поручения',
                       hintText: 'Все',
                       onChanged: (status)=> _onStatus(context, status),

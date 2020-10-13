@@ -4,19 +4,21 @@ import 'package:inspector/style/divider.dart';
 import 'package:inspector/style/input_title.dart';
 import 'package:inspector/style/text_style.dart';
 
-class ProjectSelect extends StatelessWidget { 
+class ProjectSelect<T> extends StatelessWidget { 
 
+  final int count;
   final String title;
   final String hintText;
-  final String value;
-  final List<String> values;
-  final List<String> titles;
+  final T value;
+  final Function(int) itemValue;
+  final Function(int) itemTitle;
   final Function onChanged;
 
   const ProjectSelect(
+    this.count,
     this.value, 
-    this.values, 
-    this.titles, {
+    this.itemValue, 
+    this.itemTitle, {
       this.title, 
       this.hintText,
       this.onChanged
@@ -43,10 +45,10 @@ class ProjectSelect extends StatelessWidget {
           ),
           icon: const Icon(Icons.keyboard_arrow_down, color: ProjectColors.darkBlue),
           value: value,
-          items: List.generate(values.length, 
+          items: List.generate(count, 
             (index) => DropdownMenuItem(
-              value: values[index],
-              child: Text(titles[index]),
+              value: itemValue(index),
+              child: Text(itemTitle(index)),
             ),
           ),
           onChanged: onChanged

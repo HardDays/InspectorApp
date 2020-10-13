@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:inspector/model/instruction_status.dart';
 import 'package:inspector/providers/exceptions/api_exception.dart';
 import 'package:inspector/providers/exceptions/server_exception.dart';
 import 'package:inspector/providers/exceptions/timeout_exception.dart';
@@ -10,6 +11,13 @@ class ApiProvider {
   static const _url = 'http://212.46.14.26:9930/oati-integration-rest';
   static const _loginPath = '/login';
   static const _instructionsPath = '/instructions';
+  static const _dictPath = '/dict';
+  static const _instructionStatusesPath = '/instruction-statuses';
+  static const _areasPath = '/areas';
+  static const _streetsPath = '/streets';
+  static const _districtsPath = '/districts';
+  static const _addressesPath = '/addresses';
+  static const _specialObjectsPath = '/special-objects';
 
   final dio = Dio(
     BaseOptions(
@@ -32,26 +40,26 @@ class ApiProvider {
     } on DioError catch (ex) {
       if (ex.type == DioErrorType.RESPONSE) {
         if (ex.response.statusCode == 401)  {
-          throw UnauthorizedException();
-        } else {
+          throw UnauthorizedException(
+            ex.response.data?.toString()
+          );
+        } else {  
           throw ServerException(
             ex.response.statusCode,
-            ex.response.data,
+            ex.response.data?.toString(),
           );
         }
       } else if (ex.type == DioErrorType.CONNECT_TIMEOUT || ex.type == DioErrorType.RECEIVE_TIMEOUT || ex.type == DioErrorType.SEND_TIMEOUT) {
-        throw TimeoutException();
+        throw TimeoutException(ex.response.data?.toString());
       } else {
         throw UnhandledException(ex.message);
       }
     }
   }
 
-  // todo: read token from localstorage etc and call it somewhere, just test login
-  Future init(String token) async {
-    //final data = await login('test_51_insp', 'TEST_51_INSP');
+  void setToken(String token) {
     dio.options.headers = {
-      'Authorization': "Bearer " + token//data['token']
+      'Authorization': "Bearer " + token
     };
   }
 
@@ -76,16 +84,56 @@ class ApiProvider {
     );
   }
 
-  Future<dynamic> updateInstruction(String user, String password) async {
+  Future<dynamic> getInstruction(int id) async {
     return _request(
-      ()=> dio.post(_loginPath,
+      ()=> dio.get(_instructionsPath + '/$id')
+    );
+  }
+
+  Future<dynamic> updateInstruction(int id, {InstructionStatus instructionStatus}) async {
+    return _request(
+      ()=> dio.patch(_instructionsPath + '/$id',
         data: {
-          'user': user,
-          'password': password
+          'instructionStatus': instructionStatus.toJson()
         }
       )
     );
   }
+  
+  Future<dynamic> getInstructionStatuses() async {
+    return _request(
+      ()=> dio.get(_dictPath + _instructionStatusesPath)
+    );
+  }
 
+  Future<dynamic> getAreas() async {
+    return _request(
+      ()=> dio.get(_dictPath + _areasPath)
+    );
+  }
+
+  Future<dynamic> getStreets() async {
+    return _request(
+      ()=> dio.get(_dictPath + _streetsPath)
+    );
+  }
+
+  Future<dynamic> getDistricts() async {
+    return _request(
+      ()=> dio.get(_dictPath + _districtsPath)
+    );
+  }
+
+  Future<dynamic> getAddresses() async {
+    return _request(
+      ()=> dio.get(_dictPath + _addressesPath)
+    );
+  }
+
+  Future<dynamic> getSpecialObjects() async {
+    return _request(
+      ()=> dio.get(_dictPath + _specialObjectsPath)
+    );
+  }
 
 }

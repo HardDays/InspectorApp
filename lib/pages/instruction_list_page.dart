@@ -69,14 +69,20 @@ class InstructionListPageState extends State<InstructionListPage> with Automatic
     }
   }
 
+  void _flush(BuildContext context) {
+    BlocProvider.of<InstructionListBloc>(context).add(FlushEvent()); 
+  }
+
   void _showSnackBar(String title, Color color) {
-    WidgetsBinding.instance.addPostFrameCallback((_) => 
-      Scaffold.of(context).showSnackBar(
-        SnackBar(
-          backgroundColor: color,
-          content: Text(title),
-        ),
-      ),
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) {
+        Scaffold.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: ProjectColors.darkBlue,
+            content: Text(title),
+          ),
+        );
+      }
     );
   }
 
@@ -97,7 +103,7 @@ class InstructionListPageState extends State<InstructionListPage> with Automatic
             ),
             body: RefreshIndicator(
               onRefresh: ()=> _onUpdate(context),
-              child: _buildBody(state)  
+              child: _buildBody(context, state)  
             ),
           );
         },
@@ -105,11 +111,13 @@ class InstructionListPageState extends State<InstructionListPage> with Automatic
     );
   }
 
-  Widget _buildBody(InstructionListBlocState state) {
+  Widget _buildBody(BuildContext context, InstructionListBlocState state) {
     if (state is NewDataState) { 
       _showSnackBar('Загружены новые данные', ProjectColors.green);
+      _flush(context);
     } else if (state is OldDataState) {
-      _showSnackBar('Загружены старые данные', ProjectColors.yellow);
+      _showSnackBar('Загружены старые данные. ${state.exception.message}  ${state.exception.details}', ProjectColors.yellow);
+      _flush(context);
     } 
     if (state is LoadingState) {
       return _buildLoader();

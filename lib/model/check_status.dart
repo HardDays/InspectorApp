@@ -1,15 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
-import 'package:inspector/services/hive/hive_type_ids.dart';
 
-part 'check_status.g.dart';
-
-@HiveType(typeId: HiveTypeId.CheckStatusId)
-class CheckStatus extends HiveObject {
+class CheckStatus {
   
-  @HiveField(0)
   final int id;
-  @HiveField(1)
   final String name;
   
   CheckStatus({

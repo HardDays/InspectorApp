@@ -10,6 +10,10 @@ class RefreshEvent extends InstructionListBlocEvent {
   
 }
 
+class FlushEvent extends InstructionListBlocEvent {
+  
+} 
+
 class SortEvent extends InstructionListBlocEvent {
   final String sort;
 

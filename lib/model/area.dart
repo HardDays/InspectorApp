@@ -12,7 +12,7 @@ class Area {
     @required this.code,
   });
 
-  factory Area.fromJson(Map<String, dynamic> json) {
+  static Area fromJson(Map<String, dynamic> json) {
     return Area(
       id: json['id'], 
       name: json['name'], 

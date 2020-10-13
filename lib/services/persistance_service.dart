@@ -1,13 +1,5 @@
-import 'package:inspector/model/instruction.dart';
-import 'package:inspector/model/user.dart';
+import 'package:inspector/services/mixins/data_sending_configuration_mixin.dart';
+import 'package:inspector/services/mixins/instruction_mixin.dart';
+import 'package:inspector/services/mixins/user_mixin.dart';
 
-abstract class PersistanceService {
-  Future<void> savePin(String pin);
-  Future<void> saveUser(User user);
-  Future<String> getPin();
-  Future<User> getUser();
-  Future<void> saveFingerprintState(bool state);
-  Future<void> saveDataSendingState(bool state);
-  Future<bool> getFingerprintState();
-  Future<bool> getDataSendingState();
-}
+abstract class PersistanceService with UserMixin, InstructionMixin, DataSendingConfigurationMixin {}

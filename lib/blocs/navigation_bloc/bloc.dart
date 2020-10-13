@@ -7,7 +7,7 @@ import 'package:inspector/blocs/navigation_bloc/states.dart';
 class NavigationBloc extends Bloc<NavigationBlocEvent, NavigationBlocState> {
   NavigationBloc(initialState) : super(initialState);
 
-  static const platform = const MethodChannel('com.example.inspector/map');
+  static const platform = const MethodChannel('com.example.inspector/mainChannel');
 
   @override
   Stream<NavigationBlocState> mapEventToState(

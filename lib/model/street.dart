@@ -16,7 +16,7 @@ class Street {
     @required this.code,
   });
 
-  factory Street.fromJson(Map<String, dynamic> json) {
+  static Street fromJson(Map<String, dynamic> json) {
     return Street(
       id: json['id'], 
       areaId: json['areaId'],

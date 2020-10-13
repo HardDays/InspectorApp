@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:inspector/model/area.dart';
-import 'package:inspector/model/check_participant_branch.dart';
 import 'package:inspector/model/district.dart';
 import 'package:inspector/model/street.dart';
-import 'package:inspector/services/hive/hive_type_ids.dart';
-
 
 class Address {
   
@@ -37,7 +33,7 @@ class Address {
     @required this.street,
   });
 
-  factory Address.fromJson(Map<String, dynamic> json) {
+  static Address fromJson(Map<String, dynamic> json) {
     return Address(
       id: json['id'], 
       latitude: json['latitude'], 
@@ -71,9 +67,14 @@ class Address {
     };
   }
 
+  String toShortString() {
+    final data = [houseNum, buildNum != null ? 'к. $buildNum' : null, constructionNum != null ? 'стр. $constructionNum' : null];
+    return data.where((element) => element != null).join(', ');
+  }
+
   @override
   String toString() {
-    final data = [area?.toString(), district?.toString(), street?.toString(), houseNum, buildNum != null ? 'к. $buildNum' : null, constructionNum != null ? 'стр. $constructionNum' : null];
-    return data.where((element) => element != null).join(', ');
+    final data = [area?.toString(), district?.toString(), street?.toString()];
+    return data.where((element) => element != null).join(', ') + toShortString();
   }
 }

@@ -4,10 +4,12 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:inspector/blocs/auth/bloc.dart';
 import 'package:inspector/blocs/auth/events.dart';
 import 'package:inspector/blocs/auth/states.dart';
+import 'package:inspector/services/auth_service.dart';
 import 'package:inspector/style/colors.dart';
 import 'package:inspector/style/text_style.dart';
 import 'package:inspector/widgets/auth/info.dart';
 import 'package:inspector/widgets/pincode/pincode_numpad.dart';
+import 'package:provider/provider.dart';
 
 class PinCodePage extends StatelessWidget {
   @override
@@ -18,16 +20,16 @@ class PinCodePage extends StatelessWidget {
           builder: (context, state) {
             Widget header = Container();
             Widget footer = Container();
-            if(state is ShowPinCodeField) {
+            if (state is ShowPinCodeField) {
               header = _buildEnterPinTitle();
-              footer = _buildSubtitle();
+              footer = _buildSubtitle(context);
             } else if (state is ShowRepeatPinScreen) {
               header = _buildRepeatPinTitle();
             } else if (state is ShowSetPinScreen) {
               header = _builtSetPinTitle();
             } else if (state is IncorrencPinState) {
               header = _buildIncorrectPinTitle();
-              footer = _buildSubtitle();
+              footer = _buildSubtitle(context);
             } else if (state is IncorrencRepeatPinState) {
               header = _buildIncorrectPinTitle();
             }
@@ -77,17 +79,23 @@ class PinCodePage extends StatelessWidget {
     );
   }
 
-  Widget _buildSubtitle() {
+  Widget _buildSubtitle(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(top: 17.0),
-      child: Text(
-        'Забыли PIN / Сменить пользователя?',
-        style: GoogleFonts.montserrat(
-          fontWeight: FontWeight.w400,
-          fontSize: 14.0,
-          height: 18.0 / 14.0,
-          color: ProjectColors.blue,
-          decoration: TextDecoration.underline,
+      child: GestureDetector(
+        onTap: () {
+          Provider.of<AuthService>(context, listen: false).changePin();
+          BlocProvider.of<AuthBloc>(context).add(EnterAuthScreenEvent());
+        },
+        child: Text(
+          'Забыли PIN / Сменить пользователя?',
+          style: GoogleFonts.montserrat(
+            fontWeight: FontWeight.w400,
+            fontSize: 14.0,
+            height: 18.0 / 14.0,
+            color: ProjectColors.blue,
+            decoration: TextDecoration.underline,
+          ),
         ),
       ),
     );

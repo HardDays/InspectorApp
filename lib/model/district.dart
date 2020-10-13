@@ -14,7 +14,7 @@ class District {
     @required this.code,
   });
 
-  factory District.fromJson(Map<String, dynamic> json) {
+  static District fromJson(Map<String, dynamic> json) {
     return District(
       id: json['id'], 
       areaId: json['areaId'],

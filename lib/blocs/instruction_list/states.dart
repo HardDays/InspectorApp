@@ -1,4 +1,5 @@
 import 'package:inspector/model/instruction.dart';
+import 'package:inspector/providers/exceptions/api_exception.dart';
 
 abstract class InstructionListBlocState {
   final String sort;
@@ -29,11 +30,14 @@ class DataState extends InstructionListBlocState {
 
 class OldDataState extends DataState {
 
+  final ApiException exception;
+
   OldDataState(
     List<Instruction> instructions, 
     String date, 
     String sort, 
-    InstructionFilters filters
+    InstructionFilters filters,
+    this.exception
   ) : super(
     instructions, 
     date, 
