@@ -25,7 +25,7 @@ class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {
         final streets = await _streetsService.all();
         final addresses = await _addressesService.all();
         final specialObjects = await _specialObjectsService.all();
-  
+
         yield TotalReportBlocState(
           streets: streets, 
           addresses: addresses, 

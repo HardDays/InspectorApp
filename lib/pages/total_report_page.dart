@@ -7,6 +7,7 @@ import 'package:inspector/blocs/total_report/events.dart';
 import 'package:inspector/blocs/total_report/states.dart';
 import 'package:inspector/style/appbar.dart';
 import 'package:inspector/style/button.dart';
+import 'package:inspector/style/checkbox.dart';
 import 'package:inspector/style/colors.dart';
 import 'package:inspector/style/select.dart';
 import 'package:inspector/style/text_field.dart';
@@ -346,15 +347,16 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
       padding: padding,
       child: Row(
         children: [
-          Container(
-            width: 24,
-            height: 24,
-            margin: const EdgeInsets.only(right: 10),
-            child: Checkbox(value: false, onChanged: null),
+
+          ProjectCheckbox(
+            value: true,
           ),
-          Text(title,
-            style: (style ?? ProjectTextStyles.base).apply(color: ProjectColors.black),
-          )
+          Padding(
+            padding: const EdgeInsets.only(left: 10),
+            child: Text(title,
+              style: (style ?? ProjectTextStyles.base).apply(color: ProjectColors.black),
+            ),
+          ),
         ],
       ),
     );
