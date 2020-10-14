@@ -4,73 +4,106 @@ import 'package:inspector/blocs/instruction_list/events.dart';
 import 'package:inspector/blocs/instruction_list/states.dart';
 import 'package:inspector/model/instruction.dart';
 import 'package:inspector/model/instruction_status.dart';
-import 'package:inspector/services/api/instruction_service.dart';
-import 'package:inspector/services/objectdb/instruction_service.dart';
-import 'package:inspector/services/objectdb/persistance_service.dart';
+import 'package:inspector/providers/exceptions/api_exception.dart';
+import 'package:inspector/services/api/api_service.dart';
+import 'package:inspector/services/instructions_service.dart';
+import 'package:inspector/services/objectdb/objectdb_instructions_service.dart';
+import 'package:inspector/services/objectdb/objectdb_persistance_service.dart';
+import 'package:intl/intl.dart';
 
 
 class InstructionListBloc extends Bloc<InstructionListBlocEvent, InstructionListBlocState> {
   InstructionListBloc(initialState) : super(initialState);
 
-  final _apiService = ApiInstructionService();
-  final _dbService = ObjectDBInstructionService();
-  final _persistanceService = ObjectDBPersistanceService();
+  // final _apiService = ApiService();
+  // final _dbService = ObjectDBInstructionsService();
+  final _service = InstructionsService();
 
   @override
   Stream<InstructionListBlocState> mapEventToState(InstructionListBlocEvent event) async* {
     if (event is LoadEvent || event is RefreshEvent) {
-      await _apiService.init();
-      await _dbService.init();
-      await _persistanceService.init();
+      await _service.init();
 
-      final sort = await _persistanceService.getInstructionsSort();
+      final sort = await _service.sort();
+      final filters = await _service.filters();
 
       try {
-        final apiResult = await _apiService.getAll();
+        final result = await _service.all(reload: true);       
+        final date = await _service.date();
         
-        await _persistanceService.saveInstructionsDate();
-        final newDate = await _persistanceService.getInstructionsDate();
-        
-        _sortData(sort, apiResult);
-
-        yield NewDataState(apiResult, newDate, sort);
-
-        await _dbService.save(apiResult);
-      } catch (ex) {
+        final data = _processData(sort, filters, result);
+        yield NewDataState(data, date, sort, filters);
+      } on ApiException catch (ex) {
         try {
-          final dbResult = await _dbService.getAll();
-          final oldDate = await _persistanceService.getInstructionsDate();
+          final result = await _service.all();
+          final date = await _service.date();
           
-          _sortData(sort, dbResult);
-          
-          yield OldDataState(dbResult, oldDate, sort);
+          final data = _processData(sort, filters, result);
+          yield OldDataState(data, date, sort, filters, ex);
         } catch (ex) {
-          
+          print(ex);
         }
+      } catch (ex) {
+        print(ex);
       }
     } else if (event is SortEvent) {
-      _persistanceService.saveInstructionSort(event.sort);
+      _service.saveSort(event.sort);
+
       if (state is DataState) {
-        final currentState = state as DataState;
-        _sortData(event.sort, currentState.instructions);
-        yield DataState(
-          date: state.date,
-          sort: event.sort,
-          instructions: currentState.instructions
-        );
+        List<Instruction> data = await _service.all();
+        data = _processData(event.sort, state.filters, data);
+        yield DataState(data, state.date, event.sort, state.filters);
+      }
+    } else if (event is FilterEvent) {
+      _service.saveFilters(event.filters);
+
+      if (state is DataState) {
+        List<Instruction> data = await _service.all();
+        data = _processData(state.sort, event.filters, data);
+        yield DataState(data, state.date, state.sort, event.filters);
+      }
+    } else if (event is FlushEvent) {
+      if (state is DataState) {
+        yield DataState((state as DataState).instructions, state.date, state.sort, state.filters);
       }
     }
   } 
 
-  void _sortData(String sort, List<Instruction> data) {
-    if (sort == InstructionSortStrings.instructionNum) {
-      data.sort((c1, c2) => c1.instructionNum.compareTo(c2.instructionNum));
-    } else if (sort == InstructionSortStrings.checkDate) {
-      data.sort((c1, c2) => c1.checkDate.compareTo(c2.checkDate));
-    } else if (sort == InstructionSortStrings.instructionDate) {
-      data.sort((c1, c2) => c1.instructionDate.compareTo(c2.instructionDate));
-    } else {
-      data.sort((c1, c2) => InstructionStatusStrings.all.indexOf(c1.instructionStatus.name).compareTo(InstructionStatusStrings.all.indexOf(c2.instructionStatus.name)));
+  List<Instruction> _processData(String sort, InstructionFilters filters, List<Instruction> data) {
+    List<Instruction> result = data;
+    if (filters != null) {
+      if (filters.instructionStatus != null) {
+        result = result.where((e) => e.instructionStatus.name == filters.instructionStatus).toList();
+      }
+      if (filters.instructionNum != null) {
+        result = result.where((e) => e.instructionNum.toLowerCase().startsWith(filters.instructionNum.toLowerCase())).toList();
+      }
+      if (filters.checkDates != null) {
+        final dates = filters.checkDates.map((e) => DateFormat('yyyy-MM-dd').format(e)).toList();
+        if (dates.length == 1) {
+          result = result.where((e) => e.checkDate == dates.first).toList();
+        } else if (dates.length == 2) {
+          result = result.where((e) => e.checkDate.compareTo(dates[0]) >= 0 && e.checkDate.compareTo(dates[1]) <= 0).toList();
+        }
+      }
+       if (filters.instructionDates != null) {
+        final dates = filters.instructionDates.map((e) => DateFormat('yyyy-MM-dd').format(e)).toList();
+        if (dates.length == 1) {
+          result = result.where((e) => e.instructionDate == dates.first).toList();
+        } else if (dates.length == 2) {
+          result = result.where((e) => e.instructionDate.compareTo(dates[0]) >= 0 && e.instructionDate.compareTo(dates[1]) <= 0).toList();
+        }
+      }
     }
+    if (sort == InstructionSortStrings.instructionNum) {
+      result.sort((c1, c2) => c1.instructionNum.compareTo(c2.instructionNum));
+    } else if (sort == InstructionSortStrings.checkDate) {
+      result.sort((c1, c2) => c1.checkDate.compareTo(c2.checkDate));
+    } else if (sort == InstructionSortStrings.instructionDate) {
+      result.sort((c1, c2) => c1.instructionDate.compareTo(c2.instructionDate));
+    } else {
+      result.sort((c1, c2) => InstructionStatusStrings.all.indexOf(c1.instructionStatus.name).compareTo(InstructionStatusStrings.all.indexOf(c2.instructionStatus.name)));
+    }
+    return result;
   }
 }

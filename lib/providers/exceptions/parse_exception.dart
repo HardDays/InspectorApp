@@ -1,6 +1,7 @@
 
 import 'package:inspector/providers/exceptions/api_exception.dart';
 
-class ParseException implements ApiException {
+class ParseException extends ApiException {
 
+  ParseException() : super('Ошибка парсинга данных');
 }

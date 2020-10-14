@@ -25,7 +25,7 @@ class ProjectDateRange extends StatelessWidget {
       context: context,
       initialFirstDate: DateTime.now(),
       initialLastDate: (DateTime.now()).add(Duration(days: 7)),
-      firstDate: DateTime(2020),
+      firstDate: DateTime(2018),
       lastDate: DateTime(2050)
     );
     onChanged(picked);
@@ -46,7 +46,7 @@ class ProjectDateRange extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(values != null ? values.map((e) => DateFormat('dd-MM.yyyy').format(e)).join(' - ') : hintText,
+              Text(values != null ? values.map((e) => DateFormat('yyyy-MM-dd').format(e)).join(' - ') : hintText,
                 style: ProjectTextStyles.base.apply(color: values != null ? ProjectColors.black : ProjectColors.darkBlue),
               ),
               ProjectIcons.calendarIcon()

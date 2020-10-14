@@ -21,10 +21,10 @@ import 'package:inspector/model/violator_info_legal.dart';
 import 'package:inspector/model/violator_info_official.dart';
 import 'package:inspector/model/violator_info_private.dart';
 import 'package:inspector/model/violator_type.dart';
-import 'package:inspector/providers/exceptions/api_exception.dart';
 import 'package:inspector/providers/exceptions/server_exception.dart';
 import 'package:inspector/providers/exceptions/timeout_exception.dart';
 import 'package:inspector/providers/exceptions/unauthorized_exception.dart';
+import 'package:inspector/providers/exceptions/unhadled_exception.dart';
 
 class ApiProvider {
   static const _url = 'http://212.46.14.26:9930/oati-integration-rest';
@@ -68,32 +68,26 @@ class ApiProvider {
 
   Future<dynamic> _request(Function request) async {
     try {
-      final t = (await request()).data;
-      return t;
+      final result = (await request()).data;
+      return result;
     } on DioError catch (ex) {
       if (ex.type == DioErrorType.RESPONSE) {
         if (ex.response.statusCode == 401)  {
-          throw UnauthorizedException();
-        } else {
+          throw UnauthorizedException(
+            ex.response.data?.toString()
+          );
+        } else {  
           throw ServerException(
             ex.response.statusCode,
-            ex.response.data,
+            ex.response.data?.toString(),
           );
         }
       } else if (ex.type == DioErrorType.CONNECT_TIMEOUT || ex.type == DioErrorType.RECEIVE_TIMEOUT || ex.type == DioErrorType.SEND_TIMEOUT) {
-        throw TimeoutException();
+        throw TimeoutException(ex.response.data?.toString());
       } else {
-        throw ApiException();
+        throw UnhandledException(ex.message);
       }
     }
-  }
-
-  // todo: read token from localstorage etc and call it somewhere, just test login
-  Future init() async {
-    // final data = await login('test_51_insp', 'TEST_51_INSP');
-    // dio.options.headers = {
-    //   'Authorization': "Bearer " + data['token']
-    // };
   }
 
   void setToken(String token) {
@@ -126,4 +120,39 @@ class ApiProvider {
   Future<dynamic> getDictionary<T>() async {
     return _request(() => dio.get(_dictionaryMap[T]));
   }
+
+  Future<dynamic> getInstruction(int id) async {
+    return _request(
+      ()=> dio.get(_instructionsPath + '/$id')
+    );
+  }
+
+  Future<dynamic> updateInstruction(int id, {InstructionStatus instructionStatus}) async {
+    return _request(
+      ()=> dio.patch(_instructionsPath + '/$id',
+        data: {
+          'instructionStatus': instructionStatus.toJson()
+        }
+      )
+    );
+  }
+
+  Future<dynamic> getAreas() async {
+    return _request(
+      ()=> dio.get('/dict/areas')
+    );
+  }
+
+  Future<dynamic> getStreets() async {
+    return _request(
+      ()=> dio.get('/dict/streets')
+    );
+  }
+
+  Future<dynamic> getDistricts() async {
+    return _request(
+      ()=> dio.get('/dict/districts')
+    );
+  }
+
 }

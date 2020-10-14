@@ -71,10 +71,7 @@ class _PinCodeNumpadState extends State<PinCodeNumpad> {
             crossAxisCount: 3,
             shrinkWrap: true,
             children: [
-              _buildKey(
-                  '1',
-                  Icon(Icons.voicemail,
-                      color: ProjectColors.mediumBlue, size: 18.0)),
+              _buildKey('1', Icon(Icons.voicemail, color: ProjectColors.mediumBlue, size: 12.0)),
               _buildKey('2', _buildKeySubtitle('ABC')),
               _buildKey('3', _buildKeySubtitle('DEF')),
               _buildKey('4', _buildKeySubtitle('GHI')),

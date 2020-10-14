@@ -1,8 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:inspector/blocs/instruction/bloc.dart';
+import 'package:inspector/blocs/instruction/events.dart';
+import 'package:inspector/blocs/instruction/states.dart';
 import 'package:inspector/model/address.dart';
 import 'package:inspector/model/check_status.dart';
+import 'package:inspector/model/digg_request_check.dart';
 import 'package:inspector/model/instruction.dart';
 import 'package:inspector/model/instruction_check.dart';
 import 'package:inspector/model/instruction_status.dart';
@@ -35,58 +40,78 @@ class InstructionPage extends StatelessWidget {
     Navigator.push(context, MaterialPageRoute(builder: (context) => AddressReportPage(status)));
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: ProjectAppbar('Поручение № ${instruction.instructionNum} от ${instruction.instructionDate}'),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.only(left: 30, right: 30, top: 20),
-          child: Column(
-            children: [
-              _buildStatus(),
-              _buildSection('Способ наблюдения', toBeginningOfSentenceCase(instruction.checkType.name)),
-              _buildNormativeActs(),
-              _buildSection('Срок предоставления документов, фиксирующих факты и события нарушения', instruction.reportDate),
-              Column(
-                children: List.generate(instruction.instructionChecks.length, 
-                  (index) => _buildInstructionCheck(context, instruction.instructionChecks[index]),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 20, bottom: 20),
-                child: ProjectButton.builtFlatButton(instruction.instructionStatus.name == 'Назначено' ? 'Принять на исполнение' : 'Подтвердить исполнение',
-                  onPressed: instruction.instructionStatus.name == 'На исполнении' ? () {} : null,
-                ),
-              ),
-            ],
-          ),
+  void _onStatus(BuildContext context, String status) {
+    BlocProvider.of<InstructionBloc>(context).add(UpadteInstructionStatusEvent(status));  
+  }
+
+  void _showSnackBar(BuildContext context, String title, Color color) {
+    WidgetsBinding.instance.addPostFrameCallback((_) => 
+      Scaffold.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: ProjectColors.darkBlue,
+          content: Text(title),
         ),
       ),
     );
   }
 
-  Widget _buildDivider() {
-    return ProjectDivider();
+  void _flush(BuildContext context) {
+    BlocProvider.of<InstructionBloc>(context).add(FlushEvent());
   }
 
-  Widget _buildStatus() {
-    return ProjectSection('Статус поручения',
-      child: InstructionStatusWidget(instruction.instructionStatus),
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context)=> InstructionBloc(InstructionBlocState(instruction))..add(LoadReportsEvent()),
+      child: BlocBuilder<InstructionBloc, InstructionBlocState>(
+        builder: (context, state) {
+          if (state is SuccessState) { 
+            _showSnackBar(context, 'Успешно', ProjectColors.green);
+            _flush(context);
+          } else if (state is ErrorState) {
+            _showSnackBar(context, 'Произошла ошибка. ${state.exception.message}  ${state.exception.details}', ProjectColors.yellow);
+            _flush(context);
+          } 
+
+          final instruction = state.instruction;
+          return Scaffold(
+            appBar: ProjectAppbar('Поручение № ${instruction.instructionNum} от ${instruction.instructionDate}'),
+            body: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 30, right: 30, top: 20),
+                child: Column(
+                  children: [
+                    _buildStatus(instruction),
+                    _buildSection('Способ наблюдения', toBeginningOfSentenceCase(instruction.checkType.name)),
+                    Column(
+                      children: List.generate(instruction.normativeActs.length, 
+                        (index) => _buildSection('Нормативно-правовой акт', instruction.normativeActs[index].name),
+                      ),
+                    ),
+                    _buildSection('Срок предоставления документов, фиксирующих факты и события нарушения', instruction.reportDate),
+                    Column(
+                      children: List.generate(instruction.instructionChecks.length, 
+                        (index) => _buildInstructionCheck(context, instruction.instructionChecks[index], instruction),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 20, bottom: 20),
+                      child: _buildCompleteButton(context, state),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        }
+      )
     );
   }
 
-  Widget _buildNormativeActs() {
-    final acts = instruction.normativeActs;
-    if (acts.isNotEmpty) {
-      return Column(
-        children: List.generate(acts.length, 
-          (index) => _buildSection('Нормативно-правовой акт', acts[index].name),
-        ),
-      );
-    } else {
-      return Container();
-    }
+  Widget _buildStatus(Instruction instruction) {
+    return ProjectSection('Статус поручения',
+      child: InstructionStatusWidget(instruction.instructionStatus),
+    );
   }
 
   Widget _buildSection(String title, String description) {
@@ -127,7 +152,7 @@ class InstructionPage extends StatelessWidget {
     );
   }
 
-  Widget _buildReportButton(BuildContext context) {
+  Widget _buildReportButton(BuildContext context, Instruction instruction) {
     if (instruction.instructionStatus.name == InstructionStatusStrings.inProgress || instruction.instructionStatus.name == InstructionStatusStrings.partInProgress) {
       return Padding(
         padding: const EdgeInsets.only(top: 15, bottom: 5),
@@ -150,6 +175,7 @@ class InstructionPage extends StatelessWidget {
   }
 
   Widget _buildAddress(Address address, bool line) {
+    final suggestion = address.specifiedAddress != null && address.specifiedAddress.isNotEmpty;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -157,7 +183,37 @@ class InstructionPage extends StatelessWidget {
           maxLines: 1,
           padding: const EdgeInsets.only(left: 18, right: 20)
         ),
-        line ? Container(
+        suggestion ? Row(
+          children: [
+            Flexible(
+              child: Row(
+                crossAxisAlignment: line ? CrossAxisAlignment.center : CrossAxisAlignment.end,
+                children: [
+                  Container(
+                    height: line ? 40 : 20,
+                    width: 2,
+                    margin: EdgeInsets.only(left: 28, bottom: line ? 0 : 10),
+                    color: ProjectColors.mediumBlue,
+                  ),
+                  Container(
+                    height: 2,
+                    width: 30,
+                    color: ProjectColors.mediumBlue,
+                    margin: EdgeInsets.only(bottom: line ? 0 : 10),
+                  ),
+                  Flexible(
+                    child: ProjectParagraph(ProjectIcons.pointIcon(), address.specifiedAddress,
+                      maxLines: 1,
+                      padding: EdgeInsets.only(right: 20, top: line ? 0 : 10),
+                      color: ProjectColors.darkBlue,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ) : Container(),
+        line && !suggestion ? Container(
           height: 15,
           width: 2,
           margin: const EdgeInsets.only(left: 28),
@@ -167,53 +223,19 @@ class InstructionPage extends StatelessWidget {
     );
   }
 
-  Widget _buildInstructionCheck(BuildContext context, InstructionCheck instructionCheck) {
-    return ProjectCard(
-      margin: const EdgeInsets.only(top: 20),
-      padding: const EdgeInsets.only(top: 5),
-      child: Stack(
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildParagraph(ProjectIcons.inspectorIcon(), toBeginningOfSentenceCase(instruction.instructionCreator.formattedName)),
-              Column(
-                children: List.generate(instructionCheck.checkParticipants.length, 
-                  (index) => _buildParagraph(ProjectIcons.inspector2Icon(),  instructionCheck.checkParticipants[index].toString()),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 15),
-                child: Column(
-                  children: List.generate(instructionCheck.checkAddresses.length, 
-                    (index) => _buildAddress(instructionCheck.checkAddresses[index], index < instructionCheck.checkAddresses.length - 1),
-                  ),
-                ),
-              ),
-              //_buildParagraph(ProjectIcons.pointIcon(), instructionCheck.checkAddresses.first.),
-              _buildParagraph(ProjectIcons.themeIcon(), instructionCheck.checkSubject),
-              _buildReportButton(context),
-              Container(
-                color: ProjectColors.darkBlue,
-                width: MediaQuery.of(context).size.width,
-                margin: const EdgeInsets.only(top: 15),
-                padding: const EdgeInsets.only(left: 20, right: 20, top: 7, bottom: 7),
-                child: Text('Обследование факта окончания работ и восстановления благоустройства',
-                  style: ProjectTextStyles.baseBold.apply(color: Colors.white),
-                ),
-              ),
-              _buildDig(context, instruction.instructionStatus.name == 'На исполнении'),
-              _buildDivider(),
-              _buildDig(context, instruction.instructionStatus.name == 'На исполнении' && false)
-            ],
-          ),
-          _buildInstructionCheckStatus(instructionCheck.checkStatus)
-        ],
+  Widget _buildSplitter(BuildContext context) {
+    return Container(
+      color: ProjectColors.darkBlue,
+      width: MediaQuery.of(context).size.width,
+      margin: const EdgeInsets.only(top: 15),
+      padding: const EdgeInsets.only(left: 20, right: 20, top: 7, bottom: 7),
+      child: Text('Обследование факта окончания работ и восстановления благоустройства',
+        style: ProjectTextStyles.baseBold.apply(color: Colors.white),
       ),
     );
   }
 
-  Widget _buildDig(BuildContext context, bool showRaport) {
+  Widget _buildDiggReuestCheck(BuildContext context, DiggRequestCheck diggRequestCheck, bool divider) {
     return ClipRect(
       child: Container(
         width: MediaQuery.of(context).size.width,
@@ -226,44 +248,45 @@ class InstructionPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  child: Text('У09392399123',
+                  child: Text(diggRequestCheck.diggNum,
                     style: ProjectTextStyles.base.apply(color: ProjectColors.black),
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 15),
-                  child: Text('ЮЗАО, район Академический, Вавилова ул. 11, стр. 1 ЮЗАО еский, Вавилова ул. 11, стр. 1',
+                  child: Text(diggRequestCheck.diggAddress,
                     style: ProjectTextStyles.base.apply(color: ProjectColors.black),
                   ),
                 ),
-                showRaport  ? Padding(
-                  padding: const EdgeInsets.only(top: 15),
-                  child: Row(
-                    children: [
-                      ProjectIcons.raportIcon(color: ProjectColors.blue.withOpacity(0.35)),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 10),
-                        child: Text('Рапорт № 20-61-К21 от 11.03.2020',
-                          style: ProjectTextStyles.baseBold.apply(color: ProjectColors.blue, decoration: TextDecoration.underline),
-                        ),
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(color: ProjectColors.yellow),
-                          borderRadius: BorderRadius.circular(5)
-                        ),
-                        margin: const EdgeInsets.only(left: 10, right: 10),
-                        padding: const EdgeInsets.only(left: 10, right: 10, top: 3, bottom: 3),
-                        child: Text('На согласовании',
-                          style: ProjectTextStyles.smallBold.apply(color: ProjectColors.yellow),
-                        ),
-                      ),
-                      Text(DateFormat('dd.MM.yyyy HH:mm').format(DateTime.now()),
-                        style: ProjectTextStyles.baseBold.apply(color: ProjectColors.black),
-                      )
-                    ],
-                  ),
-                ) : Container(),
+                divider ? ProjectDivider() : Container(),
+                // showRaport  ? Padding(
+                //   padding: const EdgeInsets.only(top: 15),
+                //   child: Row(
+                //     children: [
+                //       ProjectIcons.raportIcon(color: ProjectColors.blue.withOpacity(0.35)),
+                //       Padding(
+                //         padding: const EdgeInsets.only(left: 10),
+                //         child: Text('Рапорт № 20-61-К21 от 11.03.2020',
+                //           style: ProjectTextStyles.baseBold.apply(color: ProjectColors.blue, decoration: TextDecoration.underline),
+                //         ),
+                //       ),
+                //       Container(
+                //         decoration: BoxDecoration(
+                //           border: Border.all(color: ProjectColors.yellow),
+                //           borderRadius: BorderRadius.circular(5)
+                //         ),
+                //         margin: const EdgeInsets.only(left: 10, right: 10),
+                //         padding: const EdgeInsets.only(left: 10, right: 10, top: 3, bottom: 3),
+                //         child: Text('На согласовании',
+                //           style: ProjectTextStyles.smallBold.apply(color: ProjectColors.yellow),
+                //         ),
+                //       ),
+                //       Text(DateFormat('dd.MM.yyyy HH:mm').format(DateTime.now()),
+                //         style: ProjectTextStyles.baseBold.apply(color: ProjectColors.black),
+                //       )
+                //     ],
+                //   ),
+                // ) : Container(),
               ],
             ),
           ),
@@ -325,5 +348,85 @@ class InstructionPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Widget _buildInstructionCheck(BuildContext context, InstructionCheck instructionCheck, Instruction instruction) {
+    return ProjectCard(
+      margin: const EdgeInsets.only(top: 20),
+      padding: const EdgeInsets.only(top: 5),
+      child: Stack(
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildParagraph(ProjectIcons.inspectorIcon(), toBeginningOfSentenceCase(instruction.instructionCreator.formattedName)),
+              Column(
+                children: List.generate(instructionCheck.checkParticipants.length, 
+                  (index) => _buildParagraph(ProjectIcons.inspector2Icon(),  instructionCheck.checkParticipants[index].toString()),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 15),
+                child: Column(
+                  children: List.generate(instructionCheck.checkAddresses.length, 
+                    (index) => _buildAddress(instructionCheck.checkAddresses[index], index < instructionCheck.checkAddresses.length - 1),
+                  ),
+                ),
+              ),
+              //_buildParagraph(ProjectIcons.pointIcon(), instructionCheck.checkAddresses.first.),
+              _buildParagraph(ProjectIcons.themeIcon(), instructionCheck.checkSubject),
+              _buildReportButton(context, instruction),
+              _buildSplitter(context),
+              Column(
+                children: List.generate(instructionCheck.diggRequestChecks.length, 
+                  (index) => _buildDiggReuestCheck(context, instructionCheck.diggRequestChecks[index], index < instructionCheck.diggRequestChecks.length - 1),
+                ),
+              ),
+            ],
+          ),
+          _buildInstructionCheckStatus(instructionCheck.checkStatus)
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCompleteButton(BuildContext context, InstructionBlocState state) {
+    final titles = {
+      InstructionStatusStrings.assigned: 'Принять на исполнение',
+      InstructionStatusStrings.complete: 'Заверешно',
+      InstructionStatusStrings.withdrawn: 'Отозвано',
+      InstructionStatusStrings.inProgress: 'Подтвердить исполнение',
+      InstructionStatusStrings.partInProgress: 'Подтвердить исполнение',
+      InstructionStatusStrings.partComplete: 'Подтвердить исполнение',
+    };
+     final functions = {
+      InstructionStatusStrings.assigned: ()=> _onStatus(context, InstructionStatusStrings.inProgress),
+      InstructionStatusStrings.complete: null,
+      InstructionStatusStrings.withdrawn: null,
+      InstructionStatusStrings.inProgress: ()=> _onStatus(context, InstructionStatusStrings.complete),
+      InstructionStatusStrings.partInProgress: ()=> _onStatus(context, InstructionStatusStrings.complete),
+      InstructionStatusStrings.partComplete: ()=> _onStatus(context, InstructionStatusStrings.complete),
+    };
+    final instruction = state.instruction;
+    if (state is LoadingState) {
+      return CircularProgressIndicator(
+        valueColor: AlwaysStoppedAnimation(ProjectColors.darkBlue),
+      );
+    } else {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          instruction.instructionStatus.name == InstructionStatusStrings.assigned ? Padding(
+            padding: const EdgeInsets.only(right: 20),
+            child: ProjectButton.buildOutlineButton('Отклонить',
+              onPressed: ()=> _onStatus(context, InstructionStatusStrings.withdrawn)
+            ),
+          ) : Container(),
+          ProjectButton.builtFlatButton(titles[instruction.instructionStatus.name] ?? 'Подтвердить исполнение',
+            onPressed: functions[instruction.instructionStatus.name],
+          ),
+        ]
+      );
+    }
   }
 }

@@ -28,6 +28,14 @@ typedef T Converter<T>(dynamic);
 class DictionaryService {
   final api = ApiProvider();
 
+  static final _instance = DictionaryService._internal();
+
+  factory DictionaryService() {
+    return _instance;
+  }
+
+  DictionaryService._internal();
+
   Future<List<T>> _loadDictionary<T>(Converter<T> converter) async {
     final data = await api.getDictionary<T>();
     try {

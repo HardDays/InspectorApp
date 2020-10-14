@@ -48,8 +48,8 @@ class InstructionListPageState extends State<InstructionListPage> with Automatic
     }
   }
 
-  Future _onFilter(BuildContext context) {
-    showGeneralDialog(
+  Future _onFilter(BuildContext context, InstructionFilters filters) async {
+    final result = await showGeneralDialog(
       context: context,
       barrierDismissible: true,
       transitionDuration: Duration(milliseconds: 100),
@@ -57,20 +57,32 @@ class InstructionListPageState extends State<InstructionListPage> with Automatic
       barrierColor: Colors.transparent,
       pageBuilder: (context, animation1, animation2) {
         return ProjectTopDialog(
-          child: InstructionFiltersWidget(),
+          child: InstructionFiltersWidget(
+            filters
+          ),
         );
       },
     );
+
+    if (result != null) {
+      BlocProvider.of<InstructionListBloc>(context).add(FilterEvent(result));  
+    }
+  }
+
+  void _flush(BuildContext context) {
+    BlocProvider.of<InstructionListBloc>(context).add(FlushEvent()); 
   }
 
   void _showSnackBar(String title, Color color) {
-    WidgetsBinding.instance.addPostFrameCallback((_) => 
-      Scaffold.of(context).showSnackBar(
-        SnackBar(
-          backgroundColor: color,
-          content: Text(title),
-        ),
-      ),
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) {
+        Scaffold.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: ProjectColors.darkBlue,
+            content: Text(title),
+          ),
+        );
+      }
     );
   }
 
@@ -87,11 +99,11 @@ class InstructionListPageState extends State<InstructionListPage> with Automatic
               state.sort ?? InstructionSortStrings.instructionStatus,
               onUpdate: ()=> _onUpdate(context),
               onSort: ()=> _onSort(context, state.sort),
-              onFilter: ()=> _onFilter(context)
+              onFilter: ()=> _onFilter(context, state.filters),
             ),
             body: RefreshIndicator(
               onRefresh: ()=> _onUpdate(context),
-              child: _buildBody(state)  
+              child: _buildBody(context, state)  
             ),
           );
         },
@@ -99,11 +111,13 @@ class InstructionListPageState extends State<InstructionListPage> with Automatic
     );
   }
 
-  Widget _buildBody(InstructionListBlocState state) {
+  Widget _buildBody(BuildContext context, InstructionListBlocState state) {
     if (state is NewDataState) { 
       _showSnackBar('Загружены новые данные', ProjectColors.green);
+      _flush(context);
     } else if (state is OldDataState) {
-      _showSnackBar('Загружены старые данные', ProjectColors.yellow);
+      _showSnackBar('Загружены старые данные. ${state.exception.message}  ${state.exception.details}', ProjectColors.yellow);
+      _flush(context);
     } 
     if (state is LoadingState) {
       return _buildLoader();

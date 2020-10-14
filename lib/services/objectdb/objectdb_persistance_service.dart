@@ -4,8 +4,7 @@ import 'package:inspector/services/objectdb/objectdb_service.dart';
 import 'package:inspector/services/persistance_service.dart';
 import 'package:intl/intl.dart';
 
-class ObjectDbPersistanceService extends ObjectDBService
-    implements PersistanceService {
+class ObjectDbPersistanceService extends ObjectDBService implements PersistanceService {
 
   String get name => 'persistance.db';
 
@@ -138,10 +137,18 @@ class ObjectDbPersistanceService extends ObjectDBService
   }
 
   @override
-  Future<void> saveInstructionsDate(DateTime date) async {
+  Future<void> saveInstructionsDate() async {
     await _saveKeyValue('instructionDate', DateFormat('dd.MM.yyyy hh:mm').format(DateTime.now()));
   }
+  
+  Future saveInstructionFilters(InstructionFilters value) async {
+    await _saveKeyValue('instructionFilters', value.toJson());
+  }
 
+  Future<InstructionFilters> getInstructionFilters() async {
+    return InstructionFilters.fromJson(await _getKeyValue('instructionFilters') ?? {});
+  }
+  
   @override
   Future<void> saveLastDataSendingDate(DateTime dateTime) async {
     await _saveKeyValue('lastDataSendingDate', dateTime.millisecondsSinceEpoch);
@@ -166,4 +173,5 @@ class ObjectDbPersistanceService extends ObjectDBService
   Future<void> setToken(String token) async {
     await _saveKeyValue('token', token);
   }
+
 }

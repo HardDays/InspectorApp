@@ -67,6 +67,11 @@ class Address {
     };
   }
 
+  String toShortString() {
+    final data = [houseNum, buildNum != null ? 'к. $buildNum' : null, constructionNum != null ? 'стр. $constructionNum' : null];
+    return data.where((element) => element != null).join(', ');
+  }
+
   @override
   String toString() {
     final data = [area?.toString(), district?.toString(), street?.toString(), houseNum, buildNum != null ? 'к. $buildNum' : null, constructionNum != null ? 'стр. $constructionNum' : null];

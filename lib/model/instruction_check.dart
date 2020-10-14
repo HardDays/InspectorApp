@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:inspector/model/address.dart';
 import 'package:inspector/model/check_participant.dart';
 import 'package:inspector/model/check_status.dart';
+import 'package:inspector/model/digg_request_check.dart';
 
 class InstructionCheck {
 
@@ -11,6 +12,7 @@ class InstructionCheck {
   final CheckStatus checkStatus;
   final List<CheckParticipant> checkParticipants;
   final List<Address> checkAddresses;
+  final List<DiggRequestCheck> diggRequestChecks;
 
   InstructionCheck({
     @required this.id,
@@ -18,7 +20,8 @@ class InstructionCheck {
     @required this.diggRequest,
     @required this.checkStatus,
     @required this.checkParticipants,
-    @required this.checkAddresses
+    @required this.checkAddresses,
+    @required this.diggRequestChecks,
   });
 
   factory InstructionCheck.fromJson(Map<String, dynamic> json) {
@@ -28,7 +31,8 @@ class InstructionCheck {
       diggRequest: json['diggRequest'], 
       checkStatus: CheckStatus.fromJson(json['checkStatus']), 
       checkParticipants: List<CheckParticipant>.from(json['checkParticipants'].map((p) => CheckParticipant.fromJson(p))),
-      checkAddresses: List<Address>.from(json['checkAddresses'].map((p) => Address.fromJson(p)))
+      checkAddresses: List<Address>.from(json['checkAddresses'].map((p) => Address.fromJson(p))),
+      diggRequestChecks: json['diggRequestChecks'] != null ? List<DiggRequestCheck>.from(json['diggRequestChecks'].map((p) => DiggRequestCheck.fromJson(p))) : [],
     );
   }
 
@@ -40,6 +44,7 @@ class InstructionCheck {
       'checkStatus': checkStatus.toJson(),
       'checkParticipants': checkParticipants.map((e) => e.toJson()).toList(),
       'checkAddresses': checkAddresses.map((e) => e.toJson()).toList(),
+      'diggRequestChecks': diggRequestChecks.map((e) => e.toJson()).toList(),
     };
   }
 }

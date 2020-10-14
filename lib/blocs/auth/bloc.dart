@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:inspector/blocs/auth/events.dart';
 import 'package:inspector/blocs/auth/states.dart';
+import 'package:inspector/providers/api_provider.dart';
 import 'package:inspector/services/auth_exception.dart';
 import 'package:inspector/services/auth_service.dart';
 import 'package:inspector/services/persistance_service.dart';

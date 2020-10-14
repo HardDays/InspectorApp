@@ -13,13 +13,28 @@ import 'package:inspector/style/text_field.dart';
 
 class InstructionFiltersWidget extends StatelessWidget {
 
-  final Function onFind;
-  final Function onClear;
+  final InstructionFilters filters;
 
-  const InstructionFiltersWidget({
-    this.onFind,
-    this.onClear,
-  });
+  TextEditingController _instructionNumController;
+
+  InstructionFiltersWidget(this.filters) {
+    _instructionNumController = TextEditingController(text: filters.instructionNum);
+  }
+
+  void _onFind(BuildContext context, InstructionFilters filters) {
+    Navigator.pop(context, 
+      InstructionFilters(
+        instructionNum: _instructionNumController.text,
+        checkDates: filters.checkDates,
+        instructionDates: filters.instructionDates,
+        instructionStatus: filters.instructionStatus
+      ),
+    );
+  }
+
+  void _onClear(BuildContext context) {
+    Navigator.pop(context, InstructionFilters());
+  }
 
   void _onStatus(BuildContext context, String status) {
     BlocProvider.of<InstructionFiltersBloc>(context).add(ChangeInstructionStatusEvent(status));  
@@ -36,7 +51,7 @@ class InstructionFiltersWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context)=> InstructionFiltersBloc(InstructionFiltersBlocState(InstructionFilters()))..add(LoadEvent()),
+      create: (context)=> InstructionFiltersBloc(InstructionFiltersBlocState(filters))..add(LoadEvent()),
       child: BlocBuilder<InstructionFiltersBloc, InstructionFiltersBlocState>(
         builder: (context, state) {
           return Column(
@@ -48,18 +63,19 @@ class InstructionFiltersWidget extends StatelessWidget {
                     child: ProjectTextField(
                       title: 'Номер поручения',
                       hintText: 'Введите данные',
-                      initialValue: state.filters.instructionStatus,
+                      controller: _instructionNumController,
                     ),
                   ),
                   Padding(padding: const EdgeInsets.only(left: 35)),
                   Flexible(
                     child: ProjectSelect(
+                      InstructionStatusStrings.all.length,
                       state.filters.instructionStatus,
-                      InstructionStatusStrings.all,
-                      InstructionStatusStrings.all,
+                      (index) => InstructionStatusStrings.all[index],
+                      (index) => InstructionStatusStrings.all[index],
                       title: 'Статус поручения',
                       hintText: 'Все',
-                      onChanged: (status)=> _onStatus(context, status)
+                      onChanged: (status)=> _onStatus(context, status),
                     ),
                   ),
                 ],
@@ -95,11 +111,11 @@ class InstructionFiltersWidget extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     ProjectButton.buildOutlineButton('Сбросить',
-                      onPressed: onClear
+                      onPressed: ()=> _onClear(context)
                     ),
                     Padding(padding: const EdgeInsets.only(left: 20)), 
                     ProjectButton.builtFlatButton('Найти',
-                      onPressed: onFind
+                      onPressed: ()=> _onFind(context, state.filters)
                     )
                   ],
                 ),
