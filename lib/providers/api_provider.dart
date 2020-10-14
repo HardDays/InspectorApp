@@ -6,14 +6,20 @@ import 'package:inspector/model/department_code.dart';
 import 'package:inspector/model/employee.dart';
 import 'package:inspector/model/instruction_status.dart';
 import 'package:inspector/model/normative_act.dart';
+import 'package:inspector/model/normative_act_article.dart';
 import 'package:inspector/model/oati_department.dart';
 import 'package:inspector/model/object_category.dart';
 import 'package:inspector/model/report_status.dart';
+import 'package:inspector/model/resolution_type.dart';
 import 'package:inspector/model/special_object.dart';
 import 'package:inspector/model/violation_kind.dart';
 import 'package:inspector/model/violation_status.dart';
 import 'package:inspector/model/violation_type.dart';
 import 'package:inspector/model/violator_doc_type.dart';
+import 'package:inspector/model/violator_info_ip.dart';
+import 'package:inspector/model/violator_info_legal.dart';
+import 'package:inspector/model/violator_info_official.dart';
+import 'package:inspector/model/violator_info_private.dart';
 import 'package:inspector/model/violator_type.dart';
 import 'package:inspector/providers/exceptions/api_exception.dart';
 import 'package:inspector/providers/exceptions/server_exception.dart';
@@ -42,6 +48,12 @@ class ApiProvider {
     OatiDepartment: '/dict/oati-departments',
     DepartmentCode: '/dict/department-codes',
     ViolatorDocumentType: '/dict/violator-doc-types',
+    ViolatorInfoLegal: '/dict/violator-info-legal',
+    ViolatorInfoOfficial: '/dict/violator-info-official',
+    ViolatorInfoPrivate: '/dict/violator-info-private',
+    ViolatorInfoIp: '/dict/violator-info-ip',
+    ResolutionType: '/dict/resolution-types',
+    NormativeActArticle: '/dict/normative-act-articles',
   };
 
   final dio = Dio(BaseOptions(baseUrl: _url));

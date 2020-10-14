@@ -8,14 +8,20 @@ import 'package:inspector/model/department_code.dart';
 import 'package:inspector/model/employee.dart';
 import 'package:inspector/model/instruction_status.dart';
 import 'package:inspector/model/normative_act.dart';
+import 'package:inspector/model/normative_act_article.dart';
 import 'package:inspector/model/oati_department.dart';
 import 'package:inspector/model/object_category.dart';
 import 'package:inspector/model/report_status.dart';
+import 'package:inspector/model/resolution_type.dart';
 import 'package:inspector/model/special_object.dart';
 import 'package:inspector/model/violation_kind.dart';
 import 'package:inspector/model/violation_status.dart';
 import 'package:inspector/model/violation_type.dart';
 import 'package:inspector/model/violator_doc_type.dart';
+import 'package:inspector/model/violator_info_ip.dart';
+import 'package:inspector/model/violator_info_legal.dart';
+import 'package:inspector/model/violator_info_official.dart';
+import 'package:inspector/model/violator_info_private.dart';
 import 'package:inspector/model/violator_type.dart';
 import 'package:inspector/services/api/dictionary_service.dart';
 import 'package:inspector/style/button.dart';
@@ -363,6 +369,48 @@ class TestPage extends StatelessWidget {
             DictionaryWidget<ViolatorDocumentType>(
               dictionaryName: 'Violator Document Types',
               loader: dictionaryService.getViolatorDocumentTypes,
+              mapping: (item) => item
+                  .toJson()
+                  .map((key, value) => MapEntry(key, value.toString())),
+            ),
+            DictionaryWidget<ViolatorInfoLegal>(
+              dictionaryName: 'Violator Info Legal',
+              loader: dictionaryService.getViolatorInfoLegal,
+              mapping: (item) => item
+                  .toJson()
+                  .map((key, value) => MapEntry(key, value.toString())),
+            ),
+            DictionaryWidget<ViolatorInfoOfficial>(
+              dictionaryName: 'Violator Info Official',
+              loader: dictionaryService.getViolatorInfoOfficial,
+              mapping: (item) => item
+                  .toJson()
+                  .map((key, value) => MapEntry(key, value.toString())),
+            ),
+            DictionaryWidget<ViolatorInfoPrivate>(
+              dictionaryName: 'Violator Info Private',
+              loader: dictionaryService.getViolatorInfoPrivate,
+              mapping: (item) => item
+                  .toJson()
+                  .map((key, value) => MapEntry(key, value.toString())),
+            ),
+            DictionaryWidget<ViolatorInfoIp>(
+              dictionaryName: 'Violator Info Ip',
+              loader: dictionaryService.getViolatorInfoIp,
+              mapping: (item) => item
+                  .toJson()
+                  .map((key, value) => MapEntry(key, value.toString())),
+            ),
+            DictionaryWidget<ResolutionType>(
+              dictionaryName: 'Resolution Type',
+              loader: dictionaryService.getResolutionTypes,
+              mapping: (item) => item
+                  .toJson()
+                  .map((key, value) => MapEntry(key, value.toString())),
+            ),
+            DictionaryWidget<NormativeActArticle>(
+              dictionaryName: 'Normative Act Article',
+              loader: dictionaryService.getNormativeActArticles,
               mapping: (item) => item
                   .toJson()
                   .map((key, value) => MapEntry(key, value.toString())),
