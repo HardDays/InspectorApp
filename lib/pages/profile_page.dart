@@ -31,6 +31,12 @@ class ProfilePage extends StatelessWidget {
             appBar: AppBar(
               centerTitle: true,
               elevation: 0.0,
+              actions: [
+                IconButton(
+                  icon: Icon(Icons.code),
+                  onPressed: () => ExtendedNavigator.root.push(Routes.testPage),
+                )
+              ],
               backgroundColor: ProjectColors.darkBlue,
               title: Text(
                 'Профиль',
@@ -59,7 +65,8 @@ class ProfilePage extends StatelessWidget {
                         padding: EdgeInsets.fromLTRB(0.0, 20.0, 28.0, 0.0),
                         child: GestureDetector(
                           onTap: () {
-                            Provider.of<AuthService>(context, listen: false).logout();
+                            Provider.of<AuthService>(context, listen: false)
+                                .logout();
                             ExtendedNavigator.root.replace(Routes.authPage);
                           },
                           child: Row(

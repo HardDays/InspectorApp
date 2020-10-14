@@ -13,6 +13,9 @@ import 'package:inspector/pages/control_list_page.dart';
 @MaterialAutoRouter(
   routes: <AutoRoute>[
     MaterialRoute(
+      page: TestPage,
+    ),
+    MaterialRoute(
       page: AuthPage,
       initial: true,
       children: <AutoRoute>[
@@ -41,9 +44,6 @@ import 'package:inspector/pages/control_list_page.dart';
         MaterialRoute(
           page: ControlSreen,
           children: <AutoRoute>[
-            MaterialRoute(
-              page: TestPage,
-            ),
             MaterialRoute(
               initial: true,
               page: ControlListPage,

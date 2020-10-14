@@ -33,7 +33,13 @@ class InstructionPage extends StatelessWidget {
   InstructionPage(this.instruction);
 
   void _onTotalReport(BuildContext context) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => TotalReportPage('Назначено')));
+    Navigator.push(context, 
+      MaterialPageRoute(
+        builder: (context) => TotalReportPage(
+          violationNotPresent: false,
+        ),
+      ),
+    );
   }
 
   void _onAddressReport(BuildContext context, String status) {

@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:inspector/model/instruction_status.dart';
+import 'package:inspector/model/special_object.dart';
 import 'package:inspector/providers/exceptions/api_exception.dart';
 import 'package:inspector/providers/exceptions/server_exception.dart';
 import 'package:inspector/providers/exceptions/timeout_exception.dart';
@@ -133,6 +134,12 @@ class ApiProvider {
   Future<dynamic> getSpecialObjects() async {
     return _request(
       ()=> dio.get(_dictPath + _specialObjectsPath)
+    );
+  }
+  
+  Future<dynamic> getDictionary(String url) {
+    return _request(
+      () => dio.get(url),
     );
   }
 

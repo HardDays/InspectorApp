@@ -10,7 +10,7 @@ class InstructionFiltersBloc extends Bloc<InstructionFiltersBlocEvent, Instructi
 
   @override
   Stream<InstructionFiltersBlocState> mapEventToState(InstructionFiltersBlocEvent event) async* {
-    if (event is ChangeCheckDatesEvent) {
+    if (event is SetCheckDatesEvent) {
       yield InstructionFiltersBlocState(
         InstructionFilters(
           checkDates: event.dates,
@@ -19,7 +19,7 @@ class InstructionFiltersBloc extends Bloc<InstructionFiltersBlocEvent, Instructi
           instructionNum: state.filters.instructionNum,
         )
       );
-    } else if (event is ChangeInstructionDatesEvent) {
+    } else if (event is SetInstructionDatesEvent) {
       yield InstructionFiltersBlocState(
         InstructionFilters(
           checkDates: state.filters.checkDates,
@@ -28,7 +28,7 @@ class InstructionFiltersBloc extends Bloc<InstructionFiltersBlocEvent, Instructi
           instructionNum: state.filters.instructionNum,
         )
       );
-    } else if (event is ChangeInstructionStatusEvent) {
+    } else if (event is SetInstructionStatusEvent) {
       yield InstructionFiltersBlocState(
         InstructionFilters(
           checkDates: state.filters.checkDates,
@@ -37,7 +37,7 @@ class InstructionFiltersBloc extends Bloc<InstructionFiltersBlocEvent, Instructi
           instructionNum: state.filters.instructionNum,
         )
       );
-    } else if (event is ChangeInstructionNumEvent) {
+    } else if (event is SetInstructionNumEvent) {
       yield InstructionFiltersBlocState(
         InstructionFilters(
           checkDates: state.filters.checkDates,

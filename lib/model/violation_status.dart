@@ -1,19 +1,21 @@
 import 'package:flutter/foundation.dart';
 
-class ReportStatus {
+class ViolationStatus {
   final int id;
   final String name;
-  
-  ReportStatus({
+
+  ViolationStatus({
     @required this.id,
     @required this.name,
   });
 
-  factory ReportStatus.fromJson(Map<String, dynamic> json) {
-    return ReportStatus(
-      id: json['id'], 
-      name: json['name'], 
-    );
+  factory ViolationStatus.fromJson(Map<String, dynamic> json) {
+    if (json != null) {
+      return ViolationStatus(
+        id: json['id'],
+        name: json['name'],
+      );
+    }
   }
 
   Map<String, dynamic> toJson() {

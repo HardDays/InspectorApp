@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 
-class User {
+class Employee {
 
   final int id;
   final String code;
@@ -9,7 +9,7 @@ class User {
   final String middleName;
   final String position;
 
-  User({
+  Employee({
     @required this.id,
     @required this.code,
     @required this.surname,
@@ -18,19 +18,15 @@ class User {
     @required this.position,
   });
   
-  String get formattedName => '$surname ${name.substring(0, 1)}.${middleName.substring(0, 1)}.';
-
-  factory User.fromJson(Map<String, dynamic> json) {
-    if (json != null) {
-      return User(
-        id: json['id'], 
-        code: json['code'], 
-        surname: json['surname'], 
-        name: json['name'],
-        middleName: json['middleName'],
-        position: json['position'], 
-      );
-    }
+  factory Employee.fromJson(Map<String, dynamic> json) {
+    return Employee(
+      id: json['id'], 
+      code: json['code'], 
+      surname: json['surname'], 
+      name: json['name'],
+      middleName: json['middleName'],
+      position: json['position'], 
+    );
   }
 
   Map<String, dynamic> toJson() {

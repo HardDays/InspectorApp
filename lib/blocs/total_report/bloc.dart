@@ -1,6 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:inspector/blocs/total_report/events.dart';
 import 'package:inspector/blocs/total_report/states.dart';
+import 'package:inspector/model/report.dart';
+import 'package:inspector/model/violation.dart';
+import 'package:inspector/model/violator.dart';
 import 'package:inspector/services/addresses_service.dart';
 import 'package:inspector/services/areas_service.dart';
 import 'package:inspector/services/districts_service.dart';
@@ -27,6 +30,7 @@ class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {
         final specialObjects = await _specialObjectsService.all();
 
         yield TotalReportBlocState(
+          report: Report.empty(event.violationNotPresent),
           streets: streets, 
           addresses: addresses, 
           areas: areas, 
@@ -36,6 +40,12 @@ class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {
       } catch (ex) {
         print(ex);
       }
+    } else if (event is SetViolationNotPresentEvent) {
+      yield state.copyWith(
+        report: state.report.copyWith(
+          violationNotPresent: event.violationNotPresent
+        ),
+      );
     } 
-  }
+  } 
 }

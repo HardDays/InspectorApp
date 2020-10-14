@@ -1,19 +1,19 @@
 import 'package:flutter/foundation.dart';
 
-class SpecialObject {
+class ViolatorType {
   final int id;
   final String name;
   final String code;
   
-  SpecialObject({
+  ViolatorType({
     @required this.id,
     @required this.name,
     @required this.code,
   });
 
-  static SpecialObject fromJson(Map<String, dynamic> json) {
+  factory ViolatorType.fromJson(Map<String, dynamic> json) {
     if (json != null) {
-      return SpecialObject(
+      return ViolatorType(
         id: json['id'], 
         name: json['name'], 
         code: json['code']
@@ -27,10 +27,5 @@ class SpecialObject {
       'name': name,
       'code': code
     };
-  }
-
-  @override
-  String toString() {
-    return name;
   }
 }

@@ -5,6 +5,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:inspector/blocs/total_report/bloc.dart';
 import 'package:inspector/blocs/total_report/events.dart';
 import 'package:inspector/blocs/total_report/states.dart';
+import 'package:inspector/model/report.dart';
 import 'package:inspector/style/appbar.dart';
 import 'package:inspector/style/button.dart';
 import 'package:inspector/style/checkbox.dart';
@@ -18,10 +19,9 @@ import 'package:inspector/widgets/image_picker.dart';
 
 class TotalReportPage extends StatefulWidget {
 
-  //todo: make according api model
-  final String status;
+  final bool violationNotPresent;
 
-  TotalReportPage(this.status);
+  TotalReportPage({this.violationNotPresent});
 
   @override
   TotalReportPageState createState() => TotalReportPageState();
@@ -30,25 +30,19 @@ class TotalReportPage extends StatefulWidget {
 
 class TotalReportPageState extends State<TotalReportPage> with SingleTickerProviderStateMixin {
 
-  String status;
-
   void initState() {
     super.initState();
-
-    status = widget.status;
   }
 
-  void _onStatus(String value) {
-    setState(() {
-      status = value;
-    });
+  void _onViolationNotPresent(BuildContext context, bool value) {
+    BlocProvider.of<TotalReportBloc>(context).add(SetViolationNotPresentEvent(value));  
   }
 
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     return BlocProvider(
-      create: (context)=> TotalReportBloc(TotalReportBlocState())..add(LoadEvent()),
+      create: (context)=> TotalReportBloc(TotalReportBlocState(report: Report.empty(false)))..add(LoadEvent(widget.violationNotPresent)),
       child: BlocBuilder<TotalReportBloc, TotalReportBlocState>(
         builder: (context, state) {
           return Scaffold(
@@ -59,190 +53,14 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
                 padding: const EdgeInsets.only(left: 30, right: 30, top: 20),
                 child: Column(
                   children: [
-                    _buildCheckBox('Данные, указывающие на наличие события нарушения, не установлены', padding: EdgeInsets.zero, style: ProjectTextStyles.baseBold),
-                    _buildMap(),
-                    _buildTextField('Ручной поиск по карте', 'Введите или выберите значение'),
-                    _buildTitle('Адрес нарушения'),
-                    Row(
-                      children: [
-                        Flexible(
-                          child: _buildCheckBox('Определить адрес по местоположению'),
-                        ),
-                        Padding(padding: const EdgeInsets.only(left: 35)),
-                        Flexible(
-                          child: _buildCheckBox('ТиНАО'),
-                        ),
-                      ],
+                    _buildCheckBox(
+                      'Данные, указывающие на наличие события нарушения, не установлены', 
+                      state.report.violationNotPresent,
+                      (value)=> _onViolationNotPresent(context, value),
+                      padding: EdgeInsets.zero, 
+                      style: ProjectTextStyles.baseBold,
                     ),
-                    Row(
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Flexible(
-                          child: _buildSelect('Улица', 'Выберите значение', 
-                            null, state.streets.length, (index)=> state.streets[index].id, (index)=> state.streets[index].toString()
-                          ),
-                        ),
-                        Padding(padding: const EdgeInsets.only(left: 35)),
-                        Flexible(
-                          child: _buildSelect('Дом, корпус, строение', 'Выберите значение', 
-                            null, state.addresses.length, (index)=> state.addresses[index].id, (index)=> state.addresses[index].toShortString()
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Flexible(
-                          child: _buildSelect('Округ', 'Выберите значение', 
-                            null, state.areas.length, (index)=> state.areas[index].id, (index)=> state.areas[index].toString()
-                          ),
-                        ),
-                        Padding(padding: const EdgeInsets.only(left: 35)),
-                        Flexible(
-                          child: _buildSelect('Район', 'Выберите значение', 
-                            null, state.districts.length, (index)=> state.districts[index].id, (index)=> state.districts[index].toString()
-                          ),
-                        ),
-                      ],
-                    ),
-                    _buildTextField('Адресный ориентир', 'Введите данные'),
-                    _buildTitle('Нарушение'),
-                    _buildSelect('Код объекта контроля', 'Выберите значение', 
-                      null, state.specialObjects.length, (index)=> state.specialObjects[index].id, (index)=> state.specialObjects[index].toString()
-                    ),
-                    _buildTextField('Описание нарушения', 'Введите данные'),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 20),
-                      child: Stack(
-                        alignment: Alignment.topRight,
-                        children: [
-                          Column(
-                            children: [
-                              _buildSelect('Нормативно-правовой акт', 'Выберите значение', 
-                                null, state.streets.length, (index)=> state.streets[index].id, (index)=> state.streets[index].name, 
-                                padding: const EdgeInsets.only(right: 30)
-                              ),
-                              _buildSelect('Пункт', 'Выберите значение', 
-                                null, state.streets.length, (index)=> state.streets[index].id, (index)=> state.streets[index].name,
-                                padding: const EdgeInsets.only(top: 20, right: 30)
-                              ),
-                            ],
-                          ),
-                          _buildConnector(),
-                        ],
-                      ),
-                    ),
-                    Row(
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Flexible(
-                          child: _buildSelect('Код нарушения', 'Выберите значение', 
-                            null, state.streets.length, (index)=> state.streets[index].id, (index)=> state.streets[index].name
-                          ),
-                        ),
-                        Padding(padding: const EdgeInsets.only(left: 35)),
-                        Flexible(
-                          child: _buildTextField('Статья КоАП', 'Введите данные'),
-                        ),
-                      ],
-                    ),
-                    _buildTitle('Фотоматериалы нарушения'),
-                    ImagePicker(),
-                    _buildTitle('Нарушители'),
-                    _buildCheckBox('Нарушитель не выявлен'),
-                    _buildSelect('Тип нарушителя', 'Выберите значение', 
-                      null, state.streets.length, (index)=> state.streets[index].id, (index)=> state.streets[index].name
-                    ),
-                    _buildSelect('Организация', 'Выберите значение', 
-                      null, state.streets.length, (index)=> state.streets[index].id, (index)=> state.streets[index].name
-                    ),
-                    Row(
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Flexible(
-                          child: _buildTextField('ИНН', 'Введите данные'),
-                        ),
-                        Padding(padding: const EdgeInsets.only(left: 20)),
-                        Flexible(
-                          child: _buildTextField('ОГРН', 'Введите данные'),
-                        ),
-                        Padding(padding: const EdgeInsets.only(left: 20)),
-                        Flexible(
-                          child: _buildTextField('КПП', 'Введите данные'),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Flexible(
-                          child: _buildTextField('Дата регистрации', 'Введите дату значение'),
-                        ),
-                        Padding(padding: const EdgeInsets.only(left: 35)),
-                        Flexible(
-                          child: _buildCheckBox('Иностранное Юрлицо', padding: const EdgeInsets.only(top: 40)),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Flexible(
-                          child: _buildSelect('Код ведомства', 'Выберите значение', 
-                            null, state.streets.length, (index)=> state.streets[index].id, (index)=> state.streets[index].name
-                          ),
-                        ),
-                        Padding(padding: const EdgeInsets.only(left: 35)),
-                        Flexible(
-                          child: _buildTextField('Телефон', 'Введите данные'),
-                        ),
-                      ],
-                    ),
-                    _buildTextField('Фактический адрес', 'Введите данные'),
-                    _buildTextField('Юридический адрес', 'Введите данные'),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 20),
-                      child: InkWell(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(right: 10),
-                              child: Icon(Icons.add_circle,
-                                color: ProjectColors.green,
-                                size: 20,
-                              ),
-                            ),
-                            Text('Добавить нарушителя',
-                              style: ProjectTextStyles.baseBold.apply(color: ProjectColors.black),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                    Container(
-                      color: Colors.white,
-                      padding: const EdgeInsets.only(top: 30, bottom: 20),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          ProjectButton.builtFlatButton('Сохранить проект',
-                            onPressed: () {}
-                          ),
-                          ProjectButton.builtFlatButton('Сохранить',
-                            onPressed: () {}
-                          ),
-                          ProjectButton.builtFlatButton('На согласование',
-                            onPressed: () {}
-                          ),
-                          ProjectButton.builtFlatButton('Удалить', 
-                            color: ProjectColors.red,
-                            onPressed: () {}
-                          ),
-                        ],
-                      ),
-                    ),
+                    state.report.violationNotPresent ? _buildViolationNotPresent() : _buildViolationPresent(state),
                   ],
                 ),
               ),
@@ -251,6 +69,234 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
         }
       )
     );  
+  }
+
+  Widget _buildViolationNotPresent() {
+    return Container(
+      height: MediaQuery.of(context).size.height * 0.75,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          ImagePicker(),
+          _buildButtons(),
+        ],
+      ),
+    );
+  }
+  
+  Widget _buildViolationPresent(TotalReportBlocState state) {
+    return Column(
+      children: [
+        _buildMap(),
+        _buildTextField('Ручной поиск по карте', 'Введите или выберите значение'),
+        _buildTitle('Адрес нарушения'),
+        Row(
+          children: [
+            Flexible(
+              child: _buildCheckBox(
+                'Определить адрес по местоположению', 
+                state.report.violationNotPresent,
+                (value)=> _onViolationNotPresent(context, value),
+              ),
+            ),
+            Padding(padding: const EdgeInsets.only(left: 35)),
+            Flexible(
+              child: _buildCheckBox(
+                'ТиНАО', 
+                state.report.violationNotPresent,
+                (value)=> _onViolationNotPresent(context, value),
+              ),
+            ),
+          ],
+        ),
+        Row(
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            Flexible(
+              child: _buildSelect('Улица', 'Выберите значение', 
+                null, state.streets.length, (index)=> state.streets[index].id, (index)=> state.streets[index].toString()
+              ),
+            ),
+            Padding(padding: const EdgeInsets.only(left: 35)),
+            Flexible(
+              child: _buildSelect('Дом, корпус, строение', 'Выберите значение', 
+                null, state.addresses.length, (index)=> state.addresses[index].id, (index)=> state.addresses[index].toShortString()
+              ),
+            ),
+          ],
+        ),
+        Row(
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            Flexible(
+              child: _buildSelect('Округ', 'Выберите значение', 
+                null, state.areas.length, (index)=> state.areas[index].id, (index)=> state.areas[index].toString()
+              ),
+            ),
+            Padding(padding: const EdgeInsets.only(left: 35)),
+            Flexible(
+              child: _buildSelect('Район', 'Выберите значение', 
+                null, state.districts.length, (index)=> state.districts[index].id, (index)=> state.districts[index].toString()
+              ),
+            ),
+          ],
+        ),
+        _buildTextField('Адресный ориентир', 'Введите данные'),
+        _buildTitle('Нарушение'),
+        _buildSelect('Код объекта контроля', 'Выберите значение', 
+          null, state.specialObjects.length, (index)=> state.specialObjects[index].id, (index)=> state.specialObjects[index].toString()
+        ),
+        _buildTextField('Описание нарушения', 'Введите данные'),
+        Padding(
+          padding: const EdgeInsets.only(top: 20),
+          child: Stack(
+            alignment: Alignment.topRight,
+            children: [
+              Column(
+                children: [
+                  _buildSelect('Нормативно-правовой акт', 'Выберите значение', 
+                    null, state.streets.length, (index)=> state.streets[index].id, (index)=> state.streets[index].name, 
+                    padding: const EdgeInsets.only(right: 30)
+                  ),
+                  _buildSelect('Пункт', 'Выберите значение', 
+                    null, state.streets.length, (index)=> state.streets[index].id, (index)=> state.streets[index].name,
+                    padding: const EdgeInsets.only(top: 20, right: 30)
+                  ),
+                ],
+              ),
+              _buildConnector(),
+            ],
+          ),
+        ),
+        Row(
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            Flexible(
+              child: _buildSelect('Код нарушения', 'Выберите значение', 
+                null, state.streets.length, (index)=> state.streets[index].id, (index)=> state.streets[index].name
+              ),
+            ),
+            Padding(padding: const EdgeInsets.only(left: 35)),
+            Flexible(
+              child: _buildTextField('Статья КоАП', 'Введите данные'),
+            ),
+          ],
+        ),
+        _buildTitle('Фотоматериалы нарушения'),
+        ImagePicker(),
+        _buildTitle('Нарушители'),
+        _buildCheckBox(
+          'Нарушитель не выявлен', 
+          state.report.violationNotPresent,
+          (value)=> _onViolationNotPresent(context, value),
+        ),
+        _buildSelect('Тип нарушителя', 'Выберите значение', 
+          null, state.streets.length, (index)=> state.streets[index].id, (index)=> state.streets[index].name
+        ),
+        _buildSelect('Организация', 'Выберите значение', 
+          null, state.streets.length, (index)=> state.streets[index].id, (index)=> state.streets[index].name
+        ),
+        Row(
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            Flexible(
+              child: _buildTextField('ИНН', 'Введите данные'),
+            ),
+            Padding(padding: const EdgeInsets.only(left: 20)),
+            Flexible(
+              child: _buildTextField('ОГРН', 'Введите данные'),
+            ),
+            Padding(padding: const EdgeInsets.only(left: 20)),
+            Flexible(
+              child: _buildTextField('КПП', 'Введите данные'),
+            ),
+          ],
+        ),
+        Row(
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            Flexible(
+              child: _buildTextField('Дата регистрации', 'Введите дату значение'),
+            ),
+            Padding(padding: const EdgeInsets.only(left: 35)),
+            Flexible(
+              child: _buildCheckBox(
+                'Иностранное Юрлицо', 
+                state.report.violationNotPresent,
+                (value)=> _onViolationNotPresent(context, value),
+                padding: const EdgeInsets.only(top: 40),
+              ),
+            ),
+          ],
+        ),
+        Row(
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            Flexible(
+              child: _buildSelect('Код ведомства', 'Выберите значение', 
+                null, state.streets.length, (index)=> state.streets[index].id, (index)=> state.streets[index].name
+              ),
+            ),
+            Padding(padding: const EdgeInsets.only(left: 35)),
+            Flexible(
+              child: _buildTextField('Телефон', 'Введите данные'),
+            ),
+          ],
+        ),
+        _buildTextField('Фактический адрес', 'Введите данные'),
+        _buildTextField('Юридический адрес', 'Введите данные'),
+        _buildAddViolator(),
+        _buildButtons(),
+      ],
+    );
+  }
+
+  Widget _buildAddViolator() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 20),
+      child: InkWell(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(right: 10),
+              child: Icon(Icons.add_circle,
+                color: ProjectColors.green,
+                size: 20,
+              ),
+            ),
+            Text('Добавить нарушителя',
+              style: ProjectTextStyles.baseBold.apply(color: ProjectColors.black),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildButtons() {
+    return Container(
+      color: Colors.white,
+      padding: const EdgeInsets.only(top: 30, bottom: 20),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          ProjectButton.builtFlatButton('Сохранить проект',
+            onPressed: () {}
+          ),
+          ProjectButton.builtFlatButton('Сохранить',
+            onPressed: () {}
+          ),
+          ProjectButton.builtFlatButton('На согласование',
+            onPressed: () {}
+          ),
+          ProjectButton.builtFlatButton('Удалить', 
+            color: ProjectColors.red,
+            onPressed: () {}
+          ),
+        ],
+      ),
+    );
   }
 
   Widget _buildMap() {
@@ -342,14 +388,21 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
     );
   }
 
-  Widget _buildCheckBox(String title, {TextStyle style, EdgeInsets padding = const EdgeInsets.only(top: 20)}) {
+  Widget _buildCheckBox(
+    String title, 
+    bool value, 
+    Function(bool) onChanged, {
+      TextStyle style, 
+      EdgeInsets padding = const EdgeInsets.only(top: 20)
+    }
+  ) {
     return Padding(
       padding: padding,
       child: Row(
         children: [
-
           ProjectCheckbox(
-            value: true,
+            value: value,
+            onChanged: onChanged,
           ),
           Padding(
             padding: const EdgeInsets.only(left: 10),

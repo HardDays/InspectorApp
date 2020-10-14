@@ -37,15 +37,15 @@ class InstructionFiltersWidget extends StatelessWidget {
   }
 
   void _onStatus(BuildContext context, String status) {
-    BlocProvider.of<InstructionFiltersBloc>(context).add(ChangeInstructionStatusEvent(status));  
+    BlocProvider.of<InstructionFiltersBloc>(context).add(SetInstructionStatusEvent(status));  
   }
 
   void _onCheckDates(BuildContext context, List<DateTime> dates) {
-    BlocProvider.of<InstructionFiltersBloc>(context).add(ChangeCheckDatesEvent(dates));  
+    BlocProvider.of<InstructionFiltersBloc>(context).add(SetCheckDatesEvent(dates));  
   }
 
   void _onInstructionDates(BuildContext context, List<DateTime> dates) {
-    BlocProvider.of<InstructionFiltersBloc>(context).add(ChangeInstructionDatesEvent(dates));  
+    BlocProvider.of<InstructionFiltersBloc>(context).add(SetInstructionDatesEvent(dates));  
   }
 
   @override

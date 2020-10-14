@@ -4,26 +4,26 @@ class LoadEvent extends InstructionFiltersBlocEvent {
 
 }
 
-class ChangeInstructionDatesEvent extends InstructionFiltersBlocEvent {
+class SetInstructionDatesEvent extends InstructionFiltersBlocEvent {
   final List<DateTime> dates;
 
-  ChangeInstructionDatesEvent(this.dates);
+  SetInstructionDatesEvent(this.dates);
 }
 
-class ChangeCheckDatesEvent extends InstructionFiltersBlocEvent {
+class SetCheckDatesEvent extends InstructionFiltersBlocEvent {
   final List<DateTime> dates;
 
-  ChangeCheckDatesEvent(this.dates);
+  SetCheckDatesEvent(this.dates);
 }
 
-class ChangeInstructionNumEvent extends InstructionFiltersBlocEvent {
+class SetInstructionNumEvent extends InstructionFiltersBlocEvent {
   final String instructionNum;
 
-  ChangeInstructionNumEvent(this.instructionNum);
+  SetInstructionNumEvent(this.instructionNum);
 }
 
-class ChangeInstructionStatusEvent extends InstructionFiltersBlocEvent {
+class SetInstructionStatusEvent extends InstructionFiltersBlocEvent {
   final String instructionStatus;
 
-  ChangeInstructionStatusEvent(this.instructionStatus);
+  SetInstructionStatusEvent(this.instructionStatus);
 }

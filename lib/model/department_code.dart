@@ -1,25 +1,29 @@
 import 'package:flutter/foundation.dart';
 
-class ReportStatus {
+class DepartmentCode {
   final int id;
   final String name;
+  final String code;
   
-  ReportStatus({
+  DepartmentCode({
     @required this.id,
     @required this.name,
+    @required this.code,
   });
 
-  factory ReportStatus.fromJson(Map<String, dynamic> json) {
-    return ReportStatus(
+  factory DepartmentCode.fromJson(Map<String, dynamic> json) {
+    return DepartmentCode(
       id: json['id'], 
       name: json['name'], 
+      code: json['code']
     );
   }
-
-  Map<String, dynamic> toJson() {
+  
+   Map<String, dynamic> toJson() {
     return {
       'id': id,
       'name': name,
+      'code': code
     };
   }
 }
