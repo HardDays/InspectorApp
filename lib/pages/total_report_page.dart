@@ -6,6 +6,7 @@ import 'package:inspector/blocs/total_report/bloc.dart';
 import 'package:inspector/blocs/total_report/events.dart';
 import 'package:inspector/blocs/total_report/states.dart';
 import 'package:inspector/model/report.dart';
+import 'package:inspector/model/violator.dart';
 import 'package:inspector/style/appbar.dart';
 import 'package:inspector/style/button.dart';
 import 'package:inspector/style/checkbox.dart';
@@ -14,6 +15,7 @@ import 'package:inspector/style/select.dart';
 import 'package:inspector/style/text_field.dart';
 import 'package:inspector/style/text_style.dart';
 import 'package:inspector/style/title.dart';
+import 'package:inspector/widgets/dictionary_dialog.dart';
 import 'package:latlong/latlong.dart';
 import 'package:inspector/widgets/image_picker.dart';
 
@@ -38,13 +40,41 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
     BlocProvider.of<TotalReportBloc>(context).add(SetViolationNotPresentEvent(value));  
   }
 
+  void _onViolatorNotFound(BuildContext context, bool value, int index) {
+    BlocProvider.of<TotalReportBloc>(context).add(SetViolatorNotFoundEvent(index, value));  
+  }
+
+  void _onViolatorForeign(BuildContext context, bool value, int index) {
+    BlocProvider.of<TotalReportBloc>(context).add(SetViolatorForeignEvent(index, value));  
+  }
+
+  void _onAddViolator(BuildContext context) {
+    BlocProvider.of<TotalReportBloc>(context).add(AddViolatorEvent());  
+  }
+
+  void _loadDict(BuildContext context) async {
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) async {
+        await showDialog(
+          context: context,
+          barrierDismissible: false,
+          child: DictionaryDialog()
+        );
+      }
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
     return BlocProvider(
       create: (context)=> TotalReportBloc(TotalReportBlocState(report: Report.empty(false)))..add(LoadEvent(widget.violationNotPresent)),
       child: BlocBuilder<TotalReportBloc, TotalReportBlocState>(
         builder: (context, state) {
+
+          if (state is LoadDictState) {
+            _loadDict(context);
+          }
+
           return Scaffold(
             backgroundColor: Colors.white,
             appBar: ProjectAppbar('Рапорт'),
@@ -60,7 +90,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
                       padding: EdgeInsets.zero, 
                       style: ProjectTextStyles.baseBold,
                     ),
-                    state.report.violationNotPresent ? _buildViolationNotPresent() : _buildViolationPresent(state),
+                    state.report.violationNotPresent ? _buildViolationNotPresent() : _buildViolationPresent(context, state),
                   ],
                 ),
               ),
@@ -84,7 +114,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
     );
   }
   
-  Widget _buildViolationPresent(TotalReportBlocState state) {
+  Widget _buildViolationPresent(BuildContext context, TotalReportBlocState state) {
     return Column(
       children: [
         _buildMap(),
@@ -113,22 +143,6 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
           mainAxisSize: MainAxisSize.max,
           children: [
             Flexible(
-              child: _buildSelect('Улица', 'Выберите значение', 
-                null, state.streets.length, (index)=> state.streets[index].id, (index)=> state.streets[index].toString()
-              ),
-            ),
-            Padding(padding: const EdgeInsets.only(left: 35)),
-            Flexible(
-              child: _buildSelect('Дом, корпус, строение', 'Выберите значение', 
-                null, state.addresses.length, (index)=> state.addresses[index].id, (index)=> state.addresses[index].toShortString()
-              ),
-            ),
-          ],
-        ),
-        Row(
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            Flexible(
               child: _buildSelect('Округ', 'Выберите значение', 
                 null, state.areas.length, (index)=> state.areas[index].id, (index)=> state.areas[index].toString()
               ),
@@ -137,6 +151,22 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
             Flexible(
               child: _buildSelect('Район', 'Выберите значение', 
                 null, state.districts.length, (index)=> state.districts[index].id, (index)=> state.districts[index].toString()
+              ),
+            ),
+          ],
+        ),
+        Row(
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            Flexible(
+              child: _buildSelect('Улица', 'Выберите значение', 
+                null, state.streets.length, (index)=> state.streets[index].id, (index)=> state.streets[index].toString()
+              ),
+            ),
+            Padding(padding: const EdgeInsets.only(left: 35)),
+            Flexible(
+              child: _buildSelect('Дом, корпус, строение', 'Выберите значение', 
+                null, state.addresses.length, (index)=> state.addresses[index].id, (index)=> state.addresses[index].toShortString()
               ),
             ),
           ],
@@ -155,11 +185,11 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
               Column(
                 children: [
                   _buildSelect('Нормативно-правовой акт', 'Выберите значение', 
-                    null, state.streets.length, (index)=> state.streets[index].id, (index)=> state.streets[index].name, 
+                    null, state.normativeActs.length, (index)=> state.normativeActs[index].id, (index)=> state.normativeActs[index].toString(), 
                     padding: const EdgeInsets.only(right: 30)
                   ),
                   _buildSelect('Пункт', 'Выберите значение', 
-                    null, state.streets.length, (index)=> state.streets[index].id, (index)=> state.streets[index].name,
+                    null, state.normativeActArticles.length, (index)=> state.normativeActArticles[index].id, (index)=> state.normativeActArticles[index].toString(),
                     padding: const EdgeInsets.only(top: 20, right: 30)
                   ),
                 ],
@@ -173,7 +203,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
           children: [
             Flexible(
               child: _buildSelect('Код нарушения', 'Выберите значение', 
-                null, state.streets.length, (index)=> state.streets[index].id, (index)=> state.streets[index].name
+                null, state.violationTypes.length, (index)=> state.violationTypes[index].id, (index)=> state.violationTypes[index].toString()
               ),
             ),
             Padding(padding: const EdgeInsets.only(left: 35)),
@@ -185,76 +215,95 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
         _buildTitle('Фотоматериалы нарушения'),
         ImagePicker(),
         _buildTitle('Нарушители'),
-        _buildCheckBox(
-          'Нарушитель не выявлен', 
-          state.report.violationNotPresent,
-          (value)=> _onViolationNotPresent(context, value),
+        Column(
+          children: List.generate(state.report.violation.violators.length, 
+            (index) => _buildViolator(context, state, index),
+          ),
         ),
-        _buildSelect('Тип нарушителя', 'Выберите значение', 
-          null, state.streets.length, (index)=> state.streets[index].id, (index)=> state.streets[index].name
-        ),
-        _buildSelect('Организация', 'Выберите значение', 
-          null, state.streets.length, (index)=> state.streets[index].id, (index)=> state.streets[index].name
-        ),
-        Row(
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            Flexible(
-              child: _buildTextField('ИНН', 'Введите данные'),
-            ),
-            Padding(padding: const EdgeInsets.only(left: 20)),
-            Flexible(
-              child: _buildTextField('ОГРН', 'Введите данные'),
-            ),
-            Padding(padding: const EdgeInsets.only(left: 20)),
-            Flexible(
-              child: _buildTextField('КПП', 'Введите данные'),
-            ),
-          ],
-        ),
-        Row(
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            Flexible(
-              child: _buildTextField('Дата регистрации', 'Введите дату значение'),
-            ),
-            Padding(padding: const EdgeInsets.only(left: 35)),
-            Flexible(
-              child: _buildCheckBox(
-                'Иностранное Юрлицо', 
-                state.report.violationNotPresent,
-                (value)=> _onViolationNotPresent(context, value),
-                padding: const EdgeInsets.only(top: 40),
-              ),
-            ),
-          ],
-        ),
-        Row(
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            Flexible(
-              child: _buildSelect('Код ведомства', 'Выберите значение', 
-                null, state.streets.length, (index)=> state.streets[index].id, (index)=> state.streets[index].name
-              ),
-            ),
-            Padding(padding: const EdgeInsets.only(left: 35)),
-            Flexible(
-              child: _buildTextField('Телефон', 'Введите данные'),
-            ),
-          ],
-        ),
-        _buildTextField('Фактический адрес', 'Введите данные'),
-        _buildTextField('Юридический адрес', 'Введите данные'),
-        _buildAddViolator(),
+        _buildAddViolator(context),
         _buildButtons(),
       ],
     );
   }
 
-  Widget _buildAddViolator() {
+  Widget _buildViolator(BuildContext context, TotalReportBlocState state, int index) {
+    final violator = state.report.violation.violators[index];
+    return Column(
+      children: [
+        _buildCheckBox(
+          'Нарушитель не выявлен', 
+          violator.violatorNotFound,
+          (value)=> _onViolatorNotFound(context, value, index),
+        ),
+        violator.violatorNotFound ? Container() :
+        Column(
+          children: [
+            _buildSelect('Тип нарушителя', 'Выберите значение', 
+              null, state.violatorTypes.length, (index)=> state.violatorTypes[index].id, (index)=> state.violatorTypes[index].toString()
+            ),
+            _buildSelect('Организация', 'Выберите значение', 
+              null, state.streets.length, (index)=> state.streets[index].id, (index)=> state.streets[index].name
+            ),
+            Row(
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Flexible(
+                  child: _buildTextField('ИНН', 'Введите данные'),
+                ),
+                Padding(padding: const EdgeInsets.only(left: 20)),
+                Flexible(
+                  child: _buildTextField('ОГРН', 'Введите данные'),
+                ),
+                Padding(padding: const EdgeInsets.only(left: 20)),
+                Flexible(
+                  child: _buildTextField('КПП', 'Введите данные'),
+                ),
+              ],
+            ),
+            Row(
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Flexible(
+                  child: _buildTextField('Дата регистрации', 'Введите дату значение'),
+                ),
+                Padding(padding: const EdgeInsets.only(left: 35)),
+                Flexible(
+                  child: _buildCheckBox(
+                    'Иностранное Юрлицо', 
+                    violator.foreign,
+                    (value)=> _onViolatorForeign(context, value, index),
+                    padding: const EdgeInsets.only(top: 40),
+                  ),
+                ),
+              ],
+            ),
+            Row(
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Flexible(
+                  child: _buildSelect('Код ведомства', 'Выберите значение', 
+                    null, state.departmentCodes.length, (index)=> state.departmentCodes[index].id, (index)=> state.departmentCodes[index].toString()
+                  ),
+                ),
+                Padding(padding: const EdgeInsets.only(left: 35)),
+                Flexible(
+                  child: _buildTextField('Телефон', 'Введите данные'),
+                ),
+              ],
+            ),
+            _buildTextField('Фактический адрес', 'Введите данные'),
+            _buildTextField('Юридический адрес', 'Введите данные'),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildAddViolator(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 20),
       child: InkWell(
+        onTap: ()=> _onAddViolator(context),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
@@ -425,10 +474,10 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
     );
   }
 
-  Widget _buildSelect(String title, String hintText, int value, int count, Function(int) itemValue, Function(int) itemTitle, {EdgeInsets padding = const EdgeInsets.only(top: 20)}) {
+  Widget _buildSelect<T>(String title, String hintText, T value, int count, Function(int) itemValue, Function(int) itemTitle, {EdgeInsets padding = const EdgeInsets.only(top: 20)}) {
     return Padding(
       padding: padding,
-      child: ProjectSelect<int>(
+      child: ProjectSelect<T>(
         count,
         value,
         itemValue,

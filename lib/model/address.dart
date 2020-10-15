@@ -1,3 +1,5 @@
+import 'dart:convert' as c;
+
 import 'package:flutter/material.dart';
 import 'package:inspector/model/area.dart';
 import 'package:inspector/model/district.dart';
@@ -14,6 +16,9 @@ class Address {
   final String specifiedAddress;
   final String unom;
   final String unad;
+  // final int areaId;
+  // final int districtId;
+  // final int streetId;
   final Area area;
   final District district;
   final Street street;
@@ -31,9 +36,16 @@ class Address {
     @required this.area,
     @required this.district,
     @required this.street,
+    // @required this.areaId,
+    // @required this.districtId,
+    // @required this.streetId,
   });
 
-  static Address fromJson(Map<String, dynamic> json) {
+  factory Address.fromJson(Map<String, dynamic> json, {bool stringified = false}) {
+    // final area = json['area'] != null ? Area.fromJson(json['area']) : Area(id: json['areaId']);
+    // final district = json['district'] != null ? District.fromJson(json['district']) : District(id: json['districtId']);
+    // final street = json['street'] != null ? Street.fromJson(json['street']) : Street(id: json['streetId']);
+    var t = 0;
     return Address(
       id: json['id'], 
       latitude: json['latitude'], 
@@ -44,13 +56,16 @@ class Address {
       specifiedAddress: json['specifiedAddress'],
       unom: json['unom'],
       unad: json['unad'],
-      area: Area.fromJson(json['area']),
-      district: District.fromJson(json['district']),
-      street: Street.fromJson(json['street']),
+      area:  Area.fromJson(stringified ? c.json.decode(json['area']) : json['area']),
+      district: District.fromJson(stringified ? c.json.decode(json['district']) : json['district']),
+      street: Street.fromJson(stringified ? c.json.decode(json['street']) : json['street']),
+      // areaId: area.id,
+      // districtId: district.id,
+      // streetId: street.id
     );
   }
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toJson({bool stringified = false}) {
     return {
       'id': id,
       'latitude': latitude,
@@ -61,9 +76,9 @@ class Address {
       'specifiedAddress': specifiedAddress,
       'unom': unom,
       'unad': unad,
-      'area': area.toJson(),
-      'district': district.toJson(),
-      'street': street.toJson(),
+      'area': stringified ? c.json.encode(area?.toJson()) : area?.toJson(),
+      'district': stringified ? c.json.encode(district?.toJson()) : district?.toJson(),
+      'street': stringified ? c.json.encode(street?.toJson()) : street?.toJson(),
     };
   }
 
@@ -74,7 +89,7 @@ class Address {
 
   @override
   String toString() {
-    final data = [area?.toString(), district?.toString(), street?.toString()];
-    return data.where((element) => element != null).join(', ') + toShortString();
+    final data = [area?.toString(), district?.toString(), street?.toString(), houseNum, buildNum != null ? 'к. $buildNum' : null, constructionNum != null ? 'стр. $constructionNum' : null];
+    return data.where((element) => element != null).join(', ');
   }
 }

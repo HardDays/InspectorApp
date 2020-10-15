@@ -21,11 +21,17 @@ class ViolatorType {
     }
   }
   
-   Map<String, dynamic> toJson() {
+  Map<String, dynamic> toJson() {
     return {
       'id': id,
       'name': name,
       'code': code
     };
   }
+
+  @override
+  String toString() {
+    return '$name';
+  }
+
 }

@@ -21,15 +21,6 @@ class ApiService {
     }
   }
 
-  // instructions statuses
-
-  Future<List<InstructionStatus>> getInstructionStatuses() async {
-    final data = await api.getInstructionStatuses();
-    return await _parse(
-      ()=> List<InstructionStatus>.from(data['data'].map((d) => InstructionStatus.fromJson(d)))
-    );
-  }
-
   // instructions
 
   Future<List<Instruction>> getInstructions() async {
@@ -53,49 +44,32 @@ class ApiService {
     );
   }
 
-  // areas
-
-  Future<List<Area>> getAreas() async {
-    final data = await api.getAreas();
-    return await _parse(
-      ()=> List<Area>.from(data['data'].map((d) => Area.fromJson(d)))
-    );
-  }
-
-  // districts
-
-  Future<List<District>> getDistricts() async {
-    final data = await api.getDistricts();
-    return await _parse(
-      ()=> List<District>.from(data['data'].map((d) => District.fromJson(d)))
-    );
-  }
-
-  // streets
-
-  Future<List<Street>> getStreets() async {
-    final data = await api.getStreets();
-    return await _parse(
-      ()=> List<Street>.from(data['data'].map((d) => Street.fromJson(d)))
-    );
-  }
-
-  // addresses
-
-  Future<List<Address>> getAddresses() async {
-    final data = await api.getAddresses();
-    return await _parse(
-      ()=> List<Address>.from(data['data'].map((d) => Address.fromJson(d)))
-    );
-  }
-
-  // special objects
-
-  Future<List<SpecialObject>> getSpecialObjects() async {
-    final data = await api.getSpecialObjects();
-    return await _parse(
-      ()=> List<SpecialObject>.from(data['data'].map((d) => SpecialObject.fromJson(d)))
-    );
-  }
+  // // areas
   
+  // Future<List<Area>> getAreas() async {
+  //   final data = await api.getAreas();
+  //   return await _parse(
+  //     ()=> List<Area>.from(data['data'].map((d) => Area.fromJson(d)))
+  //   );
+  // }
+
+  // // districts
+
+  // Future<List<District>> getDistricts() async {
+  //   final data = await api.getDistricts();
+  //   return await _parse(
+  //     ()=> List<District>.from(data['data'].map((d) => District.fromJson(d)))
+  //   );
+  // }
+
+  // // streets
+
+  // Future<List<Street>> getStreets() async {
+  //   final data = await api.getStreets();
+  //   return await _parse(
+  //     ()=> List<Street>.from(data['data'].map((d) => Street.fromJson(d)))
+  //   );
+  // }
+
+
 }

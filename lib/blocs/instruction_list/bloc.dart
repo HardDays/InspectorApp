@@ -7,7 +7,6 @@ import 'package:inspector/model/instruction_status.dart';
 import 'package:inspector/providers/exceptions/api_exception.dart';
 import 'package:inspector/services/api/api_service.dart';
 import 'package:inspector/services/instructions_service.dart';
-import 'package:inspector/services/objectdb/objectdb_instructions_service.dart';
 import 'package:inspector/services/objectdb/objectdb_persistance_service.dart';
 import 'package:intl/intl.dart';
 

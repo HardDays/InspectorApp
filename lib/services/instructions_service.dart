@@ -1,14 +1,14 @@
 import 'package:inspector/model/instruction.dart';
 import 'package:inspector/model/instruction_status.dart';
 import 'package:inspector/services/api/api_service.dart';
-import 'package:inspector/services/objectdb/objectdb_instructions_service.dart';
+import 'package:inspector/services/objectdb/objectdb_collection_service.dart';
 import 'package:inspector/services/objectdb/objectdb_persistance_service.dart';
 
 class InstructionsService {
 
   final _apiService = ApiService();
   final _persistanceService = ObjectDbPersistanceService();
-  final _dbService = ObjectDBInstructionsService();
+  final _dbService = ObjectDbCollectionService<Instruction>('instructions.db', (json) => Instruction.fromJson(json));
 
   static final _instance = InstructionsService._internal();
 

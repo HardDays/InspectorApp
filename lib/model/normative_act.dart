@@ -28,4 +28,8 @@ class NormativeAct {
     };
   }
 
+  @override
+  String toString() {
+    return '$name';
+  }
 }

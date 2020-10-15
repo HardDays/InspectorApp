@@ -1,4 +1,3 @@
-import 'package:custom_switch_button/custom_switch_button.dart';
 import 'package:flutter/material.dart';
 import 'package:inspector/style/colors.dart';
 import 'package:inspector/style/text_style.dart';

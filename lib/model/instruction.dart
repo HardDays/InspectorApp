@@ -74,7 +74,7 @@ class Instruction {
     @required this.instructionCreator
   });
 
-  static Instruction fromJson(Map<String, dynamic> json) {
+  factory Instruction.fromJson(Map<String, dynamic> json) {
     return Instruction(
       id: json['id'], 
       instructionNum: json['instructionNum'], 

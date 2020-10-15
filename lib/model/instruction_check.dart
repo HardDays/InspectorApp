@@ -30,8 +30,8 @@ class InstructionCheck {
       checkSubject: json['checkSubject'], 
       diggRequest: json['diggRequest'], 
       checkStatus: CheckStatus.fromJson(json['checkStatus']), 
-      checkParticipants: json['checkParticipants'] != null ? List<CheckParticipant>.from(json['checkParticipants'].map((p) => CheckParticipant.fromJson(p))) : [],
-      checkAddresses: json['checkAddresses'] != null ? List<Address>.from(json['checkAddresses'].map((p) => Address.fromJson(p))) : [],
+      checkParticipants: List<CheckParticipant>.from(json['checkParticipants'].map((p) => CheckParticipant.fromJson(p))),
+      checkAddresses: List<Address>.from(json['checkAddresses'].map((p) => Address.fromJson(p))),
       diggRequestChecks: json['diggRequestChecks'] != null ? List<DiggRequestCheck>.from(json['diggRequestChecks'].map((p) => DiggRequestCheck.fromJson(p))) : [],
     );
   }

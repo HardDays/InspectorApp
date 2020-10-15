@@ -10,13 +10,13 @@ class Street {
   
   Street({
     @required this.id,
-    @required this.areaId,
-    @required this.districtId,
-    @required this.name,
-    @required this.code,
+    this.areaId,
+    this.districtId,
+    this.name,
+    this.code,
   });
 
-  static Street fromJson(Map<String, dynamic> json) {
+  factory Street.fromJson(Map<String, dynamic> json) {
     return Street(
       id: json['id'], 
       areaId: json['areaId'],

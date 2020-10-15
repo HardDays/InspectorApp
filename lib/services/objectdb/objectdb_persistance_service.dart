@@ -1,3 +1,4 @@
+import 'package:inspector/model/dict_metadata.dart';
 import 'package:inspector/model/user.dart';
 import 'package:inspector/model/instruction.dart';
 import 'package:inspector/services/objectdb/objectdb_service.dart';
@@ -63,12 +64,6 @@ class ObjectDbPersistanceService extends ObjectDBService implements PersistanceS
   }
 
   @override
-  Future<List<Instruction>> getAll() async {
-    final instructions = await _getKeyValue('instructions');
-    return instructions == null ? List<Instruction>() : instructions.map((e) => Instruction.fromJson(e));
-  }
-
-  @override
   Future<bool> getDataSendingState() async {
     return await _getKeyValue('dataSendingState');
   }
@@ -114,11 +109,6 @@ class ObjectDbPersistanceService extends ObjectDBService implements PersistanceS
   Future<User> getUser() async {
     final user = await _getKeyValue('user');
     return user == null ? null : User.fromJson(await _getKeyValue('user'));
-  }
-
-  @override
-  Future<void> save(List<Instruction> instructions) async {
-    await _saveKeyValue('instructions', instructions.map((e) => e.toJson()).toList());
   }
 
   @override
@@ -172,6 +162,14 @@ class ObjectDbPersistanceService extends ObjectDBService implements PersistanceS
   @override
   Future<void> setToken(String token) async {
     await _saveKeyValue('token', token);
+  }
+
+  Future saveDictMetadata(DictMetadata value) async {
+    await _saveKeyValue('dictMetadata', value.toJson());
+  }
+
+  Future<DictMetadata> getDictMetadata() async {
+    return DictMetadata.fromJson(await _getKeyValue('dictMetadata') ?? {});
   }
 
 }

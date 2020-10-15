@@ -1,18 +1,18 @@
 import 'package:flutter/foundation.dart';
 
-class DepartmentCode {
+class ResolutionType {
   final int id;
   final String name;
   final String code;
   
-  DepartmentCode({
+  ResolutionType({
     @required this.id,
     @required this.name,
     @required this.code,
   });
 
-  factory DepartmentCode.fromJson(Map<String, dynamic> json) {
-    return DepartmentCode(
+  factory ResolutionType.fromJson(Map<String, dynamic> json) {
+    return ResolutionType(
       id: json['id'], 
       name: json['name'], 
       code: json['code']
@@ -26,10 +26,4 @@ class DepartmentCode {
       'code': code
     };
   }
-
-  @override
-  String toString() {
-    return '$code $name';
-  }
-
 }

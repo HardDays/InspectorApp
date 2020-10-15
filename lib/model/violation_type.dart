@@ -28,4 +28,10 @@ class ViolationType {
       'code': code
     };
   }
+
+  @override
+  String toString() {
+    return '$code $name';
+  }
+
 }

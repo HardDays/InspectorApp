@@ -20,11 +20,11 @@ class InstructionStatus {
   final String name;
   
   InstructionStatus({
-    this.id,
+    @required this.id,
     @required this.name,
   });
 
-  static InstructionStatus fromJson(Map<String, dynamic> json) {
+  factory InstructionStatus.fromJson(Map<String, dynamic> json) {
     return InstructionStatus(
       id: json['id'], 
       name: json['name'], 

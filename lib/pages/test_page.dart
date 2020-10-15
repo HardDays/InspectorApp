@@ -8,14 +8,20 @@ import 'package:inspector/model/department_code.dart';
 import 'package:inspector/model/employee.dart';
 import 'package:inspector/model/instruction_status.dart';
 import 'package:inspector/model/normative_act.dart';
+import 'package:inspector/model/normative_act_article.dart';
 import 'package:inspector/model/oati_department.dart';
 import 'package:inspector/model/object_category.dart';
 import 'package:inspector/model/report_status.dart';
+import 'package:inspector/model/resolution_type.dart';
 import 'package:inspector/model/special_object.dart';
 import 'package:inspector/model/violation_kind.dart';
 import 'package:inspector/model/violation_status.dart';
 import 'package:inspector/model/violation_type.dart';
 import 'package:inspector/model/violator_doc_type.dart';
+import 'package:inspector/model/violator_info_ip.dart';
+import 'package:inspector/model/violator_info_legal.dart';
+import 'package:inspector/model/violator_info_official.dart';
+import 'package:inspector/model/violator_info_private.dart';
 import 'package:inspector/model/violator_type.dart';
 import 'package:inspector/services/api/dictionary_service.dart';
 import 'package:inspector/style/button.dart';
@@ -26,7 +32,7 @@ import 'package:inspector/style/text_style.dart';
 class TestPage extends StatelessWidget {
   TestPage({Key key}) : super(key: key);
 
-  final DictionaryService dictionaryService = DictionaryService();
+  final ApiDictionaryService dictionaryService = ApiDictionaryService();
 
   static const _colorsMap = {
     '1. Blue': ProjectColors.blue,
@@ -262,111 +268,153 @@ class TestPage extends StatelessWidget {
                 ],
               ),
             ),
-            DictionaryWidget<CheckStatus>(
-              dictionaryName: 'Check Statuses',
-              loader: dictionaryService.getCheckStatuses,
-              mapping: (item) => item
-                  .toJson()
-                  .map((key, value) => MapEntry(key, value.toString())),
-            ),
-            DictionaryWidget<Address>(
-              dictionaryName: 'Addresses',
-              loader: dictionaryService.getAddresses,
-              mapping: (item) => item
-                  .toJson()
-                  .map((key, value) => MapEntry(key, value.toString())),
-            ),
-            DictionaryWidget<CheckType>(
-              dictionaryName: 'Check Types',
-              loader: dictionaryService.getCheckTypes,
-              mapping: (item) => item
-                  .toJson()
-                  .map((key, value) => MapEntry(key, value.toString())),
-            ),
-            DictionaryWidget<NormativeAct>(
-              dictionaryName: 'Normative Acts',
-              loader: dictionaryService.getNormativeActs,
-              mapping: (item) => item
-                  .toJson()
-                  .map((key, value) => MapEntry(key, value.toString())),
-            ),
-            DictionaryWidget<ViolationKind>(
-              dictionaryName: 'Violation Kinds',
-              loader: dictionaryService.getViolationKinds,
-              mapping: (item) => item
-                  .toJson()
-                  .map((key, value) => MapEntry(key, value.toString())),
-            ),
-            DictionaryWidget<ViolationType>(
-              dictionaryName: 'Violation Types',
-              loader: dictionaryService.getViolationTypes,
-              mapping: (item) => item
-                  .toJson()
-                  .map((key, value) => MapEntry(key, value.toString())),
-            ),
-            DictionaryWidget<Employee>(
-              dictionaryName: 'Employees',
-              loader: dictionaryService.getEmployees,
-              mapping: (item) => item
-                  .toJson()
-                  .map((key, value) => MapEntry(key, value.toString())),
-            ),
-            DictionaryWidget<ReportStatus>(
-              dictionaryName: 'Report Statuses',
-              loader: dictionaryService.getReportStatuses,
-              mapping: (item) => item
-                  .toJson()
-                  .map((key, value) => MapEntry(key, value.toString())),
-            ),
-            DictionaryWidget<ViolatorType>(
-              dictionaryName: 'Violator Types',
-              loader: dictionaryService.getViolatorTypes,
-              mapping: (item) => item
-                  .toJson()
-                  .map((key, value) => MapEntry(key, value.toString())),
-            ),
-            DictionaryWidget<InstructionStatus>(
-              dictionaryName: 'Instruction Statuses',
-              loader: dictionaryService.getInstructionStatuses,
-              mapping: (item) => item
-                  .toJson()
-                  .map((key, value) => MapEntry(key, value.toString())),
-            ),
-            DictionaryWidget<OatiDepartment>(
-              dictionaryName: 'Oati Departments',
-              loader: dictionaryService.getOatiDepartments,
-              mapping: (item) => item
-                  .toJson()
-                  .map((key, value) => MapEntry(key, value.toString())),
-            ),
-            DictionaryWidget<SpecialObject>(
-              dictionaryName: 'Special Objects',
-              loader: dictionaryService.getSpecialObjects,
-              mapping: (item) => item
-                  .toJson()
-                  .map((key, value) => MapEntry(key, value.toString())),
-            ),
-            DictionaryWidget<ObjectCategory>(
-              dictionaryName: 'Object Categories',
-              loader: dictionaryService.getObjectCategories,
-              mapping: (item) => item
-                  .toJson()
-                  .map((key, value) => MapEntry(key, value.toString())),
-            ),
-            DictionaryWidget<DepartmentCode>(
-              dictionaryName: 'Department Codes',
-              loader: dictionaryService.getDepartmentCodes,
-              mapping: (item) => item
-                  .toJson()
-                  .map((key, value) => MapEntry(key, value.toString())),
-            ),
-            DictionaryWidget<ViolatorDocumentType>(
-              dictionaryName: 'Violator Document Types',
-              loader: dictionaryService.getViolatorDocumentTypes,
-              mapping: (item) => item
-                  .toJson()
-                  .map((key, value) => MapEntry(key, value.toString())),
-            ),
+            // DictionaryWidget<CheckStatus>(
+            //   dictionaryName: 'Check Statuses',
+            //   loader: dictionaryService.getCheckStatuses,
+            //   mapping: (item) => item
+            //       .toJson()
+            //       .map((key, value) => MapEntry(key, value.toString())),
+            // ),
+            // DictionaryWidget<Address>(
+            //   dictionaryName: 'Addresses',
+            //   loader: dictionaryService.getAddresses,
+            //   mapping: (item) => item
+            //       .toJson()
+            //       .map((key, value) => MapEntry(key, value.toString())),
+            // ),
+            // DictionaryWidget<CheckType>(
+            //   dictionaryName: 'Check Types',
+            //   loader: dictionaryService.getCheckTypes,
+            //   mapping: (item) => item
+            //       .toJson()
+            //       .map((key, value) => MapEntry(key, value.toString())),
+            // ),
+            // DictionaryWidget<NormativeAct>(
+            //   dictionaryName: 'Normative Acts',
+            //   loader: dictionaryService.getNormativeActs,
+            //   mapping: (item) => item
+            //       .toJson()
+            //       .map((key, value) => MapEntry(key, value.toString())),
+            // ),
+            // DictionaryWidget<ViolationKind>(
+            //   dictionaryName: 'Violation Kinds',
+            //   loader: dictionaryService.getViolationKinds,
+            //   mapping: (item) => item
+            //       .toJson()
+            //       .map((key, value) => MapEntry(key, value.toString())),
+            // ),
+            // DictionaryWidget<ViolationType>(
+            //   dictionaryName: 'Violation Types',
+            //   loader: dictionaryService.getViolationTypes,
+            //   mapping: (item) => item
+            //       .toJson()
+            //       .map((key, value) => MapEntry(key, value.toString())),
+            // ),
+            // DictionaryWidget<Employee>(
+            //   dictionaryName: 'Employees',
+            //   loader: dictionaryService.getEmployees,
+            //   mapping: (item) => item
+            //       .toJson()
+            //       .map((key, value) => MapEntry(key, value.toString())),
+            // ),
+            // DictionaryWidget<ReportStatus>(
+            //   dictionaryName: 'Report Statuses',
+            //   loader: dictionaryService.getReportStatuses,
+            //   mapping: (item) => item
+            //       .toJson()
+            //       .map((key, value) => MapEntry(key, value.toString())),
+            // ),
+            // DictionaryWidget<ViolatorType>(
+            //   dictionaryName: 'Violator Types',
+            //   loader: dictionaryService.getViolatorTypes,
+            //   mapping: (item) => item
+            //       .toJson()
+            //       .map((key, value) => MapEntry(key, value.toString())),
+            // ),
+            // DictionaryWidget<InstructionStatus>(
+            //   dictionaryName: 'Instruction Statuses',
+            //   loader: dictionaryService.getInstructionStatuses,
+            //   mapping: (item) => item
+            //       .toJson()
+            //       .map((key, value) => MapEntry(key, value.toString())),
+            // ),
+            // DictionaryWidget<OatiDepartment>(
+            //   dictionaryName: 'Oati Departments',
+            //   loader: dictionaryService.getOatiDepartments,
+            //   mapping: (item) => item
+            //       .toJson()
+            //       .map((key, value) => MapEntry(key, value.toString())),
+            // ),
+            // DictionaryWidget<SpecialObject>(
+            //   dictionaryName: 'Special Objects',
+            //   loader: dictionaryService.getSpecialObjects,
+            //   mapping: (item) => item
+            //       .toJson()
+            //       .map((key, value) => MapEntry(key, value.toString())),
+            // ),
+            // DictionaryWidget<ObjectCategory>(
+            //   dictionaryName: 'Object Categories',
+            //   loader: dictionaryService.getObjectCategories,
+            //   mapping: (item) => item
+            //       .toJson()
+            //       .map((key, value) => MapEntry(key, value.toString())),
+            // ),
+            // DictionaryWidget<DepartmentCode>(
+            //   dictionaryName: 'Department Codes',
+            //   loader: dictionaryService.getDepartmentCodes,
+            //   mapping: (item) => item
+            //       .toJson()
+            //       .map((key, value) => MapEntry(key, value.toString())),
+            // ),
+            // DictionaryWidget<ViolatorDocumentType>(
+            //   dictionaryName: 'Violator Document Types',
+            //   loader: dictionaryService.getViolatorDocumentTypes,
+            //   mapping: (item) => item
+            //       .toJson()
+            //       .map((key, value) => MapEntry(key, value.toString())),
+            // ),
+            // DictionaryWidget<ViolatorInfoLegal>(
+            //   dictionaryName: 'Violator Info Legal',
+            //   loader: dictionaryService.getViolatorInfoLegal,
+            //   mapping: (item) => item
+            //       .toJson()
+            //       .map((key, value) => MapEntry(key, value.toString())),
+            // ),
+            // DictionaryWidget<ViolatorInfoOfficial>(
+            //   dictionaryName: 'Violator Info Official',
+            //   loader: dictionaryService.getViolatorInfoOfficial,
+            //   mapping: (item) => item
+            //       .toJson()
+            //       .map((key, value) => MapEntry(key, value.toString())),
+            // ),
+            // DictionaryWidget<ViolatorInfoPrivate>(
+            //   dictionaryName: 'Violator Info Private',
+            //   loader: dictionaryService.getViolatorInfoPrivate,
+            //   mapping: (item) => item
+            //       .toJson()
+            //       .map((key, value) => MapEntry(key, value.toString())),
+            // ),
+            // DictionaryWidget<ViolatorInfoIp>(
+            //   dictionaryName: 'Violator Info Ip',
+            //   loader: dictionaryService.getViolatorInfoIp,
+            //   mapping: (item) => item
+            //       .toJson()
+            //       .map((key, value) => MapEntry(key, value.toString())),
+            // ),
+            // DictionaryWidget<ResolutionType>(
+            //   dictionaryName: 'Resolution Type',
+            //   loader: dictionaryService.getResolutionTypes,
+            //   mapping: (item) => item
+            //       .toJson()
+            //       .map((key, value) => MapEntry(key, value.toString())),
+            // ),
+            // DictionaryWidget<NormativeActArticle>(
+            //   dictionaryName: 'Normative Act Article',
+            //   loader: dictionaryService.getNormativeActArticles,
+            //   mapping: (item) => item
+            //       .toJson()
+            //       .map((key, value) => MapEntry(key, value.toString())),
+            // ),
           ],
         ),
       ),
@@ -491,7 +539,7 @@ class DictionaryWidget<T> extends StatelessWidget {
 }
 
 typedef Widget WidgetBuilder<S>(S item);
-typedef Future<List<T>> DictionaryLoader<T>();
+typedef Future<List<T>> DictionaryLoader<T>(int,);
 
 class DictionaryShowWidget<T> extends StatefulWidget {
   final WidgetBuilder<T> widgetBuilder;
@@ -523,7 +571,7 @@ class DictionaryShowWidgetState<T> extends State<DictionaryShowWidget<T>> {
               setState(() {
                 state = LoadingState.loading;
               });
-              data = await widget.loader();
+              // data = await widget.loader(0, 100);
               setState(() {
                 state = LoadingState.loaded;
               });

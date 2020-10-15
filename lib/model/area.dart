@@ -8,11 +8,11 @@ class Area {
   
   Area({
     @required this.id,
-    @required this.name,
-    @required this.code,
+    this.name,
+    this.code,
   });
 
-  static Area fromJson(Map<String, dynamic> json) {
+  factory Area.fromJson(Map<String, dynamic> json) {
     return Area(
       id: json['id'], 
       name: json['name'], 

@@ -1,30 +1,71 @@
 import 'package:dio/dio.dart';
+import 'package:inspector/model/area.dart';
+import 'package:inspector/model/district.dart';
 import 'package:inspector/model/instruction_status.dart';
 import 'package:inspector/model/special_object.dart';
+import 'package:inspector/model/street.dart';
 import 'package:inspector/providers/exceptions/api_exception.dart';
+import 'package:inspector/model/address.dart';
+import 'package:inspector/model/check_status.dart';
+import 'package:inspector/model/check_type.dart';
+import 'package:inspector/model/department_code.dart';
+import 'package:inspector/model/employee.dart';
+import 'package:inspector/model/instruction_status.dart';
+import 'package:inspector/model/normative_act.dart';
+import 'package:inspector/model/normative_act_article.dart';
+import 'package:inspector/model/oati_department.dart';
+import 'package:inspector/model/object_category.dart';
+import 'package:inspector/model/report_status.dart';
+import 'package:inspector/model/resolution_type.dart';
+import 'package:inspector/model/special_object.dart';
+import 'package:inspector/model/violation_kind.dart';
+import 'package:inspector/model/violation_status.dart';
+import 'package:inspector/model/violation_type.dart';
+import 'package:inspector/model/violator_doc_type.dart';
+import 'package:inspector/model/violator_info_ip.dart';
+import 'package:inspector/model/violator_info_legal.dart';
+import 'package:inspector/model/violator_info_official.dart';
+import 'package:inspector/model/violator_info_private.dart';
+import 'package:inspector/model/violator_type.dart';
 import 'package:inspector/providers/exceptions/server_exception.dart';
 import 'package:inspector/providers/exceptions/timeout_exception.dart';
 import 'package:inspector/providers/exceptions/unauthorized_exception.dart';
 import 'package:inspector/providers/exceptions/unhadled_exception.dart';
 
 class ApiProvider {
-  
   static const _url = 'http://212.46.14.26:9930/oati-integration-rest';
   static const _loginPath = '/login';
   static const _instructionsPath = '/instructions';
-  static const _dictPath = '/dict';
-  static const _instructionStatusesPath = '/instruction-statuses';
-  static const _areasPath = '/areas';
-  static const _streetsPath = '/streets';
-  static const _districtsPath = '/districts';
-  static const _addressesPath = '/addresses';
-  static const _specialObjectsPath = '/special-objects';
 
-  final dio = Dio(
-    BaseOptions(
-      baseUrl: _url
-    )
-  );
+  static const Map<Type, String> _dictionaryMap = {
+    SpecialObject: '/dict/special-objects',
+    ObjectCategory: '/dict/object-categories',
+    CheckStatus: '/dict/check-statuses',
+    Address: '/dict/addresses',
+    Area: '/dict/areas',
+    District: '/dict/districts',
+    Street: '/dict/streets',
+    CheckType: '/dict/check-types',
+    NormativeAct: '/dict/normative-acts',
+    ViolationKind: '/dict/violation-kinds',
+    ViolationType: '/dict/violation-types',
+    Employee: '/dict/employees',
+    ReportStatus: '/dict/report-statuses',
+    ViolatorType: '/dict/violator-types',
+    InstructionStatus: '/dict/instruction-statuses',
+    ViolationStatus: '/dict/violation-statuses',
+    OatiDepartment: '/dict/oati-departments',
+    DepartmentCode: '/dict/department-codes',
+    ViolatorDocumentType: '/dict/violator-doc-types',
+    ViolatorInfoLegal: '/dict/violator-info-legal',
+    ViolatorInfoOfficial: '/dict/violator-info-official',
+    ViolatorInfoPrivate: '/dict/violator-info-private',
+    ViolatorInfoIp: '/dict/violator-info-ip',
+    ResolutionType: '/dict/resolution-types',
+    NormativeActArticle: '/dict/normative-act-articles',
+  };
+
+  final dio = Dio(BaseOptions(baseUrl: _url));
 
   static final _instance = ApiProvider._internal();
 
@@ -85,6 +126,17 @@ class ApiProvider {
     );
   }
 
+  Future<dynamic> getDictionary<T>(int from, int to) async {
+    return _request(
+      () => dio.get(_dictionaryMap[T], 
+        queryParameters: {
+          'from': from,
+          'to': to,
+        },
+      ),
+    );
+  }
+
   Future<dynamic> getInstruction(int id) async {
     return _request(
       ()=> dio.get(_instructionsPath + '/$id')
@@ -100,47 +152,4 @@ class ApiProvider {
       )
     );
   }
-  
-  Future<dynamic> getInstructionStatuses() async {
-    return _request(
-      ()=> dio.get(_dictPath + _instructionStatusesPath)
-    );
-  }
-
-  Future<dynamic> getAreas() async {
-    return _request(
-      ()=> dio.get(_dictPath + _areasPath)
-    );
-  }
-
-  Future<dynamic> getStreets() async {
-    return _request(
-      ()=> dio.get(_dictPath + _streetsPath)
-    );
-  }
-
-  Future<dynamic> getDistricts() async {
-    return _request(
-      ()=> dio.get(_dictPath + _districtsPath)
-    );
-  }
-
-  Future<dynamic> getAddresses() async {
-    return _request(
-      ()=> dio.get(_dictPath + _addressesPath)
-    );
-  }
-
-  Future<dynamic> getSpecialObjects() async {
-    return _request(
-      ()=> dio.get(_dictPath + _specialObjectsPath)
-    );
-  }
-  
-  Future<dynamic> getDictionary(String url) {
-    return _request(
-      () => dio.get(url),
-    );
-  }
-
 }

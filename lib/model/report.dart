@@ -54,7 +54,8 @@ class Report {
   }
 
   Report copyWith({
-    bool violationNotPresent
+    bool violationNotPresent,
+    Violation violation
   }) {
     return Report(
       id: id,
@@ -65,7 +66,7 @@ class Report {
       reportDate: reportDate,
       reportStatus: reportStatus,
       reportAuthor: reportAuthor,
-      violation: violation,
+      violation: violation ?? this.violation,
       diggRequestChecks: diggRequestChecks,
     );
   }

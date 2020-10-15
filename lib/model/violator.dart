@@ -21,7 +21,7 @@ class Violator {
     this.departmentCode
   });
 
-   factory Violator.empty() { 
+  factory Violator.empty() { 
     return Violator(
       violatorNotFound: false,
       foreign: false,
@@ -34,13 +34,27 @@ class Violator {
         id: json['id'], 
         foreign: json['foreign'], 
         violatorNotFound: json['violatorNotFound'],
-        type:  ViolationType.fromJson(json['type']),
+        type: ViolationType.fromJson(json['type']),
         violatorPerson: ViolatorInfo.fromJson(json['violatorPerson']),
         departmentCode: DepartmentCode.fromJson(json['departmentCode']),
       );
     } else {
       return Violator.empty();
     }
+  }
+
+  Violator copyWith({
+    bool violatorNotFound,
+    bool foreign,
+  }) {
+    return Violator(
+      id: id,
+      violatorNotFound: violatorNotFound ?? this.violatorNotFound,
+      foreign: foreign ?? this.foreign,
+      type: type,
+      violatorPerson: violatorPerson,
+      departmentCode: departmentCode,
+    );
   }
   
   Map<String, dynamic>  toJson() {

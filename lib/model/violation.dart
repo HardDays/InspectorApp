@@ -69,6 +69,26 @@ class Violation {
       return Violation.empty();
     }
   }
+
+  Violation copyWith({
+    List<Violator> violators
+  }) {
+    return Violation(
+      id: id,
+      violationDescription: violationDescription,
+      violationNum: violationNum,
+      violationDate: violationDate,
+      cafapId: cafapId,
+      codexArticle: codexArticle,
+      violationStatus: violationStatus,
+      controlSpecialObject: controlSpecialObject,
+      violationAddress: violationAddress,
+      objectCategory: objectCategory,
+      violationType: violationType,
+      normativeActArticles: normativeActArticles,
+      violators: violators ?? this.violators
+    );
+  }
   
    Map<String, dynamic> toJson() {
     return {
