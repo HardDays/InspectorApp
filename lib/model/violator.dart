@@ -67,4 +67,8 @@ class Violator {
       'departmentCode': departmentCode?.toJson()
     };
   }
+
+  Map<String, dynamic> toSqliteJson() {
+    return toJson();
+  }
 }

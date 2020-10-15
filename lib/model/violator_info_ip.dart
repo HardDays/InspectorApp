@@ -88,4 +88,8 @@ class ViolatorInfoIp {
       'bik': bik
      };
   }
+
+  Map<String, dynamic> toSqliteJson() {
+    return toJson();
+  }
 }

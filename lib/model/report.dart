@@ -85,4 +85,8 @@ class Report {
       'diggRequestChecks': diggRequestChecks.map((e) => e.toJson()).toList(),
     };
   }
+
+  Map<String, dynamic> toSqliteJson() {
+    return toJson();
+  }
 }

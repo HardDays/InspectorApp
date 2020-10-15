@@ -26,4 +26,8 @@ class OatiDepartment {
       'code': code
     };
   }
+
+  Map<String, dynamic> toSqliteJson() {
+    return toJson();
+  }
 }

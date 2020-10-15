@@ -29,6 +29,10 @@ class Employee {
     );
   }
 
+  Map<String, dynamic> toSqliteJson() {
+    return toJson();
+  }
+
   Map<String, dynamic> toJson() {
     return {
       'id': id,

@@ -1,78 +1,115 @@
 
-import 'package:inspector/model/area.dart';
-import 'package:inspector/model/dictionary_metadata.dart';
-import 'package:inspector/model/street.dart';
-import 'package:inspector/model/district.dart';
 import 'package:inspector/model/address.dart';
 import 'package:inspector/model/area.dart';
+import 'package:inspector/model/department_code.dart';
+import 'package:inspector/model/dictionary_metadata.dart';
+import 'package:inspector/model/district.dart';
+import 'package:inspector/model/instruction_status.dart';
+import 'package:inspector/model/normative_act.dart';
+import 'package:inspector/model/normative_act_article.dart';
+import 'package:inspector/model/special_object.dart';
+import 'package:inspector/model/street.dart';
+import 'package:inspector/model/violation_type.dart';
+import 'package:inspector/model/violator_type.dart';
 import 'package:inspector/services/api/dictionary_service.dart';
+import 'package:inspector/services/objectdb/objectdb_persistance_service.dart';
 import 'package:inspector/services/sqlite/sqlite_collection_service.dart';
 import 'package:synchronized/synchronized.dart';
 
-import 'package:inspector/services/objectdb/objectdb_collection_service.dart';
-import 'package:inspector/services/objectdb/objectdb_persistance_service.dart';
-import 'package:inspector/services/persistance_service.dart';
-
 class DictionaryService {
   final _maxCount = 500;
-  final lock = Lock();
+  static final _instance = DictionaryService._internal();
 
-  static const _areas = 'areas';
-  static const _streets = 'streets';
-  static const _districts = 'districts';
-  static const _addresses = 'addresses';
+  factory DictionaryService() {
+    return _instance;
+  }
 
-  final Map<String, SqliteCollectionService> _dbServices = {
-    _areas: SqliteCollectionService(_areas, (json)=> Area.fromJson(json)),
-    _streets: SqliteCollectionService(_streets, (json)=> Street.fromJson(json)),
-    _districts: SqliteCollectionService(_districts, (json)=> District.fromJson(json)),
-    _addresses: SqliteCollectionService(_addresses, (json)=> Address.fromJson(json, stringified: true)),
-  };
+  DictionaryService._internal();
+
+  final _dbService = SqliteCollectionService();
+
+  // final Map<String, SqliteCollectionService> _dbServices = {
+  //   DictionaryNames.areas: SqliteCollectionService(DictionaryNames.areas, (json)=> Area.fromJson(json)),
+  //   DictionaryNames.streets: SqliteCollectionService(DictionaryNames.streets, (json)=> Street.fromJson(json)),
+  //   DictionaryNames.districts: SqliteCollectionService(DictionaryNames.districts, (json)=> District.fromJson(json)),
+  //   DictionaryNames.addresses: SqliteCollectionService(DictionaryNames.addresses, (json)=> Address.fromJson(json, stringified: true)),
+  //   DictionaryNames.instructionStatuses: SqliteCollectionService(DictionaryNames.instructionStatuses, (json)=> InstructionStatus.fromJson(json)),
+  //   DictionaryNames.specialObjects: SqliteCollectionService(DictionaryNames.specialObjects, (json)=> SpecialObject.fromJson(json)),
+  //   DictionaryNames.normativeActs: SqliteCollectionService(DictionaryNames.normativeActs, (json)=> NormativeAct.fromJson(json)),
+  //   DictionaryNames.normativeActArticles: SqliteCollectionService(DictionaryNames.normativeActArticles, (json)=> NormativeActArticle.fromJson(json)),
+  //   DictionaryNames.violationTypes: SqliteCollectionService(DictionaryNames.violationTypes, (json)=> ViolationType.fromJson(json)),
+  //   DictionaryNames.violatorTypes: SqliteCollectionService(DictionaryNames.violatorTypes, (json)=> ViolatorType.fromJson(json)),
+  //   DictionaryNames.departmentCodes: SqliteCollectionService(DictionaryNames.departmentCodes, (json)=> DepartmentCode.fromJson(json)),
+  // };
 
   final Map<String, Future<List> Function(int, int)> _loaders = {
-    _areas: ApiDictionaryService().getAreas,
-    _streets: ApiDictionaryService().getStreets,
-    _districts: ApiDictionaryService().getDistricts,
-    _addresses: ApiDictionaryService().getAddresses,
+    DictionaryNames.areas: ApiDictionaryService().getAreas,
+    DictionaryNames.streets: ApiDictionaryService().getStreets,
+    DictionaryNames.districts: ApiDictionaryService().getDistricts,
+    DictionaryNames.addresses: ApiDictionaryService().getAddresses,
+    DictionaryNames.instructionStatuses: ApiDictionaryService().getInstructionStatuses,
+    DictionaryNames.specialObjects: ApiDictionaryService().getSpecialObjects,
+    DictionaryNames.normativeActs: ApiDictionaryService().getNormativeActs,
+    DictionaryNames.normativeActArticles: ApiDictionaryService().getNormativeActArticles,
+    DictionaryNames.violationTypes: ApiDictionaryService().getViolationTypes,
+    DictionaryNames.violatorTypes: ApiDictionaryService().getViolatorTypes,
+    DictionaryNames.departmentCodes: ApiDictionaryService().getDepartmentCodes,
   };
 
+ final Map<String, Function(Map<String, dynamic>)> _converters = {
+    DictionaryNames.areas: (json)=> Area.fromJson(json),
+    DictionaryNames.streets: (json)=> Street.fromJson(json),
+    DictionaryNames.districts: (json)=> District.fromJson(json),
+    DictionaryNames.addresses: (json)=> Address.fromJson(json, stringified: true),
+    DictionaryNames.instructionStatuses: (json)=> InstructionStatus.fromJson(json),
+    DictionaryNames.specialObjects: (json)=> SpecialObject.fromJson(json),
+    DictionaryNames.normativeActs: (json)=> NormativeAct.fromJson(json),
+    DictionaryNames.normativeActArticles: (json)=> NormativeActArticle.fromJson(json),
+    DictionaryNames.violationTypes: (json)=> ViolationType.fromJson(json),
+    DictionaryNames.violatorTypes: (json)=> ViolatorType.fromJson(json),
+    DictionaryNames.departmentCodes: (json)=> DepartmentCode.fromJson(json),
+  };
+
+  final _lock = Lock();
   final _persistanceService = ObjectDbPersistanceService();
 
   bool canceled = false;
 
-  Future<bool> isLoaded() async {
+  Future<bool> isLoaded({List<String> keys}) async {
     final metadata = await _persistanceService.getDictMetadata();
-    
-    for (final key in _loaders.keys) {
+    for (final key in keys ?? _loaders.keys) {
       if (!metadata.loaded.containsKey(key)) {
         return false;
       }
     }
-
-    return metadata.loadetAt != null;
+    return true;
   }
 
-  Future preload(Function(String, int) notifier) async {
-    await lock.synchronized(() async {
+  Future load({Function(String, int) notifier, List<String> keys, bool reload = false}) async {
+    await _lock.synchronized(() async {
       try {
+        await _dbService.init();
+
         final metadata = await _persistanceService.getDictMetadata();
-        for (final key in _loaders.keys) {
-          if (!metadata.loaded.containsKey(key)) {
-            final service = _dbServices[key];
-            await service.init();
-            await service.clear();
+        for (final key in keys ?? _loaders.keys) {
+          if (!metadata.loaded.containsKey(key) || reload) {
+            await _dbService.clear(key);
+            metadata.loaded.remove(key);;
+            await _persistanceService.saveDictMetadata(metadata);
 
             int count = 0;
             int attempts = 10000;
             while (true) {
               final res = await _loaders[key](count, count + _maxCount);
-              print('$key $count ... ');
-              await service.append(res);
+              await _dbService.append(key, res);
 
               count += res.length;
               attempts--;
 
-              notifier(key, count);
+              if (notifier != null) {
+                notifier(key, count);
+              }
+              print('$key $count ... ');
 
               if (res.isEmpty || attempts < 0) {
                 break;
@@ -82,12 +119,10 @@ class DictionaryService {
                 return;
               }
             } 
-            
             metadata.loaded[key] = true;
             await _persistanceService.saveDictMetadata(metadata);
           }
         }
-
         await _persistanceService.saveDictMetadata(
           DictionaryMetadata(
             loaded: metadata.loaded, 
@@ -100,26 +135,51 @@ class DictionaryService {
     });
   }
 
-  Future<List<Address>> getAddresses() async {
-    return await _dbServices[_addresses].all();
+  Future<List<T>>_getData<T>(String name, {String where, List<dynamic> whereArgs, int limit}) async {
+    return await _dbService.all<T>(name, _converters[name], where: where, whereArgs: whereArgs, limit: limit);
   }
 
-   Future<List<Area>> getAreas() async {
-    return await _dbServices[_areas].all();
+  Future<List<Address>> getAddresses({String houseNum}) async {
+    return await _getData(DictionaryNames.addresses, where: 'houseNum LIKE ?', whereArgs: ['$houseNum%'], limit: 10);
   }
 
-  // Future<List<T>> all() async {
-  //   if (!_loaded) {
-  //     try {
-  //       final res = await _loader(0, _maxCount);
-  //       await _dbService.save(res);
-  //       _loaded = true;
-  //       return res;
-  //     } catch (ex) {
-  //       return _dbService.all();
-  //     }
-  //   } else {
-  //     return _dbService.all();
-  //   }
-  // }
+  Future<List<Area>> getAreas({String name}) async {
+    return await _getData<Area>(DictionaryNames.areas, where: 'name LIKE ?', whereArgs: ['$name%'], limit: 10);
+  }
+
+  Future<List<District>> getDitricts({String name, int areaId}) async {
+    return await _getData<District>(DictionaryNames.districts, where: 'name LIKE ?', whereArgs: ['$name%'], limit: 10);
+  }
+
+  Future<List<Street>> getStreets({String name}) async {
+    return await _getData<Street>(DictionaryNames.streets, where: 'name LIKE ?', whereArgs: ['$name%'], limit: 10);
+  }
+
+  Future<List<InstructionStatus>> getInstructionStatuses() async {
+    return await _getData<InstructionStatus>(DictionaryNames.instructionStatuses);
+  }
+  
+  Future<List<SpecialObject>> getSpecialObjects() async {
+    return await _getData<SpecialObject>(DictionaryNames.specialObjects);
+  }
+
+  Future<List<NormativeAct>> getNormativeActs() async {
+    return await _getData<NormativeAct>(DictionaryNames.normativeActs);
+  }
+
+  Future<List<NormativeActArticle>> getNormativeActArticles() async {
+    return await _getData<NormativeActArticle>(DictionaryNames.normativeActArticles);
+  }
+
+  Future<List<ViolatorType>> getViolatorTypes() async {
+    return await _getData<ViolatorType>(DictionaryNames.violatorTypes);
+  }
+
+  Future<List<ViolationType>> getViolationTypes() async {
+    return await _getData<ViolationType>(DictionaryNames.violationTypes);
+  }
+
+  Future<List<DepartmentCode>> getDepartmentCodes() async {
+    return await _getData<DepartmentCode>(DictionaryNames.departmentCodes);
+  }
 }

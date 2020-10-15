@@ -41,7 +41,7 @@ class DictionaryDialog extends StatelessWidget {
                   ),
                   state is LoadingState ? Padding(
                     padding: const EdgeInsets.only(top: 30),
-                    child: Text('Словать "${state.name}", загружено: ${state.count}',
+                    child: Text('Словарь "${state.name}", загружено: ${state.count}',
                       style: ProjectTextStyles.subTitle.apply(color: ProjectColors.black),
                     ),
                   ) : Container(),

@@ -185,7 +185,7 @@ class InstructionPage extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        ProjectParagraph(ProjectIcons.mapIcon(), address.toString(),
+        ProjectParagraph(ProjectIcons.mapIcon(), address.toLongString(),
           maxLines: 1,
           padding: const EdgeInsets.only(left: 18, right: 20)
         ),

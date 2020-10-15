@@ -27,4 +27,9 @@ class CheckParticipantBranch {
       'code': code
     };
   }
+
+  Map<String, dynamic> toSqliteJson() {
+    return toJson();
+  }
+
 }

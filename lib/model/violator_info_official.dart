@@ -44,6 +44,10 @@ class ViolatorInfoOfficial {
     };
   }
 
+  Map<String, dynamic> toSqliteJson() {
+    return toJson();
+  }
+
   factory ViolatorInfoOfficial.fromJson(Map<String, dynamic> json) {
     return ViolatorInfoOfficial(
       id: json['id'],

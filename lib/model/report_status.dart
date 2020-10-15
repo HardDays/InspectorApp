@@ -22,4 +22,8 @@ class ReportStatus {
       'name': name,
     };
   }
+
+  Map<String, dynamic> toSqliteJson() {
+    return toJson();
+  }
 }

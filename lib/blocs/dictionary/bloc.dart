@@ -17,8 +17,8 @@ class DictionaryBloc extends Bloc<DictionaryBlocEvent, DictionaryBlocState> {
       final service = DictionaryService();
       
       operation = CancelableOperation.fromFuture(
-        service.preload(
-          (name, count) {
+        service.load(
+          notifier: (name, count) {
             add(UpdateEvent(name, count));
           },
         ),
