@@ -1,6 +1,6 @@
 
 import 'package:inspector/model/area.dart';
-import 'package:inspector/model/dict_metadata.dart';
+import 'package:inspector/model/dictionary_metadata.dart';
 import 'package:inspector/model/street.dart';
 import 'package:inspector/model/district.dart';
 import 'package:inspector/model/address.dart';
@@ -89,7 +89,7 @@ class DictionaryService {
         }
 
         await _persistanceService.saveDictMetadata(
-          DictMetadata(
+          DictionaryMetadata(
             loaded: metadata.loaded, 
             loadetAt: DateTime.now(),
           ),

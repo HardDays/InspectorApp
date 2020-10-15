@@ -1,4 +1,4 @@
-import 'package:inspector/model/dict_metadata.dart';
+import 'package:inspector/model/dictionary_metadata.dart';
 import 'package:inspector/model/user.dart';
 import 'package:inspector/model/instruction.dart';
 import 'package:inspector/services/objectdb/objectdb_service.dart';
@@ -164,12 +164,12 @@ class ObjectDbPersistanceService extends ObjectDBService implements PersistanceS
     await _saveKeyValue('token', token);
   }
 
-  Future saveDictMetadata(DictMetadata value) async {
+  Future saveDictMetadata(DictionaryMetadata value) async {
     await _saveKeyValue('dictMetadata', value.toJson());
   }
 
-  Future<DictMetadata> getDictMetadata() async {
-    return DictMetadata.fromJson(await _getKeyValue('dictMetadata') ?? {});
+  Future<DictionaryMetadata> getDictMetadata() async {
+    return DictionaryMetadata.fromJson(await _getKeyValue('dictMetadata') ?? {});
   }
 
 }

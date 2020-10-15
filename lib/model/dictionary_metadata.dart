@@ -1,15 +1,15 @@
 
-class DictMetadata {
+class DictionaryMetadata {
   final DateTime loadetAt;
   final Map<String, bool> loaded;
   
-  DictMetadata({
+  DictionaryMetadata({
     this.loaded,
     this.loadetAt
   });
 
-  factory DictMetadata.fromJson(Map<String, dynamic> json) {
-    return DictMetadata(
+  factory DictionaryMetadata.fromJson(Map<String, dynamic> json) {
+    return DictionaryMetadata(
       loadetAt: json['loadetAt'] != null ? DateTime.parse(json['loadetAt']) : null, 
       loaded: json['loaded'] != null ? json['loaded'].cast<String, bool>() : {}, 
     );
