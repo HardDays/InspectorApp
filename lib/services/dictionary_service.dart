@@ -100,11 +100,11 @@ class DictionaryService {
     });
   }
 
-  Future<List<Address>> addresses() async {
+  Future<List<Address>> getAddresses() async {
     return await _dbServices[_addresses].all();
   }
 
-   Future<List<Area>> areas() async {
+   Future<List<Area>> getAreas() async {
     return await _dbServices[_areas].all();
   }
 
