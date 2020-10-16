@@ -3,9 +3,9 @@ import 'package:inspector/blocs/instruction/events.dart';
 import 'package:inspector/blocs/instruction/states.dart';
 import 'package:inspector/providers/exceptions/api_exception.dart';
 import 'package:inspector/providers/exceptions/unhadled_exception.dart';
-import 'package:inspector/services/api/api_service.dart';
 import 'package:inspector/services/dictionary_service.dart';
 import 'package:inspector/services/instructions_service.dart';
+import 'package:inspector/services/sqlite/sqlite_collection_service.dart';
 
 class InstructionBloc extends Bloc<InstructionBlocEvent, InstructionBlocState> {
   InstructionBloc(initialState) : super(initialState);
@@ -18,13 +18,17 @@ class InstructionBloc extends Bloc<InstructionBlocEvent, InstructionBlocState> {
     if (event is UpadteInstructionStatusEvent) {
       try {
         await _instructionService.init();
-        //await _dictionaryService.init();
-        
+
         yield LoadingState(state.instruction);
 
-      //  final statuses = await _instructionStatusService.all();
-     //   final status = statuses.firstWhere((element) => element.name == event.status);
-       // await _instructionService.updateInstruction(state.instruction.id, instructionStatus: status);
+        final isLoaded = await _dictionaryService.isLoaded(keys: [DictionaryNames.instructionStatuses]);
+        if (!isLoaded) {
+          await _dictionaryService.load(keys: [DictionaryNames.instructionStatuses]);
+        }
+
+        final statuses = await _dictionaryService.getInstructionStatuses();
+        final status = statuses.firstWhere((element) => element.name == event.status);
+        await _instructionService.updateInstruction(state.instruction.id, instructionStatus: status);
         final instruction = await _instructionService.find(state.instruction.id, reload: true);
 
         yield SuccessState(instruction);

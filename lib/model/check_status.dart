@@ -23,4 +23,8 @@ class CheckStatus {
       'name': name,
     };
   }
+
+  Map<String, dynamic> toSqliteJson() {
+    return toJson();
+  }
 }

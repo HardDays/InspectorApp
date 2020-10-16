@@ -69,4 +69,8 @@ class ViolatorInfoLegal {
       'bik': bik,
     };
   }
+
+  Map<String, dynamic> toSqliteJson() {
+    return toJson();
+  }
 }

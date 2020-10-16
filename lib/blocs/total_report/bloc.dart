@@ -1,6 +1,11 @@
 import 'package:bloc/bloc.dart';
 import 'package:inspector/blocs/total_report/events.dart';
 import 'package:inspector/blocs/total_report/states.dart';
+import 'package:inspector/model/address.dart';
+import 'package:inspector/model/area.dart';
+import 'package:inspector/model/district.dart';
+import 'package:inspector/model/report.dart';
+import 'package:inspector/model/street.dart';
 import 'package:inspector/model/violator.dart';
 import 'package:inspector/services/dictionary_service.dart';
 
@@ -9,55 +14,69 @@ class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {
 
   final _dictionaryService = DictionaryService();
 
-  // final _areasService = AreasService();
-  // final _addressesService = AddressesService();
-  // final _streetsService = StreetsService();
-  // final _districtsService = DistrictsService();
-  // final _specialObjectsService = SpecialObjectsService();
-  // final _normativeActsService = NormativeActsService();
-  // final _normativeActArticlessService = NormativeActArticlesService();
-  // final _violationTypesService = ViolationTypesService();
-  // final _violatorTypesService = ViolatorTypesService();
-  // final _departmentCodesService = DepartmentCodesService();
+  Future<Iterable<Area>> getAreas(String name) async {
+    if (name.isNotEmpty) {
+      return await _dictionaryService.getAreas(name: name);
+    }
+  }
+
+  Future<Iterable<District>> getDistricts(String name) async {
+    if (name.isNotEmpty) {
+      return await _dictionaryService.getDitricts(name: name);
+    }
+  }
+
+  Future<Iterable<Street>> getStreets(String name) async {
+    if (name.isNotEmpty) {
+      return await _dictionaryService.getStreets(name: name);
+    }
+  }
+
+  Future<Iterable<Address>> getAddresses(String houseNum) async {
+    if (houseNum.isNotEmpty) {
+      return await _dictionaryService.getAddresses(houseNum: houseNum);
+    }
+  }
 
   @override
   Stream<TotalReportBlocState> mapEventToState(TotalReportBlocEvent event) async* {
     if (event is LoadEvent) {
       try {
-
-        final loaded = await _dictionaryService.isLoaded();
-
+        final loaded = await _dictionaryService.isLoaded();        
         if (!loaded) {
           yield LoadDictState(state.report);
           await Future.delayed(Duration(seconds: 2));
-        }
+          yield TotalReportBlocState(
+            report: state.report
+          );
+        } else {
+          add(InitEvent(event.violationNotPresent));
+        } 
+      } catch (ex) {
+        print(ex);
+      }
+    } else if (event is InitEvent) {
+      try {
+        // final areas = await _dictionaryService.getAreas();
+        // final districts = await _dictionaryService.getDitricts();
+        // final streets = await _dictionaryService.getStreets();
+        // final addresses = await _dictionaryService.getAddresses();
+        // final specialObjects = await _dictionaryService.getSpecialObjects();
+        // final normativeActs = await _dictionaryService.getNormativeActs();
+        // final normativeActArticles = await _dictionaryService.getNormativeActArticles();
+        // final violationTypes = await _dictionaryService.getViolationTypes();
+        // final violatorTypes = await _dictionaryService.getViolatorTypes();
+        // final departmentCodes = await _dictionaryService.getDepartmentCodes();
 
-        // print(await dict.isLoaded());
-
-        // final areas = await _areasService.all();
-        // final districts = await _districtsService.all();
-        // final streets = await _streetsService.all();
-        // final addresses = await _addressesService.all();
-        // final specialObjects = await _specialObjectsService.all();
-        // final normativeActs = await _normativeActsService.all();
-        // final normativeActArticles = await _normativeActArticlessService.all();
-        // final violationTypes = await _violationTypesService.all();
-        // final violatorTypes = await _violatorTypesService.all();
-        // final departmentCodes = await _departmentCodesService.all();
-
-        // yield TotalReportBlocState(
-        //   report: Report.empty(event.violationNotPresent),
-        //   streets: streets, 
-        //   addresses: addresses, 
-        //   areas: areas, 
-        //   districts: districts,
-        //   specialObjects: specialObjects,
-        //   normativeActs: normativeActs,
-        //   normativeActArticles: normativeActArticles,
-        //   violationTypes: violationTypes,
-        //   violatorTypes: violatorTypes,
-        //   departmentCodes: departmentCodes,
-        // );
+        yield TotalReportBlocState(
+          report: Report.empty(event.violationNotPresent),
+          //areas: areas, 
+          // specialObjects: specialObjects,
+          // normativeActs: normativeActs,
+          // violationTypes: violationTypes,
+          // violatorTypes: violatorTypes,
+          // departmentCodes: departmentCodes,
+        );
       } catch (ex) {
         print(ex);
       }

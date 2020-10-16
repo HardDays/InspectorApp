@@ -27,4 +27,8 @@ class CheckType {
       'code': code
     };
   }
+
+  Map<String, dynamic> toSqliteJson() {
+    return toJson();
+  }
 }

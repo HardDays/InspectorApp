@@ -26,4 +26,8 @@ class ObjectCategory {
       'code': code
     };
   }
+
+  Map<String, dynamic> toSqliteJson() {
+    return toJson();
+  }
 }

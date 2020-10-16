@@ -14,44 +14,44 @@ class TotalReportBlocState {
 
   final Report report;
 
-  final List<Street> streets;
-  final List<Area> areas;
-  final List<District> districts;
-  final List<Address> addresses;
-  final List<SpecialObject> specialObjects;
-  final List<NormativeAct> normativeActs;
-  final List<NormativeActArticle> normativeActArticles;
-  final List<ViolationType> violationTypes;
-  final List<ViolatorType> violatorTypes;
-  final List<DepartmentCode> departmentCodes;
+  // final List<Street> streets;
+  // final List<Area> areas;
+  // final List<District> districts;
+  // final List<Address> addresses;
+  // final List<SpecialObject> specialObjects;
+  // final List<NormativeAct> normativeActs;
+  // final List<NormativeActArticle> normativeActArticles;
+  // final List<ViolationType> violationTypes;
+  // final List<ViolatorType> violatorTypes;
+  // final List<DepartmentCode> departmentCodes;
 
   TotalReportBlocState({
     this.report,
-    this.streets = const [],
-    this.addresses = const [],
-    this.areas = const [],
-    this.districts = const [],
-    this.specialObjects = const [],
-    this.normativeActs = const [],
-    this.normativeActArticles = const [],
-    this.violationTypes = const [],
-    this.violatorTypes = const [],
-    this.departmentCodes = const [],
+    // this.streets = const [],
+    // this.addresses = const [],
+    // this.areas = const [],
+    // this.districts = const [],
+    // this.specialObjects = const [],
+    // this.normativeActs = const [],
+    // this.normativeActArticles = const [],
+    // this.violationTypes = const [],
+    // this.violatorTypes = const [],
+    // this.departmentCodes = const [],
   });
 
   TotalReportBlocState copyWith({Report report}) {
     return TotalReportBlocState(
       report: report,
-      streets: streets,
-      addresses: addresses,
-      areas: areas,
-      districts: districts,
-      specialObjects: specialObjects,
-      normativeActs: normativeActs,
-      normativeActArticles: normativeActArticles,
-      violationTypes: violationTypes,
-      violatorTypes: violatorTypes,
-      departmentCodes: departmentCodes,
+      // streets: streets,
+      // addresses: addresses,
+      // areas: areas,
+      // districts: districts,
+      // specialObjects: specialObjects,
+      // normativeActs: normativeActs,
+      // normativeActArticles: normativeActArticles,
+      // violationTypes: violationTypes,
+      // violatorTypes: violatorTypes,
+      // departmentCodes: departmentCodes,
     );
   }
 }

@@ -5,9 +5,14 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:inspector/blocs/total_report/bloc.dart';
 import 'package:inspector/blocs/total_report/events.dart';
 import 'package:inspector/blocs/total_report/states.dart';
+import 'package:inspector/model/address.dart';
+import 'package:inspector/model/area.dart';
+import 'package:inspector/model/district.dart';
 import 'package:inspector/model/report.dart';
+import 'package:inspector/model/street.dart';
 import 'package:inspector/model/violator.dart';
 import 'package:inspector/style/appbar.dart';
+import 'package:inspector/style/autocomplete.dart';
 import 'package:inspector/style/button.dart';
 import 'package:inspector/style/checkbox.dart';
 import 'package:inspector/style/colors.dart';
@@ -32,6 +37,11 @@ class TotalReportPage extends StatefulWidget {
 
 class TotalReportPageState extends State<TotalReportPage> with SingleTickerProviderStateMixin {
 
+  final areaController = TextEditingController();
+  final streetController = TextEditingController();
+  final districtController = TextEditingController();
+  final addressController = TextEditingController();
+
   void initState() {
     super.initState();
   }
@@ -52,6 +62,38 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
     BlocProvider.of<TotalReportBloc>(context).add(AddViolatorEvent());  
   }
 
+  void _onAreaSelect(BuildContext context, Area value) {
+    areaController.text = value.toString();
+  }
+
+  void _onDistrictSelect(BuildContext context, District value) {
+    districtController.text = value.toString();
+  }
+
+  void _onStreetSelect(BuildContext context, Street value) {
+    streetController.text = value.toString();
+  }
+
+  void _onAddressSelect(BuildContext context, Address value) {
+    addressController.text = value.toString();
+  }
+
+  Future<Iterable<Area>> _onAreaSearch(BuildContext context, String name) async {
+    return await BlocProvider.of<TotalReportBloc>(context).getAreas(name);
+  }
+
+  Future<Iterable<District>> _onDistrictSearch(BuildContext context, String name) async {
+    return await BlocProvider.of<TotalReportBloc>(context).getDistricts(name);
+  }
+
+  Future<Iterable<Street>> _onStreetSearch(BuildContext context, String name) async {
+    return await BlocProvider.of<TotalReportBloc>(context).getStreets(name);
+  }
+
+  Future<Iterable<Address>> _onAddressSearch(BuildContext context, String houseNum) async {
+    return await BlocProvider.of<TotalReportBloc>(context).getAddresses(houseNum);
+  }
+
   void _loadDict(BuildContext context) async {
     WidgetsBinding.instance.addPostFrameCallback(
       (_) async {
@@ -60,6 +102,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
           barrierDismissible: false,
           child: DictionaryDialog()
         );
+        BlocProvider.of<TotalReportBloc>(context).add(InitEvent(widget.violationNotPresent));  
       }
     );
   }
@@ -70,11 +113,9 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
       create: (context)=> TotalReportBloc(TotalReportBlocState(report: Report.empty(false)))..add(LoadEvent(widget.violationNotPresent)),
       child: BlocBuilder<TotalReportBloc, TotalReportBlocState>(
         builder: (context, state) {
-
           if (state is LoadDictState) {
             _loadDict(context);
           }
-
           return Scaffold(
             backgroundColor: Colors.white,
             appBar: ProjectAppbar('Рапорт'),
@@ -143,14 +184,22 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
           mainAxisSize: MainAxisSize.max,
           children: [
             Flexible(
-              child: _buildSelect('Округ', 'Выберите значение', 
-                null, state.areas.length, (index)=> state.areas[index].id, (index)=> state.areas[index].toString()
+              child: _buildAutocomplete(
+                'Округ', 
+                'Выберите значение', 
+                areaController,
+                (value)=> _onAreaSearch(context, value), 
+                (value)=> _onAreaSelect(context, value),
               ),
             ),
             Padding(padding: const EdgeInsets.only(left: 35)),
             Flexible(
-              child: _buildSelect('Район', 'Выберите значение', 
-                null, state.districts.length, (index)=> state.districts[index].id, (index)=> state.districts[index].toString()
+              child: _buildAutocomplete(
+                'Район', 
+                'Выберите значение', 
+                districtController,
+                (value)=> _onDistrictSearch(context, value), 
+                (value)=> _onDistrictSelect(context, value)
               ),
             ),
           ],
@@ -159,22 +208,34 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
           mainAxisSize: MainAxisSize.max,
           children: [
             Flexible(
-              child: _buildSelect('Улица', 'Выберите значение', 
-                null, state.streets.length, (index)=> state.streets[index].id, (index)=> state.streets[index].toString()
+              child: _buildAutocomplete(
+                'Улица', 
+                'Выберите значение', 
+                streetController,
+                (value)=> _onStreetSearch(context, value), 
+                (value)=> _onStreetSelect(context, value)
               ),
             ),
             Padding(padding: const EdgeInsets.only(left: 35)),
             Flexible(
-              child: _buildSelect('Дом, корпус, строение', 'Выберите значение', 
-                null, state.addresses.length, (index)=> state.addresses[index].id, (index)=> state.addresses[index].toShortString()
+              child: _buildAutocomplete(
+                'Дом, корпус, строение', 
+                'Выберите значение', 
+                addressController,
+                (value)=> _onAddressSearch(context, value), 
+                (value)=> _onAddressSelect(context, value)
               ),
             ),
           ],
         ),
         _buildTextField('Адресный ориентир', 'Введите данные'),
         _buildTitle('Нарушение'),
-        _buildSelect('Код объекта контроля', 'Выберите значение', 
-          null, state.specialObjects.length, (index)=> state.specialObjects[index].id, (index)=> state.specialObjects[index].toString()
+        _buildAutocomplete(
+          'Код объекта контроля', 
+          'Выберите значение', 
+          null,
+          (v) {}, 
+          (v) {},
         ),
         _buildTextField('Описание нарушения', 'Введите данные'),
         Padding(
@@ -184,12 +245,21 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
             children: [
               Column(
                 children: [
-                  _buildSelect('Нормативно-правовой акт', 'Выберите значение', 
-                    null, state.normativeActs.length, (index)=> state.normativeActs[index].id, (index)=> state.normativeActs[index].toString(), 
+                  _buildAutocomplete(
+                    'Нормативно-правовой акт', 
+                    'Выберите значение', 
+                    null,
+                    (v) {}, 
+                    (v) {},
+                    //null, state.normativeActs.length, (index)=> state.normativeActs[index].id, (index)=> state.normativeActs[index].toString(), 
                     padding: const EdgeInsets.only(right: 30)
                   ),
-                  _buildSelect('Пункт', 'Выберите значение', 
-                    null, state.normativeActArticles.length, (index)=> state.normativeActArticles[index].id, (index)=> state.normativeActArticles[index].toString(),
+                  _buildAutocomplete(
+                    'Пункт', 
+                    'Выберите значение', 
+                    null,
+                    (v) {}, (v) {},
+                    //null, state.normativeActArticles.length, (index)=> state.normativeActArticles[index].id, (index)=> state.normativeActArticles[index].toString(),
                     padding: const EdgeInsets.only(top: 20, right: 30)
                   ),
                 ],
@@ -202,8 +272,12 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
           mainAxisSize: MainAxisSize.max,
           children: [
             Flexible(
-              child: _buildSelect('Код нарушения', 'Выберите значение', 
-                null, state.violationTypes.length, (index)=> state.violationTypes[index].id, (index)=> state.violationTypes[index].toString()
+              child: _buildAutocomplete(
+                'Код нарушения', 
+                'Выберите значение', 
+                null,
+                (v) {}, (v) {},
+                //null, state.violationTypes.length, (index)=> state.violationTypes[index].id, (index)=> state.violationTypes[index].toString()
               ),
             ),
             Padding(padding: const EdgeInsets.only(left: 35)),
@@ -238,11 +312,13 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
         violator.violatorNotFound ? Container() :
         Column(
           children: [
-            _buildSelect('Тип нарушителя', 'Выберите значение', 
-              null, state.violatorTypes.length, (index)=> state.violatorTypes[index].id, (index)=> state.violatorTypes[index].toString()
+            _buildAutocomplete('Тип нарушителя', 'Выберите значение',  null,
+              (v) {}, (v) {},
+              //null, state.violatorTypes.length, (index)=> state.violatorTypes[index].id, (index)=> state.violatorTypes[index].toString()
             ),
-            _buildSelect('Организация', 'Выберите значение', 
-              null, state.streets.length, (index)=> state.streets[index].id, (index)=> state.streets[index].name
+            _buildAutocomplete('Организация', 'Выберите значение',  null,
+             (v) {}, (v) {},
+              //null, state.streets.length, (index)=> state.streets[index].id, (index)=> state.streets[index].name
             ),
             Row(
               mainAxisSize: MainAxisSize.max,
@@ -281,8 +357,12 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
               mainAxisSize: MainAxisSize.max,
               children: [
                 Flexible(
-                  child: _buildSelect('Код ведомства', 'Выберите значение', 
-                    null, state.departmentCodes.length, (index)=> state.departmentCodes[index].id, (index)=> state.departmentCodes[index].toString()
+                  child: _buildAutocomplete(
+                    'Код ведомства', 
+                    'Выберите значение',  
+                    null,
+                    (v) {}, (v) {},
+                    //null, state.departmentCodes.length, (index)=> state.departmentCodes[index].id, (index)=> state.departmentCodes[index].toString()
                   ),
                 ),
                 Padding(padding: const EdgeInsets.only(left: 35)),
@@ -474,17 +554,20 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
     );
   }
 
-  Widget _buildSelect<T>(String title, String hintText, T value, int count, Function(int) itemValue, Function(int) itemTitle, {EdgeInsets padding = const EdgeInsets.only(top: 20)}) {
+  Widget _buildAutocomplete(String title, 
+    String hintText, 
+    TextEditingController controller,
+    AutocompleteCallback suggestionsCallback, 
+    Function(dynamic) onSuggestionSelected, {
+    EdgeInsets padding = const EdgeInsets.only(top: 20),
+  }) {
     return Padding(
       padding: padding,
-      child: ProjectSelect<T>(
-        count,
-        value,
-        itemValue,
-        itemTitle,
-        title: title,
+      child: ProjectAutocomplete(title,
+        controller: controller,
         hintText: hintText,
-        onChanged: (t) {},
+        suggestionsCallback: suggestionsCallback,
+        onSuggestionSelected: onSuggestionSelected,
       ),
     );
   }

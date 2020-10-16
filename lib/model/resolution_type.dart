@@ -26,4 +26,8 @@ class ResolutionType {
       'code': code
     };
   }
+  
+  Map<String, dynamic> toSqliteJson() {
+    return toJson();
+  }
 }

@@ -24,4 +24,8 @@ class ViolatorInfo {
       'phone': phone,
     };
   }
+
+  Map<String, dynamic> toSqliteJson() {
+    return toJson();
+  }
 }

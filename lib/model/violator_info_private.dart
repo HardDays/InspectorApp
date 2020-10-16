@@ -73,4 +73,8 @@ class ViolatorInfoPrivate {
       'registrationAddress': registrationAddress
     };
   }
+
+  Map<String, dynamic> toSqliteJson() {
+    return toJson();
+  }
 }

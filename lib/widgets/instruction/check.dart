@@ -30,7 +30,7 @@ class InstructionCheckWidget extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: List.generate(instructionCheck.checkAddresses.length, 
-                      (index) => _buildParagraph(ProjectIcons.mapIcon(), instructionCheck.checkAddresses[index].toString(), index == 10 ? 0 : 10),
+                      (index) => _buildParagraph(ProjectIcons.mapIcon(), instructionCheck.checkAddresses[index].toLongString(), index == 10 ? 0 : 10),
                     ),
                   ),
                 ),
