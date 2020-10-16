@@ -68,8 +68,11 @@ class ProfileBloc extends Bloc<ProfileBlocEvent, ProfileBlocState> {
   }
 
   Future<DateTime> _getInstallDate() async {
-    return DateTime.fromMillisecondsSinceEpoch(
+    if(Platform.isAndroid) {
+      return DateTime.fromMillisecondsSinceEpoch(
         await platform.invokeMethod('getInstallDate'));
+    }
+    return null;
   }
 
   Future<void> _sendEmail() async {

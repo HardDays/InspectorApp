@@ -98,7 +98,7 @@ class ProfilePage extends StatelessWidget {
                       _buildSectionItem(
                         'Дата установки',
                         Text(
-                          DateFormat('dd.MM.yyyy').format(state.installDate),
+                          state.installDate != null ? DateFormat('dd.MM.yyyy').format(state.installDate) : 'Не определено',
                           style: ProjectTextStyles.base
                               .apply(color: ProjectColors.black),
                         ),
