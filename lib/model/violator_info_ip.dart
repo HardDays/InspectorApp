@@ -1,3 +1,5 @@
+import 'dart:convert' as c;
+
 import 'package:flutter/foundation.dart';
 import 'package:inspector/model/violator_address.dart';
 
@@ -42,7 +44,7 @@ class ViolatorInfoIp {
     @required this.bik,
   });
 
-  factory ViolatorInfoIp.fromJson(Map<String, dynamic> json) {
+  factory ViolatorInfoIp.fromJson(Map<String, dynamic> json, {bool stringified = false}) {
     return ViolatorInfoIp(
       id: json['id'],
       phone: json['phone'],
@@ -57,8 +59,7 @@ class ViolatorInfoIp {
       gender: json['gender'],
       birthDate: json['birthDate'] != null ? DateTime.parse(json['birthDate']) : null,
       birthPlace: json['birthPlace'],
-      registrationAddress:  json['registrationAddress'] != null ? 
-          ViolatorAddress.fromJson(json['registrationAddress']) : null,  
+      registrationAddress: ViolatorAddress.parse(json['registrationAddress'], stringified),  
       account: json['account'],
       corrAccount: json['corrAccount'],
       bank: json['bank'],
@@ -66,7 +67,7 @@ class ViolatorInfoIp {
     );
   }
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toJson({bool stringified = false}) {
     return {
       'id': id,
       'phone': phone,
@@ -77,11 +78,11 @@ class ViolatorInfoIp {
       'inn': inn,
       'snils': snils,
       'ogrnip': ogrnip,
-      'registrationDate': registrationDate,
+      'registrationDate': registrationDate?.toString(),
       'gender': gender,
-      'birthDate': birthDate,
+      'birthDate': birthDate?.toString(),
       'birthPlace': birthPlace,
-      'registrationAddress': registrationAddress,
+      'registrationAddress': registrationAddress != null ? stringified ? c.json.encode(registrationAddress.toJson()) : registrationAddress.toJson() : null,
       'account': account,
       'corrAccount': corrAccount,
       'bank': bank,
@@ -90,6 +91,12 @@ class ViolatorInfoIp {
   }
 
   Map<String, dynamic> toSqliteJson() {
-    return toJson();
+    return toJson(stringified: true);
+  }
+
+  @override
+  String toString() {
+    final data = [firstName, lastName, patronym, ogrnip != null ? 'ОГРНИП $ogrnip' : null, inn != null ? 'ИНН $inn' : null];
+    return data.where((e)=> e !=null).join(' ');
   }
 }

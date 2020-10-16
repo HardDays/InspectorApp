@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'dart:convert' as c;
 
 class ViolatorDocumentType {
     final int id;
@@ -27,5 +28,15 @@ class ViolatorDocumentType {
 
   Map<String, dynamic> toSqliteJson() {
     return toJson();
+  }
+
+  static ViolatorDocumentType parse(dynamic json, bool stringified) {
+    if (json != null) {
+      if (stringified) {
+        return ViolatorDocumentType.fromJson(c.json.decode(json));
+      } else {
+        return ViolatorDocumentType.fromJson(json);
+      }
+    }
   }
 }

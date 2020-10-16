@@ -1,5 +1,12 @@
 import 'package:flutter/foundation.dart';
 
+abstract class ViolatorTypeIds {
+  static const legal = 1;
+  static const official = 2;
+  static const private = 3;
+  static const ip = 4;
+}
+
 class ViolatorType {
   final int id;
   final String name;

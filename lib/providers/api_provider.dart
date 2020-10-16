@@ -96,7 +96,7 @@ class ApiProvider {
       } else {
         throw UnhandledException(ex.message);
       }
-    }
+    } 
   }
 
   void setToken(String token) {

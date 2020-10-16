@@ -35,5 +35,4 @@ class DepartmentCode {
   String toString() {
     return '$code $name';
   }
-
 }

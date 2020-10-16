@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:inspector/model/violator_address.dart';
 import 'package:inspector/model/violator_doc_type.dart';
+import 'dart:convert' as c;
 
 class ViolatorInfoPrivate {
   final int id;
@@ -35,7 +36,7 @@ class ViolatorInfoPrivate {
     @required this.registrationAddress,
   });
 
-  factory ViolatorInfoPrivate.fromJson(Map<String, dynamic> json) {
+  factory ViolatorInfoPrivate.fromJson(Map<String, dynamic> json, {bool stringified = false}) {
     return ViolatorInfoPrivate(
       id: json['id'],
       phone: json['phone'],
@@ -44,18 +45,17 @@ class ViolatorInfoPrivate {
       patronym: json['patronym'],
       inn: json['inn'],
       snils: json['snils'],
-      docType: json['docType'] != null ? ViolatorDocumentType.fromJson(json['docType']) : null,
+      docType: ViolatorDocumentType.parse(json['docType'], stringified),
       docSeries: json['docSeries'],
       docNumber: json['docNumber'],
       gender: json['gender'],
       birthDate: json['birthDate'] != null ? DateTime.parse(json['birthDate']) : null,
       birthPlace: json['birthPlace'],
-      registrationAddress: json['registrationAddress'] != null ? 
-          ViolatorAddress.fromJson(json['registrationAddress']) : null,
+      registrationAddress: ViolatorAddress.parse(json['registrationAddress'], stringified),
     );
   }
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toJson({bool stringified = false}) {
     return {
       'id': id,
       'phone': phone,
@@ -64,17 +64,24 @@ class ViolatorInfoPrivate {
       'patronym': patronym,
       'inn': inn,
       'snils': snils,
-      'docType': docType,
+      'docType': docType != null ? stringified ? c.json.encode(docType.toJson()) : docType.toJson() : null,
       'docSeries': docSeries,
       'docNumber': docNumber,
       'gender': gender,
-      'birthDate': birthDate,
+      'birthDate': birthDate?.toString(),
       'birthPlace': birthPlace,
-      'registrationAddress': registrationAddress
+      'registrationAddress': registrationAddress != null ? stringified ? c.json.encode(registrationAddress.toJson()) : registrationAddress.toJson() : null,
     };
   }
 
   Map<String, dynamic> toSqliteJson() {
-    return toJson();
+    return toJson(stringified: true);
   }
+
+  @override
+  String toString() {
+    final data = [firstName, lastName, patronym, birthDate?.toString(), inn != null ? 'ИНН $inn' : null];
+    return data.where((e)=> e !=null).join(' ');
+  }
+
 }

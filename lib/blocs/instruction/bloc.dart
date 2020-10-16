@@ -5,7 +5,7 @@ import 'package:inspector/providers/exceptions/api_exception.dart';
 import 'package:inspector/providers/exceptions/unhadled_exception.dart';
 import 'package:inspector/services/dictionary_service.dart';
 import 'package:inspector/services/instructions_service.dart';
-import 'package:inspector/services/sqlite/sqlite_collection_service.dart';
+import 'package:inspector/services/sqlite/sqlite_dictionary_service.dart';
 
 class InstructionBloc extends Bloc<InstructionBlocEvent, InstructionBlocState> {
   InstructionBloc(initialState) : super(initialState);

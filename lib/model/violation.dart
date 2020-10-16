@@ -1,11 +1,13 @@
 import 'package:flutter/foundation.dart';
 import 'package:inspector/model/address.dart';
 import 'package:inspector/model/normative_act.dart';
+import 'package:inspector/model/normative_act_article.dart';
 import 'package:inspector/model/object_category.dart';
 import 'package:inspector/model/special_object.dart';
 import 'package:inspector/model/violation_status.dart';
 import 'package:inspector/model/violation_type.dart';
 import 'package:inspector/model/violator.dart';
+import 'package:inspector/model/violator_type.dart';
 
 class Violation {
   final int id;
@@ -21,7 +23,7 @@ class Violation {
   final ObjectCategory objectCategory;
   final ViolationType violationType;
   
-  final List<NormativeAct> normativeActArticles;
+  final List<NormativeActArticle> normativeActArticles;
   final List<Violator> violators;
 
   Violation({
@@ -42,6 +44,10 @@ class Violation {
 
   factory Violation.empty() {
     return Violation(
+      violationAddress: Address(),
+      normativeActArticles: [
+        NormativeActArticle()
+      ],
       violators: [
         Violator.empty()
       ],
@@ -62,7 +68,7 @@ class Violation {
         violationAddress: Address.fromJson(json['violationAddress']),
         objectCategory: ObjectCategory.fromJson(json['objectCategory']),
         violationType: ViolationType.fromJson(json['violationType']),
-        normativeActArticles: json['normativeActArticles'] != null ? List<NormativeAct>.from(json['normativeActArticles'].map((p) => NormativeAct.fromJson(p))) : [],
+        normativeActArticles: json['normativeActArticles'] != null ? List<NormativeActArticle>.from(json['normativeActArticles'].map((p) => NormativeActArticle.fromJson(p))) : [],
         violators: json['violators'] != null ? List<Violator>.from(json['violators'].map((p) => Violator.fromJson(p))) : [],
       );
     } else {
@@ -71,7 +77,11 @@ class Violation {
   }
 
   Violation copyWith({
-    List<Violator> violators
+    Address violationAddress,
+    ObjectCategory objectCategory,
+    ViolationType violationType,
+    List<NormativeActArticle> normativeActArticles,
+    List<Violator> violators,
   }) {
     return Violation(
       id: id,
@@ -82,15 +92,15 @@ class Violation {
       codexArticle: codexArticle,
       violationStatus: violationStatus,
       controlSpecialObject: controlSpecialObject,
-      violationAddress: violationAddress,
-      objectCategory: objectCategory,
-      violationType: violationType,
-      normativeActArticles: normativeActArticles,
+      violationAddress: violationAddress ?? this.violationAddress,
+      objectCategory: objectCategory ?? this.objectCategory,
+      violationType: violationType ?? this.violationType,
+      normativeActArticles: normativeActArticles ?? this.normativeActArticles,
       violators: violators ?? this.violators
     );
   }
   
-   Map<String, dynamic> toJson() {
+  Map<String, dynamic> toJson() {
     return {
       'id': id,
       'violationDescription': violationDescription,
@@ -105,7 +115,6 @@ class Violation {
       'violationType': violationType?.toJson(),
       'normativeActArticles': normativeActArticles.map((e) => e.toJson()).toList(),
       'violators': violators.map((e) => e.toJson()).toList(),
-      
     };
   }
 }

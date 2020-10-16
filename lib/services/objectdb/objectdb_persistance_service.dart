@@ -163,13 +163,4 @@ class ObjectDbPersistanceService extends ObjectDBService implements PersistanceS
   Future<void> setToken(String token) async {
     await _saveKeyValue('token', token);
   }
-
-  Future saveDictMetadata(DictionaryMetadata value) async {
-    await _saveKeyValue('dictMetadata', value.toJson());
-  }
-
-  Future<DictionaryMetadata> getDictMetadata() async {
-    return DictionaryMetadata.fromJson(await _getKeyValue('dictMetadata') ?? {});
-  }
-
 }

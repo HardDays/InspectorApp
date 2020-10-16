@@ -6,29 +6,43 @@ import 'package:inspector/style/input_title.dart';
 import 'package:inspector/style/text_style.dart';
 import 'package:intl/intl.dart';
 
-class ProjectDateRange extends StatelessWidget { 
+class ProjectDatePicker extends StatelessWidget { 
 
+  final bool singleDate;
   final String title;
   final List<DateTime> values;
   final String hintText;
   final Function(List<DateTime>) onChanged;
 
-  ProjectDateRange({
+  ProjectDatePicker({
     this.title, 
     this.hintText, 
     this.values,
-    this.onChanged
+    this.onChanged,
+    this.singleDate = false,
   });
 
   void _onTap(BuildContext context) async {
-    final List<DateTime> picked = await dr.showDatePicker(
-      context: context,
-      initialFirstDate: DateTime.now(),
-      initialLastDate: (DateTime.now()).add(Duration(days: 7)),
-      firstDate: DateTime(2018),
-      lastDate: DateTime(2050)
-    );
-    onChanged(picked);
+    if (singleDate) {
+      final picked = await showDatePicker(
+        context: context, 
+        initialDate: DateTime.now(), 
+        firstDate: DateTime(1917),
+        lastDate: DateTime(2050)
+      );
+      if (picked != null) {
+         onChanged([picked]);
+      }
+    } else {
+      final List<DateTime> picked = await dr.showDatePicker(
+        context: context,
+        initialFirstDate: DateTime.now(),
+        initialLastDate: (DateTime.now()).add(Duration(days: 7)),
+        firstDate: DateTime(2018),
+        lastDate: DateTime(2050)
+      );
+      onChanged(picked);
+    }
   }
 
   @override

@@ -10,10 +10,14 @@ import 'package:inspector/model/normative_act_article.dart';
 import 'package:inspector/model/special_object.dart';
 import 'package:inspector/model/street.dart';
 import 'package:inspector/model/violation_type.dart';
+import 'package:inspector/model/violator_info_ip.dart';
+import 'package:inspector/model/violator_info_private.dart';
+import 'package:inspector/model/violator_info_legal.dart';
+import 'package:inspector/model/violator_info_official.dart';
 import 'package:inspector/model/violator_type.dart';
+import 'package:inspector/model/object_category.dart';
 import 'package:inspector/services/api/dictionary_service.dart';
-import 'package:inspector/services/objectdb/objectdb_persistance_service.dart';
-import 'package:inspector/services/sqlite/sqlite_collection_service.dart';
+import 'package:inspector/services/sqlite/sqlite_dictionary_service.dart';
 import 'package:synchronized/synchronized.dart';
 
 class DictionaryService {
@@ -26,21 +30,7 @@ class DictionaryService {
 
   DictionaryService._internal();
 
-  final _dbService = SqliteCollectionService();
-
-  // final Map<String, SqliteCollectionService> _dbServices = {
-  //   DictionaryNames.areas: SqliteCollectionService(DictionaryNames.areas, (json)=> Area.fromJson(json)),
-  //   DictionaryNames.streets: SqliteCollectionService(DictionaryNames.streets, (json)=> Street.fromJson(json)),
-  //   DictionaryNames.districts: SqliteCollectionService(DictionaryNames.districts, (json)=> District.fromJson(json)),
-  //   DictionaryNames.addresses: SqliteCollectionService(DictionaryNames.addresses, (json)=> Address.fromJson(json, stringified: true)),
-  //   DictionaryNames.instructionStatuses: SqliteCollectionService(DictionaryNames.instructionStatuses, (json)=> InstructionStatus.fromJson(json)),
-  //   DictionaryNames.specialObjects: SqliteCollectionService(DictionaryNames.specialObjects, (json)=> SpecialObject.fromJson(json)),
-  //   DictionaryNames.normativeActs: SqliteCollectionService(DictionaryNames.normativeActs, (json)=> NormativeAct.fromJson(json)),
-  //   DictionaryNames.normativeActArticles: SqliteCollectionService(DictionaryNames.normativeActArticles, (json)=> NormativeActArticle.fromJson(json)),
-  //   DictionaryNames.violationTypes: SqliteCollectionService(DictionaryNames.violationTypes, (json)=> ViolationType.fromJson(json)),
-  //   DictionaryNames.violatorTypes: SqliteCollectionService(DictionaryNames.violatorTypes, (json)=> ViolatorType.fromJson(json)),
-  //   DictionaryNames.departmentCodes: SqliteCollectionService(DictionaryNames.departmentCodes, (json)=> DepartmentCode.fromJson(json)),
-  // };
+  final _dbService = SqliteDictionaryService();
 
   final Map<String, Future<List> Function(int, int)> _loaders = {
     DictionaryNames.areas: ApiDictionaryService().getAreas,
@@ -54,6 +44,11 @@ class DictionaryService {
     DictionaryNames.violationTypes: ApiDictionaryService().getViolationTypes,
     DictionaryNames.violatorTypes: ApiDictionaryService().getViolatorTypes,
     DictionaryNames.departmentCodes: ApiDictionaryService().getDepartmentCodes,
+    DictionaryNames.objectCategories: ApiDictionaryService().getObjectCategories,
+    DictionaryNames.violatorInfoIps: ApiDictionaryService().getViolatorInfoIp,
+    DictionaryNames.violatorInfoLegals: ApiDictionaryService().getViolatorInfoLegal,
+    DictionaryNames.violatorInfoOfficials: ApiDictionaryService().getViolatorInfoOfficial,
+    DictionaryNames.violatorInfoPrivates: ApiDictionaryService().getViolatorInfoPrivate,
   };
 
  final Map<String, Function(Map<String, dynamic>)> _converters = {
@@ -68,15 +63,19 @@ class DictionaryService {
     DictionaryNames.violationTypes: (json)=> ViolationType.fromJson(json),
     DictionaryNames.violatorTypes: (json)=> ViolatorType.fromJson(json),
     DictionaryNames.departmentCodes: (json)=> DepartmentCode.fromJson(json),
+    DictionaryNames.objectCategories: (json)=> ObjectCategory.fromJson(json),
+    DictionaryNames.violatorInfoIps: (json)=> ViolatorInfoIp.fromJson(json, stringified: true),
+    DictionaryNames.violatorInfoLegals: (json)=> ViolatorInfoLegal.fromJson(json, stringified: true),
+    DictionaryNames.violatorInfoOfficials: (json)=> ViolatorInfoOfficial.fromJson(json, stringified: true),
+    DictionaryNames.violatorInfoPrivates: (json)=> ViolatorInfoPrivate.fromJson(json, stringified: true),
   };
 
   final _lock = Lock();
-  final _persistanceService = ObjectDbPersistanceService();
 
   bool canceled = false;
 
   Future<bool> isLoaded({List<String> keys}) async {
-    final metadata = await _persistanceService.getDictMetadata();
+    final metadata = await _dbService.getMetadata();
     for (final key in keys ?? _loaders.keys) {
       if (!metadata.loaded.containsKey(key)) {
         return false;
@@ -90,12 +89,12 @@ class DictionaryService {
       try {
         await _dbService.init();
 
-        final metadata = await _persistanceService.getDictMetadata();
+        final metadata = await _dbService.getMetadata();
         for (final key in keys ?? _loaders.keys) {
           if (!metadata.loaded.containsKey(key) || reload) {
             await _dbService.clear(key);
             metadata.loaded.remove(key);;
-            await _persistanceService.saveDictMetadata(metadata);
+            await _dbService.saveMetadata(metadata);
 
             int count = 0;
             int attempts = 10000;
@@ -120,10 +119,10 @@ class DictionaryService {
               }
             } 
             metadata.loaded[key] = true;
-            await _persistanceService.saveDictMetadata(metadata);
+            await _dbService.saveMetadata(metadata);
           }
         }
-        await _persistanceService.saveDictMetadata(
+        await _dbService.saveMetadata(
           DictionaryMetadata(
             loaded: metadata.loaded, 
             loadetAt: DateTime.now(),
@@ -135,51 +134,225 @@ class DictionaryService {
     });
   }
 
-  Future<List<T>>_getData<T>(String name, {String where, List<dynamic> whereArgs, int limit}) async {
-    return await _dbService.all<T>(name, _converters[name], where: where, whereArgs: whereArgs, limit: limit);
+  Future<List<T>>_getData<T>(String name, {List<Query> queries = const [], int limit}) async {
+    return await _dbService.all<T>(name, _converters[name], queries: queries, limit: limit);
   }
 
-  Future<List<Address>> getAddresses({String houseNum}) async {
-    return await _getData(DictionaryNames.addresses, where: 'houseNum LIKE ?', whereArgs: ['$houseNum%'], limit: 10);
+  Future<List<Address>> getAddresses({String houseNum, int streetId}) async {
+    return await _getData(DictionaryNames.addresses, 
+      queries: [
+        Query({
+          'houseNum LIKE ?': '$houseNum%',
+          'streetId = ?': streetId
+        }),
+      ],
+      limit: 10
+    );
   }
 
   Future<List<Area>> getAreas({String name}) async {
-    return await _getData<Area>(DictionaryNames.areas, where: 'name LIKE ?', whereArgs: ['$name%'], limit: 10);
+    return await _getData<Area>(DictionaryNames.areas, 
+       queries: [
+        Query({
+          'name LIKE ?': '$name%'
+        }),
+      ],
+      limit: 10
+    );
   }
 
   Future<List<District>> getDitricts({String name, int areaId}) async {
-    return await _getData<District>(DictionaryNames.districts, where: 'name LIKE ?', whereArgs: ['$name%'], limit: 10);
+    return await _getData<District>(DictionaryNames.districts, 
+      queries: [
+        Query({
+          'name LIKE ?': '$name%',
+          'areaId = ?': areaId
+        }),
+      ],
+      limit: 10
+    );
   }
 
-  Future<List<Street>> getStreets({String name}) async {
-    return await _getData<Street>(DictionaryNames.streets, where: 'name LIKE ?', whereArgs: ['$name%'], limit: 10);
+  Future<List<Street>> getStreets({String name, int districtId}) async {
+    return await _getData<Street>(DictionaryNames.streets, 
+      queries: [
+        Query({
+          'name LIKE ?': '$name%',
+          'districtId = ?': districtId
+        }),
+      ],
+      limit: 10
+    );
+  }
+
+  Future<List<ViolationType>> getViolationTypes({String name}) async {
+    return await _getData<ViolationType>(DictionaryNames.violationTypes, 
+      queries: [
+        Query(
+          {
+            'name LIKE ?': '$name%',
+            'code LIKE ?': '$name%'
+          },
+          queryType: 'OR'
+        ),
+      ],
+      limit: 10
+    );
   }
 
   Future<List<InstructionStatus>> getInstructionStatuses() async {
     return await _getData<InstructionStatus>(DictionaryNames.instructionStatuses);
   }
   
-  Future<List<SpecialObject>> getSpecialObjects() async {
-    return await _getData<SpecialObject>(DictionaryNames.specialObjects);
+  Future<List<SpecialObject>> getSpecialObjects({String name}) async {
+    return await _getData<SpecialObject>(DictionaryNames.specialObjects,
+      queries: [
+        Query({
+          'name LIKE ?': '%$name%',
+        }),
+      ],
+      limit: 10
+    );
   }
 
-  Future<List<NormativeAct>> getNormativeActs() async {
-    return await _getData<NormativeAct>(DictionaryNames.normativeActs);
+  Future<List<ObjectCategory>> getObjectCategories({String name}) async {
+    return await _getData<ObjectCategory>(DictionaryNames.objectCategories,
+      queries: [
+        Query(
+          {
+            'name LIKE ?': '%$name%',
+            'code LIKE ?': '$name%'
+          },
+          queryType: 'OR'
+        ),
+      ],
+      limit: 10
+    );
   }
 
-  Future<List<NormativeActArticle>> getNormativeActArticles() async {
-    return await _getData<NormativeActArticle>(DictionaryNames.normativeActArticles);
+  Future<List<NormativeAct>> getNormativeActs({String name}) async {
+    return await _getData<NormativeAct>(DictionaryNames.normativeActs,
+      queries: [
+        Query({
+          'name LIKE ?': '%$name%',
+        }),
+      ],
+      limit: 10
+    );
   }
 
-  Future<List<ViolatorType>> getViolatorTypes() async {
-    return await _getData<ViolatorType>(DictionaryNames.violatorTypes);
+  Future<List<NormativeActArticle>> getNormativeActArticles({String name, int normativeActId}) async {
+    return await _getData<NormativeActArticle>(DictionaryNames.normativeActArticles,
+      queries: [
+        Query(
+          {
+            'name LIKE ?': '%$name%',
+            'code LIKE ?': '$name%'
+          },
+          queryType: 'OR'
+        ),
+        Query(
+          {
+            'normativeActId = ?': normativeActId
+          }
+        )
+      ],
+      limit: 10
+    );  
   }
 
-  Future<List<ViolationType>> getViolationTypes() async {
-    return await _getData<ViolationType>(DictionaryNames.violationTypes);
+  Future<List<ViolatorType>> getViolatorTypes({String name}) async {
+    return await _getData<ViolatorType>(DictionaryNames.violatorTypes,
+      queries: [
+        Query(
+          {
+            'name LIKE ?': '%$name%',
+          },
+        ),
+      ],
+    );
   }
 
-  Future<List<DepartmentCode>> getDepartmentCodes() async {
-    return await _getData<DepartmentCode>(DictionaryNames.departmentCodes);
+  Future<List<DepartmentCode>> getDepartmentCodes({String name}) async {
+    return await _getData<DepartmentCode>(DictionaryNames.departmentCodes,
+      queries: [
+        Query(
+          {
+            'name LIKE ?': '%$name%',
+            'code LIKE ?': '$name%'
+          },
+          queryType: 'OR'
+        ),
+      ],
+      limit: 10
+    );
+  }
+
+  Future<List<ViolatorInfoLegal>> getViolatorInfoLegals({String name}) async {
+    return await _getData<ViolatorInfoLegal>(DictionaryNames.violatorInfoLegals,
+      queries: [
+        Query(
+          {
+            'name LIKE ?': '%$name%',
+            'phone LIKE ?': '$name%',
+            'inn LIKE ?': '$name%'
+          },
+          queryType: 'OR'
+        ),
+      ],
+      limit: 10
+    );
+  }
+
+  Future<List<ViolatorInfoOfficial>> getViolatorInfoOfficials({String name}) async {
+    return await _getData<ViolatorInfoOfficial>(DictionaryNames.violatorInfoOfficials,
+      queries: [
+        Query(
+          {
+            'orgName LIKE ?': '%$name%',
+            'phone LIKE ?': '$name%',
+            'orgInn LIKE ?': '$name%'
+          },
+          queryType: 'OR'
+        ),
+      ],
+      limit: 10
+    );
+  }
+
+  Future<List<ViolatorInfoPrivate>> getViolatorInfoPrivates({String name}) async {
+    return await _getData<ViolatorInfoPrivate>(DictionaryNames.violatorInfoPrivates,
+      queries: [
+        Query(
+          {
+            'firstName LIKE ?': '%$name%',
+            'lastName LIKE ?': '$name%',
+            'patronym LIKE ?': '$name%',
+            'phone LIKE ?': '$name%',
+            'inn LIKE ?': '$name%',
+          },
+          queryType: 'OR'
+        ),
+      ],
+      limit: 10
+    );
+  }
+
+  Future<List<ViolatorInfoIp>> getViolatorInfoIps({String name}) async {
+    return await _getData<ViolatorInfoIp>(DictionaryNames.violatorInfoIps,
+      queries: [
+        Query(
+          {
+            'firstName LIKE ?': '%$name%',
+            'lastName LIKE ?': '$name%',
+            'patronym LIKE ?': '$name%',
+            'phone LIKE ?': '$name%',
+            'inn LIKE ?': '$name%',
+          },
+          queryType: 'OR'
+        ),
+      ],
+      limit: 10
+    );
   }
 }

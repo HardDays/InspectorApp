@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'dart:convert' as c;
 
 class ViolatorAddress {
   final String cladrCode;
@@ -39,6 +40,29 @@ class ViolatorAddress {
     @required this.flat,
   });
 
+  factory ViolatorAddress.fromJson(Map<String, dynamic> json) {
+    return ViolatorAddress(
+      cladrCode: json['cladrCode'],
+      zipCode: json['zipCode'],
+      subjectCode: json['subjectCode'],
+      subjectName: json['subjectName'],
+      subjectType: json['subjectType'],
+      regionName: json['regionName'],
+      regionType: json['regionType'],
+      cityName: json['cityName'],
+      cityType: json['cityType'],
+      placeName: json['placeName'],
+      placeType: json['placeType'],
+      streetName: json['streetName'],
+      streetType: json['streetType'],
+      house: json['house'],
+      building: json['building'],
+      buildingExt: json['buildingExt'],
+      flat: json['flat'],
+    );
+  }
+
+  
   Map<String, dynamic> toJson() {
     return {
       'cladrCode': cladrCode,
@@ -61,25 +85,20 @@ class ViolatorAddress {
     };
   }
 
-  factory ViolatorAddress.fromJson(Map<String, dynamic> json) {
-    return ViolatorAddress(
-      cladrCode: json['cladrCode'],
-      zipCode: json['zipCode'],
-      subjectCode: json['subjectCode'],
-      subjectName: json['subjectName'],
-      subjectType: json['subjectType'],
-      regionName: json['regionName'],
-      regionType: json['regionType'],
-      cityName: json['cityName'],
-      cityType: json['cityType'],
-      placeName: json['placeName'],
-      placeType: json['placeType'],
-      streetName: json['streetName'],
-      streetType: json['streetType'],
-      house: json['house'],
-      building: json['building'],
-      buildingExt: json['buildingExt'],
-      flat: json['flat'],
-    );
+  @override 
+  String toString() {
+  final data = [zipCode, regionName, cityName, streetName, house, building, buildingExt, flat];
+    return data.where((e)=> e !=null).join(', ');
   }
+
+  static ViolatorAddress parse(dynamic json, bool stringified) {
+    if (json != null) {
+      if (stringified) {
+        return ViolatorAddress.fromJson(c.json.decode(json));
+      } else {
+        return ViolatorAddress.fromJson(json);
+      }
+    }
+  }
+  
 }

@@ -7,7 +7,7 @@ import 'package:inspector/blocs/instruction_filters/events.dart';
 import 'package:inspector/model/instruction.dart';
 import 'package:inspector/model/instruction_status.dart';
 import 'package:inspector/style/button.dart';
-import 'package:inspector/style/date_range.dart';
+import 'package:inspector/style/date_picker.dart';
 import 'package:inspector/style/select.dart';
 import 'package:inspector/style/text_field.dart';
 
@@ -86,7 +86,7 @@ class InstructionFiltersWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Flexible(
-                      child: ProjectDateRange(
+                      child: ProjectDatePicker(
                         title: 'Дата поручения',
                         hintText: 'Выберите дату или период',
                         values: state.filters.instructionDates,
@@ -95,7 +95,7 @@ class InstructionFiltersWidget extends StatelessWidget {
                     ),
                     Padding(padding: const EdgeInsets.only(left: 35)),
                     Flexible(
-                      child: ProjectDateRange(
+                      child: ProjectDatePicker(
                         title: 'Дата обследования',
                         hintText: 'Выберите дату или период',
                         values: state.filters.checkDates,
