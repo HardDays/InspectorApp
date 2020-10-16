@@ -1,16 +1,20 @@
+import 'dart:io';
+
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:inspector/blocs/profile/event.dart';
 import 'package:inspector/blocs/profile/state.dart';
 import 'package:inspector/model/user.dart';
 import 'package:inspector/services/persistance_service.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ProfileBloc extends Bloc<ProfileBlocEvent, ProfileBlocState> {
   ProfileBloc(ProfileBlocState initialState, this._persistanceService)
       : super(initialState);
 
-  static const platform = const MethodChannel('com.example.inspector/mainChannel');
-  
+  static const platform =
+      const MethodChannel('com.example.inspector/mainChannel');
+
   final PersistanceService _persistanceService;
 
   @override
@@ -58,16 +62,22 @@ class ProfileBloc extends Bloc<ProfileBlocEvent, ProfileBlocState> {
         userName: name,
       );
     }
-    if(event is SendEmailEvent) {
+    if (event is SendEmailEvent) {
       await _sendEmail();
     }
   }
 
   Future<DateTime> _getInstallDate() async {
-    return DateTime.fromMillisecondsSinceEpoch(await platform.invokeMethod('getInstallDate'));
+    return DateTime.fromMillisecondsSinceEpoch(
+        await platform.invokeMethod('getInstallDate'));
   }
 
   Future<void> _sendEmail() async {
-    await platform.invokeMethod('sendEmail');
+    final url = 'mailto:oati_support@mos.ru?subject=' + Uri.encodeQueryComponent('Мобильное приложение ЕИС ОАТИ');
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else if (Platform.isAndroid) {
+      await platform.invokeMethod('sendEmail');
+    }
   }
 }
