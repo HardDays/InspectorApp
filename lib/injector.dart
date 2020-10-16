@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:inspector/blocs/control_list/bloc.dart';
 import 'package:inspector/services/auth_service.dart';
 import 'package:inspector/services/objectdb/objectdb_persistance_service.dart';
 import 'package:inspector/services/persistance_service.dart';
@@ -16,7 +18,10 @@ class InjectorWidget extends StatelessWidget {
       child: Provider<AuthService>(
         create: (context) => AuthService(
             Provider.of<PersistanceService>(context, listen: false)),
-        child: child,
+        child: BlocProvider<ControlListBloc>(
+          create: (context) => ControlListBloc(),
+          child: child,
+        ),
       ),
     );
   }
