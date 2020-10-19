@@ -23,7 +23,7 @@ class SetInstructionNumEvent extends InstructionFiltersBlocEvent {
 }
 
 class SetInstructionStatusEvent extends InstructionFiltersBlocEvent {
-  final String instructionStatus;
+  final int instructionStatus;
 
   SetInstructionStatusEvent(this.instructionStatus);
 }

@@ -13,7 +13,7 @@ class Violation {
   final int id;
   final String violationDescription;
   final String violationNum;
-  final String violationDate;
+  final DateTime violationDate;
   final String cafapId;
   final String codexArticle;
 
@@ -55,28 +55,27 @@ class Violation {
   }
 
   factory Violation.fromJson(Map<String, dynamic> json) {
-    if (json != null) {
-      return Violation(
-        id: json['id'], 
-        violationDescription: json['violationDescription'], 
-        violationNum: json['violationNum'],
-        violationDate: json['violationDate'],
-        cafapId: json['cafapId'],
-        codexArticle: json['codexArticle'],
-        violationStatus: ViolationStatus.fromJson(json['violationNum']),
-        controlSpecialObject: SpecialObject.fromJson(json['controlSpecialObject']),
-        violationAddress: Address.fromJson(json['violationAddress']),
-        objectCategory: ObjectCategory.fromJson(json['objectCategory']),
-        violationType: ViolationType.fromJson(json['violationType']),
-        normativeActArticles: json['normativeActArticles'] != null ? List<NormativeActArticle>.from(json['normativeActArticles'].map((p) => NormativeActArticle.fromJson(p))) : [],
-        violators: json['violators'] != null ? List<Violator>.from(json['violators'].map((p) => Violator.fromJson(p))) : [],
-      );
-    } else {
-      return Violation.empty();
-    }
+    return Violation(
+      id: json['id'], 
+      violationDescription: json['violationDescription'], 
+      violationNum: json['violationNum'],
+      violationDate: json['violationDate'] != null ? DateTime.parse(json['violationDate']) : null,
+      cafapId: json['cafapId'],
+      codexArticle: json['codexArticle'],
+      violationStatus: json['violationStatus'] != null ? ViolationStatus.fromJson(json['violationStatus']) : null,
+      controlSpecialObject: json['controlSpecialObject'] != null ? SpecialObject.fromJson(json['controlSpecialObject']) : null,
+      violationAddress: json['violationAddress'] != null ? Address.fromJson(json['violationAddress']) : null,
+      objectCategory: json['objectCategory'] != null ? ObjectCategory.fromJson(json['objectCategory']) : null,
+      violationType: json['violationType'] != null ? ViolationType.fromJson(json['violationType']) : null,
+      normativeActArticles: json['normativeActArticles'] != null ? List<NormativeActArticle>.from(json['normativeActArticles'].map((p) => NormativeActArticle.fromJson(p))) : [],
+      violators: json['violators'] != null ? List<Violator>.from(json['violators'].map((p) => Violator.fromJson(p))) : [],
+    );
   }
 
   Violation copyWith({
+    String violationDescription,
+    String codexArticle,
+    DateTime violationDate,
     Address violationAddress,
     ObjectCategory objectCategory,
     ViolationType violationType,
@@ -105,7 +104,7 @@ class Violation {
       'id': id,
       'violationDescription': violationDescription,
       'violationNum': violationNum,
-      'violationDate': violationDate,
+      'violationDate': violationDate?.toIso8601String(),
       'cafapId': cafapId,
       'codexArticle': codexArticle,
       'violationStatus': violationStatus?.toJson(),
@@ -113,7 +112,7 @@ class Violation {
       'violationAddress': violationAddress?.toJson(),
       'objectCategory': objectCategory?.toJson(),
       'violationType': violationType?.toJson(),
-      'normativeActArticles': normativeActArticles.map((e) => e.toJson()).toList(),
+      'normativeActArticles': normativeActArticles != null ? normativeActArticles.where((e) => e.id != null).map((e) => e.toJson()).toList() : [],
       'violators': violators.map((e) => e.toJson()).toList(),
     };
   }

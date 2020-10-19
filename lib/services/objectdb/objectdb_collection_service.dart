@@ -13,17 +13,17 @@ class ObjectDbCollectionService<T> extends ObjectDBService {
   @override
   String get name => _name;
 
-  Future<List<T>> all() async {
+  Future<List<T>> all({Map<dynamic, dynamic> query = const {}}) async {
     await init();
     try {
-      final data = await db.find({});
+      final data = await db.find(query);
       return List<T>.from(data.map((e) => _fromJson(e)));
     } catch (ex) {
       throw ParseException();
     }
   }
 
-  Future save(List<dynamic> value) async {
+  Future saveAll(List<dynamic> value) async {
     await init();
     try {
       await db.remove({});
@@ -34,18 +34,29 @@ class ObjectDbCollectionService<T> extends ObjectDBService {
     }
   }
 
-  Future append(List<dynamic> value) async {
+  Future save(Map<dynamic, dynamic> query, dynamic value) async {
     await init();
     try {
-      await db.insertMany(List<Map<dynamic, dynamic>>.from(value.map((e) => e.toJson())));
+      await db.remove(query);
+      await db.insert(value.toJson());
+      await db.tidy();
     } catch (ex) {
       print(ex);
     }
   }
 
-  Future tidy() async {
-    await db.tidy();
-  }
+  // Future append(List<dynamic> value) async {
+  //   await init();
+  //   try {
+  //     await db.insertMany(List<Map<dynamic, dynamic>>.from(value.map((e) => e.toJson())));
+  //   } catch (ex) {
+  //     print(ex);
+  //   }
+  // }
+
+  // Future tidy() async {
+  //   await db.tidy();
+  // }
 
   Future clear() async {
     await init();

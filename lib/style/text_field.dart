@@ -12,6 +12,7 @@ class ProjectTextField extends StatelessWidget {
   final String hintText;
   final String initialValue;
   final TextEditingController controller;
+  final Function(String) validator;
 
   ProjectTextField({
     this.controller, 
@@ -19,7 +20,8 @@ class ProjectTextField extends StatelessWidget {
     this.initialValue, 
     this.minLines, 
     this.maxLines, 
-    this.hintText
+    this.hintText,
+    this.validator
   });
 
   Widget _buildField() {
@@ -30,6 +32,7 @@ class ProjectTextField extends StatelessWidget {
     return TextFormField(
       controller: controller,
       initialValue: initialValue,
+      validator: validator,
       style: ProjectTextStyles.base.apply(color: ProjectColors.black),
       maxLines: maxLines,
       minLines: minLines,
@@ -39,7 +42,7 @@ class ProjectTextField extends StatelessWidget {
         hintStyle: ProjectTextStyles.base.apply(color: ProjectColors.darkBlue),
         border: border,
         enabledBorder: border,
-        focusedBorder: border
+        focusedBorder: border,
       ),
     );
   }

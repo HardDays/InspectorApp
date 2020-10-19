@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
-abstract class InstructionStatusStrings {
+abstract class InstructionStatusIds {
   
-  static const assigned = 'Назначено';
-  static const withdrawn = 'Отозвано';
-  static const partInProgress = 'Частично на исполнении';
-  static const inProgress = 'На исполнении';
-  static const partComplete = 'Частично исполнено';
-  static const complete = 'Исполнено';
+  static const assigned = 1;
+  static const withdrawn = 2;
+  static const partInProgress = 3;
+  static const inProgress = 4;
+  static const partComplete = 5;
+  static const complete = 6;
 
-  static const List<String> all = const [
+  static const List<int> all = const [
     assigned, withdrawn, partInProgress, inProgress, partComplete, complete
   ];
 }

@@ -10,12 +10,10 @@ class ViolationStatus {
   });
 
   factory ViolationStatus.fromJson(Map<String, dynamic> json) {
-    if (json != null) {
-      return ViolationStatus(
-        id: json['id'],
-        name: json['name'],
-      );
-    }
+    return ViolationStatus(
+      id: json['id'],
+      name: json['name'],
+    );
   }
 
   Map<String, dynamic> toJson() {

@@ -36,7 +36,7 @@ class InstructionFiltersWidget extends StatelessWidget {
     Navigator.pop(context, InstructionFilters());
   }
 
-  void _onStatus(BuildContext context, String status) {
+  void _onStatus(BuildContext context, int status) {
     BlocProvider.of<InstructionFiltersBloc>(context).add(SetInstructionStatusEvent(status));  
   }
 
@@ -51,7 +51,7 @@ class InstructionFiltersWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context)=> InstructionFiltersBloc(InstructionFiltersBlocState(filters))..add(LoadEvent()),
+      create: (context)=> InstructionFiltersBloc(InstructionFiltersBlocState([], filters))..add(LoadEvent()),
       child: BlocBuilder<InstructionFiltersBloc, InstructionFiltersBlocState>(
         builder: (context, state) {
           return Column(
@@ -69,10 +69,10 @@ class InstructionFiltersWidget extends StatelessWidget {
                   Padding(padding: const EdgeInsets.only(left: 35)),
                   Flexible(
                     child: ProjectSelect(
-                      InstructionStatusStrings.all.length,
+                      state.statuses.length,
                       state.filters.instructionStatus,
-                      (index) => InstructionStatusStrings.all[index],
-                      (index) => InstructionStatusStrings.all[index],
+                      (index) => state.statuses[index].id,
+                      (index) => state.statuses[index].name,
                       title: 'Статус поручения',
                       hintText: 'Все',
                       onChanged: (status)=> _onStatus(context, status),

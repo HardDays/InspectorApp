@@ -11,6 +11,7 @@ import 'package:inspector/model/digg_request_check.dart';
 import 'package:inspector/model/instruction.dart';
 import 'package:inspector/model/instruction_check.dart';
 import 'package:inspector/model/instruction_status.dart';
+import 'package:inspector/model/report.dart';
 import 'package:inspector/pages/address_report_page.dart';
 import 'package:inspector/pages/total_report_page.dart';
 import 'package:inspector/style/appbar.dart';
@@ -19,6 +20,7 @@ import 'package:inspector/style/card.dart';
 import 'package:inspector/style/colors.dart';
 import 'package:inspector/style/divider.dart';
 import 'package:inspector/style/icons.dart';
+import 'package:inspector/style/status.dart';
 import 'package:inspector/style/text_style.dart';
 import 'package:inspector/style/section.dart';
 import 'package:inspector/widgets/instruction/status.dart';
@@ -32,11 +34,13 @@ class InstructionPage extends StatelessWidget {
 
   InstructionPage(this.instruction);
 
-  void _onTotalReport(BuildContext context) {
+  void _onTotalReport(BuildContext context, int checkId) {
     Navigator.push(context, 
       MaterialPageRoute(
         builder: (context) => TotalReportPage(
           violationNotPresent: false,
+          instructionId: instruction.id,
+          checkId: checkId,
         ),
       ),
     );
@@ -46,16 +50,21 @@ class InstructionPage extends StatelessWidget {
     Navigator.push(context, MaterialPageRoute(builder: (context) => AddressReportPage(status)));
   }
 
-  void _onStatus(BuildContext context, String status) {
+  void _onStatus(BuildContext context, int status) {
     BlocProvider.of<InstructionBloc>(context).add(UpadteInstructionStatusEvent(status));  
   }
 
-  void _showSnackBar(BuildContext context, String title, Color color) {
+  void _onRefreshReport(BuildContext context) {
+    BlocProvider.of<InstructionBloc>(context).add(RefreshReportsEvent());  
+  }
+
+  void _showSnackBar(BuildContext context, String title) {
     WidgetsBinding.instance.addPostFrameCallback((_) => 
       Scaffold.of(context).showSnackBar(
         SnackBar(
           backgroundColor: ProjectColors.darkBlue,
           content: Text(title),
+          duration: Duration(seconds: 5),
         ),
       ),
     );
@@ -68,20 +77,20 @@ class InstructionPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context)=> InstructionBloc(InstructionBlocState(instruction))..add(LoadReportsEvent()),
+      create: (context)=> InstructionBloc(InstructionBlocState(null, instruction, []))..add(LoadReportsEvent()),
       child: BlocBuilder<InstructionBloc, InstructionBlocState>(
         builder: (context, state) {
           if (state is SuccessState) { 
-            _showSnackBar(context, 'Успешно', ProjectColors.green);
+            _showSnackBar(context, 'Данные обновлены');
             _flush(context);
           } else if (state is ErrorState) {
-            _showSnackBar(context, 'Произошла ошибка. ${state.exception.message}  ${state.exception.details}', ProjectColors.yellow);
+            _showSnackBar(context, 'Произошла ошибка. ${state.exception.message} ${state.exception.details}');
             _flush(context);
           } 
 
           final instruction = state.instruction;
           return Scaffold(
-            appBar: ProjectAppbar('Поручение № ${instruction.instructionNum} от ${instruction.instructionDate}'),
+            appBar: ProjectAppbar('Поручение № ${instruction.instructionNum} от ${DateFormat('dd.MM.yyyy').format(instruction.instructionDate)}'),
             body: SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.only(left: 30, right: 30, top: 20),
@@ -94,10 +103,14 @@ class InstructionPage extends StatelessWidget {
                         (index) => _buildSection('Нормативно-правовой акт', instruction.normativeActs[index].name),
                       ),
                     ),
-                    _buildSection('Срок предоставления документов, фиксирующих факты и события нарушения', instruction.reportDate),
+                    _buildSection('Срок предоставления документов, фиксирующих факты и события нарушения', DateFormat('dd.MM.yyyy').format(instruction.reportDate)),
                     Column(
                       children: List.generate(instruction.instructionChecks.length, 
-                        (index) => _buildInstructionCheck(context, instruction.instructionChecks[index], instruction),
+                        (index) => _buildInstructionCheck(context, 
+                          instruction.instructionChecks[index], 
+                          index < state.reports.length ? state.reports[index] : null, 
+                          instruction
+                        ),
                       ),
                     ),
                     Padding(
@@ -141,43 +154,16 @@ class InstructionPage extends StatelessWidget {
   }
 
   Widget _buildInstructionCheckStatus(CheckStatus checkStatus) {
-    // todo: new colors map
-    final color = InstructionStatusColors.color(checkStatus.name);
     return Container(
       alignment: Alignment.topRight,
-      child: Container(
-        decoration: BoxDecoration(
-          border: Border(left: BorderSide(color: color), top: BorderSide(color: color), bottom: BorderSide(color: color)),
-        ),
-        padding: const EdgeInsets.only(left: 10, right: 10, top: 2, bottom: 4),
-        margin: const EdgeInsets.only(top: 20),
-        child: Text(checkStatus.name,
-          style: ProjectTextStyles.smallBold.apply(color: color),
-        ),
+      margin: const EdgeInsets.only(top: 20),
+      child: ProjectStatus(
+        checkStatus.name,
+        rightBorder: false,
+        rounded: false,
+        color: CheckStatusColors.color(checkStatus.id),
       ),
     );
-  }
-
-  Widget _buildReportButton(BuildContext context, Instruction instruction) {
-    if (instruction.instructionStatus.name == InstructionStatusStrings.inProgress || instruction.instructionStatus.name == InstructionStatusStrings.partInProgress) {
-      return Padding(
-        padding: const EdgeInsets.only(top: 15, bottom: 5),
-        child: Row(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 21, right: 10),
-              child: ProjectIcons.raportIcon(color: ProjectColors.blue.withOpacity(0.35)), 
-            ),
-            SizedBox(
-              height: 38,
-              child: ProjectButton.builtFlatButton('+ Добавить рапорт ', onPressed: ()=> _onTotalReport(context), style: ProjectTextStyles.baseBold),
-            ),
-          ],
-        ),
-      );
-    } else {
-      return Container();
-    }
   }
 
   Widget _buildAddress(Address address, bool line) {
@@ -229,72 +215,160 @@ class InstructionPage extends StatelessWidget {
     );
   }
 
-  Widget _buildSplitter(BuildContext context) {
-    return Container(
-      color: ProjectColors.darkBlue,
-      width: MediaQuery.of(context).size.width,
-      margin: const EdgeInsets.only(top: 15),
-      padding: const EdgeInsets.only(left: 20, right: 20, top: 7, bottom: 7),
-      child: Text('Обследование факта окончания работ и восстановления благоустройства',
-        style: ProjectTextStyles.baseBold.apply(color: Colors.white),
-      ),
-    );
+  Widget _buildReportButton(BuildContext context, InstructionCheck check, Instruction instruction) {
+    final state = BlocProvider.of<InstructionBloc>(context).state;
+    final status = instruction.instructionStatus.id == InstructionStatusIds.inProgress || instruction.instructionStatus.id == InstructionStatusIds.partInProgress;
+    if (state is LoadingReportsState || !status) {
+      return Container();
+    } else {
+      return Padding(
+        padding: const EdgeInsets.only(top: 15, bottom: 5),
+        child: Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 21, right: 10),
+              child: ProjectIcons.raportIcon(color: ProjectColors.blue.withOpacity(0.35)), 
+            ),
+            SizedBox(
+              height: 38,
+              child: ProjectButton.builtFlatButton('+ Добавить рапорт ', 
+                onPressed: ()=> _onTotalReport(context, check.id), 
+                style: ProjectTextStyles.baseBold
+              ),
+            ),
+          ],
+        ),
+      );
+    } 
+  }
+
+  Widget _buildReport(BuildContext context, InstructionCheck check, Instruction instruction, Report report) {
+    final state = BlocProvider.of<InstructionBloc>(context).state;
+    if (report != null) {
+      return Padding(
+        padding: const EdgeInsets.only(left: 20, right: 20, top: 15, bottom: 10),
+        child: Row(
+          children: [
+            ProjectIcons.raportIcon(color: ProjectColors.mediumBlue),
+            Padding(
+              padding: const EdgeInsets.only(left: 10),
+              child: IntrinsicWidth(
+                child: Column(
+                  children: [
+                    Text('Рапорт № ${report.reportNum} от ${DateFormat('dd.MM.yyyy').format(report.reportDate)}',
+                      style: ProjectTextStyles.baseBold.apply(color: ProjectColors.blue),
+                    ),
+                    Container(
+                      height: 1,
+                      color: ProjectColors.blue
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 10, top: 2),
+              child: ProjectStatus(report.reportStatus.name, 
+                color: ReportStatusColors.color(report.reportStatus.id)
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 10),
+              child: Text(state.date != null ? DateFormat('dd.MM.yyyy HH:mm').format(state.date) : 'Не обновлялось',
+                style: ProjectTextStyles.baseBold.apply(color: ProjectColors.black)
+              ),
+            ),
+            InkWell(
+              onTap: ()=> _onRefreshReport(context),
+              child: Padding(
+                padding: const EdgeInsets.only(left: 5),
+                child: const Icon(Icons.refresh,
+                  size: 20,
+                  color: ProjectColors.darkBlue
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    } else {
+      if (state is LoadingReportsState) {
+        return Container();
+      } else {
+        return _buildReportButton(context, check, instruction);
+      }
+    }
+  }
+
+  Widget _buildSplitter(BuildContext context, int count) {
+    if (count > 0) {
+      return Container(
+        color: ProjectColors.darkBlue,
+        width: MediaQuery.of(context).size.width,
+        margin: const EdgeInsets.only(top: 10),
+        padding: const EdgeInsets.only(left: 20, right: 20, top: 7, bottom: 7),
+        child: Text('Обследование факта окончания работ и восстановления благоустройства',
+          style: ProjectTextStyles.baseBold.apply(color: Colors.white),
+        ),
+      );
+    } else {
+      return Container(
+        margin: const EdgeInsets.only(top: 15),
+      );
+    }
   }
 
   Widget _buildDiggReuestCheck(BuildContext context, DiggRequestCheck diggRequestCheck, bool divider) {
+    String status;
+    if (diggRequestCheck.workCompleted) {
+      if (diggRequestCheck.landscapingRestored) {
+        status = 'Благоустройство восстановлено';
+      } else {
+        status = 'Благоустройство не восстановлено';
+      }
+    } else {
+      status = 'Работы не завершены';
+    }
     return ClipRect(
       child: Container(
         width: MediaQuery.of(context).size.width,
         child: Slidable(
           actionExtentRatio: 0.17,
           actionPane: SlidableDrawerActionPane(),
-          child: Padding(
-            padding: const EdgeInsets.only(top: 15, right: 19, left: 19, bottom: 15),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  child: Text(diggRequestCheck.diggNum,
-                    style: ProjectTextStyles.base.apply(color: ProjectColors.black),
+          child: Stack(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 15, right: 19, left: 19, bottom: 15),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      child: Text(diggRequestCheck.diggNum,
+                        style: ProjectTextStyles.base.apply(color: ProjectColors.black),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 15),
+                      child: Text(diggRequestCheck.diggAddress,
+                        style: ProjectTextStyles.base.apply(color: ProjectColors.black),
+                      ),
+                    ),
+                    divider ? ProjectDivider() : Container(),
+                  ],
+                ),
+              ),
+              Align(
+                alignment: Alignment.topRight,
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 17),
+                  child: ProjectStatus(status,
+                    color: DiggRequestCheckColors.color(diggRequestCheck.workCompleted, diggRequestCheck.landscapingRestored),
+                    rightBorder: false,
+                    rounded: false,
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 15),
-                  child: Text(diggRequestCheck.diggAddress,
-                    style: ProjectTextStyles.base.apply(color: ProjectColors.black),
-                  ),
-                ),
-                divider ? ProjectDivider() : Container(),
-                // showRaport  ? Padding(
-                //   padding: const EdgeInsets.only(top: 15),
-                //   child: Row(
-                //     children: [
-                //       ProjectIcons.raportIcon(color: ProjectColors.blue.withOpacity(0.35)),
-                //       Padding(
-                //         padding: const EdgeInsets.only(left: 10),
-                //         child: Text('Рапорт № 20-61-К21 от 11.03.2020',
-                //           style: ProjectTextStyles.baseBold.apply(color: ProjectColors.blue, decoration: TextDecoration.underline),
-                //         ),
-                //       ),
-                //       Container(
-                //         decoration: BoxDecoration(
-                //           border: Border.all(color: ProjectColors.yellow),
-                //           borderRadius: BorderRadius.circular(5)
-                //         ),
-                //         margin: const EdgeInsets.only(left: 10, right: 10),
-                //         padding: const EdgeInsets.only(left: 10, right: 10, top: 3, bottom: 3),
-                //         child: Text('На согласовании',
-                //           style: ProjectTextStyles.smallBold.apply(color: ProjectColors.yellow),
-                //         ),
-                //       ),
-                //       Text(DateFormat('dd.MM.yyyy HH:mm').format(DateTime.now()),
-                //         style: ProjectTextStyles.baseBold.apply(color: ProjectColors.black),
-                //       )
-                //     ],
-                //   ),
-                // ) : Container(),
-              ],
-            ),
+              ),
+            ],
           ),
           // enabled: instruction.instructionStatus.name == 'На исполнении',
           secondaryActions: [
@@ -356,7 +430,7 @@ class InstructionPage extends StatelessWidget {
     );
   }
 
-  Widget _buildInstructionCheck(BuildContext context, InstructionCheck instructionCheck, Instruction instruction) {
+  Widget _buildInstructionCheck(BuildContext context, InstructionCheck instructionCheck, Report report, Instruction instruction) {
     return ProjectCard(
       margin: const EdgeInsets.only(top: 20),
       padding: const EdgeInsets.only(top: 5),
@@ -379,10 +453,9 @@ class InstructionPage extends StatelessWidget {
                   ),
                 ),
               ),
-              //_buildParagraph(ProjectIcons.pointIcon(), instructionCheck.checkAddresses.first.),
               _buildParagraph(ProjectIcons.themeIcon(), instructionCheck.checkSubject),
-              _buildReportButton(context, instruction),
-              _buildSplitter(context),
+              _buildReport(context, instructionCheck, instruction, report),
+              _buildSplitter(context, instructionCheck.diggRequestChecks.length),
               Column(
                 children: List.generate(instructionCheck.diggRequestChecks.length, 
                   (index) => _buildDiggReuestCheck(context, instructionCheck.diggRequestChecks[index], index < instructionCheck.diggRequestChecks.length - 1),
@@ -398,23 +471,23 @@ class InstructionPage extends StatelessWidget {
 
   Widget _buildCompleteButton(BuildContext context, InstructionBlocState state) {
     final titles = {
-      InstructionStatusStrings.assigned: 'Принять на исполнение',
-      InstructionStatusStrings.complete: 'Заверешно',
-      InstructionStatusStrings.withdrawn: 'Отозвано',
-      InstructionStatusStrings.inProgress: 'Подтвердить исполнение',
-      InstructionStatusStrings.partInProgress: 'Подтвердить исполнение',
-      InstructionStatusStrings.partComplete: 'Подтвердить исполнение',
+      InstructionStatusIds.assigned: 'Принять на исполнение',
+      InstructionStatusIds.complete: 'Заверешно',
+      InstructionStatusIds.withdrawn: 'Отозвано',
+      InstructionStatusIds.inProgress: 'Подтвердить исполнение',
+      InstructionStatusIds.partInProgress: 'Подтвердить исполнение',
+      InstructionStatusIds.partComplete: 'Подтвердить исполнение',
     };
      final functions = {
-      InstructionStatusStrings.assigned: ()=> _onStatus(context, InstructionStatusStrings.inProgress),
-      InstructionStatusStrings.complete: null,
-      InstructionStatusStrings.withdrawn: null,
-      InstructionStatusStrings.inProgress: ()=> _onStatus(context, InstructionStatusStrings.complete),
-      InstructionStatusStrings.partInProgress: ()=> _onStatus(context, InstructionStatusStrings.complete),
-      InstructionStatusStrings.partComplete: ()=> _onStatus(context, InstructionStatusStrings.complete),
+      InstructionStatusIds.assigned: ()=> _onStatus(context, InstructionStatusIds.inProgress),
+      InstructionStatusIds.complete: null,
+      InstructionStatusIds.withdrawn: null,
+      InstructionStatusIds.inProgress: ()=> _onStatus(context, InstructionStatusIds.complete),
+      InstructionStatusIds.partInProgress: ()=> _onStatus(context, InstructionStatusIds.complete),
+      InstructionStatusIds.partComplete: ()=> _onStatus(context, InstructionStatusIds.complete),
     };
     final instruction = state.instruction;
-    if (state is LoadingState) {
+    if (state is LoadingUpdateState) {
       return CircularProgressIndicator(
         valueColor: AlwaysStoppedAnimation(ProjectColors.darkBlue),
       );
@@ -422,14 +495,14 @@ class InstructionPage extends StatelessWidget {
       return Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          instruction.instructionStatus.name == InstructionStatusStrings.assigned ? Padding(
+          instruction.instructionStatus.id == InstructionStatusIds.assigned ? Padding(
             padding: const EdgeInsets.only(right: 20),
             child: ProjectButton.buildOutlineButton('Отклонить',
-              onPressed: ()=> _onStatus(context, InstructionStatusStrings.withdrawn)
+              onPressed: ()=> _onStatus(context, InstructionStatusIds.withdrawn)
             ),
           ) : Container(),
-          ProjectButton.builtFlatButton(titles[instruction.instructionStatus.name] ?? 'Подтвердить исполнение',
-            onPressed: functions[instruction.instructionStatus.name],
+          ProjectButton.builtFlatButton(titles[instruction.instructionStatus.id] ?? 'Подтвердить исполнение',
+            onPressed: functions[instruction.instructionStatus.id],
           ),
         ]
       );

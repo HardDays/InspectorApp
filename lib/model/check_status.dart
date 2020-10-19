@@ -1,5 +1,13 @@
 import 'package:flutter/material.dart';
 
+abstract class CheckStatusIds {
+  
+  static const assigned = 1;
+  static const withdrawn = 2;
+  static const inProgress = 3;
+  static const reportSent = 4;
+}
+
 class CheckStatus {
   
   final int id;

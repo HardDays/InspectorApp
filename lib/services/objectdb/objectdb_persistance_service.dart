@@ -73,12 +73,12 @@ class ObjectDbPersistanceService extends ObjectDBService implements PersistanceS
     return await _getKeyValue('fingerPrintState');
   }
 
-  @override
-  Future<String> getInstructionsDate() async {
-    return await _getKeyValue('instructionDate');
+
+  Future<DateTime> getInstructionsDate() async {
+    final dateTime = await _getKeyValue('instructionsDate');
+    return dateTime == null ? null : DateTime.fromMillisecondsSinceEpoch(dateTime);
   }
 
-  @override
   Future<String> getInstructionsSort() async {
     return await _getKeyValue('instructionSort');
   }
@@ -111,6 +111,15 @@ class ObjectDbPersistanceService extends ObjectDBService implements PersistanceS
     return user == null ? null : User.fromJson(await _getKeyValue('user'));
   }
 
+  Future<InstructionFilters> getInstructionFilters() async {
+    return InstructionFilters.fromJson(await _getKeyValue('instructionFilters') ?? {});
+  }
+  
+  Future<DateTime> getInstructionReportDate(int instructionId) async {
+    final dateTime = await _getKeyValue('instructionReportDate$instructionId');
+    return dateTime == null ? null : DateTime.fromMillisecondsSinceEpoch(dateTime);
+  }
+
   @override
   Future<void> saveDataSendingState(bool state) async {
     await _saveKeyValue('dataSendingState', state);
@@ -121,24 +130,22 @@ class ObjectDbPersistanceService extends ObjectDBService implements PersistanceS
     await _saveKeyValue('fingerprintState', state);
   }
 
-  @override
   Future<void> saveInstructionSort(String value) async {
     await _saveKeyValue('instructionSort', value);
   }
 
-  @override
   Future<void> saveInstructionsDate() async {
-    await _saveKeyValue('instructionDate', DateFormat('dd.MM.yyyy hh:mm').format(DateTime.now()));
+    await _saveKeyValue('instructionsDate', DateTime.now().millisecondsSinceEpoch);
   }
   
   Future saveInstructionFilters(InstructionFilters value) async {
     await _saveKeyValue('instructionFilters', value.toJson());
   }
 
-  Future<InstructionFilters> getInstructionFilters() async {
-    return InstructionFilters.fromJson(await _getKeyValue('instructionFilters') ?? {});
+  Future<void> saveInstructionsReportDate(int instructionId) async {
+    await _saveKeyValue('instructionReportDate$instructionId', DateTime.now().millisecondsSinceEpoch);
   }
-  
+
   @override
   Future<void> saveLastDataSendingDate(DateTime dateTime) async {
     await _saveKeyValue('lastDataSendingDate', dateTime.millisecondsSinceEpoch);

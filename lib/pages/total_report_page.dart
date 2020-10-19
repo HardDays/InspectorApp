@@ -13,10 +13,10 @@ import 'package:inspector/model/normative_act.dart';
 import 'package:inspector/model/normative_act_article.dart';
 import 'package:inspector/model/object_category.dart';
 import 'package:inspector/model/report.dart';
-import 'package:inspector/model/special_object.dart';
 import 'package:inspector/model/street.dart';
 import 'package:inspector/model/violation_type.dart';
 import 'package:inspector/model/violator.dart';
+import 'package:inspector/model/violator_info.dart';
 import 'package:inspector/model/violator_info_ip.dart';
 import 'package:inspector/model/violator_info_legal.dart';
 import 'package:inspector/model/violator_info_official.dart';
@@ -28,19 +28,20 @@ import 'package:inspector/style/button.dart';
 import 'package:inspector/style/checkbox.dart';
 import 'package:inspector/style/colors.dart';
 import 'package:inspector/style/date_picker.dart';
-import 'package:inspector/style/select.dart';
 import 'package:inspector/style/text_field.dart';
 import 'package:inspector/style/text_style.dart';
 import 'package:inspector/style/title.dart';
 import 'package:inspector/widgets/dictionary_dialog.dart';
-import 'package:latlong/latlong.dart';
 import 'package:inspector/widgets/image_picker.dart';
+import 'package:latlong/latlong.dart';
 
 class TotalReportPage extends StatefulWidget {
 
   final bool violationNotPresent;
+  final int instructionId;
+  final int checkId;
 
-  TotalReportPage({this.violationNotPresent});
+  TotalReportPage({this.violationNotPresent, this.checkId, this.instructionId});
 
   @override
   TotalReportPageState createState() => TotalReportPageState();
@@ -49,10 +50,15 @@ class TotalReportPage extends StatefulWidget {
 
 class TotalReportPageState extends State<TotalReportPage> with SingleTickerProviderStateMixin {
 
+  final _formKey = GlobalKey<FormState>();
+
   final _areaController = TextEditingController();
   final _streetController = TextEditingController();
   final _districtController = TextEditingController();
   final _addressController = TextEditingController();
+  final _specifiedAddressController = TextEditingController();
+  final _violationDescriptionController = TextEditingController();
+  final _codexArticleController = TextEditingController();
   final _objectCategoryController = TextEditingController();
   final _violationTypeController = TextEditingController();
   final _normativeActControllers = [
@@ -88,6 +94,9 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
   final _departmentCodeControllers = [
     TextEditingController()
   ];
+  final _dates = [
+    null,
+  ];
 
   void initState() {
     super.initState();
@@ -109,6 +118,18 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
     BlocProvider.of<TotalReportBloc>(context).add(AddViolatorEvent());  
     _violatorTypeControllers.add(TextEditingController());
     _departmentCodeControllers.add(TextEditingController());
+    _violatorControllers.add(TextEditingController());
+    _innControllers.add(TextEditingController());
+    _ogrnControllers.add(TextEditingController());
+    _kppControllers.add(TextEditingController());
+    _phoneControllers.add(TextEditingController());
+    _legalAddressControllers.add(TextEditingController());
+    _postalAddressControllers.add(TextEditingController());
+    _dates.add(null);
+  }
+
+  void _onDateSelect(BuildContext context, int index, List<DateTime> value) {
+    _dates[index] = value;
   }
 
   void _onAreaSelect(BuildContext context, Area value) {
@@ -184,6 +205,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
         _phoneControllers[index].text = violator.phone ?? '';
         _legalAddressControllers[index].text = violator.legalAddress ?? '';
         _postalAddressControllers[index].text = violator.postalAddress ?? '';
+        _dates[index] = violator.regDate;
       } else if (violator is ViolatorInfoOfficial) {
         _innControllers[index].text = violator.orgKpp ?? '';
         _ogrnControllers[index].text = violator.orgOgrn ?? '';
@@ -191,16 +213,20 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
         _phoneControllers[index].text = violator.phone ?? '';
         _legalAddressControllers[index].text = violator.orgLegalAddress ?? '';
         _postalAddressControllers[index].text = violator.orgPostalAddress ?? '';
+        _dates[index] = violator.orgRegDate;
       } else if (violator is ViolatorInfoPrivate) {
         _innControllers[index].text = violator.inn ?? '';
         _phoneControllers[index].text = violator.phone ?? '';
         _legalAddressControllers[index].text = violator.registrationAddress ?? '';
+        _dates[index] = violator.birthDate;
       } else if (violator is ViolatorInfoIp) {
         _innControllers[index].text = violator.inn ?? '';
         _ogrnControllers[index].text = violator.ogrnip ?? '';
         _phoneControllers[index].text = violator.phone ?? '';
         _legalAddressControllers[index].text = violator.registrationAddress ?? '';
+        _dates[index] = violator.birthDate;
       }
+      BlocProvider.of<TotalReportBloc>(context).add(SetViolatorInfoEvent(index, ViolatorInfo(id: violator.id, phone: violator.phone)));
     }
   }
 
@@ -248,6 +274,19 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
     return await BlocProvider.of<TotalReportBloc>(context).getViolators(index, name);
   }
 
+  void _onSave(BuildContext context, int status) {
+    if (_formKey.currentState.validate()) {
+      BlocProvider.of<TotalReportBloc>(context).add(
+        SaveEvent(
+          status,
+          _violationDescriptionController.text,
+          _specifiedAddressController.text,
+          _codexArticleController.text,
+        ),
+      );  
+    }
+  }
+
   void _loadDict(BuildContext context) async {
     WidgetsBinding.instance.addPostFrameCallback(
       (_) async {
@@ -256,15 +295,27 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
           barrierDismissible: false,
           child: DictionaryDialog()
         );
-        BlocProvider.of<TotalReportBloc>(context).add(InitEvent(widget.violationNotPresent));  
+        BlocProvider.of<TotalReportBloc>(context).add(InitEvent(widget.violationNotPresent, widget.checkId, widget.instructionId));  
       }
     );
+  }
+
+  String _nullValidator(dynamic value) {
+    if (value == null) {
+      return 'Введите значение';
+    }
+  }
+
+  String _emptyValidator(String value) {
+    if (value.isEmpty) {
+      return 'Введите значение';
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context)=> TotalReportBloc(TotalReportBlocState(report: Report.empty(false)))..add(LoadEvent(widget.violationNotPresent)),
+      create: (context)=> TotalReportBloc(TotalReportBlocState(report: Report.empty(false, 0, 0)))..add(LoadEvent(widget.violationNotPresent, widget.checkId, widget.instructionId)),
       child: BlocBuilder<TotalReportBloc, TotalReportBlocState>(
         builder: (context, state) {
           if (state is LoadDictState) {
@@ -303,7 +354,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           ImagePicker(),
-          _buildButtons(),
+          _buildButtons(context),
         ],
       ),
     );
@@ -315,136 +366,156 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
         _buildMap(),
         _buildTextField('Ручной поиск по карте', 'Введите или выберите значение', null),
         _buildTitle('Адрес нарушения'),
-        Row(
-          children: [
-            Flexible(
-              child: _buildCheckBox(
-                'Определить адрес по местоположению', 
-                state.report.violationNotPresent,
-                (value)=> _onViolationNotPresent(context, value),
-              ),
-            ),
-            Padding(padding: const EdgeInsets.only(left: 35)),
-            Flexible(
-              child: _buildCheckBox(
-                'ТиНАО', 
-                state.report.violationNotPresent,
-                (value)=> _onViolationNotPresent(context, value),
-              ),
-            ),
-          ],
-        ),
-        Row(
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            Flexible(
-              child: _buildAutocomplete(
-                'Округ', 
-                'Выберите значение', 
-                _areaController,
-                (value)=> _onAreaSearch(context, value), 
-                (value)=> _onAreaSelect(context, value),
-              ),
-            ),
-            Padding(padding: const EdgeInsets.only(left: 35)),
-            Flexible(
-              child: _buildAutocomplete(
-                'Район', 
-                'Выберите значение', 
-                _districtController,
-                (value)=> _onDistrictSearch(context, value), 
-                (value)=> _onDistrictSelect(context, value)
-              ),
-            ),
-          ],
-        ),
-        Row(
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            Flexible(
-              child: _buildAutocomplete(
-                'Улица', 
-                'Выберите значение', 
-                _streetController,
-                (value)=> _onStreetSearch(context, value), 
-                (value)=> _onStreetSelect(context, value)
-              ),
-            ),
-            Padding(padding: const EdgeInsets.only(left: 35)),
-            Flexible(
-              child: _buildAutocomplete(
-                'Дом, корпус, строение', 
-                'Выберите значение', 
-                _addressController,
-                (value)=> _onAddressSearch(context, value), 
-                (value)=> _onAddressSelect(context, value)
-              ),
-            ),
-          ],
-        ),
-        _buildTextField('Адресный ориентир', 'Введите данные', null),
-        _buildTitle('Нарушение'),
-        _buildAutocomplete(
-          'Код объекта контроля', 
-          'Выберите значение', 
-          _objectCategoryController,
-          (value)=> _onObjectCategoriesSearch(context, value), 
-          (value)=> _onObjectCategorySelect(context, value)
-        ),
-        _buildTextField('Описание нарушения', 'Введите данные', null),
-        Stack(
-          alignment: Alignment.topRight,
-          children: [
-            Column(
-              children: List.generate(state.report.violation?.normativeActArticles?.length ?? 1, 
-                (index) => Padding(
-                  padding: const EdgeInsets.only(top: 20),
-                  child: Column(
-                    children: [
-                      _buildAutocomplete(
-                        'Нормативно-правовой акт', 
-                        'Выберите значение', 
-                        _normativeActControllers[index],
-                        (value)=> _onNormativeActSearch(context, value), 
-                        (value)=> _onNormativeActSelect(context, index, value), 
-                        padding: const EdgeInsets.only(right: 30)
-                      ),
-                      _buildAutocomplete(
-                        'Пункт', 
-                        'Выберите значение', 
-                        _normativeActArticleControllers[index],
-                        (value)=> _onNormativeActArticleSearch(context, index, value), 
-                        (value)=> _onNormativeActArticleSelect(context, index, value), 
-                        padding: const EdgeInsets.only(top: 20, right: 30)
-                      ),
-                    ],
+        Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Flexible(
+                    child: _buildCheckBox(
+                      'Определить адрес по местоположению', 
+                      state.report.violationNotPresent,
+                      (value)=> _onViolationNotPresent(context, value),
+                    ),
                   ),
-                ),
+                  Padding(padding: const EdgeInsets.only(left: 35)),
+                  Flexible(
+                    child: _buildCheckBox(
+                      'ТиНАО', 
+                      state.report.violationNotPresent,
+                      (value)=> _onViolationNotPresent(context, value),
+                    ),
+                  ),
+                ],
               ),
-            ),
-            _buildConnector(context, state.report.violation?.normativeActArticles?.length ?? 1),
-          ],
-        ),
-        Row(
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            Flexible(
-              child: _buildAutocomplete(
-                'Код нарушения', 
+              Row(
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Flexible(
+                    child: _buildAutocomplete(
+                      'Округ', 
+                      'Выберите значение', 
+                      _areaController,
+                      (value)=> _onAreaSearch(context, value), 
+                      (value)=> _onAreaSelect(context, value),
+                      validator: (value) => _nullValidator(state.report?.violation?.violationAddress?.area)
+                    ),
+                  ),
+                  Padding(padding: const EdgeInsets.only(left: 35)),
+                  Flexible(
+                    child: _buildAutocomplete(
+                      'Район', 
+                      'Выберите значение', 
+                      _districtController,
+                      (value)=> _onDistrictSearch(context, value), 
+                      (value)=> _onDistrictSelect(context, value),
+                      validator: (value) => _nullValidator(state.report?.violation?.violationAddress?.district)
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Flexible(
+                    child: _buildAutocomplete(
+                      'Улица', 
+                      'Выберите значение', 
+                      _streetController,
+                      (value)=> _onStreetSearch(context, value), 
+                      (value)=> _onStreetSelect(context, value),
+                      validator: (value) => _nullValidator(state.report?.violation?.violationAddress?.street)
+                    ),
+                  ),
+                  Padding(padding: const EdgeInsets.only(left: 35)),
+                  Flexible(
+                    child: _buildAutocomplete(
+                      'Дом, корпус, строение', 
+                      'Выберите значение', 
+                      _addressController,
+                      (value)=> _onAddressSearch(context, value), 
+                      (value)=> _onAddressSelect(context, value),
+                      validator: (value) => _nullValidator(state.report?.violation?.violationAddress?.houseNum),
+                    ),
+                  ),
+                ],
+              ),
+              _buildTextField('Адресный ориентир', 'Введите данные', _specifiedAddressController),
+              _buildTitle('Нарушение'),
+              _buildAutocomplete(
+                'Код объекта контроля', 
                 'Выберите значение', 
-                _violationTypeController,
-                (value)=> _onViolationTypeSearch(context, value),
-                (value)=> _onViolationTypeSelect(context, value), 
+                _objectCategoryController,
+                (value)=> _onObjectCategoriesSearch(context, value), 
+                (value)=> _onObjectCategorySelect(context, value),
+                validator: (value) => _nullValidator(state.report?.violation?.objectCategory),
               ),
-            ),
-            Padding(padding: const EdgeInsets.only(left: 35)),
-            Flexible(
-              child: _buildTextField('Статья КоАП', 'Введите данные', null),
-            ),
-          ],
+              _buildTextField('Описание нарушения', 'Введите данные', _violationDescriptionController,
+                validator: _emptyValidator
+              ),
+              Stack(
+                alignment: Alignment.topRight,
+                children: [
+                  Column(
+                    children: List.generate(state.report.violation?.normativeActArticles?.length ?? 1, 
+                      (index) => Padding(
+                        padding: const EdgeInsets.only(top: 20),
+                        child: Column(
+                          children: [
+                            _buildAutocomplete(
+                              'Нормативно-правовой акт', 
+                              'Выберите значение', 
+                              _normativeActControllers[index],
+                              (value)=> _onNormativeActSearch(context, value), 
+                              (value)=> _onNormativeActSelect(context, index, value), 
+                              padding: const EdgeInsets.only(right: 30)
+                            ),
+                            _buildAutocomplete(
+                              'Пункт', 
+                              'Выберите значение', 
+                              _normativeActArticleControllers[index],
+                              (value)=> _onNormativeActArticleSearch(context, index, value), 
+                              (value)=> _onNormativeActArticleSelect(context, index, value), 
+                              padding: const EdgeInsets.only(top: 20, right: 30)
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  _buildConnector(context, state.report.violation?.normativeActArticles?.length ?? 1),
+                ],
+              ),
+              Row(
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Flexible(
+                    child: _buildAutocomplete(
+                      'Код нарушения', 
+                      'Выберите значение', 
+                      _violationTypeController,
+                      (value)=> _onViolationTypeSearch(context, value),
+                      (value)=> _onViolationTypeSelect(context, value), 
+                      validator: (value)=> _nullValidator(state.report?.violation?.violationType)
+                    ),
+                  ),
+                  Padding(padding: const EdgeInsets.only(left: 35)),
+                  Flexible(
+                    child: _buildTextField('Статья КоАП', 'Введите данные', _codexArticleController,
+                      validator: _emptyValidator
+                    ),
+                  ),
+                ],
+              ),
+              _buildTitle('Фотоматериалы нарушения'),
+            ImagePicker(),
+            ],
+          ),
         ),
-        _buildTitle('Фотоматериалы нарушения'),
-        ImagePicker(),
         _buildTitle('Нарушители'),
         Column(
           children: List.generate(state.report.violation.violators.length, 
@@ -452,7 +523,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
           ),
         ),
         _buildAddViolator(context),
-        _buildButtons(),
+        _buildButtons(context),
       ],
     );
   }
@@ -474,75 +545,28 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
               (value)=> _onViolatorTypeSearch(context, value), 
               (value)=> _onViolatorTypeSelect(context, index, value), 
             ),
-            _buildAutocomplete('Организация', 'Выберите значение',  
+            _buildAutocomplete('Нарушитель', 'Выберите значение',  
               _violatorControllers[index],
               (value)=> _onViolatorSearch(context, index, value), 
               (value)=> _onViolatorSelect(context, index, value), 
             ),
-            Row(
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                Flexible(
-                  child: _buildTextField('ИНН', 'Введите данные', _innControllers[index]),
-                ),
-                Padding(padding: const EdgeInsets.only(left: 20)),
-                Flexible(
-                  child: _buildTextField('ОГРН', 'Введите данные', _ogrnControllers[index]),
-                ),
-                Padding(padding: const EdgeInsets.only(left: 20)),
-                Flexible(
-                  child: _buildTextField('КПП', 'Введите данные', _kppControllers[index]),
-                ),
-              ],
-            ),
-            Row(
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                Flexible(
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 20),
-                    child: ProjectDatePicker(
-                      title: 'Дата регистрации',
-                      hintText: 'Выберите дату',
-                      singleDate: true,
-                    ),
-                  ),
-                ),
-                Padding(padding: const EdgeInsets.only(left: 35)),
-                Flexible(
-                  child: _buildCheckBox(
-                    'Иностранное Юрлицо', 
-                    violator.foreign,
-                    (value)=> _onViolatorForeign(context, value, index),
-                    padding: const EdgeInsets.only(top: 40),
-                  ),
-                ),
-              ],
-            ),
-            Row(
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                Flexible(
-                  child: _buildAutocomplete(
-                    'Код ведомства', 
-                    'Выберите значение',  
-                    _departmentCodeControllers[index],
-                    (value)=> _onDepartmentCodeSearch(context, value),
-                    (value)=> _onDepartmentCodeSelect(context, index, value), 
-                  ),
-                ),
-                Padding(padding: const EdgeInsets.only(left: 35)),
-                Flexible(
-                  child: _buildTextField('Телефон', 'Введите данные', _phoneControllers[index]),
-                ),
-              ],
-            ),
-            _buildTextField('Фактический адрес', 'Введите данные', _legalAddressControllers[index]),
-            _buildTextField('Юридический адрес', 'Введите данные', _postalAddressControllers[index]),
+            _buildViolatorInfo(context, index, violator)
           ],
         ),
       ],
     );
+  }
+
+  Widget _buildViolatorInfo(BuildContext context, int index, Violator violator) {
+    if (violator?.type?.id == ViolatorTypeIds.official) {
+      return _buildOfficial(context, index, violator);
+    } else if (violator?.type?.id == ViolatorTypeIds.private) {
+      return _buildPrivate(context, index, violator);
+    } else if (violator?.type?.id == ViolatorTypeIds.ip) {
+      return _buildIp(context, index, violator);
+    } else {
+      return _buildLegal(context, index, violator);
+    }
   }
 
   Widget _buildLegal(BuildContext context, int index, Violator violator) {
@@ -574,6 +598,8 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
                   title: 'Дата регистрации',
                   hintText: 'Выберите дату',
                   singleDate: true,
+                  values: _dates[index],
+                  onChanged: (date) => _onDateSelect(context, index, date),
                 ),
               ),
             ),
@@ -638,9 +664,11 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
               child: Padding(
                 padding: const EdgeInsets.only(top: 20),
                 child: ProjectDatePicker(
-                  title: 'Дата регистрации',
+                  title: 'Дата регистрации организации',
                   hintText: 'Выберите дату',
                   singleDate: true,
+                  values: _dates[index],
+                  onChanged: (date) => _onDateSelect(context, index, date),
                 ),
               ),
             ),
@@ -679,8 +707,64 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
     );
   }
 
-  Widget _buildPhysical() {
-    // toodo here  
+  Widget _buildPrivate(BuildContext context, int index, Violator violator) {
+    return Column(
+      children: [
+        Row(
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            Flexible(
+              child: _buildTextField('ИНН', 'Введите данные', _innControllers[index]),
+            ),
+          ],
+        ),
+        Row(
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            Flexible(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 20),
+                child: ProjectDatePicker(
+                  title: 'Дата рождения',
+                  hintText: 'Выберите дату',
+                  singleDate: true,
+                  values: _dates[index],
+                  onChanged: (date) => _onDateSelect(context, index, date),
+                ),
+              ),
+            ),
+            Padding(padding: const EdgeInsets.only(left: 35)),
+            Flexible(
+              child: _buildCheckBox(
+                'Иностранное лицо', 
+                violator.foreign,
+                (value)=> _onViolatorForeign(context, value, index),
+                padding: const EdgeInsets.only(top: 40),
+              ),
+            ),
+          ],
+        ),
+        Row(
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            Flexible(
+              child: _buildAutocomplete(
+                'Код ведомства', 
+                'Выберите значение',  
+                _departmentCodeControllers[index],
+                (value)=> _onDepartmentCodeSearch(context, value),
+                (value)=> _onDepartmentCodeSelect(context, index, value), 
+              ),
+            ),
+            Padding(padding: const EdgeInsets.only(left: 35)),
+            Flexible(
+              child: _buildTextField('Телефон', 'Введите данные', _phoneControllers[index]),
+            ),
+          ],
+        ),
+        _buildTextField('Адрес регистрации', 'Введите данные', _legalAddressControllers[index]),
+      ],
+    );  
   }
 
   Widget _buildIp(BuildContext context, int index, Violator violator) {
@@ -705,9 +789,11 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
               child: Padding(
                 padding: const EdgeInsets.only(top: 20),
                 child: ProjectDatePicker(
-                  title: 'Дата регистрации',
+                  title: 'Дата рождения',
                   hintText: 'Выберите дату',
                   singleDate: true,
+                  values: _dates[index],
+                  onChanged: (date) => _onDateSelect(context, index, date),
                 ),
               ),
             ),
@@ -769,7 +855,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
     );
   }
 
-  Widget _buildButtons() {
+  Widget _buildButtons(BuildContext context) {
     return Container(
       color: Colors.white,
       padding: const EdgeInsets.only(top: 30, bottom: 20),
@@ -777,13 +863,13 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           ProjectButton.builtFlatButton('Сохранить проект',
-            onPressed: () {}
+            onPressed: () => _onSave(context, ReportStatusIds.project),
           ),
           ProjectButton.builtFlatButton('Сохранить',
-            onPressed: () {}
+            onPressed: () => _onSave(context, ReportStatusIds.new_),
           ),
           ProjectButton.builtFlatButton('На согласование',
-            onPressed: () {}
+            onPressed: () => _onSave(context, ReportStatusIds.onApproval),
           ),
           ProjectButton.builtFlatButton('Удалить', 
             color: ProjectColors.red,
@@ -913,24 +999,34 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
     );
   } 
 
-  Widget _buildTextField(String title, String hintText, TextEditingController controller, {EdgeInsets padding = const EdgeInsets.only(top: 20)}) {
+  Widget _buildTextField(String title, 
+    String hintText, 
+    TextEditingController controller, {
+      EdgeInsets padding = const EdgeInsets.only(top: 20),
+      Function(String) validator,
+    }
+  ) {
     return Padding(
       padding: padding,
       child: ProjectTextField(
         title: title,
         hintText: hintText, 
         controller: controller,
+        validator: validator
       )
     );
   }
 
-  Widget _buildAutocomplete(String title, 
+  Widget _buildAutocomplete(
+    String title, 
     String hintText, 
     TextEditingController controller,
     AutocompleteCallback suggestionsCallback, 
     Function(dynamic) onSuggestionSelected, {
-    EdgeInsets padding = const EdgeInsets.only(top: 20),
-  }) {
+      EdgeInsets padding = const EdgeInsets.only(top: 20),
+      Function(String) validator
+    }
+  ) {
     return Padding(
       padding: padding,
       child: ProjectAutocomplete(title,
@@ -938,6 +1034,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
         hintText: hintText,
         suggestionsCallback: suggestionsCallback,
         onSuggestionSelected: onSuggestionSelected,
+        validator: validator,
       ),
     );
   }

@@ -11,12 +11,10 @@ class ViolatorDocumentType {
   });
 
   factory ViolatorDocumentType.fromJson(Map<String, dynamic> json) {
-    if (json != null) {
-      return ViolatorDocumentType(
-        id: json['id'],
-        name: json['name'],
-      );
-    }
+    return ViolatorDocumentType(
+      id: json['id'],
+      name: json['name'],
+    );
   }
 
   Map<String, dynamic> toJson() {

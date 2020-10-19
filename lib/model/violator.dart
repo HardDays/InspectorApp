@@ -27,7 +27,7 @@ class Violator {
       violatorNotFound: false,
       foreign: false,
     );
-   }
+  }
 
   factory Violator.fromJson(Map<String, dynamic> json) {
     if (json != null) {
@@ -35,9 +35,9 @@ class Violator {
         id: json['id'], 
         foreign: json['foreign'], 
         violatorNotFound: json['violatorNotFound'],
-        type: ViolatorType.fromJson(json['type']),
-        violatorPerson: ViolatorInfo.fromJson(json['violatorPerson']),
-        departmentCode: DepartmentCode.fromJson(json['departmentCode']),
+        type: json['type'] != null ? ViolatorType.fromJson(json['type']) : null,
+        violatorPerson: json['violatorPerson'] != null ? ViolatorInfo.fromJson(json['violatorPerson']) : null,
+        departmentCode: json['departmentCode'] != null ? DepartmentCode.fromJson(json['departmentCode']) : null,
       );
     } else {
       return Violator.empty();
@@ -48,6 +48,7 @@ class Violator {
     bool violatorNotFound,
     bool foreign,
     ViolatorType type,
+    ViolatorInfo violatorPerson,
     DepartmentCode departmentCode,
   }) {
     return Violator(
@@ -55,7 +56,7 @@ class Violator {
       violatorNotFound: violatorNotFound ?? this.violatorNotFound,
       foreign: foreign ?? this.foreign,
       type: type ?? this.type,
-      violatorPerson: violatorPerson,
+      violatorPerson: violatorPerson ?? this.violatorPerson,
       departmentCode: departmentCode ?? this.departmentCode
     );
   }

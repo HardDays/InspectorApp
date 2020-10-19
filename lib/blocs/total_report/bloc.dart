@@ -16,11 +16,14 @@ import 'package:inspector/model/violation_type.dart';
 import 'package:inspector/model/violator.dart';
 import 'package:inspector/model/violator_type.dart';
 import 'package:inspector/services/dictionary_service.dart';
+import 'package:inspector/services/reports_service.dart';
+import 'package:intl/intl.dart';
 
 class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {
   TotalReportBloc(initialState) : super(initialState);
 
   final _dictionaryService = DictionaryService();
+  final _reportsService = ReportsService();
 
   Future<Iterable<Area>> getAreas(String name) async {
     if (name.isNotEmpty) {
@@ -113,7 +116,7 @@ class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {
             report: state.report
           );
         } else {
-          add(InitEvent(event.violationNotPresent));
+          add(InitEvent(event.violationNotPresent, event.checkId, event.instructionId));
         } 
       } catch (ex) {
         print(ex);
@@ -121,7 +124,7 @@ class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {
     } else if (event is InitEvent) {
       try {
         yield TotalReportBlocState(
-          report: Report.empty(event.violationNotPresent),
+          report: Report.empty(event.violationNotPresent, event.checkId, event.instructionId)
         );
       } catch (ex) {
         print(ex);
@@ -217,6 +220,10 @@ class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {
         violator = violator.copyWith(
           departmentCode: event.departmentCode
         );
+      } else if (event is SetViolatorInfoEvent) {
+        violator = violator.copyWith(
+          violatorPerson: event.violatorPerson
+        );
       }
       violators[event.index] = violator;
       yield state.copyWith(
@@ -234,6 +241,25 @@ class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {
           ),
         ),
       );
+    } else if (event is SaveEvent) {
+      final violation = state.report.violation;
+      final report = state.report.copyWith(
+        violation: violation.copyWith(
+          codexArticle: event.codexArticle,
+          violationDescription: event.violationDescription,
+          violationDate: DateTime.now(),
+          violationAddress: violation.violationAddress.copyWith(
+            specifiedAddress: event.specifiedAddress 
+          ),
+        ),
+      );
+      try {
+        final res = await _reportsService.create(report);
+      } catch (ex) {
+        print(ex.details);
+      }
+
+      var t=  0;
     }
   } 
 }

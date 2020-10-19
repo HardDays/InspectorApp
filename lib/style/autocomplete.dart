@@ -14,12 +14,14 @@ class ProjectAutocomplete extends StatelessWidget {
   final TextEditingController controller;
   final AutocompleteCallback suggestionsCallback;
   final Function(dynamic) onSuggestionSelected;
+  final Function(String) validator;
 
   ProjectAutocomplete(this.title, {
     this.controller,
     this.hintText, 
     this.suggestionsCallback,
     this.onSuggestionSelected,
+    this.validator,
   });
 
   @override
@@ -31,7 +33,7 @@ class ProjectAutocomplete extends StatelessWidget {
     return ProjectInputTitle(
       title,
       child: Stack(
-        alignment: Alignment.centerRight,
+        alignment: Alignment.topRight,
         children: [
           TypeAheadFormField(
             onSuggestionSelected: onSuggestionSelected, 
@@ -39,6 +41,7 @@ class ProjectAutocomplete extends StatelessWidget {
               color: Colors.white,
               elevation: 1,
             ),
+            validator: validator,
             hideOnLoading: true,
             hideOnEmpty: true,
             hideOnError: true,
@@ -67,7 +70,7 @@ class ProjectAutocomplete extends StatelessWidget {
             suggestionsCallback: suggestionsCallback
           ),
           const  Padding(
-            padding: const EdgeInsets.only(right: 10),
+            padding: const EdgeInsets.only(top: 13, right: 10),
             child: Icon(Icons.keyboard_arrow_down, 
               color: ProjectColors.darkBlue,
             ),

@@ -13,6 +13,7 @@ import 'package:inspector/style/top_dialog.dart';
 import 'package:inspector/widgets/instruction/filters.dart';
 import 'package:inspector/widgets/instruction/instruction.dart';
 import 'package:inspector/widgets/sort_dialog.dart';
+import 'package:intl/intl.dart';
 
 
 class InstructionListPage extends StatefulWidget {
@@ -95,7 +96,7 @@ class InstructionListPageState extends State<InstructionListPage> with Automatic
         builder: (context, state) {
           return Scaffold(
             appBar: FilterAppbar('Поручения', 
-              state.date ?? 'Не обновлялось',
+              state.date != null ? DateFormat('dd.MM.yyyy HH:mm').format(state.date) : 'Не обновлялось',
               state.sort ?? InstructionSortStrings.instructionStatus,
               onUpdate: ()=> _onUpdate(context),
               onSort: ()=> _onSort(context, state.sort),
