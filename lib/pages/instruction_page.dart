@@ -34,16 +34,14 @@ class InstructionPage extends StatelessWidget {
 
   InstructionPage(this.instruction);
 
-  void _onTotalReport(BuildContext context, int checkId) {
+  void _onTotalReport(BuildContext context, Report report, InstructionCheck check) {
     Navigator.push(context, 
       MaterialPageRoute(
         builder: (context) => TotalReportPage(
-          violationNotPresent: false,
-          instructionId: instruction.id,
-          checkId: checkId,
+          report: report?.copyWith() ?? Report.empty(false, check.id, instruction.id)
         ),
       ),
-    );
+    );  
   }
 
   void _onAddressReport(BuildContext context, String status) {
@@ -215,7 +213,7 @@ class InstructionPage extends StatelessWidget {
     );
   }
 
-  Widget _buildReportButton(BuildContext context, InstructionCheck check, Instruction instruction) {
+  Widget _buildReportButton(BuildContext context, Report report, InstructionCheck check, Instruction instruction) {
     final state = BlocProvider.of<InstructionBloc>(context).state;
     final status = instruction.instructionStatus.id == InstructionStatusIds.inProgress || instruction.instructionStatus.id == InstructionStatusIds.partInProgress;
     if (state is LoadingReportsState || !status) {
@@ -232,7 +230,7 @@ class InstructionPage extends StatelessWidget {
             SizedBox(
               height: 38,
               child: ProjectButton.builtFlatButton('+ Добавить рапорт ', 
-                onPressed: ()=> _onTotalReport(context, check.id), 
+                onPressed: ()=> _onTotalReport(context, report, check), 
                 style: ProjectTextStyles.baseBold
               ),
             ),
@@ -242,7 +240,7 @@ class InstructionPage extends StatelessWidget {
     } 
   }
 
-  Widget _buildReport(BuildContext context, InstructionCheck check, Instruction instruction, Report report) {
+  Widget _buildReport(BuildContext context, Report report, InstructionCheck check, Instruction instruction) {
     final state = BlocProvider.of<InstructionBloc>(context).state;
     if (report != null) {
       return Padding(
@@ -252,17 +250,20 @@ class InstructionPage extends StatelessWidget {
             ProjectIcons.raportIcon(color: ProjectColors.mediumBlue),
             Padding(
               padding: const EdgeInsets.only(left: 10),
-              child: IntrinsicWidth(
-                child: Column(
-                  children: [
-                    Text('Рапорт № ${report.reportNum} от ${DateFormat('dd.MM.yyyy').format(report.reportDate)}',
-                      style: ProjectTextStyles.baseBold.apply(color: ProjectColors.blue),
-                    ),
-                    Container(
-                      height: 1,
-                      color: ProjectColors.blue
-                    ),
-                  ],
+              child: InkWell(
+                onTap: ()=> _onTotalReport(context, report, check),
+                child: IntrinsicWidth(
+                  child: Column(
+                    children: [
+                      Text('Рапорт № ${report.reportNum} от ${DateFormat('dd.MM.yyyy').format(report.reportDate)}',
+                        style: ProjectTextStyles.baseBold.apply(color: ProjectColors.blue),
+                      ),
+                      Container(
+                        height: 1,
+                        color: ProjectColors.blue
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -295,7 +296,7 @@ class InstructionPage extends StatelessWidget {
       if (state is LoadingReportsState) {
         return Container();
       } else {
-        return _buildReportButton(context, check, instruction);
+        return _buildReportButton(context, report, check, instruction);
       }
     }
   }
@@ -454,7 +455,7 @@ class InstructionPage extends StatelessWidget {
                 ),
               ),
               _buildParagraph(ProjectIcons.themeIcon(), instructionCheck.checkSubject),
-              _buildReport(context, instructionCheck, instruction, report),
+              _buildReport(context, report, instructionCheck, instruction),
               _buildSplitter(context, instructionCheck.diggRequestChecks.length),
               Column(
                 children: List.generate(instructionCheck.diggRequestChecks.length, 

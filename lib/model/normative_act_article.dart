@@ -41,6 +41,6 @@ class NormativeActArticle {
 
   @override
   String toString() {
-    return '$code $name';
+    return [code, name].where((e) => e != null).join(' ');
   }
 }

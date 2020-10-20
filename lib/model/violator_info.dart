@@ -11,12 +11,10 @@ class ViolatorInfo {
   });
 
   factory ViolatorInfo.fromJson(Map<String, dynamic> json) {
-    if (json != null) {
-      return ViolatorInfo(
-        id: json['id'], 
-        phone: json['phone'], 
-      );
-    }
+    return ViolatorInfo(
+      id: json['id'], 
+      phone: json['phone'], 
+    );
   }
   
    Map<String, dynamic> toJson() {

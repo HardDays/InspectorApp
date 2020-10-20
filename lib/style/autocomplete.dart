@@ -52,7 +52,7 @@ class ProjectAutocomplete extends StatelessWidget {
               controller: controller,
               decoration: InputDecoration(
                 hintText: hintText,
-                contentPadding: const EdgeInsets.only(left: 10, top: 15, right: 10),
+                contentPadding: const EdgeInsets.only(left: 10, top: 15, right: 40),
                 hintStyle: ProjectTextStyles.base.apply(color: ProjectColors.darkBlue),
                 border: border,
                 enabledBorder: border,
@@ -69,11 +69,23 @@ class ProjectAutocomplete extends StatelessWidget {
             },
             suggestionsCallback: suggestionsCallback
           ),
-          const  Padding(
+          controller?.text?.isEmpty ?? false ? Padding(
             padding: const EdgeInsets.only(top: 13, right: 10),
             child: Icon(Icons.keyboard_arrow_down, 
               color: ProjectColors.darkBlue,
             ),
+          ) : InkWell(
+            onTap: () {
+              controller?.clear();
+              onSuggestionSelected(null);
+            },
+            child: Padding(
+              padding: const EdgeInsets.only(top: 14, right: 10),
+              child: Icon(Icons.close, 
+                size: 20,
+                color: ProjectColors.darkBlue,
+              ),
+            )
           ),
         ],
       ),

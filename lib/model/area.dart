@@ -34,6 +34,6 @@ class Area {
 
   @override
   String toString() {
-    return name;
+    return name ?? '';
   }
 }

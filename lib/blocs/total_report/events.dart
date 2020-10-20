@@ -5,28 +5,30 @@ import 'package:inspector/model/district.dart';
 import 'package:inspector/model/normative_act.dart';
 import 'package:inspector/model/normative_act_article.dart';
 import 'package:inspector/model/object_category.dart';
+import 'package:inspector/model/report.dart';
 import 'package:inspector/model/street.dart';
 import 'package:inspector/model/violation_type.dart';
 import 'package:inspector/model/violator.dart';
+import 'package:inspector/model/violator_doc_type.dart';
 import 'package:inspector/model/violator_info.dart';
 import 'package:inspector/model/violator_type.dart';
 
 abstract class TotalReportBlocEvent { }
 
 class LoadEvent extends TotalReportBlocEvent {
-  final bool violationNotPresent;
-  final int checkId;
-  final int instructionId;
+  final Report report;
 
-  LoadEvent(this.violationNotPresent, this.checkId, this.instructionId);
+  LoadEvent(this.report);
 }
 
-class InitEvent extends TotalReportBlocEvent {
-  final bool violationNotPresent;
-  final int checkId;
-  final int instructionId;
+class FlushEvent extends TotalReportBlocEvent {
+  
+} 
 
-  InitEvent(this.violationNotPresent, this.checkId, this.instructionId);
+class InitEvent extends TotalReportBlocEvent {
+  final Report report;
+
+  InitEvent(this.report);
 }
 
 class SetViolationNotPresentEvent extends TotalReportBlocEvent {
@@ -130,6 +132,12 @@ class SetViolatorInfoEvent extends ChangeViolatorEvent {
   final ViolatorInfo violatorPerson;
 
   SetViolatorInfoEvent(int index, this.violatorPerson) : super(index);
+}
+
+class SetViolatorDocumentTypeEvent extends ChangeViolatorEvent {
+  final ViolatorDocumentType documentType;
+
+  SetViolatorDocumentTypeEvent(int index, this.documentType) : super(index);
 }
 
 class SaveEvent extends TotalReportBlocEvent {

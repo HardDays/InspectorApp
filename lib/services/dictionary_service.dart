@@ -10,6 +10,7 @@ import 'package:inspector/model/normative_act_article.dart';
 import 'package:inspector/model/special_object.dart';
 import 'package:inspector/model/street.dart';
 import 'package:inspector/model/violation_type.dart';
+import 'package:inspector/model/violator_doc_type.dart';
 import 'package:inspector/model/violator_info_ip.dart';
 import 'package:inspector/model/violator_info_private.dart';
 import 'package:inspector/model/violator_info_legal.dart';
@@ -49,6 +50,8 @@ class DictionaryService {
     DictionaryNames.violatorInfoLegals: ApiDictionaryService().getViolatorInfoLegal,
     DictionaryNames.violatorInfoOfficials: ApiDictionaryService().getViolatorInfoOfficial,
     DictionaryNames.violatorInfoPrivates: ApiDictionaryService().getViolatorInfoPrivate,
+    DictionaryNames.violatorDocumentTypes: ApiDictionaryService().getViolatorDocumentTypes,
+
   };
 
  final Map<String, Function(Map<String, dynamic>)> _converters = {
@@ -68,6 +71,7 @@ class DictionaryService {
     DictionaryNames.violatorInfoLegals: (json)=> ViolatorInfoLegal.fromJson(json, stringified: true),
     DictionaryNames.violatorInfoOfficials: (json)=> ViolatorInfoOfficial.fromJson(json, stringified: true),
     DictionaryNames.violatorInfoPrivates: (json)=> ViolatorInfoPrivate.fromJson(json, stringified: true),
+    DictionaryNames.violatorDocumentTypes: (json)=> ViolatorDocumentType.fromJson(json),
   };
 
   final _lock = Lock();
@@ -314,6 +318,19 @@ class DictionaryService {
             'orgInn LIKE ?': '$name%'
           },
           queryType: 'OR'
+        ),
+      ],
+      limit: 10
+    );
+  }
+
+  Future<List<ViolatorDocumentType>> getViolatorDocumentTypes({String name}) async {
+    return await _getData<ViolatorDocumentType>(DictionaryNames.violatorDocumentTypes,
+      queries: [
+        Query(
+          {
+            'name LIKE ?': '%$name%',
+          },
         ),
       ],
       limit: 10

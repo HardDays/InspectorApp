@@ -3,9 +3,11 @@ import 'package:inspector/model/violator_address.dart';
 import 'package:inspector/model/violator_doc_type.dart';
 import 'dart:convert' as c;
 
-class ViolatorInfoPrivate {
-  final int id;
-  final String phone;
+import 'package:inspector/model/violator_info.dart';
+
+class ViolatorInfoPrivate extends ViolatorInfo{
+  // final int id;
+  // final String phone;
   final String lastName;
   final String firstName;
   final String patronym;
@@ -20,8 +22,10 @@ class ViolatorInfoPrivate {
   final ViolatorAddress registrationAddress;
 
   ViolatorInfoPrivate({
-    @required this.id,
-    @required this.phone,
+    // @required this.id,
+    // @required this.phone,
+    int id,
+    String phone, 
     @required this.lastName,
     @required this.firstName,
     @required this.patronym,
@@ -34,7 +38,7 @@ class ViolatorInfoPrivate {
     @required this.birthDate,
     @required this.birthPlace,
     @required this.registrationAddress,
-  });
+  }) : super(id: id, phone: phone);
 
   factory ViolatorInfoPrivate.fromJson(Map<String, dynamic> json, {bool stringified = false}) {
     return ViolatorInfoPrivate(
@@ -45,13 +49,13 @@ class ViolatorInfoPrivate {
       patronym: json['patronym'],
       inn: json['inn'],
       snils: json['snils'],
-      docType: ViolatorDocumentType.parse(json['docType'], stringified),
+      docType: json['docType'] != null ? ViolatorDocumentType.parse(json['docType'], stringified) : null,
       docSeries: json['docSeries'],
       docNumber: json['docNumber'],
       gender: json['gender'],
       birthDate: json['birthDate'] != null ? DateTime.parse(json['birthDate']) : null,
       birthPlace: json['birthPlace'],
-      registrationAddress: ViolatorAddress.parse(json['registrationAddress'], stringified),
+      registrationAddress: json['registrationAddress'] != null ? ViolatorAddress.parse(json['registrationAddress'], stringified) : null,
     );
   }
 

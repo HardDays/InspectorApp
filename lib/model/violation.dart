@@ -3,6 +3,7 @@ import 'package:inspector/model/address.dart';
 import 'package:inspector/model/normative_act.dart';
 import 'package:inspector/model/normative_act_article.dart';
 import 'package:inspector/model/object_category.dart';
+import 'package:inspector/model/photo.dart';
 import 'package:inspector/model/special_object.dart';
 import 'package:inspector/model/violation_status.dart';
 import 'package:inspector/model/violation_type.dart';
@@ -25,6 +26,7 @@ class Violation {
   
   final List<NormativeActArticle> normativeActArticles;
   final List<Violator> violators;
+  final List<Photo> photos;
 
   Violation({
     this.id,  
@@ -39,7 +41,8 @@ class Violation {
     this.objectCategory,
     this.violationType,
     this.normativeActArticles,
-    this.violators
+    this.violators,
+    this.photos,
   });
 
   factory Violation.empty() {
@@ -51,6 +54,7 @@ class Violation {
       violators: [
         Violator.empty()
       ],
+      photos: []
     );
   }
 
@@ -69,6 +73,7 @@ class Violation {
       violationType: json['violationType'] != null ? ViolationType.fromJson(json['violationType']) : null,
       normativeActArticles: json['normativeActArticles'] != null ? List<NormativeActArticle>.from(json['normativeActArticles'].map((p) => NormativeActArticle.fromJson(p))) : [],
       violators: json['violators'] != null ? List<Violator>.from(json['violators'].map((p) => Violator.fromJson(p))) : [],
+      photos: json['photos'] != null ? List<Photo>.from(json['photos'].map((p) => Photo.fromJson(p))) : [],
     );
   }
 
@@ -81,6 +86,7 @@ class Violation {
     ViolationType violationType,
     List<NormativeActArticle> normativeActArticles,
     List<Violator> violators,
+    List<Photo> photos,
   }) {
     return Violation(
       id: id,
@@ -88,14 +94,15 @@ class Violation {
       violationNum: violationNum,
       violationDate: violationDate,
       cafapId: cafapId,
-      codexArticle: codexArticle,
-      violationStatus: violationStatus,
+      codexArticle: codexArticle ?? this.codexArticle,
+      violationStatus: violationStatus, 
       controlSpecialObject: controlSpecialObject,
       violationAddress: violationAddress ?? this.violationAddress,
       objectCategory: objectCategory ?? this.objectCategory,
       violationType: violationType ?? this.violationType,
-      normativeActArticles: normativeActArticles ?? this.normativeActArticles,
-      violators: violators ?? this.violators
+      normativeActArticles: normativeActArticles ?? List.from(this.normativeActArticles),
+      violators: violators ?? List.from(this.violators),
+      photos: photos ?? List.from(this.photos),
     );
   }
   
@@ -114,6 +121,7 @@ class Violation {
       'violationType': violationType?.toJson(),
       'normativeActArticles': normativeActArticles != null ? normativeActArticles.where((e) => e.id != null).map((e) => e.toJson()).toList() : [],
       'violators': violators.map((e) => e.toJson()).toList(),
+      'photos': photos.map((e) => e.toJson()).toList(),
     };
   }
 }

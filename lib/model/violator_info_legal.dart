@@ -2,10 +2,11 @@ import 'dart:convert' as c;
 
 import 'package:flutter/foundation.dart';
 import 'package:inspector/model/violator_address.dart';
+import 'package:inspector/model/violator_info.dart';
 
-class ViolatorInfoLegal {
-  final int id;
-  final String phone;
+class ViolatorInfoLegal extends ViolatorInfo {
+  // final int id;
+  // final String phone;
   final String name;
   final String inn;
   final String ogrn;
@@ -19,8 +20,10 @@ class ViolatorInfoLegal {
   final String bik;
 
   ViolatorInfoLegal({
-    @required this.id,
-    @required this.phone,
+    // @required this.id,
+    // @required this.phone,
+    int id,
+    String phone,
     @required this.name,
     @required this.inn,
     @required this.ogrn,
@@ -32,7 +35,7 @@ class ViolatorInfoLegal {
     @required this.corrAccount,
     @required this.bank,
     @required this.bik,
-  });
+  }) : super(id: id, phone: phone);
 
   factory ViolatorInfoLegal.fromJson(Map<String, dynamic> json, {bool stringified = false}) {
     return ViolatorInfoLegal(
@@ -43,8 +46,8 @@ class ViolatorInfoLegal {
       ogrn: json['ogrn'],
       kpp: json['kpp'],
       regDate: json['regDate'] != null ? DateTime.parse(json['regDate']) : null,
-      legalAddress: ViolatorAddress.parse(json['legalAddress'], stringified),
-      postalAddress: ViolatorAddress.parse(json['postalAddress'], stringified),
+      legalAddress: json['legalAddress'] != null ? ViolatorAddress.parse(json['legalAddress'], stringified) : null,
+      postalAddress: json['postalAddress'] != null ? ViolatorAddress.parse(json['postalAddress'], stringified) : null,
       account: json['account'],
       corrAccount: json['corrAccount'],
       bank: json['bank'],

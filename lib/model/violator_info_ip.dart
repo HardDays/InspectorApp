@@ -2,10 +2,11 @@ import 'dart:convert' as c;
 
 import 'package:flutter/foundation.dart';
 import 'package:inspector/model/violator_address.dart';
+import 'package:inspector/model/violator_info.dart';
 
-class ViolatorInfoIp {
-  final int id;
-  final String phone;
+class ViolatorInfoIp extends ViolatorInfo {
+  // final int id;
+  // final String phone;
   final String name;
   final String lastName;
   final String firstName;
@@ -24,8 +25,10 @@ class ViolatorInfoIp {
   final String bik;
 
   ViolatorInfoIp({
-    @required this.id,
-    @required this.phone,
+    // @required this.id,
+    // @required this.phone,
+    int id,
+    String phone,
     @required this.name,
     @required this.lastName,
     @required this.firstName,
@@ -42,7 +45,7 @@ class ViolatorInfoIp {
     @required this.corrAccount,
     @required this.bank,
     @required this.bik,
-  });
+  }) : super(id: id, phone: phone);
 
   factory ViolatorInfoIp.fromJson(Map<String, dynamic> json, {bool stringified = false}) {
     return ViolatorInfoIp(
@@ -59,7 +62,7 @@ class ViolatorInfoIp {
       gender: json['gender'],
       birthDate: json['birthDate'] != null ? DateTime.parse(json['birthDate']) : null,
       birthPlace: json['birthPlace'],
-      registrationAddress: ViolatorAddress.parse(json['registrationAddress'], stringified),  
+      registrationAddress: json['registrationAddress'] != null ? ViolatorAddress.parse(json['registrationAddress'], stringified) : null,  
       account: json['account'],
       corrAccount: json['corrAccount'],
       bank: json['bank'],

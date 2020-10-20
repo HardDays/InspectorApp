@@ -24,6 +24,11 @@ class ViolatorDocumentType {
     };
   }
 
+  @override
+  String toString() {
+    return name ?? '';
+  }
+
   Map<String, dynamic> toSqliteJson() {
     return toJson();
   }

@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:inspector/blocs/instruction/events.dart';
 import 'package:inspector/blocs/instruction/states.dart';
-import 'package:inspector/blocs/total_report/events.dart';
 import 'package:inspector/providers/exceptions/api_exception.dart';
 import 'package:inspector/providers/exceptions/unhadled_exception.dart';
 import 'package:inspector/services/dictionary_service.dart';
@@ -20,14 +19,13 @@ class InstructionBloc extends Bloc<InstructionBlocEvent, InstructionBlocState> {
       await _instructionService.init();
 
       final date = await _instructionService.reportsDate(state.instruction.id);
-
       yield LoadingReportsState(date, state.instruction, []);
       try {
-        final reload = event is RefreshReportsEvent || (date == null) || (date != null && DateTime.now().difference(date).inMinutes > 10);
-        
+        final reload = event is RefreshReportsEvent || (date == null) || (date != null && DateTime.now().difference(date).inMinutes > 10); 
         final reports = await _instructionService.reports(state.instruction.id, reload: reload);
         final newDate = await _instructionService.reportsDate(state.instruction.id);
-        if (reload) {
+        
+        if (event is RefreshReportsEvent) {
           yield SuccessState(newDate, state.instruction, reports);
         } else {
           yield InstructionBlocState(newDate, state.instruction, reports);
@@ -43,10 +41,7 @@ class InstructionBloc extends Bloc<InstructionBlocEvent, InstructionBlocState> {
     } else if (event is UpadteInstructionStatusEvent) {
       try {
         yield LoadingUpdateState(state.date, state.instruction, state.reports);
-        // final isLoaded = await _dictionaryService.isLoaded(keys: [DictionaryNames.instructionStatuses]);
-        // if (!isLoaded) {
-        //   await _dictionaryService.load(keys: [DictionaryNames.instructionStatuses]);
-        // }
+        
         await _dictionaryService.load(keys: [DictionaryNames.instructionStatuses]);
 
         final statuses = await _dictionaryService.getInstructionStatuses();

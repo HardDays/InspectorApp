@@ -2,9 +2,11 @@ import 'package:flutter/foundation.dart';
 import 'package:inspector/model/violator_address.dart';
 import 'dart:convert' as c;
 
-class ViolatorInfoOfficial {
-  final int id;
-  final String phone;
+import 'package:inspector/model/violator_info.dart';
+
+class ViolatorInfoOfficial extends ViolatorInfo {
+  // final int id;
+  // final String phone;
   final int orgId;
   final String orgName;
   final String orgInn;
@@ -16,8 +18,10 @@ class ViolatorInfoOfficial {
   final ViolatorAddress orgPostalAddress;
 
   ViolatorInfoOfficial({
-    @required this.id,
-    @required this.phone,
+    // @required this.id,
+    // @required this.phone,
+    int id,
+    String phone,
     @required this.orgId,
     @required this.orgName,
     @required this.orgInn,
@@ -27,7 +31,7 @@ class ViolatorInfoOfficial {
     @required this.orgPhone,
     @required this.orgLegalAddress,
     @required this.orgPostalAddress,
-  });
+  }) : super(id: id, phone: phone);
 
   factory ViolatorInfoOfficial.fromJson(Map<String, dynamic> json, {bool stringified = false}) {
     return ViolatorInfoOfficial(
@@ -40,8 +44,8 @@ class ViolatorInfoOfficial {
       orgKpp: json['orgKpp'],
       orgRegDate: json['orgRegDate'] != null ? DateTime.parse(json['orgRegDate']) : null,
       orgPhone: json['orgPhone'],
-      orgLegalAddress: ViolatorAddress.parse(json['orgLegalAddress'], stringified),
-      orgPostalAddress: ViolatorAddress.parse(json['orgPostalAddress'], stringified),
+      orgLegalAddress: json['orgLegalAddress'] != null ? ViolatorAddress.parse(json['orgLegalAddress'], stringified) : null,
+      orgPostalAddress: json['orgPostalAddress'] != null ? ViolatorAddress.parse(json['orgPostalAddress'], stringified)  : null,
     );
   }
 

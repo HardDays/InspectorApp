@@ -45,7 +45,7 @@ abstract class ReportStatusColors {
     ReportStatusIds.onApproval: ProjectColors.yellow,
     ReportStatusIds.accepted: ProjectColors.green,
     ReportStatusIds.declined: ProjectColors.red,
-    ReportStatusIds.changed: ProjectColors.yellow
+    ReportStatusIds.changed: ProjectColors.red
   };
 
   static Color color(int status) {
@@ -87,5 +87,4 @@ abstract class DiggRequestCheckColors {
       return ProjectColors.yellow;
     } 
   }
-
 }

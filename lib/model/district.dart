@@ -38,6 +38,6 @@ class District {
 
   @override
   String toString() {
-    return name != null ? 'район $name': null;
+    return name ?? '';
   }
 }

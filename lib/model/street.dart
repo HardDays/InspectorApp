@@ -42,7 +42,7 @@ class Street {
 
   @override
   String toString() {
-    return name;
+    return name ?? '';
   }
 
 }

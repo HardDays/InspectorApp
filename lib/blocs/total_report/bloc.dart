@@ -14,6 +14,7 @@ import 'package:inspector/model/street.dart';
 import 'package:inspector/model/violation.dart';
 import 'package:inspector/model/violation_type.dart';
 import 'package:inspector/model/violator.dart';
+import 'package:inspector/model/violator_doc_type.dart';
 import 'package:inspector/model/violator_type.dart';
 import 'package:inspector/services/dictionary_service.dart';
 import 'package:inspector/services/reports_service.dart';
@@ -77,9 +78,15 @@ class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {
     }
   }
 
-   Future<Iterable<ViolatorType>> getViolatorTypes(String name) async {
+  Future<Iterable<ViolatorType>> getViolatorTypes(String name) async {
     if (name.isNotEmpty) {
       return await _dictionaryService.getViolatorTypes(name: name);
+    }
+  }
+
+  Future<Iterable<ViolatorDocumentType>> getViolatorDocumentTypes(String name) async {
+    if (name.isNotEmpty) {
+      return await _dictionaryService.getViolatorDocumentTypes(name: name);
     }
   }
 
@@ -116,7 +123,7 @@ class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {
             report: state.report
           );
         } else {
-          add(InitEvent(event.violationNotPresent, event.checkId, event.instructionId));
+          add(InitEvent(event.report));
         } 
       } catch (ex) {
         print(ex);
@@ -124,7 +131,7 @@ class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {
     } else if (event is InitEvent) {
       try {
         yield TotalReportBlocState(
-          report: Report.empty(event.violationNotPresent, event.checkId, event.instructionId)
+          report: event.report
         );
       } catch (ex) {
         print(ex);
@@ -162,11 +169,11 @@ class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {
       } else if (event is SetViolationAddressEvent) {
         violation = violation.copyWith(
           violationAddress: violation.violationAddress.copyWith(
-            specifiedAddress: event.address.specifiedAddress,
-            houseNum: event.address.houseNum,
-            constructionNum: event.address.constructionNum,
-            buildNum: event.address.buildNum,
-            id: event.address.id
+            specifiedAddress: event.address?.specifiedAddress,
+            houseNum: event.address?.houseNum,
+            constructionNum: event.address?.constructionNum,
+            buildNum: event.address?.buildNum,
+            id: event.address?.id
           ),
         );
       } else if (event is SetViolationOjbectCategoryEvent) {
@@ -176,7 +183,7 @@ class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {
       } else if (event is SetViolationNormativeActEvent) {
         final articles = violation.normativeActArticles;
         articles[event.index] = NormativeActArticle(
-          normativeActId: event.normativeAct.id,
+          normativeActId: event.normativeAct?.id,
         );
         violation = violation.copyWith(
           normativeActArticles: articles
@@ -224,6 +231,8 @@ class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {
         violator = violator.copyWith(
           violatorPerson: event.violatorPerson
         );
+      } else if (event is SetViolatorDocumentTypeEvent) {
+        // todo here
       }
       violators[event.index] = violator;
       yield state.copyWith(
@@ -260,6 +269,10 @@ class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {
       }
 
       var t=  0;
+    } else if (event is FlushEvent) {
+      yield TotalReportBlocState(
+        report: state.report
+      );
     }
   } 
 }
