@@ -29,19 +29,21 @@ import 'package:intl/intl.dart';
 
 class InstructionPage extends StatelessWidget {
 
-  // todo: сделать нормально (enum и тд, как в api)
   final Instruction instruction;
 
   InstructionPage(this.instruction);
 
-  void _onTotalReport(BuildContext context, Report report, InstructionCheck check) {
-    Navigator.push(context, 
+  void _onTotalReport(BuildContext context, Report report, InstructionCheck check) async {
+    final res = await Navigator.push(context, 
       MaterialPageRoute(
         builder: (context) => TotalReportPage(
           report: report?.copyWith() ?? Report.empty(false, check.id, instruction.id)
         ),
       ),
     );  
+    if (res != null) {
+      BlocProvider.of<InstructionBloc>(context).add(RefreshReportsEvent());  
+    }
   }
 
   void _onAddressReport(BuildContext context, String status) {

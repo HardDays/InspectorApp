@@ -7,6 +7,14 @@ import 'package:intl/intl.dart';
 
 class ObjectDbPersistanceService extends ObjectDBService implements PersistanceService {
 
+  static final _instance = ObjectDbPersistanceService._internal();
+
+  factory ObjectDbPersistanceService() {
+    return _instance;
+  }
+
+  ObjectDbPersistanceService._internal();
+
   String get name => 'persistance.db';
 
   Future _saveKeyValue(String key, dynamic value) async {

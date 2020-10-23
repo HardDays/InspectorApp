@@ -347,6 +347,7 @@ class DictionaryService {
             'patronym LIKE ?': '$name%',
             'phone LIKE ?': '$name%',
             'inn LIKE ?': '$name%',
+            'docNumber LIKE ?': '$name%',
           },
           queryType: 'OR'
         ),

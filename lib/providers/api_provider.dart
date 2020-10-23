@@ -177,11 +177,11 @@ class ApiProvider {
       )
     );
   }
-  
 
   Future<dynamic> createReport(Report report) async {
     final json = report.toJson();
     _removeJsonNulls(json);
+    var t = c.json.encode(json);
     return _request(
       ()=> dio.post(_reportsPath,
         data: json

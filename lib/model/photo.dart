@@ -6,9 +6,9 @@ class Photo {
   final String data;
   
   Photo({
-    @required this.id,
-    @required this.name,
-    @required this.data,
+    this.id,
+    this.name,
+    this.data,
   });
 
   factory Photo.fromJson(Map<String, dynamic> json) {

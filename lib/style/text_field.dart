@@ -6,6 +6,7 @@ import 'package:inspector/style/text_style.dart';
 
 class ProjectTextField extends StatelessWidget { 
 
+  final bool enabled;
   final int maxLines;
   final int minLines;
   final String title;
@@ -21,7 +22,8 @@ class ProjectTextField extends StatelessWidget {
     this.minLines, 
     this.maxLines, 
     this.hintText,
-    this.validator
+    this.validator,
+    this.enabled = true
   });
 
   Widget _buildField() {
@@ -36,9 +38,10 @@ class ProjectTextField extends StatelessWidget {
       style: ProjectTextStyles.base.apply(color: ProjectColors.black),
       maxLines: maxLines,
       minLines: minLines,
+      enabled: enabled,
       decoration: InputDecoration(
         hintText: hintText,
-        contentPadding: const EdgeInsets.only(left: 10, top: 15, right: 10),
+        contentPadding: const EdgeInsets.only(left: 10, top: 20, right: 10),
         hintStyle: ProjectTextStyles.base.apply(color: ProjectColors.darkBlue),
         border: border,
         enabledBorder: border,

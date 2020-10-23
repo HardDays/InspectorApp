@@ -18,19 +18,19 @@ class ViolatorInfoOfficial extends ViolatorInfo {
   final ViolatorAddress orgPostalAddress;
 
   ViolatorInfoOfficial({
-    // @required this.id,
-    // @required this.phone,
+    // this.id,
+    // this.phone,
     int id,
     String phone,
-    @required this.orgId,
-    @required this.orgName,
-    @required this.orgInn,
-    @required this.orgOgrn,
-    @required this.orgKpp,
-    @required this.orgRegDate,
-    @required this.orgPhone,
-    @required this.orgLegalAddress,
-    @required this.orgPostalAddress,
+    this.orgId,
+    this.orgName,
+    this.orgInn,
+    this.orgOgrn,
+    this.orgKpp,
+    this.orgRegDate,
+    this.orgPhone,
+    this.orgLegalAddress,
+    this.orgPostalAddress,
   }) : super(id: id, phone: phone);
 
   factory ViolatorInfoOfficial.fromJson(Map<String, dynamic> json, {bool stringified = false}) {

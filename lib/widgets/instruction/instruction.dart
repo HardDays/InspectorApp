@@ -64,10 +64,6 @@ class InstructionWidgetState extends State<InstructionWidget> with SingleTickerP
     });
   }
 
-  void _onTap() {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => InstructionPage(widget.instruction)));
-  }
-
   Color get _color => widget.instruction.instructionStatus.id == InstructionStatusIds.complete ? ProjectColors.mediumBlue : ProjectColors.black;
 
   @override
@@ -75,23 +71,20 @@ class InstructionWidgetState extends State<InstructionWidget> with SingleTickerP
     return ProjectCard(
       color: widget.instruction.instructionStatus.id == InstructionStatusIds.complete ? Colors.transparent : Colors.white,
       margin: const EdgeInsets.only(bottom: 20, left: 30, right: 30),
-      child: InkWell(
-        onTap: _onTap,
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                _buildTitle(),
-                _buildStatus(),
-              ],
-            ),
-            _buildDate(),
-            _buildFirstCheck(),
-            _buildRestChecks(),
-            _buildInk()
-          ],
-        ),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              _buildTitle(),
+              _buildStatus(),
+            ],
+          ),
+          _buildDate(),
+          _buildFirstCheck(),
+          _buildRestChecks(),
+          _buildInk()
+        ],
       ),
     );
   }

@@ -6,7 +6,7 @@ class ReportStatus {
   
   ReportStatus({
     @required this.id,
-    @required this.name,
+    this.name,
   });
 
   factory ReportStatus.fromJson(Map<String, dynamic> json) {

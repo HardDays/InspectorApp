@@ -20,21 +20,21 @@ class ViolatorInfoLegal extends ViolatorInfo {
   final String bik;
 
   ViolatorInfoLegal({
-    // @required this.id,
-    // @required this.phone,
+    // this.id,
+    // this.phone,
     int id,
     String phone,
-    @required this.name,
-    @required this.inn,
-    @required this.ogrn,
-    @required this.kpp,
-    @required this.regDate,
-    @required this.legalAddress,
-    @required this.postalAddress,
-    @required this.account,
-    @required this.corrAccount,
-    @required this.bank,
-    @required this.bik,
+    this.name,
+    this.inn,
+    this.ogrn,
+    this.kpp,
+    this.regDate,
+    this.legalAddress,
+    this.postalAddress,
+    this.account,
+    this.corrAccount,
+    this.bank,
+    this.bik,
   }) : super(id: id, phone: phone);
 
   factory ViolatorInfoLegal.fromJson(Map<String, dynamic> json, {bool stringified = false}) {

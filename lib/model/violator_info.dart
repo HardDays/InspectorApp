@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'dart:convert' as c;
 
 class ViolatorInfo {
@@ -6,8 +5,8 @@ class ViolatorInfo {
   final String phone;
   
   ViolatorInfo({
-    @required this.id,
-    @required this.phone,
+    this.id,
+    this.phone,
   });
 
   factory ViolatorInfo.fromJson(Map<String, dynamic> json) {

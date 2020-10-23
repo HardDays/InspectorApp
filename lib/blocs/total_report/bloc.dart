@@ -1,7 +1,12 @@
+import 'dart:math';
+
 import 'package:bloc/bloc.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:inspector/blocs/total_report/events.dart';
 import 'package:inspector/blocs/total_report/states.dart';
 import 'package:inspector/model/address.dart';
+import 'package:inspector/model/address_search.dart';
 import 'package:inspector/model/area.dart';
 import 'package:inspector/model/department_code.dart';
 import 'package:inspector/model/district.dart';
@@ -9,22 +14,44 @@ import 'package:inspector/model/normative_act.dart';
 import 'package:inspector/model/normative_act_article.dart';
 import 'package:inspector/model/object_category.dart';
 import 'package:inspector/model/report.dart';
-import 'package:inspector/model/special_object.dart';
+import 'package:inspector/model/report_status.dart';
 import 'package:inspector/model/street.dart';
 import 'package:inspector/model/violation.dart';
 import 'package:inspector/model/violation_type.dart';
 import 'package:inspector/model/violator.dart';
 import 'package:inspector/model/violator_doc_type.dart';
+import 'package:inspector/model/violator_info.dart';
+import 'package:inspector/model/violator_info_ip.dart';
+import 'package:inspector/model/violator_info_legal.dart';
+import 'package:inspector/model/photo.dart';
+import 'package:inspector/model/violator_info_official.dart';
+import 'package:inspector/model/violator_info_private.dart';
 import 'package:inspector/model/violator_type.dart';
+import 'package:inspector/providers/exceptions/api_exception.dart';
+import 'package:inspector/providers/exceptions/unhadled_exception.dart';
+import 'package:inspector/services/api/here_service.dart';
 import 'package:inspector/services/dictionary_service.dart';
+import 'package:inspector/services/geo_service.dart';
 import 'package:inspector/services/reports_service.dart';
-import 'package:intl/intl.dart';
+
+import 'package:latlong/latlong.dart';
+
+import 'dart:convert' as c;
 
 class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {
   TotalReportBloc(initialState) : super(initialState);
 
   final _dictionaryService = DictionaryService();
   final _reportsService = ReportsService();
+  final _geoService = GeoService();
+
+  Future<Iterable<AddressSearch>> getSearchAddresses(String name) async {
+    return await _geoService.autocomplete(name);
+  }
+
+   Future<AddressSearch> getGeocoding(String name) async {
+    return await _geoService.geocode(name);
+  }
 
   Future<Iterable<Area>> getAreas(String name) async {
     if (name.isNotEmpty) {
@@ -117,11 +144,9 @@ class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {
       try {
         final loaded = await _dictionaryService.isLoaded();        
         if (!loaded) {
-          yield LoadDictState(state.report);
+          yield LoadDictState(state.report, state.location);
           await Future.delayed(Duration(seconds: 2));
-          yield TotalReportBlocState(
-            report: state.report
-          );
+          yield TotalReportBlocState(state.report, state.location);
         } else {
           add(InitEvent(event.report));
         } 
@@ -129,12 +154,9 @@ class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {
         print(ex);
       }
     } else if (event is InitEvent) {
-      try {
-        yield TotalReportBlocState(
-          report: event.report
-        );
-      } catch (ex) {
-        print(ex);
+      final position = await Geolocator.getCurrentPosition();
+      if (position != null) {
+        yield LocationLoadedState(event.report, LatLng(position.latitude, position.longitude));
       }
     } else if (event is SetViolationNotPresentEvent) {
       yield state.copyWith(
@@ -220,19 +242,43 @@ class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {
           foreign: event.foreign
         );
       } else if (event is SetViolatorTypeEvent) {
-        violator = violator.copyWith(
-          type: event.type
+        ViolatorInfo violatorInfo;
+        if (event.type != null) {
+          if (event.type.id == ViolatorTypeIds.ip) {
+            violatorInfo = ViolatorInfoIp();
+          } else if (event.type.id == ViolatorTypeIds.private) {
+            violatorInfo = ViolatorInfoPrivate();
+          } else if (event.type.id == ViolatorTypeIds.official) {
+            violatorInfo = ViolatorInfoOfficial();
+          } else if (event.type.id == ViolatorTypeIds.legal) {
+            violatorInfo = ViolatorInfoLegal();
+          }
+        }
+        violator = Violator.empty().copyWith(
+          type: event.type,
+          violatorPerson: violatorInfo
         );
+        // violator = violator.copyWith(
+        //   type: event.type,
+        //   violatorPerson: violatorInfo
+        // );
       } else if (event is SetViolatorDepartmentCodeEvent) {
         violator = violator.copyWith(
           departmentCode: event.departmentCode
         );
       } else if (event is SetViolatorInfoEvent) {
         violator = violator.copyWith(
-          violatorPerson: event.violatorPerson
+          violatorPerson: event.violatorPerson ?? ViolatorInfo()
         );
       } else if (event is SetViolatorDocumentTypeEvent) {
-        // todo here
+        final person = violator.violatorPerson;
+        if (person is ViolatorInfoPrivate) {
+          violator = violator.copyWith(
+            violatorPerson: person.copyWith(
+              docType: event.documentType
+            ),
+          );
+        }
       }
       violators[event.index] = violator;
       yield state.copyWith(
@@ -251,28 +297,46 @@ class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {
         ),
       );
     } else if (event is SaveEvent) {
-      final violation = state.report.violation;
-      final report = state.report.copyWith(
-        violation: violation.copyWith(
-          codexArticle: event.codexArticle,
-          violationDescription: event.violationDescription,
-          violationDate: DateTime.now(),
-          violationAddress: violation.violationAddress.copyWith(
-            specifiedAddress: event.specifiedAddress 
+      //final statusts = await _dictionaryService.getStat
+      final status = ReportStatus(id: event.status, name: 'Новый');
+      final photos = event.photos.map((e) => c.base64Encode(e)).map((e) => Photo(data: e)).toList();
+      Report report = state.report;
+      if (state.report.violationNotPresent) {
+        report = report.copyWith(
+          photos: photos
+        );
+      } else {
+        final violation = state.report.violation;
+        report = report.copyWith(
+          reportStatus: status,
+          reportDate: state.report.reportDate ?? DateTime.now(),
+          reportNum: state.report.reportNum ?? Random().nextInt(1000000).toString(),
+          violation: violation.copyWith(
+            violators: event.violators,
+            photos: photos,
+            codexArticle: event.codexArticle,
+            violationDescription: event.violationDescription,
+            violationDate: violation.violationDate ?? DateTime.now(),
+            violationAddress: violation.violationAddress.copyWith(
+              specifiedAddress: event.specifiedAddress 
+            ),
           ),
-        ),
-      );
-      try {
-        final res = await _reportsService.create(report);
-      } catch (ex) {
-        print(ex.details);
+        );
       }
-
-      var t=  0;
+      try {
+        final local = status.id == ReportStatusIds.new_ || status.id == ReportStatusIds.project;
+        final res = await _reportsService.create(report, local: local);
+        yield SuccessState(res, state.location);
+      } on ApiException catch (ex) {
+        yield ErrorState(state.report, state.location, ex);
+      } catch (ex) {
+        yield ErrorState(state.report, state.location, UnhandledException(ex.toString()));
+      }
+    } else if (event is DeleteEvent) {
+      await _reportsService.remove(state.report);
+      yield DeletedState(state.report, state.location); 
     } else if (event is FlushEvent) {
-      yield TotalReportBlocState(
-        report: state.report
-      );
+      yield TotalReportBlocState(state.report, state.location);
     }
   } 
 }

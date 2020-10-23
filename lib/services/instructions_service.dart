@@ -54,13 +54,17 @@ class InstructionsService {
   } 
 
   Future<List<Report>> reports(int id, {bool reload = false}) async {
-    if (reload) {
+    if (reload) { 
       final data = await _apiService.getInstructionReports(id);
-      for (final report in data) {
-        await _reportsDbService.save({'instructionId': id}, report);
-      }
       await _persistanceService.saveInstructionsReportDate(id);
-      return data;
+      if (data.isNotEmpty) {
+        for (final report in data) {
+          await _reportsDbService.save({'instructionId': id, 'checkId': report.checkId}, report);
+        }
+        return data;
+      } else {
+        return await _reportsDbService.all(query: {'instructionId': id});
+      }
     } else {
       return await _reportsDbService.all(query: {'instructionId': id});
     }

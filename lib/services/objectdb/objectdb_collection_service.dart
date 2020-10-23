@@ -5,10 +5,21 @@ import 'package:inspector/services/objectdb/objectdb_service.dart';
 
 class ObjectDbCollectionService<T> extends ObjectDBService {
 
+  static final Map<String, ObjectDbCollectionService> _instances =  {
+
+  };
+
+  factory ObjectDbCollectionService(String name, Function(Map<String, dynamic>) fromJson) {
+    if (_instances[name] == null) {
+      _instances[name] = ObjectDbCollectionService<T>._internal(name, fromJson);
+    } 
+    return _instances[name];
+  }
+
+  ObjectDbCollectionService._internal(this._name, this._fromJson);
+
   final String _name;
   final Function(Map<String, dynamic>) _fromJson;
-
-  ObjectDbCollectionService(this._name, this._fromJson);
 
   @override
   String get name => _name;
@@ -17,6 +28,7 @@ class ObjectDbCollectionService<T> extends ObjectDBService {
     await init();
     try {
       final data = await db.find(query);
+      final t = 0;
       return List<T>.from(data.map((e) => _fromJson(e)));
     } catch (ex) {
       throw ParseException();
@@ -39,6 +51,16 @@ class ObjectDbCollectionService<T> extends ObjectDBService {
     try {
       await db.remove(query);
       await db.insert(value.toJson());
+      await db.tidy();
+    } catch (ex) {
+      print(ex);
+    }
+  }
+
+  Future remove(Map<dynamic, dynamic> query) async {
+    await init();
+    try {
+      await db.remove(query);
       await db.tidy();
     } catch (ex) {
       print(ex);

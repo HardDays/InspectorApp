@@ -71,21 +71,24 @@ class Report {
 
   Report copyWith({
     bool violationNotPresent,
-    ReportStatus status,
-    Violation violation
+    String reportNum,
+    ReportStatus reportStatus,
+    Violation violation,
+    List<Photo> photos,
+    DateTime reportDate,
   }) {
     return Report(
       id: id,
       instructionId: instructionId,
       checkId: checkId,
       violationNotPresent: violationNotPresent ?? this.violationNotPresent,
-      reportNum: reportNum,
-      reportDate: reportDate,
+      reportNum: reportNum ?? this.reportNum,
+      reportDate: reportDate ?? this.reportDate,
       reportStatus: reportStatus ?? this.reportStatus,
       reportAuthor: reportAuthor,
       violation: violation ?? this.violation?.copyWith(),
       diggRequestChecks: List.from(diggRequestChecks),
-      photos: List.from(photos),
+      photos: List.from(photos ?? this.photos),
     );
   }
   
@@ -96,7 +99,7 @@ class Report {
       'checkId': checkId,
       'violationNotPresent': violationNotPresent,
       'reportNum': reportNum,
-      'reportDate': reportDate?.toString(),
+      'reportDate': reportDate?.toIso8601String(),
       'reportStatus': reportStatus?.toJson(),
       'reportAuthor': reportAuthor?.toJson(),
       'violation': violation?.toJson(),

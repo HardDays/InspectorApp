@@ -8,7 +8,7 @@ import 'package:inspector/style/title.dart';
 typedef  Future<Iterable<dynamic>> AutocompleteCallback(String value);
 
 class ProjectAutocomplete extends StatelessWidget { 
-
+  final bool enabled;
   final String title;
   final String hintText;
   final TextEditingController controller;
@@ -22,6 +22,7 @@ class ProjectAutocomplete extends StatelessWidget {
     this.suggestionsCallback,
     this.onSuggestionSelected,
     this.validator,
+    this.enabled = false,
   });
 
   @override
@@ -48,6 +49,7 @@ class ProjectAutocomplete extends StatelessWidget {
             //noItemsFoundBuilder: (c) => null,
             textFieldConfiguration: TextFieldConfiguration(
               autofocus: false,
+              enabled: enabled,
               style: ProjectTextStyles.base.apply(color: ProjectColors.black),
               controller: controller,
               decoration: InputDecoration(
@@ -76,8 +78,10 @@ class ProjectAutocomplete extends StatelessWidget {
             ),
           ) : InkWell(
             onTap: () {
-              controller?.clear();
-              onSuggestionSelected(null);
+              if (enabled) {
+                controller?.clear();
+                onSuggestionSelected(null);
+              }
             },
             child: Padding(
               padding: const EdgeInsets.only(top: 14, right: 10),

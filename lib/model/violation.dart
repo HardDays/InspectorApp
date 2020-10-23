@@ -90,7 +90,7 @@ class Violation {
   }) {
     return Violation(
       id: id,
-      violationDescription: violationDescription,
+      violationDescription: violationDescription ?? this.violationDescription,
       violationNum: violationNum,
       violationDate: violationDate,
       cafapId: cafapId,

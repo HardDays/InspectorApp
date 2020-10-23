@@ -7,7 +7,7 @@ class Area {
   final String code;
   
   Area({
-    @required this.id,
+    this.id,
     this.name,
     this.code,
   });

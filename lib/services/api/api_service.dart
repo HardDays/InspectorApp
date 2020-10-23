@@ -54,7 +54,7 @@ class ApiService {
 
   // reports
 
-  Future <Report> createReport(Report report) async {
+  Future<Report> createReport(Report report) async {
     final data = await api.createReport(report);
     return await _parse(
       ()=> Report.fromJson(data)

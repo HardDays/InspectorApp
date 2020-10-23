@@ -22,6 +22,7 @@ import 'package:image_picker/image_picker.dart' as p;
 
 
 class ImagePicker extends StatelessWidget {
+  final bool enabled;
   final EdgeInsets margin;
   final List<Uint8List> images;
   final Function(File) onPicked;
@@ -32,20 +33,25 @@ class ImagePicker extends StatelessWidget {
   ImagePicker({
     this.onPicked, 
     this.onRemoved, 
+    this.enabled = true,
     this.images = const [],
     this.margin = const EdgeInsets.only(top: 20)
   });
 
   void _onPick() async {
-    final image = await picker.getImage(source: p.ImageSource.gallery);
-    if (image != null && onPicked != null) {
-      onPicked(File(image.path));
+    if (enabled) {
+      final image = await picker.getImage(source: p.ImageSource.gallery);
+      if (image != null && onPicked != null) {
+        onPicked(File(image.path));
+      }
     }
   }
 
   void _onDelete(int index) {
-    if (onRemoved != null) {
-      onRemoved(index);
+    if (enabled) {
+      if (onRemoved != null) {
+        onRemoved(index);
+      }
     }
   }
 
@@ -89,8 +95,10 @@ class ImagePicker extends StatelessWidget {
             alignment: Alignment.topLeft,
             padding: const EdgeInsets.only(bottom: 2),
             child: ProjectButton.buildOutlineButton('Добавить фото',
-              icon: ProjectIcons.camera2Icon(),
-              onPressed: _onPick,
+              icon: ProjectIcons.camera2Icon(
+                color: enabled ? ProjectColors.blue : ProjectColors.lightBlue
+              ),
+              onPressed: enabled ? _onPick : null,
               style: ProjectTextStyles.subTitle
             ),
           ),

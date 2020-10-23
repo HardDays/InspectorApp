@@ -1,6 +1,5 @@
 import 'dart:convert' as c;
 
-import 'package:flutter/foundation.dart';
 import 'package:inspector/model/violator_address.dart';
 import 'package:inspector/model/violator_info.dart';
 
@@ -25,26 +24,26 @@ class ViolatorInfoIp extends ViolatorInfo {
   final String bik;
 
   ViolatorInfoIp({
-    // @required this.id,
-    // @required this.phone,
+    // this.id,
+    // this.phone,
     int id,
     String phone,
-    @required this.name,
-    @required this.lastName,
-    @required this.firstName,
-    @required this.patronym,
-    @required this.inn,
-    @required this.snils,
-    @required this.ogrnip,
-    @required this.registrationDate,
-    @required this.gender,
-    @required this.birthDate,
-    @required this.birthPlace,
-    @required this.registrationAddress,
-    @required this.account,
-    @required this.corrAccount,
-    @required this.bank,
-    @required this.bik,
+    this.name,
+    this.lastName,
+    this.firstName,
+    this.patronym,
+    this.inn,
+    this.snils,
+    this.ogrnip,
+    this.registrationDate,
+    this.gender,
+    this.birthDate,
+    this.birthPlace,
+    this.registrationAddress,
+    this.account,
+    this.corrAccount,
+    this.bank,
+    this.bik,
   }) : super(id: id, phone: phone);
 
   factory ViolatorInfoIp.fromJson(Map<String, dynamic> json, {bool stringified = false}) {

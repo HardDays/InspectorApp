@@ -10,6 +10,7 @@ import 'package:inspector/blocs/total_report/bloc.dart';
 import 'package:inspector/blocs/total_report/events.dart';
 import 'package:inspector/blocs/total_report/states.dart';
 import 'package:inspector/model/address.dart';
+import 'package:inspector/model/address_search.dart';
 import 'package:inspector/model/area.dart';
 import 'package:inspector/model/department_code.dart';
 import 'package:inspector/model/district.dart';
@@ -54,11 +55,13 @@ class TotalReportPage extends StatefulWidget {
   TotalReportPageState createState() => TotalReportPageState();
 }
 
-
 class TotalReportPageState extends State<TotalReportPage> with SingleTickerProviderStateMixin {
 
   final _formKey = GlobalKey<FormState>();
 
+  final _mapController = MapController();
+
+  final _searchController = TextEditingController();
   final _areaController = TextEditingController();
   final _streetController = TextEditingController();
   final _districtController = TextEditingController();
@@ -68,6 +71,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
   final _codexArticleController = TextEditingController();
   final _objectCategoryController = TextEditingController();
   final _violationTypeController = TextEditingController();
+  
   final _normativeActControllers = [
     TextEditingController()
   ];
@@ -78,6 +82,9 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
 
   ];
 
+  final _violatorFormKeys = [
+    GlobalKey<FormState>()
+  ];
   final _violatorTypeControllers = [
     TextEditingController()
   ];
@@ -141,45 +148,16 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
 
   List<List<TextEditingController>> _allViolatorControllers = [];
 
+  bool get editable {
+    final report = widget.report;  
+    return report.reportStatus == null ||
+      report.reportStatus?.id == ReportStatusIds.new_ || 
+      report.reportStatus?.id == ReportStatusIds.project || 
+      report.reportStatus?.id == ReportStatusIds.declined; 
+  }
+
   void initState() {
     super.initState();
-
-    final violation = widget.report.violation;
-    if (violation != null) {
-      _areaController.text = violation.violationAddress?.area?.toString() ?? '';
-      _districtController.text = violation.violationAddress?.district?.toString() ?? '';
-      _streetController.text = violation.violationAddress?.street?.toString() ?? '';
-      _addressController.text = violation.violationAddress?.toString() ?? '';
-      _specifiedAddressController.text = violation.violationAddress?.specifiedAddress ?? '';
-      _violationDescriptionController.text = violation.violationDescription ?? '';
-      _codexArticleController.text = violation.codexArticle ?? '';
-      _objectCategoryController.text = violation.objectCategory?.toString() ?? '';
-      _violationTypeController.text = violation.violationType?.toString() ?? '';
-      
-      final decoder = Base64Decoder();
-      for (int i = 0; i < violation.photos.length; i++) {
-        final image = decoder.convert(violation.photos[i].data);
-        _photos.add(image);
-      }
-      for (int i = 0; i < violation.normativeActArticles.length - 1; i++) {
-        _addNormativeActControllers();
-      }
-      for (int i = 0; i < violation.normativeActArticles.length; i++) {
-        _normativeActControllers[i].text = violation.normativeActArticles[i].normativeAct;
-        _normativeActArticleControllers[i].text = violation.normativeActArticles[i].toString();
-      }
-
-      for (int i = 0; i < violation.violators.length - 1; i++) {
-        _addViolatorControllers();
-      }
-      for (int i = 0; i < violation.violators.length; i++) {
-        final violator = violation.violators[i].violatorPerson;
-        if (violator != null) {
-          _violatorTypeControllers[i].text = violation.violators[i].type.toString();
-          _addViolatorInfo(i, violator);
-        }
-      } 
-    }
 
     _allViolatorControllers = [
       _violatorControllers, _phoneControllers, 
@@ -189,6 +167,51 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
       _legalAddressControllers, _postalAddressControllers, _registrationAddressControllers,
       _birthPlaceControllers, _departmentCodeControllers
     ];
+
+    if (widget.report.violationNotPresent) {
+      final decoder = Base64Decoder();
+      for (int i = 0; i < widget.report.photos.length; i++) {
+        final image = decoder.convert(widget.report.photos[i].data);
+        _photos.add(image);
+      }
+    } else {
+      final violation = widget.report.violation;
+      if (violation != null) {
+        _areaController.text = violation.violationAddress?.area?.toString() ?? '';
+        _districtController.text = violation.violationAddress?.district?.toString() ?? '';
+        _streetController.text = violation.violationAddress?.street?.toString() ?? '';
+        _addressController.text = violation.violationAddress?.toString() ?? '';
+        _specifiedAddressController.text = violation.violationAddress?.specifiedAddress ?? '';
+        _violationDescriptionController.text = violation.violationDescription ?? '';
+        _codexArticleController.text = violation.codexArticle ?? '';
+        _objectCategoryController.text = violation.objectCategory?.toString() ?? '';
+        _violationTypeController.text = violation.violationType?.toString() ?? '';
+        
+        final decoder = Base64Decoder();
+        for (int i = 0; i < violation.photos.length; i++) {
+          final image = decoder.convert(violation.photos[i].data);
+          _photos.add(image);
+        }
+        for (int i = 0; i < violation.normativeActArticles.length - 1; i++) {
+          _addNormativeActControllers();
+        }
+        for (int i = 0; i < violation.normativeActArticles.length; i++) {
+          _normativeActControllers[i].text = violation.normativeActArticles[i].normativeAct;
+          _normativeActArticleControllers[i].text = violation.normativeActArticles[i].toString();
+        }
+
+        for (int i = 0; i < violation.violators.length - 1; i++) {
+          _addViolatorControllers();
+        }
+        for (int i = 0; i < violation.violators.length; i++) {
+          final violator = violation.violators[i].violatorPerson;
+          if (violator != null) {
+            _violatorTypeControllers[i].text = violation.violators[i].type.toString();
+            _addViolatorInfo(i, violator);
+          }
+        } 
+      }
+    }
   }
 
   void _onViolationNotPresent(BuildContext context, bool value) {
@@ -210,6 +233,17 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
 
    void _onRegisterDateSelect(BuildContext context, int index, List<DateTime> value) {
     _registerDates[index] = value?.first;
+    BlocProvider.of<TotalReportBloc>(context).add(FlushEvent());
+  }
+
+  void _onMapSearchSelect(BuildContext context, AddressSearch value) async {
+    _searchController.text = value?.toString() ?? '';
+    if (value != null) {
+      final address = await BlocProvider.of<TotalReportBloc>(context).getGeocoding(value.toString());
+      if (address != null && address.lat != null && address.lng != null) {
+        _mapController.move(LatLng(address.lat, address.lng), 16.5);
+      }
+    }
     BlocProvider.of<TotalReportBloc>(context).add(FlushEvent());
   }
 
@@ -283,24 +317,30 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
 
   void _onViolatorDocumentTypeSelect(BuildContext context, int index, ViolatorDocumentType value) {
     _docTypeControllers[index].text = value?.toString() ?? '';
-    //BlocProvider.of<TotalReportBloc>(context).add(SetViolatorDepartmentCodeEvent(index, value));  
+    BlocProvider.of<TotalReportBloc>(context).add(SetViolatorDocumentTypeEvent(index, value));  
   }
 
   void _onAddNormativeAct(BuildContext context) {
-    _addNormativeActControllers();
-    BlocProvider.of<TotalReportBloc>(context).add(AddViolationActEvent());  
+    if (editable) {
+      _addNormativeActControllers();
+      BlocProvider.of<TotalReportBloc>(context).add(AddViolationActEvent());  
+    }
   }
 
   void _onAddViolator(BuildContext context) {
-    _addViolatorControllers();
-    BlocProvider.of<TotalReportBloc>(context).add(AddViolatorEvent());  
+    if (editable) {
+      _addViolatorControllers();
+      BlocProvider.of<TotalReportBloc>(context).add(AddViolatorEvent());  
+    }
   }
 
   void _onViolatorSelect(BuildContext context, int index, dynamic violator) {
-    if (violator != null) {
-      _addViolatorInfo(index, violator);
-      BlocProvider.of<TotalReportBloc>(context).add(SetViolatorInfoEvent(index, violator));
-    }
+    _addViolatorInfo(index, violator);
+    BlocProvider.of<TotalReportBloc>(context).add(SetViolatorInfoEvent(index, violator));
+  }
+
+  Future<Iterable<AddressSearch>> _onMapSearch(BuildContext context, String name) async {
+    return await BlocProvider.of<TotalReportBloc>(context).getSearchAddresses(name);
   }
 
   Future<Iterable<Area>> _onAreaSearch(BuildContext context, String name) async {
@@ -352,20 +392,130 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
   }
 
   void _onSave(BuildContext context, int status) {
-    if (_formKey.currentState.validate()) {
+    bool validViolators = true;
+    final report = BlocProvider.of<TotalReportBloc>(context).state.report;
+    final resViolators = List<Violator>();
+    final curViolators = report.violation?.violators ?? [];
+    
+    for (int i = 0; i < curViolators.length; i++) {
+      final violator = curViolators[i];
+      final violatorPerson = violator.violatorPerson;
+      if (!violator.violatorNotFound) {
+        if (violatorPerson?.id == null) {
+          validViolators = validViolators && _violatorFormKeys[i].currentState.validate();
+          if (violator?.type?.id == ViolatorTypeIds.legal) {
+            final newViolator = violator.copyWith(
+              violatorPerson: ViolatorInfoLegal(
+                name: _violatorControllers[i].text,
+                phone: _phoneControllers[i].text,
+                inn: _innControllers[i].text,
+                ogrn: _ogrnControllers[i].text,
+                kpp: _kppControllers[i].text,
+                regDate: _registerDates[i],
+              ),
+            );
+            resViolators.add(newViolator);
+          } else if (violator?.type?.id == ViolatorTypeIds.official) {
+            final newViolator = violator.copyWith(
+              violatorPerson: ViolatorInfoOfficial(
+                orgName: _violatorControllers[i].text,
+                phone: _phoneControllers[i].text,
+                orgInn: _innControllers[i].text,
+                orgOgrn: _ogrnControllers[i].text,
+                orgKpp: _kppControllers[i].text,
+                orgRegDate: _registerDates[i],
+              ),
+            );
+            resViolators.add(newViolator);
+          } else if (violator?.type?.id == ViolatorTypeIds.ip) {
+            final newViolator = violator.copyWith(
+              violatorPerson: ViolatorInfoIp(
+                name: _violatorControllers[i].text,
+                firstName: _firstNameControllers[i].text,
+                lastName: _lastNameControllers[i].text,
+                patronym: _patronymControllers[i].text,
+                phone: _phoneControllers[i].text,
+                snils: _snilsControllers[i].text,
+                inn: _innControllers[i].text,
+                ogrnip: _ogrnControllers[i].text,
+                registrationDate: _registerDates[i],
+                birthDate: _birthDates[i],
+              ),
+            );
+            resViolators.add(newViolator);
+          } else if (violator?.type?.id == ViolatorTypeIds.private) {
+            final newViolator = violator.copyWith(
+              violatorPerson: ViolatorInfoPrivate(
+                firstName: _firstNameControllers[i].text,
+                lastName: _lastNameControllers[i].text,
+                patronym: _patronymControllers[i].text,
+                phone: _phoneControllers[i].text,
+                snils: _snilsControllers[i].text,
+                inn: _innControllers[i].text,
+                docNumber: _docNumberControllers[i].text,
+                docSeries: _docSeriesControllers[i].text,
+                docType: (violator?.violatorPerson as ViolatorInfoPrivate)?.docType,
+                birthDate: _birthDates[i],
+              ),
+            );
+            resViolators.add(newViolator);
+          }
+        } else {
+          resViolators.add(violator);
+        }
+      } else {
+        resViolators.add(violator);
+      }
+    }
+    if (report.violationNotPresent) {
       BlocProvider.of<TotalReportBloc>(context).add(
         SaveEvent(
-          status,
-          _violationDescriptionController.text,
-          _specifiedAddressController.text,
-          _codexArticleController.text,
+          status: status,
+          photos: _photos
         ),
       );  
+    } else {
+      if (_formKey.currentState.validate() && validViolators) {
+        BlocProvider.of<TotalReportBloc>(context).add(
+          SaveEvent(
+            status: status,
+            violators: resViolators,
+            violationDescription: _violationDescriptionController.text,
+            specifiedAddress: _specifiedAddressController.text,
+            codexArticle: _codexArticleController.text,
+            photos: _photos
+          ),
+        );  
+      }
     }
   }
 
+  void _onDeleteReport(BuildContext context) {
+    BlocProvider.of<TotalReportBloc>(context).add(DeleteEvent());  
+  }
+
+  void _showSnackBar(BuildContext context, String title) {
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) {
+        Scaffold.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: ProjectColors.darkBlue,
+            content: Text(title),
+            duration: Duration(seconds: 5),
+          ),
+        );
+        BlocProvider.of<TotalReportBloc>(context).add(FlushEvent());
+      }
+    );
+  }
+
+  void _centerMap(BuildContext context, LatLng location) {
+    _mapController.move(location, 16.5);
+    BlocProvider.of<TotalReportBloc>(context).add(FlushEvent());
+  }
+
   void _addViolatorInfo(int index, dynamic violator) {
-    _violatorControllers[index].text = violator.toString();
+    _violatorControllers[index].text = violator?.toString()?? '';
     if (violator is ViolatorInfoLegal) {
       _legalToControllers(index, violator);
     } else if (violator is ViolatorInfoOfficial) {
@@ -374,6 +524,12 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
       _privateToControllers(index, violator);
     } else if (violator is ViolatorInfoIp) {
       _ipToControllers(index, violator);
+    } else {
+      for (final list in _allViolatorControllers) {
+        list[index].clear();
+      }
+      _registerDates[index] = null;
+      _birthDates[index] = null;
     }
   }
 
@@ -427,6 +583,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
   } 
 
   void _addViolatorControllers() {
+    _violatorFormKeys.add(GlobalKey<FormState>());
     for (final list in _allViolatorControllers) {
       list.add(TextEditingController());
     }
@@ -459,6 +616,14 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
     );
   }
 
+  void _back() {
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) async {
+        Navigator.pop(context, true);
+      }
+    );
+  }
+
   String _nullValidator(dynamic value) {
     if (value == null) {
       return 'Введите значение';
@@ -474,15 +639,25 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context)=> TotalReportBloc(TotalReportBlocState(report: widget.report))..add(LoadEvent(widget.report)),
+      create: (context)=> TotalReportBloc(TotalReportBlocState(widget.report, null))..add(LoadEvent(widget.report)),
       child: BlocBuilder<TotalReportBloc, TotalReportBlocState>(
         builder: (context, state) {
           if (state is LoadDictState) {
             _loadDict(context);
-          }
+          } else if (state is LocationLoadedState) {
+            _centerMap(context, state.location);
+          } else if (state is SuccessState) { 
+            _showSnackBar(context, 'Рапорт успешно сформирован');
+            _back();
+          } else if (state is DeletedState) { 
+            _showSnackBar(context, 'Рапорт удален');
+            _back();
+          } else if (state is ErrorState) {
+            _showSnackBar(context, 'Произошла ошибка. ${state.exception.message} ${state.exception.details}');
+          } 
           return Scaffold(
             backgroundColor: Colors.white,
-            appBar: ProjectAppbar('Рапорт'),
+            appBar: ProjectAppbar('Рапорт ${widget.report.reportNum ?? ''}'),
             body: SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.only(left: 30, right: 30, top: 20),
@@ -495,7 +670,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
                       padding: EdgeInsets.zero, 
                       style: ProjectTextStyles.baseBold,
                     ),
-                    state.report.violationNotPresent ? _buildViolationNotPresent(state) : _buildViolationPresent(context, state),
+                    state.report.violationNotPresent ? _buildViolationNotPresent(context, state) : _buildViolationPresent(context, state),
                   ],
                 ),
               ),
@@ -506,7 +681,15 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
     );  
   }
 
-  Widget _buildViolationNotPresent(TotalReportBlocState state) {
+  Widget _buildAddressDialog() {
+    return Column(
+      children: [
+        
+      ],
+    );
+  }
+
+  Widget _buildViolationNotPresent(BuildContext context, TotalReportBlocState state) {
     return Container(
       height: MediaQuery.of(context).size.height * 0.75,
       child: Column(
@@ -514,8 +697,10 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
         children: [
           ImagePicker(
             images: _photos,
+            enabled: editable,
+            onPicked: (file) => _onPhotoPick(context, file),
           ),
-          _buildButtons(context, state.report),
+          _buildButtons(context),
         ],
       ),
     );
@@ -524,8 +709,14 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
   Widget _buildViolationPresent(BuildContext context, TotalReportBlocState state) {
     return Column(
       children: [
-        _buildMap(),
-        _buildTextField('Ручной поиск по карте', 'Введите или выберите значение', null),
+        _buildMap(state),
+        _buildAutocomplete(
+          'Ручной поиск по карте', 
+          'Введите или выберите значение', 
+          _searchController,
+          (value)=> _onMapSearch(context, value), 
+          (value)=> _onMapSearchSelect(context, value),
+        ),
         _buildTitle('Адрес нарушения'),
         Form(
           key: _formKey,
@@ -537,7 +728,8 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
                     child: _buildCheckBox(
                       'Определить адрес по местоположению', 
                       state.report.violationNotPresent,
-                      (value)=> _onViolationNotPresent(context, value),
+                      (value)=> {}
+                      //(value)=> _onViolationNotPresent(context, value),
                     ),
                   ),
                   Padding(padding: const EdgeInsets.only(left: 35)),
@@ -545,7 +737,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
                     child: _buildCheckBox(
                       'ТиНАО', 
                       state.report.violationNotPresent,
-                      (value)=> _onViolationNotPresent(context, value),
+                      (value)=> {}//_onViolationNotPresent(context, value),
                     ),
                   ),
                 ],
@@ -677,6 +869,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
               _buildTitle('Фотоматериалы нарушения'),
               ImagePicker(
                 images: _photos,
+                enabled: editable,
                 onPicked: (file)=> _onPhotoPick(context, file),
                 onRemoved: (index)=> _onPhotoRemove(context, index)
               ),
@@ -685,18 +878,17 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
         ),
         _buildTitle('Нарушители'),
         Column(
-          children: List.generate(state.report.violation.violators.length, 
-            (index) => _buildViolator(context, state, index),
+          children: List.generate(state.report.violation?.violators?.length ?? 1, 
+            (index) => _buildViolator(context, state.report.violation?.violators?.elementAt(index) ?? Violator.empty(), index),
           ),
         ),
         _buildAddViolator(context),
-        _buildButtons(context, state.report),
+        _buildButtons(context),
       ],
     );
   }
 
-  Widget _buildViolator(BuildContext context, TotalReportBlocState state, int index) {
-    final violator = state.report.violation.violators[index];
+  Widget _buildViolator(BuildContext context, Violator violator, int index) {
     return Column(
       children: [
         _buildCheckBox(
@@ -705,20 +897,24 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
           (value)=> _onViolatorNotFound(context, value, index),
         ),
         violator.violatorNotFound ? Container() :
-        Column(
-          children: [
-            _buildAutocomplete('Тип нарушителя', 'Выберите значение',  
-              _violatorTypeControllers[index],
-              (value)=> _onViolatorTypeSearch(context, value), 
-              (value)=> _onViolatorTypeSelect(context, index, value), 
-            ),
-            _buildAutocomplete('Нарушитель', 'Выберите значение',  
-              _violatorControllers[index],
-              (value)=> _onViolatorSearch(context, index, value), 
-              (value)=> _onViolatorSelect(context, index, value), 
-            ),
-            _buildViolatorInfo(context, index, violator)
-          ],
+        Form(
+          key: _violatorFormKeys[index],
+          child: Column(
+            children: [
+              _buildAutocomplete('Тип нарушителя', 'Выберите значение',  
+                _violatorTypeControllers[index],
+                (value)=> _onViolatorTypeSearch(context, value), 
+                (value)=> _onViolatorTypeSelect(context, index, value), 
+                validator: (value) => _nullValidator(violator?.type)
+              ),
+              _buildAutocomplete('Нарушитель', 'Выберите значение',  
+                _violatorControllers[index],
+                (value)=> _onViolatorSearch(context, index, value), 
+                (value)=> _onViolatorSelect(context, index, value), 
+              ),
+              _buildViolatorInfo(context, index, violator)
+            ],
+          ),
         ),
       ],
     );
@@ -737,21 +933,23 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
   }
 
   Widget _buildLegal(BuildContext context, int index, Violator violator) {
+    final enabled = violator?.violatorPerson?.id == null;
+    final textValidator = enabled ? _emptyValidator : null;
     return Column(
       children: [
         Row(
           mainAxisSize: MainAxisSize.max,
           children: [
             Flexible(
-              child: _buildTextField('ИНН', 'Введите данные', _innControllers[index]),
+              child: _buildTextField('ИНН', 'Введите данные', _innControllers[index], enabled: enabled, validator: textValidator),
             ),
             Padding(padding: const EdgeInsets.only(left: 20)),
             Flexible(
-              child: _buildTextField('ОГРН', 'Введите данные', _ogrnControllers[index]),
+              child: _buildTextField('ОГРН', 'Введите данные', _ogrnControllers[index], enabled: enabled, validator: textValidator),
             ),
             Padding(padding: const EdgeInsets.only(left: 20)),
             Flexible(
-              child: _buildTextField('КПП', 'Введите данные', _kppControllers[index]),
+              child: _buildTextField('КПП', 'Введите данные', _kppControllers[index], enabled: enabled, validator: textValidator),
             ),
           ],
         ),
@@ -765,8 +963,10 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
                   title: 'Дата регистрации',
                   hintText: 'Выберите дату',
                   singleDate: true,
+                  enabled: editable && enabled,
                   values: _registerDates[index] != null ? [_registerDates[index] ] : null,
                   onChanged: (date) => _onRegisterDateSelect(context, index, date),
+                  validator: enabled ? (value) => _nullValidator(_registerDates[index]) : null
                 ),
               ),
             ),
@@ -776,6 +976,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
                 'Иностранное Юрлицо', 
                 violator.foreign,
                 (value)=> _onViolatorForeign(context, value, index),
+                enabled: enabled,
                 padding: const EdgeInsets.only(top: 40),
               ),
             ),
@@ -791,36 +992,41 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
                 _departmentCodeControllers[index],
                 (value)=> _onDepartmentCodeSearch(context, value),
                 (value)=> _onDepartmentCodeSelect(context, index, value), 
+                enabled: enabled,
+                validator: enabled ? (value) => _nullValidator(violator?.departmentCode) : null
               ),
             ),
             Padding(padding: const EdgeInsets.only(left: 35)),
             Flexible(
-              child: _buildTextField('Телефон', 'Введите данные', _phoneControllers[index]),
+              child: _buildTextField('Телефон', 'Введите данные', _phoneControllers[index], enabled: enabled, validator: textValidator),
             ),
           ],
         ),
-        _buildTextField('Фактический адрес', 'Введите данные', _legalAddressControllers[index]),
-        _buildTextField('Юридический адрес', 'Введите данные', _postalAddressControllers[index]),
+        _buildTextField('Фактический адрес', 'Введите данные', _legalAddressControllers[index], enabled: enabled, validator: textValidator),
+        _buildTextField('Юридический адрес', 'Введите данные', _postalAddressControllers[index], enabled: enabled, validator: textValidator),
       ],
     );
   }
 
   Widget _buildOfficial(BuildContext context, int index, Violator violator) {
+    final enabled = violator?.violatorPerson?.id == null;
+    final textValidator = enabled ? _emptyValidator : null;
     return Column(
       children: [
         Row(
           mainAxisSize: MainAxisSize.max,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Flexible(
-              child: _buildTextField('ИНН организации', 'Введите данные', _innControllers[index]),
+              child: _buildTextField('ИНН организации', 'Введите данные', _innControllers[index], enabled: enabled, validator: textValidator),
             ),
             Padding(padding: const EdgeInsets.only(left: 20)),
             Flexible(
-              child: _buildTextField('ОГРН организации', 'Введите данные', _ogrnControllers[index]),
+              child: _buildTextField('ОГРН организации', 'Введите данные', _ogrnControllers[index], enabled: enabled, validator: textValidator),
             ),
             Padding(padding: const EdgeInsets.only(left: 20)),
             Flexible(
-              child: _buildTextField('КПП организации', 'Введите данные', _kppControllers[index]),
+              child: _buildTextField('КПП организации', 'Введите данные', _kppControllers[index], enabled: enabled, validator: textValidator,)
             ),
           ],
         ),
@@ -834,8 +1040,10 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
                   title: 'Дата регистрации организации',
                   hintText: 'Выберите дату',
                   singleDate: true,
+                  enabled: editable && enabled,
                   values: _registerDates[index] != null ? [_registerDates[index] ] : null,
                   onChanged: (date) => _onRegisterDateSelect(context, index, date),
+                  validator: enabled ? (value) => _nullValidator(_registerDates[index]) : null
                 ),
               ),
             ),
@@ -845,6 +1053,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
                 'Иностранное Юрлицо', 
                 violator.foreign,
                 (value)=> _onViolatorForeign(context, value, index),
+                enabled: enabled,
                 padding: const EdgeInsets.only(top: 40),
               ),
             ),
@@ -860,29 +1069,34 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
                 _departmentCodeControllers[index],
                 (value)=> _onDepartmentCodeSearch(context, value),
                 (value)=> _onDepartmentCodeSelect(context, index, value), 
+                enabled: enabled,
+                validator: enabled ? (value) => _nullValidator(violator?.departmentCode) : null
               ),
             ),
             Padding(padding: const EdgeInsets.only(left: 35)),
             Flexible(
-              child: _buildTextField('Телефон', 'Введите данные', _phoneControllers[index]),
+              child: _buildTextField('Телефон', 'Введите данные', _phoneControllers[index], enabled: enabled, validator: textValidator),
             ),
           ],
         ),
-        _buildTextField('Фактический адрес', 'Введите данные', _legalAddressControllers[index]),
-        _buildTextField('Юридический адрес', 'Введите данные', _postalAddressControllers[index]),
+        _buildTextField('Фактический адрес', 'Введите данные', _legalAddressControllers[index], enabled: enabled, validator: textValidator),
+        _buildTextField('Юридический адрес', 'Введите данные', _postalAddressControllers[index], enabled: enabled, validator: textValidator),
       ],
     );
   }
 
   Widget _buildPrivate(BuildContext context, int index, Violator violator) {
+    final enabled = violator?.violatorPerson?.id == null;
     final person = violator.violatorPerson as ViolatorInfoPrivate;
+    final textValidator = enabled ? _emptyValidator : null;
     return Column(
       children: [
-        _buildTextField('Фамилия', 'Введите данные', _lastNameControllers[index]),
-        _buildTextField('Имя', 'Введите данные', _firstNameControllers[index]),
-        _buildTextField('Отчество', 'Введите данные', _patronymControllers[index]),
+        _buildTextField('Фамилия', 'Введите данные', _lastNameControllers[index], enabled: enabled, validator: textValidator),
+        _buildTextField('Имя', 'Введите данные', _firstNameControllers[index], enabled: enabled, validator: textValidator),
+        _buildTextField('Отчество', 'Введите данные', _patronymControllers[index], enabled: enabled, validator: textValidator),
         Row(
           mainAxisSize: MainAxisSize.max,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Flexible(
               child: _buildAutocomplete(
@@ -891,32 +1105,35 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
                 _docTypeControllers[index],
                 (value)=> _onViolatorDocumentTypeSearch(context, value), 
                 (value)=> _onViolatorDocumentTypeSelect(context, index, value), 
-                validator: (value) => _nullValidator(person?.docType),
+                validator: enabled ? (value) => _nullValidator(person?.docType) : null,
+                enabled: enabled,
               ),
             ),
             Padding(padding: const EdgeInsets.only(left: 20)),
             Flexible(
-              child: _buildTextField('Серия документа', 'Введите данные', _docSeriesControllers[index]),
+              child: _buildTextField('Серия документа', 'Введите данные', _docSeriesControllers[index], enabled: enabled, validator: textValidator),
             ),
             Padding(padding: const EdgeInsets.only(left: 20)),
             Flexible(
-              child: _buildTextField('Номер документа', 'Введите данные', _docNumberControllers[index]),
+              child: _buildTextField('Номер документа', 'Введите данные', _docNumberControllers[index], enabled: enabled, validator: textValidator),
             ),
           ],
         ),
         Row(
           mainAxisSize: MainAxisSize.max,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Flexible(
-              child: _buildTextField('ИНН', 'Введите данные', _innControllers[index]),
+              child: _buildTextField('ИНН', 'Введите данные', _innControllers[index], enabled: enabled, validator: textValidator),
             ),
             Padding(padding: const EdgeInsets.only(left: 20)),
             Flexible(
-              child: _buildTextField('СНИЛС', 'Введите данные', _snilsControllers[index]),
+              child: _buildTextField('СНИЛС', 'Введите данные', _snilsControllers[index], enabled: enabled, validator: textValidator),
             ),
           ],
         ),
         Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Flexible(
               child: Padding(
@@ -925,42 +1142,47 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
                   title: 'Дата рождения',
                   hintText: 'Выберите дату',
                   singleDate: true,
+                  enabled: editable && enabled,
                   values: _birthDates[index] != null ? [_birthDates[index]] : null,
                   onChanged: (date) => _onBirthDateSelect(context, index, date),
+                  validator: enabled ? (value) => _nullValidator(_birthDates[index]) : null
                 ),
               ),
             ),
             Padding(padding: const EdgeInsets.only(left: 20)),
             Flexible(
-              child :_buildTextField('Место рождения', 'Введите данные', _birthPlaceControllers[index]),
+              child :_buildTextField('Место рождения', 'Введите данные', _birthPlaceControllers[index], enabled: enabled, validator: textValidator),
             ),
           ],
         ),
-        _buildTextField('Адрес регистрации', 'Введите данные', _registrationAddressControllers[index]),
-        _buildTextField('Телефон', 'Введите данные', _phoneControllers[index]),
+        _buildTextField('Адрес регистрации', 'Введите данные', _registrationAddressControllers[index], enabled: enabled, validator: textValidator),
+        _buildTextField('Телефон', 'Введите данные', _phoneControllers[index], enabled: enabled, validator: textValidator),
       ],
     );  
   }
 
   Widget _buildIp(BuildContext context, int index, Violator violator) {
+    final enabled = violator?.violatorPerson?.id == null;
+    final textValidator = enabled ? _emptyValidator : null;
     return Column(
       children: [
-        _buildTextField('Фамилия', 'Введите данные', _lastNameControllers[index]),
-        _buildTextField('Имя', 'Введите данные', _firstNameControllers[index]),
-        _buildTextField('Отчество', 'Введите данные', _patronymControllers[index]),
+        _buildTextField('Фамилия', 'Введите данные', _lastNameControllers[index], enabled: enabled, validator: textValidator),
+        _buildTextField('Имя', 'Введите данные', _firstNameControllers[index], enabled: enabled, validator: textValidator),
+        _buildTextField('Отчество', 'Введите данные', _patronymControllers[index], enabled: enabled, validator: textValidator),
         Row(
           mainAxisSize: MainAxisSize.max,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Flexible(
-              child: _buildTextField('ИНН', 'Введите данные', _innControllers[index]),
+              child: _buildTextField('ИНН', 'Введите данные', _innControllers[index], enabled: enabled, validator: textValidator),
             ),
             Padding(padding: const EdgeInsets.only(left: 20)),
             Flexible(
-              child: _buildTextField('ОГРНИП', 'Введите данные', _ogrnControllers[index]),
+              child: _buildTextField('ОГРНИП', 'Введите данные', _ogrnControllers[index], enabled: enabled, validator: textValidator),
             ),
             Padding(padding: const EdgeInsets.only(left: 20)),
             Flexible(
-              child: _buildTextField('СНИЛС', 'Введите данные', _snilsControllers[index]),
+              child: _buildTextField('СНИЛС', 'Введите данные', _snilsControllers[index], enabled: enabled, validator: textValidator),
             ),
           ],
         ),
@@ -970,11 +1192,14 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
             title: 'Дата регистрации',
             hintText: 'Выберите дату',
             singleDate: true,
+            enabled: editable && enabled,
             values: _registerDates[index] != null ? [_registerDates[index] ] : null,
             onChanged: (date) => _onRegisterDateSelect(context, index, date),
+            validator: enabled ? (value) => _nullValidator(_registerDates[index]) : null
           ),
         ),
         Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Flexible(
               child: Padding(
@@ -983,19 +1208,21 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
                   title: 'Дата рождения',
                   hintText: 'Выберите дату',
                   singleDate: true,
+                  enabled: editable && enabled,
                   values: _birthDates[index] != null ? [_birthDates[index] ] : null,
                   onChanged: (date) => _onBirthDateSelect(context, index, date),
+                  validator: enabled ? (value) => _nullValidator(_birthDates[index]) : null
                 ),
               ),
             ),
             Padding(padding: const EdgeInsets.only(left: 20)),
             Flexible(
-              child :_buildTextField('Место рождения', 'Введите данные', _birthPlaceControllers[index]),
+              child :_buildTextField('Место рождения', 'Введите данные', _birthPlaceControllers[index], enabled: enabled, validator: textValidator),
             ),
           ],
         ),
-        _buildTextField('Адрес регистрации', 'Введите данные', _registrationAddressControllers[index]),
-        _buildTextField('Телефон', 'Введите данные', _phoneControllers[index]),
+        _buildTextField('Адрес регистрации', 'Введите данные', _registrationAddressControllers[index], enabled: enabled, validator: textValidator),
+        _buildTextField('Телефон', 'Введите данные', _phoneControllers[index], enabled: enabled, validator: textValidator),
       ],
     );
   }
@@ -1024,9 +1251,10 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
     );
   }
 
-  Widget _buildButtons(BuildContext context, Report report) {
-    final newStatus =  report.reportStatus != null && (report.reportStatus.id == ReportStatusIds.new_ || report.reportStatus.id == ReportStatusIds.project);
-    final editedReport =  report.reportStatus == null || newStatus || report.reportStatus.id == ReportStatusIds.declined;
+  Widget _buildButtons(BuildContext context) {
+    final report = widget.report;
+    final newReport = (report.reportStatus == null || report.reportStatus?.id == ReportStatusIds.new_ || report.reportStatus?.id == ReportStatusIds.project);
+    final deletable = report.reportStatus != null && newReport;
     return Container(
       color: Colors.white,
       padding: const EdgeInsets.only(top: 30, bottom: 20),
@@ -1034,25 +1262,41 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           ProjectButton.builtFlatButton('Сохранить проект',
-            onPressed: editedReport ? () => _onSave(context, ReportStatusIds.project) : null,
+            onPressed: newReport ? () => _onSave(context, ReportStatusIds.project) : null,
           ),
           ProjectButton.builtFlatButton('Сохранить',
-            onPressed: editedReport ? ()=> _onSave(context, ReportStatusIds.new_) : null,
+            onPressed: newReport ? ()=> _onSave(context, ReportStatusIds.new_) : null,
           ),
           ProjectButton.builtFlatButton('На согласование',
-            onPressed: editedReport ? ()=>_onSave(context, ReportStatusIds.onApproval) : null,
+            onPressed: editable ? ()=>_onSave(context, ReportStatusIds.onApproval) : null,
           ),
           ProjectButton.builtFlatButton('Удалить', 
             color: ProjectColors.red,
             disabledColor: ProjectColors.red.withOpacity(0.3),
-            onPressed: newStatus ? () {} : null
+            onPressed: deletable ? ()=> _onDeleteReport(context) : null
           ),
         ],
       ),
     );
   }
 
-  Widget _buildMap() {
+  Widget _buildMap(TotalReportBlocState state) {
+    final markers = List<Marker>();
+    if (state.location != null) {
+      markers.add(
+        Marker(
+          point: state.location,
+          builder: (context) => Container(
+            width: 20,
+            height: 20,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: ProjectColors.blue
+            ),
+          ),
+        ),
+      );
+    }
     return Container(
       height: MediaQuery.of(context).size.height * 0.3,
       margin: const EdgeInsets.only(top: 24),
@@ -1060,6 +1304,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
         alignment: Alignment.topRight,
         children: [
           FlutterMap(
+            mapController: _mapController,
             options: MapOptions(
               center: LatLng(55.746875, 37.6200),
               zoom: 16.5  ,
@@ -1068,6 +1313,9 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
               TileLayerOptions(
                 urlTemplate: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
                 subdomains: ['a', 'b', 'c']
+              ),
+              MarkerLayerOptions(
+                markers: markers
               ),
             ],
           ),
@@ -1149,6 +1397,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
     bool value, 
     Function(bool) onChanged, {
       TextStyle style, 
+      bool enabled = true,
       EdgeInsets padding = const EdgeInsets.only(top: 20)
     }
   ) {
@@ -1158,7 +1407,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
         children: [
           ProjectCheckbox(
             value: value,
-            onChanged: onChanged,
+            onChanged: editable && enabled ? onChanged : (v){},
           ),
           Padding(
             padding: const EdgeInsets.only(left: 10),
@@ -1174,8 +1423,9 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
   Widget _buildTextField(String title, 
     String hintText, 
     TextEditingController controller, {
-      EdgeInsets padding = const EdgeInsets.only(top: 20),
       Function(String) validator,
+      EdgeInsets padding = const EdgeInsets.only(top: 20),
+      bool enabled = true
     }
   ) {
     return Padding(
@@ -1184,7 +1434,8 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
         title: title,
         hintText: hintText, 
         controller: controller,
-        validator: validator
+        validator: validator,
+        enabled: editable && enabled, 
       )
     );
   }
@@ -1195,8 +1446,9 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
     TextEditingController controller,
     AutocompleteCallback suggestionsCallback, 
     Function(dynamic) onSuggestionSelected, {
+      Function(String) validator,
+      bool enabled = true,
       EdgeInsets padding = const EdgeInsets.only(top: 20),
-      Function(String) validator
     }
   ) {
     return Padding(
@@ -1207,6 +1459,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
         suggestionsCallback: suggestionsCallback,
         onSuggestionSelected: onSuggestionSelected,
         validator: validator,
+        enabled: editable && enabled,
       ),
     );
   }

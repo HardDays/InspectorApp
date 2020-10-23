@@ -7,6 +7,7 @@ import 'package:inspector/blocs/instruction_list/bloc.dart';
 import 'package:inspector/blocs/instruction_list/states.dart';
 import 'package:inspector/blocs/instruction_list/events.dart';
 import 'package:inspector/model/instruction.dart';
+import 'package:inspector/pages/instruction_page.dart';
 import 'package:inspector/style/colors.dart';
 import 'package:inspector/style/filter_appbar.dart';
 import 'package:inspector/style/top_dialog.dart';
@@ -26,6 +27,11 @@ class InstructionListPageState extends State<InstructionListPage> with Automatic
 
   @override
   bool get wantKeepAlive => true;
+
+  void _onTap(BuildContext context, Instruction instruction) async {
+    await Navigator.push(context, MaterialPageRoute(builder: (context) => InstructionPage(instruction)));
+    //BlocProvider.of<InstructionListBloc>(context).add(RefreshEvent());  
+  }
 
   Future _onUpdate(BuildContext context) async {
     BlocProvider.of<InstructionListBloc>(context).add(RefreshEvent());  
@@ -123,7 +129,7 @@ class InstructionListPageState extends State<InstructionListPage> with Automatic
     if (state is LoadingState) {
       return _buildLoader();
     } else if (state is DataState) { 
-      return _buildList(state.instructions);
+      return _buildList(context, state.instructions);
     }  else {
       return Container();
     }
@@ -135,10 +141,15 @@ class InstructionListPageState extends State<InstructionListPage> with Automatic
     );
   }
 
-  Widget _buildList(List<Instruction> instructions) {
+  Widget _buildList(BuildContext context, List<Instruction> instructions) {
      return ListView(
       padding: const EdgeInsets.only(top: 20),
-      children: List.generate(instructions.length, (index) => InstructionWidget(instructions[index]))
+      children: List.generate(instructions.length, 
+        (index) => InkWell(
+          onTap: ()=> _onTap(context, instructions[index]),
+          child: InstructionWidget(instructions[index]),
+        ),
+      ),
     );
   }
 }

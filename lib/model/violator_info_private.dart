@@ -22,22 +22,22 @@ class ViolatorInfoPrivate extends ViolatorInfo{
   final ViolatorAddress registrationAddress;
 
   ViolatorInfoPrivate({
-    // @required this.id,
-    // @required this.phone,
+    // this.id,
+    // this.phone,
     int id,
     String phone, 
-    @required this.lastName,
-    @required this.firstName,
-    @required this.patronym,
-    @required this.inn,
-    @required this.snils,
-    @required this.docType,
-    @required this.docSeries,
-    @required this.docNumber,
-    @required this.gender,
-    @required this.birthDate,
-    @required this.birthPlace,
-    @required this.registrationAddress,
+    this.lastName,
+    this.firstName,
+    this.patronym,
+    this.inn,
+    this.snils,
+    this.docType,
+    this.docSeries,
+    this.docNumber,
+    this.gender,
+    this.birthDate,
+    this.birthPlace,
+    this.registrationAddress,
   }) : super(id: id, phone: phone);
 
   factory ViolatorInfoPrivate.fromJson(Map<String, dynamic> json, {bool stringified = false}) {
@@ -56,6 +56,27 @@ class ViolatorInfoPrivate extends ViolatorInfo{
       birthDate: json['birthDate'] != null ? DateTime.parse(json['birthDate']) : null,
       birthPlace: json['birthPlace'],
       registrationAddress: json['registrationAddress'] != null ? ViolatorAddress.parse(json['registrationAddress'], stringified) : null,
+    );
+  }
+
+  ViolatorInfoPrivate copyWith({
+    ViolatorDocumentType docType
+  }) {
+    return ViolatorInfoPrivate(
+      id: id,
+      phone: phone,
+      lastName: lastName,
+      firstName: firstName,
+      patronym: patronym,
+      inn: inn,
+      snils: snils,
+      docType: docType ?? this.docType,
+      docSeries: docSeries,
+      docNumber: docNumber,
+      gender: gender,
+      birthDate: birthDate,
+      birthPlace: birthPlace,
+      registrationAddress: registrationAddress,
     );
   }
 

@@ -361,6 +361,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.8.8"
+  geolocator:
+    dependency: "direct main"
+    description:
+      name: geolocator
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "6.1.1"
+  geolocator_platform_interface:
+    dependency: transitive
+    description:
+      name: geolocator_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.5"
   glob:
     dependency: transitive
     description:

@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:inspector/model/address.dart';
 import 'package:inspector/model/area.dart';
 import 'package:inspector/model/department_code.dart';
@@ -5,6 +7,7 @@ import 'package:inspector/model/district.dart';
 import 'package:inspector/model/normative_act.dart';
 import 'package:inspector/model/normative_act_article.dart';
 import 'package:inspector/model/object_category.dart';
+import 'package:inspector/model/photo.dart';
 import 'package:inspector/model/report.dart';
 import 'package:inspector/model/street.dart';
 import 'package:inspector/model/violation_type.dart';
@@ -141,11 +144,16 @@ class SetViolatorDocumentTypeEvent extends ChangeViolatorEvent {
 }
 
 class SaveEvent extends TotalReportBlocEvent {
+
   final int status;
   final String violationDescription;
   final String specifiedAddress;
   final String codexArticle;
+  final List<Violator> violators;
+  final List<Uint8List> photos;
 
-  SaveEvent(this.status, this.violationDescription, this.specifiedAddress, this.codexArticle);
+  SaveEvent({this.status, this.violationDescription, this.specifiedAddress, this.codexArticle, this.violators, this.photos});
+}
 
+class DeleteEvent extends TotalReportBlocEvent {
 }
