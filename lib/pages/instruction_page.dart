@@ -18,6 +18,7 @@ import 'package:inspector/style/appbar.dart';
 import 'package:inspector/style/button.dart';
 import 'package:inspector/style/card.dart';
 import 'package:inspector/style/colors.dart';
+import 'package:inspector/style/dialog.dart';
 import 'package:inspector/style/divider.dart';
 import 'package:inspector/style/icons.dart';
 import 'package:inspector/style/status.dart';
@@ -34,15 +35,21 @@ class InstructionPage extends StatelessWidget {
   InstructionPage(this.instruction);
 
   void _onTotalReport(BuildContext context, Report report, InstructionCheck check) async {
-    final res = await Navigator.push(context, 
-      MaterialPageRoute(
-        builder: (context) => TotalReportPage(
-          report: report?.copyWith() ?? Report.empty(false, check.id, instruction.id)
+    bool violationNotPresent = false;
+    if (report == null) {
+      violationNotPresent = await _showViolationDialog(context);
+    } 
+    if (violationNotPresent != null) {
+      final res = await Navigator.push(context, 
+        MaterialPageRoute(
+          builder: (context) => TotalReportPage(
+            report: report?.copyWith() ?? Report.empty(violationNotPresent, check.id, instruction.id)
+          ),
         ),
-      ),
-    );  
-    if (res != null) {
-      BlocProvider.of<InstructionBloc>(context).add(RefreshReportsEvent());  
+      );  
+      if (res != null) {
+        BlocProvider.of<InstructionBloc>(context).add(RefreshReportsEvent());  
+      }
     }
   }
 
@@ -65,6 +72,30 @@ class InstructionPage extends StatelessWidget {
           backgroundColor: ProjectColors.darkBlue,
           content: Text(title),
           duration: Duration(seconds: 5),
+        ),
+      ),
+    );
+  }
+
+  Future<bool> _showViolationDialog(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) => ProjectDialog(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ProjectButton.buildOutlineButton('Без нарушения',
+              color: ProjectColors.green,
+              onPressed: ()=> Navigator.pop(context, true)
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 20),
+            ),
+            ProjectButton.buildOutlineButton('С нарушением ',
+              color: ProjectColors.red,
+              onPressed: ()=> Navigator.pop(context, false)
+            ),
+          ],
         ),
       ),
     );

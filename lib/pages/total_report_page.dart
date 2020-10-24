@@ -61,6 +61,8 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
 
   final _mapController = MapController();
 
+  bool _markEditing = false;
+
   final _searchController = TextEditingController();
   final _areaController = TextEditingController();
   final _streetController = TextEditingController();
@@ -241,10 +243,33 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
     if (value != null) {
       final address = await BlocProvider.of<TotalReportBloc>(context).getGeocoding(value.toString());
       if (address != null && address.lat != null && address.lng != null) {
-        _mapController.move(LatLng(address.lat, address.lng), 16.5);
+        _mapController.move(LatLng(address.lat, address.lng), 17.5);
       }
     }
     BlocProvider.of<TotalReportBloc>(context).add(FlushEvent());
+  }
+
+  void _onMapTap(BuildContext context, LatLng location) {
+    if (_markEditing) {
+      BlocProvider.of<TotalReportBloc>(context).add(SetViolationLocationEvent(location));
+      _markEditing = false;
+    }
+  }
+
+  void _onMapEdit(BuildContext context) {
+    _markEditing = true;
+    BlocProvider.of<TotalReportBloc>(context).add(FlushEvent());
+  }
+
+  void _onMapClear(BuildContext context) {
+    BlocProvider.of<TotalReportBloc>(context).add(SetViolationLocationEvent(null));
+  }
+
+  void _onMapCenter(BuildContext context) {
+    final state = BlocProvider.of<TotalReportBloc>(context).state;
+    if (state.violationLocation != null) {
+      _mapController.move(state.violationLocation, 17.5);
+    }
   }
 
   void _onAreaSelect(BuildContext context, Area value) {
@@ -469,7 +494,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
     }
     if (report.violationNotPresent) {
       BlocProvider.of<TotalReportBloc>(context).add(
-        SaveEvent(
+        SaveReportEvent(
           status: status,
           photos: _photos
         ),
@@ -477,7 +502,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
     } else {
       if (_formKey.currentState.validate() && validViolators) {
         BlocProvider.of<TotalReportBloc>(context).add(
-          SaveEvent(
+          SaveReportEvent(
             status: status,
             violators: resViolators,
             violationDescription: _violationDescriptionController.text,
@@ -491,7 +516,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
   }
 
   void _onDeleteReport(BuildContext context) {
-    BlocProvider.of<TotalReportBloc>(context).add(DeleteEvent());  
+    BlocProvider.of<TotalReportBloc>(context).add(RemoveReportEvent());  
   }
 
   void _showSnackBar(BuildContext context, String title) {
@@ -509,7 +534,8 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
     );
   }
 
-  void _centerMap(BuildContext context, LatLng location) {
+  void _centerMapToLocation(BuildContext context, LatLng location) async {
+    await _mapController.onReady;
     _mapController.move(location, 16.5);
     BlocProvider.of<TotalReportBloc>(context).add(FlushEvent());
   }
@@ -639,13 +665,15 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context)=> TotalReportBloc(TotalReportBlocState(widget.report, null))..add(LoadEvent(widget.report)),
+      create: (context)=> TotalReportBloc(TotalReportBlocState(widget.report, null, null))..add(LoadEvent(widget.report)),
       child: BlocBuilder<TotalReportBloc, TotalReportBlocState>(
         builder: (context, state) {
           if (state is LoadDictState) {
             _loadDict(context);
-          } else if (state is LocationLoadedState) {
-            _centerMap(context, state.location);
+          } else if (state is UserLocationLoadedState) {
+            _centerMapToLocation(context, state.userLocation);
+          } else if (state is ViolationLocationLoadedState) {
+            _centerMapToLocation(context, state.violationLocation);
           } else if (state is SuccessState) { 
             _showSnackBar(context, 'Рапорт успешно сформирован');
             _back();
@@ -709,7 +737,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
   Widget _buildViolationPresent(BuildContext context, TotalReportBlocState state) {
     return Column(
       children: [
-        _buildMap(state),
+        _buildMap(context, state),
         _buildAutocomplete(
           'Ручной поиск по карте', 
           'Введите или выберите значение', 
@@ -1280,20 +1308,32 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
     );
   }
 
-  Widget _buildMap(TotalReportBlocState state) {
+  Widget _buildMap(BuildContext context, TotalReportBlocState state) {
     final markers = List<Marker>();
-    if (state.location != null) {
+    if (state.userLocation != null) {
       markers.add(
         Marker(
-          point: state.location,
+          point: state.userLocation,
           builder: (context) => Container(
             width: 20,
             height: 20,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: ProjectColors.blue
+              color: ProjectColors.lightBlue
             ),
           ),
+        ),
+      );
+    }
+    if (state.violationLocation != null) {
+      markers.add(
+        Marker(
+          point: state.violationLocation,
+          builder: (context) => Icon(
+            Icons.error_outline,
+            size: 40,
+            color: ProjectColors.red,
+          )
         ),
       );
     }
@@ -1306,8 +1346,13 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
           FlutterMap(
             mapController: _mapController,
             options: MapOptions(
+              // bounds: LatLngBounds(
+              //   LatLng(56.896398,34.862339),
+              //   LatLng(54.754490,39.546748)
+              // ),
               center: LatLng(55.746875, 37.6200),
-              zoom: 16.5  ,
+              zoom: 16.5,
+              onTap: (value)=> _onMapTap(context, value)
             ),
             layers: [
               TileLayerOptions(
@@ -1332,9 +1377,9 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  _buildPinButton(Icons.add, ProjectColors.green),
-                  _buildPinButton(Icons.close, ProjectColors.red),
-                  _buildPinButton(Icons.play_arrow, ProjectColors.cyan)
+                  _buildPinButton(context, Icons.add, ProjectColors.green, _onMapEdit, pinColor: _markEditing ? ProjectColors.darkBlue.withOpacity(0.5) : ProjectColors.darkBlue),
+                  _buildPinButton(context, Icons.close, ProjectColors.red, _onMapClear),
+                  _buildPinButton(context, Icons.play_arrow, ProjectColors.cyan, _onMapCenter)
                 ],
               ),
             ),
@@ -1344,24 +1389,27 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
     );
   }
 
-  Widget _buildPinButton(IconData icon, Color color) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 10, right: 10),
-      child: Stack(
-        alignment: Alignment.bottomRight,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(right: 5),
-            child: Icon(Icons.location_on,
-              color: ProjectColors.darkBlue,
-              size: 22,
+  Widget _buildPinButton(BuildContext context, IconData icon, Color color, Function(BuildContext) onTap, {Color pinColor =  ProjectColors.darkBlue}) {
+    return InkWell(
+      onTap: ()=> onTap(context),
+      child: Padding(
+        padding: const EdgeInsets.only(left: 10, right: 10),
+        child: Stack(
+          alignment: Alignment.bottomRight,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(right: 5),
+              child: Icon(Icons.location_on,
+                color: pinColor,
+                size: 22,
+              ),
             ),
-          ),
-          Icon(icon,
-            size: 12,
-            color: color,
-          ),
-        ],
+            Icon(icon,
+              size: 12,
+              color: color,
+            ),
+          ],
+        ),
       ),
     );
   }

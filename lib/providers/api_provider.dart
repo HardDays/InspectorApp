@@ -119,9 +119,13 @@ class ApiProvider {
   }
 
   void setToken(String token) {
-    dio.options.headers = {
-      'Authorization': "Bearer " + token
-    };
+    if (token == null) {
+      dio.options.headers.remove('Authorization');
+    } else {
+      dio.options.headers = {
+        'Authorization': "Bearer " + token
+      };
+    }
   }
 
   Future<dynamic> login(String user, String password) async {

@@ -5,39 +5,46 @@ import 'package:latlong/latlong.dart';
 class TotalReportBlocState {
 
   final Report report;
-  final LatLng location;
+  final LatLng userLocation;
+  final LatLng violationLocation;
 
   TotalReportBlocState(
     this.report,
-    this.location
+    this.userLocation,
+    this.violationLocation
   );
 
-  TotalReportBlocState copyWith({Report report, LatLng location}) {
+  TotalReportBlocState copyWith({Report report, LatLng userLocation, LatLng violationLocation}) {
     return TotalReportBlocState(
       report ?? this.report,
-      location ?? this.location
+      userLocation ?? this.userLocation,
+      violationLocation ?? this.violationLocation
     );
   }
 }
 
 class LoadDictState extends TotalReportBlocState {
-  LoadDictState(Report report, LatLng location) : super(report, location);
+  LoadDictState(Report report, LatLng userLocation, LatLng violationLocation) : super(report, userLocation, violationLocation);
 }
 
-class LocationLoadedState extends TotalReportBlocState {
-  LocationLoadedState(Report report, LatLng location) : super(report, location);
+class UserLocationLoadedState extends TotalReportBlocState {
+  UserLocationLoadedState(Report report, LatLng userLocation, LatLng violationLocation) : super(report, userLocation, violationLocation);
+}
+
+class ViolationLocationLoadedState extends TotalReportBlocState {
+  ViolationLocationLoadedState(Report report, LatLng userLocation, LatLng violationLocation) : super(report, userLocation, violationLocation);
 }
 
 class SuccessState extends TotalReportBlocState {
-  SuccessState(Report report, LatLng location) : super(report, location);
+  SuccessState(Report report, LatLng userLocation, LatLng violationLocation) : super(report, userLocation, violationLocation);
 }
 
 class ErrorState extends TotalReportBlocState {
   final ApiException exception;
   
-  ErrorState(Report report, LatLng location, this.exception) : super(report, location);
+  ErrorState(this.exception, Report report, LatLng userLocation, LatLng violationLocation) : super(report, userLocation, violationLocation);
 }
 
 class DeletedState extends TotalReportBlocState {
-  DeletedState(Report report, LatLng location) : super(report, location);
+  DeletedState(Report report, LatLng userLocation, LatLng violationLocation) : super(report, userLocation, violationLocation);
 }

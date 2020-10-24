@@ -43,6 +43,8 @@ class Address {
 
   Address copyWith({
     int id,
+    double latitude,
+    double longitude,
     Area area,
     District district,
     Street street,

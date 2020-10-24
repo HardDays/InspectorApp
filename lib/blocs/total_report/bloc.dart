@@ -144,9 +144,9 @@ class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {
       try {
         final loaded = await _dictionaryService.isLoaded();        
         if (!loaded) {
-          yield LoadDictState(state.report, state.location);
+          yield LoadDictState(state.report, state.userLocation, state.violationLocation);
           await Future.delayed(Duration(seconds: 2));
-          yield TotalReportBlocState(state.report, state.location);
+          yield TotalReportBlocState(state.report, state.userLocation, state.violationLocation);
         } else {
           add(InitEvent(event.report));
         } 
@@ -154,9 +154,14 @@ class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {
         print(ex);
       }
     } else if (event is InitEvent) {
-      final position = await Geolocator.getCurrentPosition();
-      if (position != null) {
-        yield LocationLoadedState(event.report, LatLng(position.latitude, position.longitude));
+      final position = await Geolocator.getLastKnownPosition();
+      if (position != null && position.latitude != 0 && position.longitude != 0) {
+        yield UserLocationLoadedState(event.report, LatLng(position.latitude, position.longitude), state.violationLocation);
+      }
+
+      final address = state.report.violation?.violationAddress;
+      if (address?.latitude != null && address?.longitude != null) {
+        yield ViolationLocationLoadedState(event.report, null, LatLng(address.latitude, address.longitude));
       }
     } else if (event is SetViolationNotPresentEvent) {
       yield state.copyWith(
@@ -296,9 +301,9 @@ class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {
           ),
         ),
       );
-    } else if (event is SaveEvent) {
-      //final statusts = await _dictionaryService.getStat
-      final status = ReportStatus(id: event.status, name: 'Новый');
+    } else if (event is SaveReportEvent) {
+      final statuses = await _dictionaryService.getReportStatuses(id: event.status);
+      final status = statuses.first;
       final photos = event.photos.map((e) => c.base64Encode(e)).map((e) => Photo(data: e)).toList();
       Report report = state.report;
       if (state.report.violationNotPresent) {
@@ -318,7 +323,9 @@ class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {
             violationDescription: event.violationDescription,
             violationDate: violation.violationDate ?? DateTime.now(),
             violationAddress: violation.violationAddress.copyWith(
-              specifiedAddress: event.specifiedAddress 
+              specifiedAddress: event.specifiedAddress ,
+              latitude: state.violationLocation?.latitude,
+              longitude: state.violationLocation?.longitude
             ),
           ),
         );
@@ -326,17 +333,19 @@ class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {
       try {
         final local = status.id == ReportStatusIds.new_ || status.id == ReportStatusIds.project;
         final res = await _reportsService.create(report, local: local);
-        yield SuccessState(res, state.location);
+        yield SuccessState(res, state.userLocation, state.violationLocation);
       } on ApiException catch (ex) {
-        yield ErrorState(state.report, state.location, ex);
+        yield ErrorState(ex, state.report, state.userLocation, state.violationLocation);
       } catch (ex) {
-        yield ErrorState(state.report, state.location, UnhandledException(ex.toString()));
+        yield ErrorState(UnhandledException(ex.toString()), state.report, state.userLocation, state.violationLocation);
       }
-    } else if (event is DeleteEvent) {
+    } else if (event is RemoveReportEvent) {
       await _reportsService.remove(state.report);
-      yield DeletedState(state.report, state.location); 
+      yield DeletedState(state.report, state.userLocation, state.violationLocation); 
+    } else if (event is SetViolationLocationEvent) {
+      yield TotalReportBlocState(state.report, state.userLocation, event.location);
     } else if (event is FlushEvent) {
-      yield TotalReportBlocState(state.report, state.location);
+      yield TotalReportBlocState(state.report, state.userLocation, state.violationLocation);
     }
   } 
 }

@@ -24,6 +24,7 @@ class DictionaryNames {
   static const violatorInfoOfficials = 'violatorInfoOfficials';
   static const violatorInfoPrivates = 'violatorInfoPrivates';
   static const violatorDocumentTypes = 'violatorDocumentTypes';
+  static const reportStatuses = 'reportStatuses';
 }
 
 class TableDefinitions {
@@ -68,6 +69,7 @@ class TableDefinitions {
       inn TEXT, snils TEXT, docType TEXT, docSeries TEXT, docNumber TEXT, gender INTEGER, birthDate TEXT, birthPlace TEXT, registrationAddress TEXT
     )''',
     DictionaryNames.violatorDocumentTypes: '''CREATE TABLE violatorDocumentTypes(id INTEGER PRIMARY KEY, name TEXT)''',
+    DictionaryNames.reportStatuses: '''CREATE TABLE reportStatuses(id INTEGER PRIMARY KEY, name TEXT)''',
   };
 }
 
@@ -97,7 +99,7 @@ class SqliteDictionaryService {
           await db.insert(TableDefinitions.metadata, {'id': 1, 'data': json.encode({})});
         },
         onOpen: (db) async {
-          // await db.execute(TableDefinitions.all[ DictionaryNames.violatorDocumentTypes]);
+          //await db.execute(TableDefinitions.all[ DictionaryNames.reportStatuses]);
           // await db.execute(TableDefinitions.all[ DictionaryNames.violatorInfoIps]);
           // await db.execute(TableDefinitions.all[ DictionaryNames.violatorInfoLegals]);
           // await db.execute(TableDefinitions.all[ DictionaryNames.violatorInfoOfficials]);

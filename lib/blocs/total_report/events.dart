@@ -15,6 +15,7 @@ import 'package:inspector/model/violator.dart';
 import 'package:inspector/model/violator_doc_type.dart';
 import 'package:inspector/model/violator_info.dart';
 import 'package:inspector/model/violator_type.dart';
+import 'package:latlong/latlong.dart';
 
 abstract class TotalReportBlocEvent { }
 
@@ -143,7 +144,13 @@ class SetViolatorDocumentTypeEvent extends ChangeViolatorEvent {
   SetViolatorDocumentTypeEvent(int index, this.documentType) : super(index);
 }
 
-class SaveEvent extends TotalReportBlocEvent {
+class SetViolationLocationEvent extends TotalReportBlocEvent {
+  final LatLng location;
+
+  SetViolationLocationEvent(this.location);
+}
+
+class SaveReportEvent extends TotalReportBlocEvent {
 
   final int status;
   final String violationDescription;
@@ -152,8 +159,8 @@ class SaveEvent extends TotalReportBlocEvent {
   final List<Violator> violators;
   final List<Uint8List> photos;
 
-  SaveEvent({this.status, this.violationDescription, this.specifiedAddress, this.codexArticle, this.violators, this.photos});
+  SaveReportEvent({this.status, this.violationDescription, this.specifiedAddress, this.codexArticle, this.violators, this.photos});
 }
 
-class DeleteEvent extends TotalReportBlocEvent {
+class RemoveReportEvent extends TotalReportBlocEvent {
 }

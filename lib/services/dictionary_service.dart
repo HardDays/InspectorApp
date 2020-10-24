@@ -7,6 +7,7 @@ import 'package:inspector/model/district.dart';
 import 'package:inspector/model/instruction_status.dart';
 import 'package:inspector/model/normative_act.dart';
 import 'package:inspector/model/normative_act_article.dart';
+import 'package:inspector/model/report_status.dart';
 import 'package:inspector/model/special_object.dart';
 import 'package:inspector/model/street.dart';
 import 'package:inspector/model/violation_type.dart';
@@ -51,6 +52,7 @@ class DictionaryService {
     DictionaryNames.violatorInfoOfficials: ApiDictionaryService().getViolatorInfoOfficial,
     DictionaryNames.violatorInfoPrivates: ApiDictionaryService().getViolatorInfoPrivate,
     DictionaryNames.violatorDocumentTypes: ApiDictionaryService().getViolatorDocumentTypes,
+    DictionaryNames.reportStatuses: ApiDictionaryService().getReportStatuses,
 
   };
 
@@ -72,6 +74,7 @@ class DictionaryService {
     DictionaryNames.violatorInfoOfficials: (json)=> ViolatorInfoOfficial.fromJson(json, stringified: true),
     DictionaryNames.violatorInfoPrivates: (json)=> ViolatorInfoPrivate.fromJson(json, stringified: true),
     DictionaryNames.violatorDocumentTypes: (json)=> ViolatorDocumentType.fromJson(json),
+    DictionaryNames.reportStatuses: (json)=> ReportStatus.fromJson(json),
   };
 
   final _lock = Lock();
@@ -368,6 +371,19 @@ class DictionaryService {
             'inn LIKE ?': '$name%',
           },
           queryType: 'OR'
+        ),
+      ],
+      limit: 10
+    );
+  }
+
+   Future<List<ReportStatus>> getReportStatuses({int id}) async {
+    return await _getData<ReportStatus>(DictionaryNames.reportStatuses,
+      queries: [
+        Query(
+          {
+            'id = ?': id,
+          },
         ),
       ],
       limit: 10
