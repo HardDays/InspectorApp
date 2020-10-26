@@ -93,6 +93,10 @@ class SetViolationNormativeActArticleEvent extends ChangeViolationEvent {
   SetViolationNormativeActArticleEvent(this.index, this.normativeActArticle);
 }
 
+class SearchAddressByLocation extends ChangeViolationEvent {
+
+}
+
 class SetViolationTypeEvent extends ChangeViolationEvent {
   final ViolationType violationType;
 
@@ -100,6 +104,7 @@ class SetViolationTypeEvent extends ChangeViolationEvent {
 }
 
 class AddViolatorEvent extends TotalReportBlocEvent {
+
 }
 
 class ChangeViolatorEvent extends TotalReportBlocEvent {
@@ -150,8 +155,8 @@ class SetViolationLocationEvent extends TotalReportBlocEvent {
   SetViolationLocationEvent(this.location);
 }
 
-class SaveReportEvent extends TotalReportBlocEvent {
 
+class SaveReportEvent extends TotalReportBlocEvent {
   final int status;
   final String violationDescription;
   final String specifiedAddress;
@@ -163,4 +168,5 @@ class SaveReportEvent extends TotalReportBlocEvent {
 }
 
 class RemoveReportEvent extends TotalReportBlocEvent {
+
 }

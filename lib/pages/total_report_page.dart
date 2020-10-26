@@ -19,6 +19,7 @@ import 'package:inspector/model/normative_act_article.dart';
 import 'package:inspector/model/object_category.dart';
 import 'package:inspector/model/report.dart';
 import 'package:inspector/model/street.dart';
+import 'package:inspector/model/violation.dart';
 import 'package:inspector/model/violation_type.dart';
 import 'package:inspector/model/violator.dart';
 import 'package:inspector/model/violator_doc_type.dart';
@@ -28,6 +29,7 @@ import 'package:inspector/model/violator_info_legal.dart';
 import 'package:inspector/model/violator_info_official.dart';
 import 'package:inspector/model/violator_info_private.dart';
 import 'package:inspector/model/violator_type.dart';
+import 'package:inspector/style/accept_dialog.dart';
 import 'package:inspector/style/appbar.dart';
 import 'package:inspector/style/autocomplete.dart';
 import 'package:inspector/style/button.dart';
@@ -61,7 +63,9 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
 
   final _mapController = MapController();
 
+  // todo: move to state
   bool _markEditing = false;
+  bool _addressByLocation = false;
 
   final _searchController = TextEditingController();
   final _areaController = TextEditingController();
@@ -272,6 +276,17 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
     }
   }
 
+  void _onAddressByLocation(BuildContext context, bool value) async {
+    _addressByLocation = value;
+    if (value) {
+      _showSnackBar(context, 'Идет поиск адреса');
+      await Future.delayed(Duration(seconds: 1));
+      BlocProvider.of<TotalReportBloc>(context).add(SearchAddressByLocation());  
+    } else {
+      BlocProvider.of<TotalReportBloc>(context).add(FlushEvent());
+    }
+  }
+
   void _onAreaSelect(BuildContext context, Area value) {
     _areaController.text = value?.toString() ?? '';
     _districtController.clear();
@@ -416,107 +431,115 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
     return await BlocProvider.of<TotalReportBloc>(context).getViolatorDocumentTypes(name);
   }
 
-  void _onSave(BuildContext context, int status) {
-    bool validViolators = true;
-    final report = BlocProvider.of<TotalReportBloc>(context).state.report;
-    final resViolators = List<Violator>();
-    final curViolators = report.violation?.violators ?? [];
-    
-    for (int i = 0; i < curViolators.length; i++) {
-      final violator = curViolators[i];
-      final violatorPerson = violator.violatorPerson;
-      if (!violator.violatorNotFound) {
-        if (violatorPerson?.id == null) {
-          validViolators = validViolators && _violatorFormKeys[i].currentState.validate();
-          if (violator?.type?.id == ViolatorTypeIds.legal) {
-            final newViolator = violator.copyWith(
-              violatorPerson: ViolatorInfoLegal(
-                name: _violatorControllers[i].text,
-                phone: _phoneControllers[i].text,
-                inn: _innControllers[i].text,
-                ogrn: _ogrnControllers[i].text,
-                kpp: _kppControllers[i].text,
-                regDate: _registerDates[i],
-              ),
-            );
-            resViolators.add(newViolator);
-          } else if (violator?.type?.id == ViolatorTypeIds.official) {
-            final newViolator = violator.copyWith(
-              violatorPerson: ViolatorInfoOfficial(
-                orgName: _violatorControllers[i].text,
-                phone: _phoneControllers[i].text,
-                orgInn: _innControllers[i].text,
-                orgOgrn: _ogrnControllers[i].text,
-                orgKpp: _kppControllers[i].text,
-                orgRegDate: _registerDates[i],
-              ),
-            );
-            resViolators.add(newViolator);
-          } else if (violator?.type?.id == ViolatorTypeIds.ip) {
-            final newViolator = violator.copyWith(
-              violatorPerson: ViolatorInfoIp(
-                name: _violatorControllers[i].text,
-                firstName: _firstNameControllers[i].text,
-                lastName: _lastNameControllers[i].text,
-                patronym: _patronymControllers[i].text,
-                phone: _phoneControllers[i].text,
-                snils: _snilsControllers[i].text,
-                inn: _innControllers[i].text,
-                ogrnip: _ogrnControllers[i].text,
-                registrationDate: _registerDates[i],
-                birthDate: _birthDates[i],
-              ),
-            );
-            resViolators.add(newViolator);
-          } else if (violator?.type?.id == ViolatorTypeIds.private) {
-            final newViolator = violator.copyWith(
-              violatorPerson: ViolatorInfoPrivate(
-                firstName: _firstNameControllers[i].text,
-                lastName: _lastNameControllers[i].text,
-                patronym: _patronymControllers[i].text,
-                phone: _phoneControllers[i].text,
-                snils: _snilsControllers[i].text,
-                inn: _innControllers[i].text,
-                docNumber: _docNumberControllers[i].text,
-                docSeries: _docSeriesControllers[i].text,
-                docType: (violator?.violatorPerson as ViolatorInfoPrivate)?.docType,
-                birthDate: _birthDates[i],
-              ),
-            );
-            resViolators.add(newViolator);
+  void _onSave(BuildContext context, int status) async {
+    final res = await showDialog(context: context, child: AcceptDialog(message: 'Сохранить рапорт?'));
+    if (res != null) {
+      bool validViolators = true;
+      final report = BlocProvider.of<TotalReportBloc>(context).state.report;
+      final resViolators = List<Violator>();
+      final curViolators = report.violation?.violators ?? [];
+      
+      for (int i = 0; i < curViolators.length; i++) {
+        final violator = curViolators[i];
+        final violatorPerson = violator.violatorPerson;
+        if (!violator.violatorNotFound) {
+          if (violatorPerson?.id == null) {
+            validViolators = validViolators && _violatorFormKeys[i].currentState.validate();
+            if (violator?.type?.id == ViolatorTypeIds.legal) {
+              final newViolator = violator.copyWith(
+                violatorPerson: ViolatorInfoLegal(
+                  name: _violatorControllers[i].text,
+                  phone: _phoneControllers[i].text,
+                  inn: _innControllers[i].text,
+                  ogrn: _ogrnControllers[i].text,
+                  kpp: _kppControllers[i].text,
+                  regDate: _registerDates[i],
+                ),
+              );
+              resViolators.add(newViolator);
+            } else if (violator?.type?.id == ViolatorTypeIds.official) {
+              final newViolator = violator.copyWith(
+                violatorPerson: ViolatorInfoOfficial(
+                  orgName: _violatorControllers[i].text,
+                  phone: _phoneControllers[i].text,
+                  orgInn: _innControllers[i].text,
+                  orgOgrn: _ogrnControllers[i].text,
+                  orgKpp: _kppControllers[i].text,
+                  orgRegDate: _registerDates[i],
+                ),
+              );
+              resViolators.add(newViolator);
+            } else if (violator?.type?.id == ViolatorTypeIds.ip) {
+              final newViolator = violator.copyWith(
+                violatorPerson: ViolatorInfoIp(
+                  name: _violatorControllers[i].text,
+                  firstName: _firstNameControllers[i].text,
+                  lastName: _lastNameControllers[i].text,
+                  patronym: _patronymControllers[i].text,
+                  phone: _phoneControllers[i].text,
+                  snils: _snilsControllers[i].text,
+                  inn: _innControllers[i].text,
+                  ogrnip: _ogrnControllers[i].text,
+                  registrationDate: _registerDates[i],
+                  birthDate: _birthDates[i],
+                ),
+              );
+              resViolators.add(newViolator);
+            } else if (violator?.type?.id == ViolatorTypeIds.private) {
+              final newViolator = violator.copyWith(
+                violatorPerson: ViolatorInfoPrivate(
+                  firstName: _firstNameControllers[i].text,
+                  lastName: _lastNameControllers[i].text,
+                  patronym: _patronymControllers[i].text,
+                  phone: _phoneControllers[i].text,
+                  snils: _snilsControllers[i].text,
+                  inn: _innControllers[i].text,
+                  docNumber: _docNumberControllers[i].text,
+                  docSeries: _docSeriesControllers[i].text,
+                  docType: (violator?.violatorPerson as ViolatorInfoPrivate)?.docType,
+                  birthDate: _birthDates[i],
+                ),
+              );
+              resViolators.add(newViolator);
+            }
+          } else {
+            resViolators.add(violator);
           }
         } else {
           resViolators.add(violator);
         }
-      } else {
-        resViolators.add(violator);
       }
-    }
-    if (report.violationNotPresent) {
-      BlocProvider.of<TotalReportBloc>(context).add(
-        SaveReportEvent(
-          status: status,
-          photos: _photos
-        ),
-      );  
-    } else {
-      if (_formKey.currentState.validate() && validViolators) {
+      if (report.violationNotPresent) {
         BlocProvider.of<TotalReportBloc>(context).add(
           SaveReportEvent(
             status: status,
-            violators: resViolators,
-            violationDescription: _violationDescriptionController.text,
-            specifiedAddress: _specifiedAddressController.text,
-            codexArticle: _codexArticleController.text,
             photos: _photos
           ),
         );  
+      } else {
+        if (_formKey.currentState.validate() && validViolators) {
+          BlocProvider.of<TotalReportBloc>(context).add(
+            SaveReportEvent(
+              status: status,
+              violators: resViolators,
+              violationDescription: _violationDescriptionController.text,
+              specifiedAddress: _specifiedAddressController.text,
+              codexArticle: _codexArticleController.text,
+              photos: _photos
+            ),
+          );  
+        } else {
+          _showSnackBar(context, 'Пожалуйста, проверьте все поля');
+        }
       }
     }
   }
 
-  void _onDeleteReport(BuildContext context) {
-    BlocProvider.of<TotalReportBloc>(context).add(RemoveReportEvent());  
+  void _onDeleteReport(BuildContext context) async {
+    final res = await showDialog(context: context, child: AcceptDialog(message: 'Удалить рапорт?'));
+    if (res != null) {
+      BlocProvider.of<TotalReportBloc>(context).add(RemoveReportEvent());  
+    }
   }
 
   void _showSnackBar(BuildContext context, String title) {
@@ -535,13 +558,15 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
   }
 
   void _centerMapToLocation(BuildContext context, LatLng location) async {
-    await _mapController.onReady;
-    _mapController.move(location, 16.5);
-    BlocProvider.of<TotalReportBloc>(context).add(FlushEvent());
+    if (location != null) {
+      await _mapController.onReady;
+      _mapController.move(location, 17.5);
+      BlocProvider.of<TotalReportBloc>(context).add(FlushEvent());
+    }
   }
 
   void _addViolatorInfo(int index, dynamic violator) {
-    _violatorControllers[index].text = violator?.toString()?? '';
+    _violatorControllers[index].text = violator?.toString() ?? '';
     if (violator is ViolatorInfoLegal) {
       _legalToControllers(index, violator);
     } else if (violator is ViolatorInfoOfficial) {
@@ -642,6 +667,14 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
     );
   }
 
+  void _setViolationAddress(BuildContext context, Violation violation) {
+    _areaController.text = violation.violationAddress?.area?.toString() ?? '';
+    _districtController.text = violation.violationAddress?.district?.toString() ?? '';
+    _streetController.text = violation.violationAddress?.street?.toString() ?? '';
+    _addressController.text = violation.violationAddress?.toString() ?? '';
+    BlocProvider.of<TotalReportBloc>(context).add(FlushEvent());
+  }
+
   void _back() {
     WidgetsBinding.instance.addPostFrameCallback(
       (_) async {
@@ -674,6 +707,9 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
             _centerMapToLocation(context, state.userLocation);
           } else if (state is ViolationLocationLoadedState) {
             _centerMapToLocation(context, state.violationLocation);
+          } else if (state is AddressFromLocationState) {
+            _setViolationAddress(context, state.report.violation);
+            _centerMapToLocation(context, state.violationLocation);
           } else if (state is SuccessState) { 
             _showSnackBar(context, 'Рапорт успешно сформирован');
             _back();
@@ -682,7 +718,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
             _back();
           } else if (state is ErrorState) {
             _showSnackBar(context, 'Произошла ошибка. ${state.exception.message} ${state.exception.details}');
-          } 
+          }  
           return Scaffold(
             backgroundColor: Colors.white,
             appBar: ProjectAppbar('Рапорт ${widget.report.reportNum ?? ''}'),
@@ -755,9 +791,8 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
                   Flexible(
                     child: _buildCheckBox(
                       'Определить адрес по местоположению', 
-                      state.report.violationNotPresent,
-                      (value)=> {}
-                      //(value)=> _onViolationNotPresent(context, value),
+                      _addressByLocation,
+                      (value)=> _onAddressByLocation(context, value),
                     ),
                   ),
                   Padding(padding: const EdgeInsets.only(left: 35)),
@@ -1346,10 +1381,6 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
           FlutterMap(
             mapController: _mapController,
             options: MapOptions(
-              // bounds: LatLngBounds(
-              //   LatLng(56.896398,34.862339),
-              //   LatLng(54.754490,39.546748)
-              // ),
               center: LatLng(55.746875, 37.6200),
               zoom: 16.5,
               onTap: (value)=> _onMapTap(context, value)

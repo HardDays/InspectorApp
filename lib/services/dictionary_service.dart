@@ -157,12 +157,16 @@ class DictionaryService {
     );
   }
 
-  Future<List<Area>> getAreas({String name}) async {
+  Future<List<Area>> getAreas({String name, int id}) async {
     return await _getData<Area>(DictionaryNames.areas, 
        queries: [
-        Query({
-          'name LIKE ?': '$name%'
-        }),
+        Query(
+          {
+            'name LIKE ?': '$name%',
+            'id = ?' : '$id'
+          },
+          queryType: 'OR'
+        ),
       ],
       limit: 10
     );
@@ -174,6 +178,17 @@ class DictionaryService {
         Query({
           'name LIKE ?': '$name%',
           'areaId = ?': areaId
+        }),
+      ],
+      limit: 10
+    );
+  }
+
+  Future<List<District>> getDitrictsByName({String name}) async {
+    return await _getData<District>(DictionaryNames.districts, 
+      queries: [
+        Query({
+          'name LIKE ?': '$name%',
         }),
       ],
       limit: 10

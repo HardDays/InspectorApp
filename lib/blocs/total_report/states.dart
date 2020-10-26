@@ -35,6 +35,10 @@ class ViolationLocationLoadedState extends TotalReportBlocState {
   ViolationLocationLoadedState(Report report, LatLng userLocation, LatLng violationLocation) : super(report, userLocation, violationLocation);
 }
 
+class AddressFromLocationState extends TotalReportBlocState {
+  AddressFromLocationState(Report report, LatLng userLocation, LatLng violationLocation) : super(report, userLocation, violationLocation);
+}
+
 class SuccessState extends TotalReportBlocState {
   SuccessState(Report report, LatLng userLocation, LatLng violationLocation) : super(report, userLocation, violationLocation);
 }

@@ -5,24 +5,33 @@ class HereService {
 
   final _here = HereProvider();
 
+
+  List<AddressSearch> _parse(List<dynamic> value) {
+    final List<AddressSearch> result = [];
+    for (final data in value) {
+      final address = data['address'];
+      result.add(
+        AddressSearch(  
+          //area: address['state'],
+          street: address['street'],
+          district: address['district'],
+          house: address['houseNumber'],
+          lat: data['position']['lat'],
+          lng: data['position']['lng'],
+        ),
+      );
+    }
+    return result;
+  }
+
   Future<List<AddressSearch>> autocomplete(String query) async {
     final res = await _here.autocomplete(query);
     try {
-      final List<AddressSearch> result = [];
       if (res != null) {
-        for (final data in res['suggestions']) {
-          final address = data['address'];
-          result.add(
-            AddressSearch(  
-              area: address['state'],
-              street: address['street'],
-              district: address['district'],
-              house: address['houseNumber']
-            ),
-          );
-        }
-      } 
-      return result;
+        return _parse(res['suggestions']);
+      } else {
+        return [];
+      }
     } catch (ex) {
       print(ex);
       return [];
@@ -32,23 +41,25 @@ class HereService {
   Future<List<AddressSearch>> geocode(String query) async {
     final res = await _here.geocode(query);
     try {
-      final List<AddressSearch> result = [];
       if (res != null) {
-        for (final data in res['items']) {
-          final address = data['address'];
-          result.add(
-            AddressSearch(  
-              area: address['state'],
-              street: address['street'],
-              district: address['district'],
-              house: address['houseNumber'],
-              lat: data['position']['lat'],
-              lng: data['position']['lng'],
-            ),
-          );
-        }
-      } 
-      return result;
+        return _parse(res['items']);
+      } else {
+        return [];
+      }
+    } catch (ex) {
+      print(ex);
+      return [];
+    }
+  }
+
+   Future<List<AddressSearch>> reverseGeocode(double lat, double lng) async {
+    final res = await _here.reverseGeocode(lat, lng);
+    try {
+      if (res != null) {
+        return _parse(res['items']);
+      } else {
+        return [];
+      }
     } catch (ex) {
       print(ex);
       return [];

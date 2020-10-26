@@ -15,4 +15,11 @@ class GeoService {
       return res.first;
     }
   }
+
+  Future<AddressSearch> reverseGeocode(double lat, double lng) async {
+    final res = await _here.reverseGeocode(lat, lng);
+    if (res.isNotEmpty) {
+      return res.first;
+    }
+  }
 }

@@ -161,7 +161,7 @@ class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {
 
       final address = state.report.violation?.violationAddress;
       if (address?.latitude != null && address?.longitude != null) {
-        yield ViolationLocationLoadedState(event.report, null, LatLng(address.latitude, address.longitude));
+        yield ViolationLocationLoadedState(event.report, state.userLocation, LatLng(address.latitude, address.longitude));
       }
     } else if (event is SetViolationNotPresentEvent) {
       yield state.copyWith(
@@ -172,7 +172,58 @@ class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {
       );
     } else if (event is ChangeViolationEvent) {
       Violation violation = state.report.violation;
-      if (event is SetViolationAreaEvent) {
+      if (event is SearchAddressByLocation) {
+        if (state.userLocation != null) {
+          final res = await _geoService.reverseGeocode(state.userLocation.latitude, state.userLocation.longitude);
+          if (res != null) {
+            Area area;
+            District district;
+            Street street;
+            Address address;
+            if (res.district != null) {
+              final name = res.district.split(' ').last;
+              final districts = await _dictionaryService.getDitrictsByName(name: name);
+              if (districts.isNotEmpty) {
+                district = districts.first;
+                final areas = await _dictionaryService.getAreas(id: district.areaId);
+                if (areas.isNotEmpty) {
+                  area = areas.first;
+                }
+              }
+            }
+            if (district != null && res.street != null) {
+              for (final token in res.street.split(' ')) {
+                final streets = await _dictionaryService.getStreets(name: token, districtId: district.id);
+                if (streets.isNotEmpty) {
+                  street = streets.first;
+                  break;
+                }
+              }
+            }
+            if (street != null && res.house != null) {
+              final addresses = await _dictionaryService.getAddresses(houseNum: res.house, streetId: street.id);
+              if (addresses.isNotEmpty) {
+                address = addresses.first;
+              }
+            }
+            violation = violation.copyWith(
+              violationAddress: Address(
+                area: area,
+                district: district,
+                street: street,
+                specifiedAddress: address?.specifiedAddress,
+                houseNum: address?.houseNum,
+                constructionNum: address?.constructionNum,
+                buildNum: address?.buildNum,
+                id: address?.id,
+                latitude: state.userLocation.latitude,
+                longitude: state.userLocation.longitude
+              ),
+            );
+            yield AddressFromLocationState(state.report.copyWith(violation: violation), state.userLocation, LatLng(state.userLocation.latitude, state.userLocation.longitude));
+          }
+        }
+      } else if (event is SetViolationAreaEvent) {
         violation = violation.copyWith(
           violationAddress: Address(
             area: event.area,
@@ -230,11 +281,13 @@ class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {
           normativeActArticles: violation.normativeActArticles..add(NormativeActArticle())
         );
       }
-      yield state.copyWith(
-        report: state.report.copyWith(
-          violation: violation
-        ),
-      );
+      if (!(event is SearchAddressByLocation)) { 
+        yield state.copyWith(
+          report: state.report.copyWith(
+            violation: violation
+          ),
+        );
+      }
     } else if (event is ChangeViolatorEvent) { 
       final violators = state.report.violation.violators;
       Violator violator = violators[event.index];
@@ -312,6 +365,15 @@ class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {
         );
       } else {
         final violation = state.report.violation;
+
+        LatLng location = state.violationLocation;
+        if (location == null) {
+          final resLocation = await _geoService.geocode(violation.violationAddress.toSearchString());
+          if (resLocation != null) {
+            location = LatLng(resLocation.lat, resLocation.lng);
+          }
+        }
+
         report = report.copyWith(
           reportStatus: status,
           reportDate: state.report.reportDate ?? DateTime.now(),
@@ -324,8 +386,8 @@ class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {
             violationDate: violation.violationDate ?? DateTime.now(),
             violationAddress: violation.violationAddress.copyWith(
               specifiedAddress: event.specifiedAddress ,
-              latitude: state.violationLocation?.latitude,
-              longitude: state.violationLocation?.longitude
+              latitude: location?.latitude,
+              longitude: location?.longitude
             ),
           ),
         );
