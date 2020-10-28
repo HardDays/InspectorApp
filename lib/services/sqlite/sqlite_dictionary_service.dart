@@ -34,7 +34,7 @@ class TableDefinitions {
 
   static const Map<String, String> all = {
     DictionaryNames.addresses: '''CREATE TABLE addresses(id INTEGER PRIMARY KEY, latitude FLOAT, longitude FLOAT, 
-      houseNum TEXT, buildNum TEXT, constructionNum TEXT, specifiedAddress TEXT, unom TEXT, unad TEXT,
+      houseNum TEXT, buildNum TEXT, constructionNum TEXT, specifiedAddress TEXT, unom INTEGER, unad INTEGER,
       area TEXT, district TEXT, street TEXT, areaId INTEGER, streetId INTEGER, districtId INTEGER
     )''',
     DictionaryNames.streets: '''CREATE TABLE streets(id INTEGER PRIMARY KEY, name TEXT, code TEXT, 

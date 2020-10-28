@@ -155,7 +155,6 @@ class SetViolationLocationEvent extends TotalReportBlocEvent {
   SetViolationLocationEvent(this.location);
 }
 
-
 class SaveReportEvent extends TotalReportBlocEvent {
   final int status;
   final String violationDescription;

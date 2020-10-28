@@ -361,6 +361,9 @@ class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {
       Report report = state.report;
       if (state.report.violationNotPresent) {
         report = report.copyWith(
+          reportStatus: status,
+          reportDate: state.report.reportDate ?? DateTime.now(),
+          reportNum: state.report.reportNum ?? Random().nextInt(1000000).toString(),
           photos: photos
         );
       } else {

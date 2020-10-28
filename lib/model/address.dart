@@ -14,8 +14,8 @@ class Address {
   final String buildNum;
   final String constructionNum;
   final String specifiedAddress;
-  final String unom;
-  final String unad;
+  final int unom;
+  final int unad;
   final int areaId;
   final int districtId;
   final int streetId;
@@ -73,9 +73,9 @@ class Address {
   }
 
   factory Address.fromJson(Map<String, dynamic> json, {bool stringified = false}) {
-    final area = Area.fromJson(stringified ? c.json.decode(json['area']) : json['area']);
-    final district = District.fromJson(stringified ? c.json.decode(json['district']) : json['district']);
-    final street = Street.fromJson(stringified ? c.json.decode(json['street']) : json['street']);
+    final area = json['area'] != null ? Area.fromJson(stringified ? c.json.decode(json['area']) : json['area']) : null;
+    final district = json['district'] != null ? District.fromJson(stringified ? c.json.decode(json['district']) : json['district']) : null;
+    final street = json['street'] != null ? Street.fromJson(stringified ? c.json.decode(json['street']) : json['street']) : null;
     return Address(
       id: json['id'], 
       latitude: json['latitude'], 

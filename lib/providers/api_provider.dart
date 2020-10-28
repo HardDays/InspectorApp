@@ -1,24 +1,23 @@
+import 'dart:convert' as c;
+
 import 'package:dio/dio.dart';
-import 'package:inspector/model/area.dart';
-import 'package:inspector/model/district.dart';
-import 'package:inspector/model/instruction_status.dart';
-import 'package:inspector/model/report.dart';
-import 'package:inspector/model/special_object.dart';
-import 'package:inspector/model/street.dart';
-import 'package:inspector/providers/exceptions/api_exception.dart';
 import 'package:inspector/model/address.dart';
+import 'package:inspector/model/area.dart';
 import 'package:inspector/model/check_status.dart';
 import 'package:inspector/model/check_type.dart';
 import 'package:inspector/model/department_code.dart';
+import 'package:inspector/model/district.dart';
 import 'package:inspector/model/employee.dart';
 import 'package:inspector/model/instruction_status.dart';
 import 'package:inspector/model/normative_act.dart';
 import 'package:inspector/model/normative_act_article.dart';
 import 'package:inspector/model/oati_department.dart';
 import 'package:inspector/model/object_category.dart';
+import 'package:inspector/model/report.dart';
 import 'package:inspector/model/report_status.dart';
 import 'package:inspector/model/resolution_type.dart';
 import 'package:inspector/model/special_object.dart';
+import 'package:inspector/model/street.dart';
 import 'package:inspector/model/violation_kind.dart';
 import 'package:inspector/model/violation_status.dart';
 import 'package:inspector/model/violation_type.dart';
@@ -33,10 +32,8 @@ import 'package:inspector/providers/exceptions/timeout_exception.dart';
 import 'package:inspector/providers/exceptions/unauthorized_exception.dart';
 import 'package:inspector/providers/exceptions/unhadled_exception.dart';
 
-import 'dart:convert' as c;
-
 class ApiProvider {
-  static const _url = 'http://212.46.14.26:9930/oati-integration-rest';
+  static const _url = 'http://212.46.14.26:9930/oati-integration';
   static const _loginPath = '/login';
   static const _instructionsPath = '/instructions';
   static const _reportsPath = '/reports';

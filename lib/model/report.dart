@@ -69,6 +69,10 @@ class Report {
     );
   }
 
+  bool get isNew => (reportStatus == null || reportStatus?.id == ReportStatusIds.new_ || reportStatus?.id == ReportStatusIds.project);
+  bool get isUpdatable => isNew || reportStatus?.id == ReportStatusIds.declined;
+  bool get isDeletable => reportStatus != null && isNew;
+
   Report copyWith({
     bool violationNotPresent,
     String reportNum,

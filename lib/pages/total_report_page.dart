@@ -154,14 +154,6 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
 
   List<List<TextEditingController>> _allViolatorControllers = [];
 
-  bool get editable {
-    final report = widget.report;  
-    return report.reportStatus == null ||
-      report.reportStatus?.id == ReportStatusIds.new_ || 
-      report.reportStatus?.id == ReportStatusIds.project || 
-      report.reportStatus?.id == ReportStatusIds.declined; 
-  }
-
   void initState() {
     super.initState();
 
@@ -361,14 +353,14 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
   }
 
   void _onAddNormativeAct(BuildContext context) {
-    if (editable) {
+    if (widget.report.isUpdatable) {
       _addNormativeActControllers();
       BlocProvider.of<TotalReportBloc>(context).add(AddViolationActEvent());  
     }
   }
 
   void _onAddViolator(BuildContext context) {
-    if (editable) {
+    if (widget.report.isUpdatable) {
       _addViolatorControllers();
       BlocProvider.of<TotalReportBloc>(context).add(AddViolatorEvent());  
     }
@@ -434,81 +426,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
   void _onSave(BuildContext context, int status) async {
     final res = await showDialog(context: context, child: AcceptDialog(message: 'Сохранить рапорт?'));
     if (res != null) {
-      bool validViolators = true;
       final report = BlocProvider.of<TotalReportBloc>(context).state.report;
-      final resViolators = List<Violator>();
-      final curViolators = report.violation?.violators ?? [];
-      
-      for (int i = 0; i < curViolators.length; i++) {
-        final violator = curViolators[i];
-        final violatorPerson = violator.violatorPerson;
-        if (!violator.violatorNotFound) {
-          if (violatorPerson?.id == null) {
-            validViolators = validViolators && _violatorFormKeys[i].currentState.validate();
-            if (violator?.type?.id == ViolatorTypeIds.legal) {
-              final newViolator = violator.copyWith(
-                violatorPerson: ViolatorInfoLegal(
-                  name: _violatorControllers[i].text,
-                  phone: _phoneControllers[i].text,
-                  inn: _innControllers[i].text,
-                  ogrn: _ogrnControllers[i].text,
-                  kpp: _kppControllers[i].text,
-                  regDate: _registerDates[i],
-                ),
-              );
-              resViolators.add(newViolator);
-            } else if (violator?.type?.id == ViolatorTypeIds.official) {
-              final newViolator = violator.copyWith(
-                violatorPerson: ViolatorInfoOfficial(
-                  orgName: _violatorControllers[i].text,
-                  phone: _phoneControllers[i].text,
-                  orgInn: _innControllers[i].text,
-                  orgOgrn: _ogrnControllers[i].text,
-                  orgKpp: _kppControllers[i].text,
-                  orgRegDate: _registerDates[i],
-                ),
-              );
-              resViolators.add(newViolator);
-            } else if (violator?.type?.id == ViolatorTypeIds.ip) {
-              final newViolator = violator.copyWith(
-                violatorPerson: ViolatorInfoIp(
-                  name: _violatorControllers[i].text,
-                  firstName: _firstNameControllers[i].text,
-                  lastName: _lastNameControllers[i].text,
-                  patronym: _patronymControllers[i].text,
-                  phone: _phoneControllers[i].text,
-                  snils: _snilsControllers[i].text,
-                  inn: _innControllers[i].text,
-                  ogrnip: _ogrnControllers[i].text,
-                  registrationDate: _registerDates[i],
-                  birthDate: _birthDates[i],
-                ),
-              );
-              resViolators.add(newViolator);
-            } else if (violator?.type?.id == ViolatorTypeIds.private) {
-              final newViolator = violator.copyWith(
-                violatorPerson: ViolatorInfoPrivate(
-                  firstName: _firstNameControllers[i].text,
-                  lastName: _lastNameControllers[i].text,
-                  patronym: _patronymControllers[i].text,
-                  phone: _phoneControllers[i].text,
-                  snils: _snilsControllers[i].text,
-                  inn: _innControllers[i].text,
-                  docNumber: _docNumberControllers[i].text,
-                  docSeries: _docSeriesControllers[i].text,
-                  docType: (violator?.violatorPerson as ViolatorInfoPrivate)?.docType,
-                  birthDate: _birthDates[i],
-                ),
-              );
-              resViolators.add(newViolator);
-            }
-          } else {
-            resViolators.add(violator);
-          }
-        } else {
-          resViolators.add(violator);
-        }
-      }
       if (report.violationNotPresent) {
         BlocProvider.of<TotalReportBloc>(context).add(
           SaveReportEvent(
@@ -517,6 +435,79 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
           ),
         );  
       } else {
+        bool validViolators = true;
+        final resViolators = List<Violator>();
+        final curViolators = report.violation?.violators ?? [];
+        for (int i = 0; i < curViolators.length; i++) {
+          final violator = curViolators[i];
+          final violatorPerson = violator.violatorPerson;
+          if (!violator.violatorNotFound) {
+            if (violatorPerson?.id == null) {
+              validViolators = validViolators && _violatorFormKeys[i].currentState.validate();
+              if (violator?.type?.id == ViolatorTypeIds.legal) {
+                final newViolator = violator.copyWith(
+                  violatorPerson: ViolatorInfoLegal(
+                    name: _violatorControllers[i].text,
+                    phone: _phoneControllers[i].text,
+                    inn: _innControllers[i].text,
+                    ogrn: _ogrnControllers[i].text,
+                    kpp: _kppControllers[i].text,
+                    regDate: _registerDates[i],
+                  ),
+                );
+                resViolators.add(newViolator);
+              } else if (violator?.type?.id == ViolatorTypeIds.official) {
+                final newViolator = violator.copyWith(
+                  violatorPerson: ViolatorInfoOfficial(
+                    orgName: _violatorControllers[i].text,
+                    phone: _phoneControllers[i].text,
+                    orgInn: _innControllers[i].text,
+                    orgOgrn: _ogrnControllers[i].text,
+                    orgKpp: _kppControllers[i].text,
+                    orgRegDate: _registerDates[i],
+                  ),
+                );
+                resViolators.add(newViolator);
+              } else if (violator?.type?.id == ViolatorTypeIds.ip) {
+                final newViolator = violator.copyWith(
+                  violatorPerson: ViolatorInfoIp(
+                    name: _violatorControllers[i].text,
+                    firstName: _firstNameControllers[i].text,
+                    lastName: _lastNameControllers[i].text,
+                    patronym: _patronymControllers[i].text,
+                    phone: _phoneControllers[i].text,
+                    snils: _snilsControllers[i].text,
+                    inn: _innControllers[i].text,
+                    ogrnip: _ogrnControllers[i].text,
+                    registrationDate: _registerDates[i],
+                    birthDate: _birthDates[i],
+                  ),
+                );
+                resViolators.add(newViolator);
+              } else if (violator?.type?.id == ViolatorTypeIds.private) {
+                final newViolator = violator.copyWith(
+                  violatorPerson: ViolatorInfoPrivate(
+                    firstName: _firstNameControllers[i].text,
+                    lastName: _lastNameControllers[i].text,
+                    patronym: _patronymControllers[i].text,
+                    phone: _phoneControllers[i].text,
+                    snils: _snilsControllers[i].text,
+                    inn: _innControllers[i].text,
+                    docNumber: _docNumberControllers[i].text,
+                    docSeries: _docSeriesControllers[i].text,
+                    docType: (violator?.violatorPerson as ViolatorInfoPrivate)?.docType,
+                    birthDate: _birthDates[i],
+                  ),
+                );
+                resViolators.add(newViolator);
+              }
+            } else {
+              resViolators.add(violator);
+            }
+          } else {
+            resViolators.add(violator);
+          }
+        }
         if (_formKey.currentState.validate() && validViolators) {
           BlocProvider.of<TotalReportBloc>(context).add(
             SaveReportEvent(
@@ -761,7 +752,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
         children: [
           ImagePicker(
             images: _photos,
-            enabled: editable,
+            enabled: widget.report.isUpdatable,
             onPicked: (file) => _onPhotoPick(context, file),
           ),
           _buildButtons(context),
@@ -932,7 +923,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
               _buildTitle('Фотоматериалы нарушения'),
               ImagePicker(
                 images: _photos,
-                enabled: editable,
+                enabled: widget.report.isUpdatable,
                 onPicked: (file)=> _onPhotoPick(context, file),
                 onRemoved: (index)=> _onPhotoRemove(context, index)
               ),
@@ -1026,7 +1017,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
                   title: 'Дата регистрации',
                   hintText: 'Выберите дату',
                   singleDate: true,
-                  enabled: editable && enabled,
+                  enabled: widget.report.isUpdatable && enabled,
                   values: _registerDates[index] != null ? [_registerDates[index] ] : null,
                   onChanged: (date) => _onRegisterDateSelect(context, index, date),
                   validator: enabled ? (value) => _nullValidator(_registerDates[index]) : null
@@ -1103,7 +1094,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
                   title: 'Дата регистрации организации',
                   hintText: 'Выберите дату',
                   singleDate: true,
-                  enabled: editable && enabled,
+                  enabled: widget.report.isUpdatable && enabled,
                   values: _registerDates[index] != null ? [_registerDates[index] ] : null,
                   onChanged: (date) => _onRegisterDateSelect(context, index, date),
                   validator: enabled ? (value) => _nullValidator(_registerDates[index]) : null
@@ -1205,7 +1196,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
                   title: 'Дата рождения',
                   hintText: 'Выберите дату',
                   singleDate: true,
-                  enabled: editable && enabled,
+                  enabled: widget.report.isUpdatable && enabled,
                   values: _birthDates[index] != null ? [_birthDates[index]] : null,
                   onChanged: (date) => _onBirthDateSelect(context, index, date),
                   validator: enabled ? (value) => _nullValidator(_birthDates[index]) : null
@@ -1255,7 +1246,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
             title: 'Дата регистрации',
             hintText: 'Выберите дату',
             singleDate: true,
-            enabled: editable && enabled,
+            enabled: widget.report.isUpdatable && enabled,
             values: _registerDates[index] != null ? [_registerDates[index] ] : null,
             onChanged: (date) => _onRegisterDateSelect(context, index, date),
             validator: enabled ? (value) => _nullValidator(_registerDates[index]) : null
@@ -1271,7 +1262,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
                   title: 'Дата рождения',
                   hintText: 'Выберите дату',
                   singleDate: true,
-                  enabled: editable && enabled,
+                  enabled: widget.report.isUpdatable && enabled,
                   values: _birthDates[index] != null ? [_birthDates[index] ] : null,
                   onChanged: (date) => _onBirthDateSelect(context, index, date),
                   validator: enabled ? (value) => _nullValidator(_birthDates[index]) : null
@@ -1316,8 +1307,6 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
 
   Widget _buildButtons(BuildContext context) {
     final report = widget.report;
-    final newReport = (report.reportStatus == null || report.reportStatus?.id == ReportStatusIds.new_ || report.reportStatus?.id == ReportStatusIds.project);
-    final deletable = report.reportStatus != null && newReport;
     return Container(
       color: Colors.white,
       padding: const EdgeInsets.only(top: 30, bottom: 20),
@@ -1325,18 +1314,18 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           ProjectButton.builtFlatButton('Сохранить проект',
-            onPressed: newReport ? () => _onSave(context, ReportStatusIds.project) : null,
+            onPressed: report.isNew ? () => _onSave(context, ReportStatusIds.project) : null,
           ),
           ProjectButton.builtFlatButton('Сохранить',
-            onPressed: newReport ? ()=> _onSave(context, ReportStatusIds.new_) : null,
+            onPressed: report.isNew ? ()=> _onSave(context, ReportStatusIds.new_) : null,
           ),
           ProjectButton.builtFlatButton('На согласование',
-            onPressed: editable ? ()=>_onSave(context, ReportStatusIds.onApproval) : null,
+            onPressed: report.isUpdatable ? ()=>_onSave(context, ReportStatusIds.onApproval) : null,
           ),
           ProjectButton.builtFlatButton('Удалить', 
             color: ProjectColors.red,
             disabledColor: ProjectColors.red.withOpacity(0.3),
-            onPressed: deletable ? ()=> _onDeleteReport(context) : null
+            onPressed: report.isDeletable ? ()=> _onDeleteReport(context) : null
           ),
         ],
       ),
@@ -1486,7 +1475,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
         children: [
           ProjectCheckbox(
             value: value,
-            onChanged: editable && enabled ? onChanged : (v){},
+            onChanged: widget.report.isUpdatable && enabled ? onChanged : (v){},
           ),
           Padding(
             padding: const EdgeInsets.only(left: 10),
@@ -1514,7 +1503,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
         hintText: hintText, 
         controller: controller,
         validator: validator,
-        enabled: editable && enabled, 
+        enabled: widget.report.isUpdatable && enabled, 
       )
     );
   }
@@ -1538,7 +1527,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
         suggestionsCallback: suggestionsCallback,
         onSuggestionSelected: onSuggestionSelected,
         validator: validator,
-        enabled: editable && enabled,
+        enabled: widget.report.isUpdatable && enabled,
       ),
     );
   }

@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
 
+class DiggRequestCheckStatus {
+  static String workNotComplete = 'Работы не завершены';
+  static String landscapingRestored = 'Благоустройство восстановлено';
+  static String landscapingNotRestored = 'Благоустройство не восстановлено';
+}
+
 class DiggRequestCheck {
 
   final int id;
@@ -19,6 +25,18 @@ class DiggRequestCheck {
     @required this.diggAddress,
     @required this.comment,
   });
+
+  DiggRequestCheck copyWith({bool workCompleted, bool landscapingRestored, String comment}) {
+    return DiggRequestCheck(
+      id: id,
+      demandId: demandId,
+      workCompleted: workCompleted,
+      landscapingRestored: landscapingRestored,
+      comment: comment,
+      diggNum: diggNum,
+      diggAddress: diggAddress
+    );
+  }
 
   factory DiggRequestCheck.fromJson(Map<String, dynamic> json) {
     return DiggRequestCheck(
