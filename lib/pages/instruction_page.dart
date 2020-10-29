@@ -503,7 +503,7 @@ class InstructionPage extends StatelessWidget {
               _buildParagraph(ProjectIcons.themeIcon(), instructionCheck.checkSubject),
               Padding(
                 padding: const EdgeInsets.only(top: 15, left: 20, right: 20, bottom: 10),
-                child: _buildReport(context, report, instructionCheck, instruction, ()=> _onRefreshReport(context))
+                child: _buildReport(context, report, instructionCheck, instruction, ()=> _onTotalReport(context, report, instructionCheck))
               ),
               _buildSplitter(context, instructionCheck.diggRequestChecks.length),
               Column(

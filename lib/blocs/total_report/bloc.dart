@@ -19,6 +19,7 @@ import 'package:inspector/model/street.dart';
 import 'package:inspector/model/violation.dart';
 import 'package:inspector/model/violation_type.dart';
 import 'package:inspector/model/violator.dart';
+import 'package:inspector/model/violator_address.dart';
 import 'package:inspector/model/violator_doc_type.dart';
 import 'package:inspector/model/violator_info.dart';
 import 'package:inspector/model/violator_info_ip.dart';
@@ -29,6 +30,7 @@ import 'package:inspector/model/violator_info_private.dart';
 import 'package:inspector/model/violator_type.dart';
 import 'package:inspector/providers/exceptions/api_exception.dart';
 import 'package:inspector/providers/exceptions/unhadled_exception.dart';
+import 'package:inspector/services/api/datata_service.dart';
 import 'package:inspector/services/api/here_service.dart';
 import 'package:inspector/services/dictionary_service.dart';
 import 'package:inspector/services/geo_service.dart';
@@ -37,6 +39,48 @@ import 'package:inspector/services/reports_service.dart';
 import 'package:latlong/latlong.dart';
 
 import 'dart:convert' as c;
+
+class TotalReportDialogBloc extends Bloc<TotalReportDialogBlocEvent, TotalReportDialogBlocState> {
+  TotalReportDialogBloc(initialState) : super(initialState);
+
+  final _dadataService = DadataService();
+
+  Future<Iterable<ViolatorAddress>> getAddressSubjects(int index, String name) async {
+    if (name.isNotEmpty) {
+      return await _dadataService.suggest(name, fromBound: 'region', toBound: 'region');
+    }
+  }
+
+  Future<Iterable<ViolatorAddress>> getAddressRegions(int index, String name) async {
+    if (name.isNotEmpty) {
+      return await _dadataService.suggest(name, locations: [{'region': state.address?.subjectName}], fromBound: 'area', toBound: 'area');
+    }
+  }
+
+  Future<Iterable<ViolatorAddress>> getAddressCities(int index, String name) async {
+   if (name.isNotEmpty) {
+      return await _dadataService.suggest(name, locations: [{'region': state.address?.subjectName}], fromBound: 'city', toBound: 'city');
+    }
+  }
+
+  Future<Iterable<ViolatorAddress>> getAddressSettlements(int index, String name) async {
+    if (name.isNotEmpty) {
+      return await _dadataService.suggest(name, locations: [{'area': state.address?.regionName, 'region': state.address?.subjectName}], fromBound: 'settlement', toBound: 'settlement');
+    }
+  }
+
+   Future<Iterable<ViolatorAddress>> getAddressStreets(int index, String name) async {
+    if (name.isNotEmpty) {
+      return await _dadataService.suggest(name, locations: [{'area': state.address?.regionName, 'region': state.address?.subjectName, 'city': state.address?.cityName, 'settlement': state.address?.placeName}], fromBound: 'street', toBound: 'street');
+    }
+  }
+
+  @override
+  Stream<TotalReportDialogBlocState> mapEventToState(TotalReportDialogBlocEvent event) async* {
+    yield TotalReportDialogBlocState(event.address);
+  }
+
+}
 
 class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {
   TotalReportBloc(initialState) : super(initialState);
@@ -316,10 +360,6 @@ class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {
           type: event.type,
           violatorPerson: violatorInfo
         );
-        // violator = violator.copyWith(
-        //   type: event.type,
-        //   violatorPerson: violatorInfo
-        // );
       } else if (event is SetViolatorDepartmentCodeEvent) {
         violator = violator.copyWith(
           departmentCode: event.departmentCode
@@ -334,6 +374,51 @@ class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {
           violator = violator.copyWith(
             violatorPerson: person.copyWith(
               docType: event.documentType
+            ),
+          );
+        }
+      } else if (event is SetViolatorRegistrationAddressEvent) {
+        final person = violator.violatorPerson;
+        if (person is ViolatorInfoPrivate) {
+          violator = violator.copyWith(
+            violatorPerson: person.copyWith(
+              registrationAddress: event.address
+            ),
+          );
+        } else if (person is ViolatorInfoIp) {
+          violator = violator.copyWith(
+            violatorPerson: person.copyWith(
+              registrationAddress: event.address
+            ),
+          );
+        }
+      } else if (event is SetViolatorLegalAddressEvent) {
+        final person = violator.violatorPerson;
+        if (person is ViolatorInfoOfficial) {
+          violator = violator.copyWith(
+            violatorPerson: person.copyWith(
+              orgLegalAddress: event.address
+            ),
+          );
+        } else if (person is ViolatorInfoLegal) {
+          violator = violator.copyWith(
+            violatorPerson: person.copyWith(
+              legalAddress: event.address
+            ),
+          );
+        }
+      } else if (event is SetViolatorPostalAddressEvent) {
+        final person = violator.violatorPerson;
+        if (person is ViolatorInfoOfficial) {
+          violator = violator.copyWith(
+            violatorPerson: person.copyWith(
+              orgPostalAddress: event.address
+            ),
+          );
+        } else if (person is ViolatorInfoLegal) {
+          violator = violator.copyWith(
+            violatorPerson: person.copyWith(
+              postalAddress: event.address
             ),
           );
         }

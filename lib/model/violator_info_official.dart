@@ -49,6 +49,26 @@ class ViolatorInfoOfficial extends ViolatorInfo {
     );
   }
 
+  
+  ViolatorInfoOfficial copyWith({
+    ViolatorAddress orgLegalAddress,
+    ViolatorAddress orgPostalAddress
+  }) {
+    return ViolatorInfoOfficial(
+      id: id,
+      phone: phone,
+      orgId: orgId,
+      orgName: orgName,
+      orgInn: orgInn,
+      orgOgrn: orgOgrn,
+      orgKpp: orgKpp,
+      orgRegDate: orgRegDate,
+      orgLegalAddress: orgLegalAddress ?? this.orgLegalAddress,
+      orgPhone: orgPhone,
+      orgPostalAddress: orgPostalAddress ?? this.orgPostalAddress
+    );
+  }
+
   Map<String, dynamic> toJson({bool stringified = false}) {
     return {
       'id': id,

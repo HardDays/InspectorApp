@@ -55,6 +55,27 @@ class ViolatorInfoLegal extends ViolatorInfo {
     );
   }
 
+  ViolatorInfoLegal copyWith({
+    ViolatorAddress legalAddress,
+    ViolatorAddress postalAddress
+  }) {
+    return ViolatorInfoLegal(
+      id: id,
+      phone: phone,
+      name: name,
+      inn: inn,
+      ogrn: ogrn,
+      kpp: kpp,
+      regDate: regDate,
+      legalAddress: legalAddress ?? this.legalAddress,
+      postalAddress: postalAddress ?? this.postalAddress,
+      account: account,
+      corrAccount: corrAccount,
+      bank: bank,
+      bik: bik,
+    );
+  }
+
   Map<String, dynamic> toJson({bool stringified = false}) {
     return {
       'id': id,

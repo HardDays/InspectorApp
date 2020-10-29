@@ -60,7 +60,8 @@ class ViolatorInfoPrivate extends ViolatorInfo{
   }
 
   ViolatorInfoPrivate copyWith({
-    ViolatorDocumentType docType
+    ViolatorDocumentType docType,
+    ViolatorAddress registrationAddress
   }) {
     return ViolatorInfoPrivate(
       id: id,
@@ -76,7 +77,7 @@ class ViolatorInfoPrivate extends ViolatorInfo{
       gender: gender,
       birthDate: birthDate,
       birthPlace: birthPlace,
-      registrationAddress: registrationAddress,
+      registrationAddress: registrationAddress ?? this.registrationAddress,
     );
   }
 

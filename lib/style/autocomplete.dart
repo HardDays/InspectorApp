@@ -14,6 +14,7 @@ class ProjectAutocomplete extends StatelessWidget {
   final TextEditingController controller;
   final AutocompleteCallback suggestionsCallback;
   final Function(dynamic) onSuggestionSelected;
+  final Function(dynamic) formatter;
   final Function(String) validator;
 
   ProjectAutocomplete(this.title, {
@@ -22,6 +23,7 @@ class ProjectAutocomplete extends StatelessWidget {
     this.suggestionsCallback,
     this.onSuggestionSelected,
     this.validator,
+    this.formatter,
     this.enabled = false,
   });
 
@@ -64,7 +66,7 @@ class ProjectAutocomplete extends StatelessWidget {
             itemBuilder: (context, item) {
               return Padding(
                 padding: const EdgeInsets.only(left: 15, right: 15, top: 10, bottom: 10),
-                child: Text(item.toString(),
+                child: Text(formatter != null ? formatter(item) : item.toString(),
                   style: ProjectTextStyles.base.apply(color: ProjectColors.black),
                 )
               );

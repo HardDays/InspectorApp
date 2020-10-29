@@ -12,6 +12,7 @@ import 'package:inspector/model/report.dart';
 import 'package:inspector/model/street.dart';
 import 'package:inspector/model/violation_type.dart';
 import 'package:inspector/model/violator.dart';
+import 'package:inspector/model/violator_address.dart';
 import 'package:inspector/model/violator_doc_type.dart';
 import 'package:inspector/model/violator_info.dart';
 import 'package:inspector/model/violator_type.dart';
@@ -149,6 +150,25 @@ class SetViolatorDocumentTypeEvent extends ChangeViolatorEvent {
   SetViolatorDocumentTypeEvent(int index, this.documentType) : super(index);
 }
 
+
+class SetViolatorRegistrationAddressEvent extends ChangeViolatorEvent {
+  final ViolatorAddress address;
+
+  SetViolatorRegistrationAddressEvent(int index, this.address) : super(index);
+}
+
+class SetViolatorLegalAddressEvent extends ChangeViolatorEvent {
+  final ViolatorAddress address;
+
+  SetViolatorLegalAddressEvent(int index, this.address) : super(index);
+}
+
+class SetViolatorPostalAddressEvent extends ChangeViolatorEvent {
+  final ViolatorAddress address;
+
+  SetViolatorPostalAddressEvent(int index, this.address) : super(index);
+}
+
 class SetViolationLocationEvent extends TotalReportBlocEvent {
   final LatLng location;
 
@@ -168,4 +188,10 @@ class SaveReportEvent extends TotalReportBlocEvent {
 
 class RemoveReportEvent extends TotalReportBlocEvent {
 
+}
+
+class TotalReportDialogBlocEvent {
+  final ViolatorAddress address;
+
+  TotalReportDialogBlocEvent(this.address);
 }

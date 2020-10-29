@@ -34,10 +34,10 @@ class ViolatorAddress {
     @required this.placeType,
     @required this.streetName,
     @required this.streetType,
-    @required this.house,
-    @required this.building,
-    @required this.buildingExt,
-    @required this.flat,
+    this.house,
+    this.building,
+    this.buildingExt,
+    this.flat,
   });
 
   factory ViolatorAddress.fromJson(Map<String, dynamic> json) {
@@ -62,6 +62,38 @@ class ViolatorAddress {
     );
   }
 
+  ViolatorAddress copyWith({
+    String zipCode,
+    String subjectName,
+    String regionName,
+    String cityName,
+    String placeName,
+    String streetName,
+    String house,
+    String building,
+    String buildingExt,
+    String flat
+  }) {
+    return ViolatorAddress(
+      cladrCode: cladrCode,
+      zipCode: zipCode,
+      subjectCode: subjectCode,
+      subjectName: subjectName,
+      subjectType: subjectType,
+      regionName: regionName,
+      regionType: regionType,
+      cityName: cityName,
+      placeName: placeName,
+      placeType: placeType,
+      streetName: streetName,
+      streetType: streetType,
+      house: house,
+      building: building,
+      buildingExt: buildingExt,
+      flat: flat,
+      cityType: cityType
+    );
+  }
   
   Map<String, dynamic> toJson() {
     return {
@@ -87,8 +119,8 @@ class ViolatorAddress {
 
   @override 
   String toString() {
-  final data = [zipCode, regionName, cityName, streetName, house, building, buildingExt, flat];
-    return data.where((e)=> e !=null).join(', ');
+    final data = [zipCode, regionType, regionName, cityType, cityName, streetType, streetName, house, building, buildingExt, flat];
+    return data.where((e)=> e != null && e.isNotEmpty).join(', ');
   }
 
   static ViolatorAddress parse(dynamic json, bool stringified) {

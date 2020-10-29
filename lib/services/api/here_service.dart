@@ -5,7 +5,6 @@ class HereService {
 
   final _here = HereProvider();
 
-
   List<AddressSearch> _parse(List<dynamic> value) {
     final List<AddressSearch> result = [];
     for (final data in value) {

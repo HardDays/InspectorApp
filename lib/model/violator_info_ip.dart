@@ -69,6 +69,32 @@ class ViolatorInfoIp extends ViolatorInfo {
     );
   }
 
+  ViolatorInfoIp copyWith({
+    ViolatorAddress registrationAddress
+  }) {
+    return ViolatorInfoIp(
+      id: id,
+      phone: phone,
+      name: name,
+      lastName: lastName,
+      firstName: firstName,
+      patronym: patronym,
+      inn: inn,
+      snils: snils,
+      ogrnip: ogrnip,
+      registrationDate: registrationDate,
+      account: account,
+      corrAccount: corrAccount,
+      bank: bank,
+      bik: bik,
+      gender: gender,
+      birthDate: birthDate,
+      birthPlace: birthPlace,
+      registrationAddress: registrationAddress ?? this.registrationAddress
+    );
+  }
+
+
   Map<String, dynamic> toJson({bool stringified = false}) {
     return {
       'id': id,

@@ -22,6 +22,7 @@ import 'package:inspector/model/street.dart';
 import 'package:inspector/model/violation.dart';
 import 'package:inspector/model/violation_type.dart';
 import 'package:inspector/model/violator.dart';
+import 'package:inspector/model/violator_address.dart';
 import 'package:inspector/model/violator_doc_type.dart';
 import 'package:inspector/model/violator_info.dart';
 import 'package:inspector/model/violator_info_ip.dart';
@@ -40,7 +41,7 @@ import 'package:inspector/style/text_field.dart';
 import 'package:inspector/style/text_style.dart';
 import 'package:inspector/style/title.dart';
 import 'package:inspector/widgets/dictionary_dialog.dart';
-import 'package:inspector/widgets/image_picker.dart';
+import 'package:inspector/style/image_picker.dart';
 import 'package:latlong/latlong.dart';
 
 class TotalReportPage extends StatefulWidget {
@@ -60,6 +61,7 @@ class TotalReportPage extends StatefulWidget {
 class TotalReportPageState extends State<TotalReportPage> with SingleTickerProviderStateMixin {
 
   final _formKey = GlobalKey<FormState>();
+  final _addressDialogKey = GlobalKey<FormState>();
 
   final _mapController = MapController();
 
@@ -77,7 +79,17 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
   final _codexArticleController = TextEditingController();
   final _objectCategoryController = TextEditingController();
   final _violationTypeController = TextEditingController();
-  
+  final _addressDialogIndexController = TextEditingController();
+  final _addressDialogAutoSubjectController = TextEditingController();
+  final _addressDialogAutoRegionController = TextEditingController();
+  final _addressDialogAutoCityController = TextEditingController();
+  final _addressDialogAutoPlaceController = TextEditingController();
+  final _addressDialogAutoStreetController = TextEditingController();
+  final _addressDialogHouseController = TextEditingController();
+  final _addressDialogBuildingController = TextEditingController();
+  final _addressDialogBuildingExtController = TextEditingController();
+  final _addressDialogFlatController = TextEditingController();
+
   final _normativeActControllers = [
     TextEditingController()
   ];
@@ -279,6 +291,32 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
     }
   }
 
+  void _onAddressDialogSelect(BuildContext context,ViolatorAddress address) {
+    _violatorAddressToControllers(address);
+    BlocProvider.of<TotalReportDialogBloc>(context).add(TotalReportDialogBlocEvent(address));  
+  }
+
+  void _onAddressDialogClose(BuildContext context,ViolatorAddress address) {
+    if (_addressDialogKey.currentState.validate()) {
+      Navigator.pop(context, address);
+    }
+  }
+
+  void _onLegalAddressSelect(BuildContext context, int index, ViolatorAddress address) {
+    _legalAddressControllers[index].text = address.toString();
+    BlocProvider.of<TotalReportBloc>(context).add(SetViolatorLegalAddressEvent(index, address));  
+  }
+
+  void _onPostalAddressSelect(BuildContext context, int index, ViolatorAddress address) {
+    _postalAddressControllers[index].text = address.toString();
+    BlocProvider.of<TotalReportBloc>(context).add(SetViolatorPostalAddressEvent(index, address));  
+  }
+
+  void _onRegistrationAddressSelect(BuildContext context, int index, ViolatorAddress address) {
+    _registrationAddressControllers[index].text = address.toString();
+    BlocProvider.of<TotalReportBloc>(context).add(SetViolatorRegistrationAddressEvent(index, address));  
+  }
+
   void _onAreaSelect(BuildContext context, Area value) {
     _areaController.text = value?.toString() ?? '';
     _districtController.clear();
@@ -371,6 +409,26 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
     BlocProvider.of<TotalReportBloc>(context).add(SetViolatorInfoEvent(index, violator));
   }
 
+  Future<Iterable<ViolatorAddress>> _onAddressDialogSubjectSearch(BuildContext context, int index, String name) async {
+    return await BlocProvider.of<TotalReportDialogBloc>(context).getAddressSubjects(index, name);
+  }
+
+  Future<Iterable<ViolatorAddress>> _onAddressDialogRegionSearch(BuildContext context, int index, String name) async {
+    return await BlocProvider.of<TotalReportDialogBloc>(context).getAddressRegions(index, name);
+  }
+
+  Future<Iterable<ViolatorAddress>> _onAddressDialogCitySearch(BuildContext context, int index, String name) async {
+    return await BlocProvider.of<TotalReportDialogBloc>(context).getAddressCities(index, name);
+  }
+
+  Future<Iterable<ViolatorAddress>> _onAddressDialogSettlementSearch(BuildContext context, int index, String name) async {
+    return await BlocProvider.of<TotalReportDialogBloc>(context).getAddressSettlements(index, name);
+  }
+
+  Future<Iterable<ViolatorAddress>> _onAddressDialogStreetSearch(BuildContext context, int index, String name) async {
+    return await BlocProvider.of<TotalReportDialogBloc>(context).getAddressStreets(index, name);
+  }
+  
   Future<Iterable<AddressSearch>> _onMapSearch(BuildContext context, String name) async {
     return await BlocProvider.of<TotalReportBloc>(context).getSearchAddresses(name);
   }
@@ -423,6 +481,44 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
     return await BlocProvider.of<TotalReportBloc>(context).getViolatorDocumentTypes(name);
   }
 
+  void _onAddressDialog(BuildContext context, int index, ViolatorAddress address, Function(BuildContext, int index, ViolatorAddress) onSelect) async {
+    _addressDialogIndexController.clear();
+    _addressDialogAutoSubjectController.clear();
+    _addressDialogAutoRegionController.clear();
+    _addressDialogAutoPlaceController.clear();
+    _addressDialogAutoCityController.clear();
+    _addressDialogAutoStreetController.clear();
+    _addressDialogHouseController.clear();
+    _addressDialogBuildingController.clear();
+    _addressDialogBuildingExtController.clear();
+    _addressDialogFlatController.clear();
+    _violatorAddressToControllers(address);
+    final res = await showModalBottomSheet(
+      context: context, 
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (ctx) => _buildAddressDialog(context, index, address)
+    );
+    if (res != null) {
+      if (res is ViolatorAddress) {
+        onSelect(context, index, 
+          res.copyWith(
+            zipCode: _addressDialogIndexController.text,
+            subjectName: _addressDialogAutoSubjectController.text,
+            regionName: _addressDialogAutoRegionController.text,
+            cityName: _addressDialogAutoCityController.text,
+            placeName: _addressDialogAutoPlaceController.text,
+            streetName: _addressDialogAutoStreetController.text,
+            house: _addressDialogHouseController.text,
+            building: _addressDialogBuildingController.text,
+            flat: _addressDialogFlatController.text,
+            buildingExt: _addressDialogBuildingExtController.text,
+          )
+        );
+      }
+    }
+  }
+
   void _onSave(BuildContext context, int status) async {
     final res = await showDialog(context: context, child: AcceptDialog(message: 'Сохранить рапорт?'));
     if (res != null) {
@@ -445,6 +541,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
             if (violatorPerson?.id == null) {
               validViolators = validViolators && _violatorFormKeys[i].currentState.validate();
               if (violator?.type?.id == ViolatorTypeIds.legal) {
+                final person = (violator?.violatorPerson as ViolatorInfoLegal);
                 final newViolator = violator.copyWith(
                   violatorPerson: ViolatorInfoLegal(
                     name: _violatorControllers[i].text,
@@ -453,10 +550,13 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
                     ogrn: _ogrnControllers[i].text,
                     kpp: _kppControllers[i].text,
                     regDate: _registerDates[i],
+                    legalAddress: person?.legalAddress,
+                    postalAddress: person?.postalAddress
                   ),
                 );
                 resViolators.add(newViolator);
               } else if (violator?.type?.id == ViolatorTypeIds.official) {
+                final person = (violator?.violatorPerson as ViolatorInfoOfficial);
                 final newViolator = violator.copyWith(
                   violatorPerson: ViolatorInfoOfficial(
                     orgName: _violatorControllers[i].text,
@@ -465,10 +565,13 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
                     orgOgrn: _ogrnControllers[i].text,
                     orgKpp: _kppControllers[i].text,
                     orgRegDate: _registerDates[i],
+                    orgLegalAddress: person?.orgLegalAddress,
+                    orgPostalAddress: person?.orgPostalAddress
                   ),
                 );
                 resViolators.add(newViolator);
               } else if (violator?.type?.id == ViolatorTypeIds.ip) {
+                final person = (violator?.violatorPerson as ViolatorInfoIp);
                 final newViolator = violator.copyWith(
                   violatorPerson: ViolatorInfoIp(
                     name: _violatorControllers[i].text,
@@ -481,10 +584,13 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
                     ogrnip: _ogrnControllers[i].text,
                     registrationDate: _registerDates[i],
                     birthDate: _birthDates[i],
+                    birthPlace: _birthPlaceControllers[i].text,
+                    registrationAddress: person?.registrationAddress
                   ),
                 );
                 resViolators.add(newViolator);
               } else if (violator?.type?.id == ViolatorTypeIds.private) {
+                final person = (violator?.violatorPerson as ViolatorInfoPrivate);
                 final newViolator = violator.copyWith(
                   violatorPerson: ViolatorInfoPrivate(
                     firstName: _firstNameControllers[i].text,
@@ -495,8 +601,10 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
                     inn: _innControllers[i].text,
                     docNumber: _docNumberControllers[i].text,
                     docSeries: _docSeriesControllers[i].text,
-                    docType: (violator?.violatorPerson as ViolatorInfoPrivate)?.docType,
+                    docType: person?.docType,
                     birthDate: _birthDates[i],
+                    birthPlace: _birthPlaceControllers[i].text,
+                    registrationAddress: person?.registrationAddress
                   ),
                 );
                 resViolators.add(newViolator);
@@ -573,6 +681,19 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
       _registerDates[index] = null;
       _birthDates[index] = null;
     }
+  }
+
+  void _violatorAddressToControllers(ViolatorAddress address) {
+    _addressDialogIndexController.text = address?.zipCode ?? _addressDialogIndexController.text;
+    _addressDialogAutoSubjectController.text = address?.subjectName ??_addressDialogAutoSubjectController.text;
+    _addressDialogAutoRegionController.text = address?.regionName ?? _addressDialogAutoRegionController.text;
+    _addressDialogAutoPlaceController.text = address?.placeName ?? _addressDialogAutoPlaceController.text;
+    _addressDialogAutoCityController.text = address?.cityName ?? _addressDialogAutoCityController.text;
+    _addressDialogAutoStreetController.text = address?.streetName ?? _addressDialogAutoStreetController.text;
+    _addressDialogHouseController.text = address?.house ?? _addressDialogHouseController.text;
+    _addressDialogBuildingController.text = address?.building ?? _addressDialogBuildingController.text;
+    _addressDialogBuildingExtController.text = address?.buildingExt ?? _addressDialogBuildingExtController.text;
+    _addressDialogFlatController.text = address?.flat ?? _addressDialogFlatController.text;
   }
 
   void _legalToControllers(int index, ViolatorInfoLegal violator) {
@@ -736,11 +857,163 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
     );  
   }
 
-  Widget _buildAddressDialog() {
-    return Column(
-      children: [
-        
-      ],
+  Widget _buildAddressDialog(BuildContext context, int index, ViolatorAddress address) {
+    return BlocProvider(
+      create: (context)=> TotalReportDialogBloc(TotalReportDialogBlocState(address)),
+      child: BlocBuilder<TotalReportDialogBloc, TotalReportDialogBlocState>(
+        builder: (context, state) {
+          return SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  color: Colors.white,
+                  padding: const EdgeInsets.only(left: 30, right: 30),
+                  child: Form(
+                    key: _addressDialogKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(top: 20),
+                          child: Text('Адрес',
+                            style: ProjectTextStyles.title.apply(color: ProjectColors.blue)
+                          )
+                        ),
+                        _buildTextField('Индекс', 'Введите данные', _addressDialogIndexController),
+                        Row(
+                          mainAxisSize: MainAxisSize.max,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Flexible(
+                              child: _buildAutocomplete(
+                                'Субъект', 
+                                'Выберите значение', 
+                                _addressDialogAutoSubjectController,
+                                (value)=> _onAddressDialogSubjectSearch(context, index, value), 
+                                (value)=> _onAddressDialogSelect(context, value),
+                                formatter: (address)=> '${address.subjectType ?? ''} ${address.subjectName}',
+                                validator: _emptyValidator
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisSize: MainAxisSize.max,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Flexible(
+                              child: _buildAutocomplete(
+                                'Район', 
+                                'Выберите значение', 
+                                _addressDialogAutoRegionController,
+                                (value)=> _onAddressDialogRegionSearch(context, index, value), 
+                                (value)=> _onAddressDialogSelect(context, value),
+                                formatter: (address)=> '${address.regionType ?? ''} ${address.regionName}',
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisSize: MainAxisSize.max,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Flexible(
+                              child: _buildAutocomplete(
+                                'Город', 
+                                'Выберите значение', 
+                                _addressDialogAutoCityController,
+                                (value)=> _onAddressDialogCitySearch(context, index, value), 
+                                (value)=> _onAddressDialogSelect(context, value),
+                                formatter: (address)=> '${address.cityType ?? ''} ${address.cityName}',
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisSize: MainAxisSize.max,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Flexible(
+                              child: _buildAutocomplete(
+                                'Населенный пункт', 
+                                'Выберите значение', 
+                                _addressDialogAutoPlaceController,
+                                (value)=> _onAddressDialogSettlementSearch(context, index, value), 
+                                (value)=> _onAddressDialogSelect(context, value),
+                                formatter: (address)=> '${address.placeType ?? ''} ${address.placeName}',
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisSize: MainAxisSize.max,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Flexible(
+                              child: _buildAutocomplete(
+                                'Улица', 
+                                'Выберите значение', 
+                                _addressDialogAutoStreetController,
+                                (value)=> _onAddressDialogStreetSearch(context, index, value), 
+                                (value)=> _onAddressDialogSelect(context, value),
+                                formatter: (address)=> '${address.streetType ?? ''} ${address.streetName}',
+                                validator: _emptyValidator
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisSize: MainAxisSize.max,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Flexible(
+                              child: _buildTextField('Дом, владение', 'Введите данные', _addressDialogHouseController, validator: _emptyValidator),
+                            ),
+                            Padding(padding: const EdgeInsets.only(left: 35)),
+                            Flexible(
+                              child: _buildTextField('Корпус', 'Введите данные', _addressDialogBuildingController),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisSize: MainAxisSize.max,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Flexible(
+                              child: _buildTextField('Строение', 'Введите данные', _addressDialogBuildingExtController),
+                            ),
+                            Padding(padding: const EdgeInsets.only(left: 35)),
+                            Flexible(
+                              child: _buildTextField('Квартира/Офис', 'Введите данные', _addressDialogFlatController),
+                            ),
+                          ],
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 20),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              ProjectButton.buildOutlineButton('Отмена',
+                                onPressed: ()=> Navigator.pop(context)
+                              ),
+                              Padding(padding: const EdgeInsets.only(left: 20)), 
+                              ProjectButton.builtFlatButton('Сохранить',
+                                onPressed: ()=> _onAddressDialogClose(context, state.address)
+                              )
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            )
+          );
+        }
+      )
     );
   }
 
@@ -987,7 +1260,8 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
   }
 
   Widget _buildLegal(BuildContext context, int index, Violator violator) {
-    final enabled = violator?.violatorPerson?.id == null;
+    final person = violator?.violatorPerson as ViolatorInfoLegal;
+    final enabled = person?.id == null;
     final textValidator = enabled ? _emptyValidator : null;
     return Column(
       children: [
@@ -1056,14 +1330,25 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
             ),
           ],
         ),
-        _buildTextField('Фактический адрес', 'Введите данные', _legalAddressControllers[index], enabled: enabled, validator: textValidator),
-        _buildTextField('Юридический адрес', 'Введите данные', _postalAddressControllers[index], enabled: enabled, validator: textValidator),
+        InkWell(
+          onTap: ()=> enabled ? _onAddressDialog(context, index, person?.legalAddress, _onLegalAddressSelect) : null,
+          child: IgnorePointer(
+            child: _buildTextField('Фактический адрес', 'Введите данные', _legalAddressControllers[index], enabled: enabled, validator: textValidator),
+          ),
+        ),
+        InkWell(
+          onTap: ()=> enabled ? _onAddressDialog(context, index, person?.postalAddress, _onPostalAddressSelect) : null,
+          child: IgnorePointer(
+            child: _buildTextField('Юридический адрес', 'Введите данные', _postalAddressControllers[index], enabled: enabled, validator: textValidator),
+          ),
+        ),
       ],
     );
   }
 
   Widget _buildOfficial(BuildContext context, int index, Violator violator) {
-    final enabled = violator?.violatorPerson?.id == null;
+    final person = violator?.violatorPerson as ViolatorInfoOfficial;
+    final enabled = person?.id == null;
     final textValidator = enabled ? _emptyValidator : null;
     return Column(
       children: [
@@ -1133,8 +1418,18 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
             ),
           ],
         ),
-        _buildTextField('Фактический адрес', 'Введите данные', _legalAddressControllers[index], enabled: enabled, validator: textValidator),
-        _buildTextField('Юридический адрес', 'Введите данные', _postalAddressControllers[index], enabled: enabled, validator: textValidator),
+        InkWell(
+          onTap: ()=> enabled ? _onAddressDialog(context, index, person?.orgLegalAddress, _onLegalAddressSelect) : null,
+          child: IgnorePointer(
+            child: _buildTextField('Фактический адрес', 'Введите данные', _legalAddressControllers[index], enabled: enabled, validator: textValidator),
+          ),
+        ),
+        InkWell(
+          onTap: ()=> enabled ? _onAddressDialog(context, index, person?.orgPostalAddress, _onPostalAddressSelect) : null,
+          child: IgnorePointer(
+            child: _buildTextField('Юридический адрес', 'Введите данные', _postalAddressControllers[index], enabled: enabled, validator: textValidator),
+          ),
+        ),
       ],
     );
   }
@@ -1209,14 +1504,20 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
             ),
           ],
         ),
-        _buildTextField('Адрес регистрации', 'Введите данные', _registrationAddressControllers[index], enabled: enabled, validator: textValidator),
+        InkWell(
+          onTap: ()=> enabled ? _onAddressDialog(context, index, person?.registrationAddress, _onRegistrationAddressSelect) : null,
+          child: IgnorePointer(
+            child: _buildTextField('Адрес регистрации', 'Введите данные', _registrationAddressControllers[index], enabled: enabled, validator: textValidator),
+          ),
+        ),
         _buildTextField('Телефон', 'Введите данные', _phoneControllers[index], enabled: enabled, validator: textValidator),
       ],
     );  
   }
 
   Widget _buildIp(BuildContext context, int index, Violator violator) {
-    final enabled = violator?.violatorPerson?.id == null;
+    final person = violator.violatorPerson as ViolatorInfoIp;
+    final enabled = person?.id == null;
     final textValidator = enabled ? _emptyValidator : null;
     return Column(
       children: [
@@ -1275,7 +1576,12 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
             ),
           ],
         ),
-        _buildTextField('Адрес регистрации', 'Введите данные', _registrationAddressControllers[index], enabled: enabled, validator: textValidator),
+         InkWell(
+          onTap: ()=> enabled ? _onAddressDialog(context, index, person?.registrationAddress, _onRegistrationAddressSelect) : null,
+          child: IgnorePointer(
+            child: _buildTextField('Адрес регистрации', 'Введите данные', _registrationAddressControllers[index], enabled: enabled, validator: textValidator),
+          ),
+        ),
         _buildTextField('Телефон', 'Введите данные', _phoneControllers[index], enabled: enabled, validator: textValidator),
       ],
     );
@@ -1514,6 +1820,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
     TextEditingController controller,
     AutocompleteCallback suggestionsCallback, 
     Function(dynamic) onSuggestionSelected, {
+      Function(dynamic) formatter,
       Function(String) validator,
       bool enabled = true,
       EdgeInsets padding = const EdgeInsets.only(top: 20),
@@ -1527,6 +1834,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
         suggestionsCallback: suggestionsCallback,
         onSuggestionSelected: onSuggestionSelected,
         validator: validator,
+        formatter: formatter,
         enabled: widget.report.isUpdatable && enabled,
       ),
     );

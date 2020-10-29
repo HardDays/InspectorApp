@@ -1,4 +1,5 @@
 import 'package:inspector/model/report.dart';
+import 'package:inspector/model/violator_address.dart';
 import 'package:inspector/providers/exceptions/api_exception.dart';
 import 'package:latlong/latlong.dart';
 
@@ -51,4 +52,10 @@ class ErrorState extends TotalReportBlocState {
 
 class DeletedState extends TotalReportBlocState {
   DeletedState(Report report, LatLng userLocation, LatLng violationLocation) : super(report, userLocation, violationLocation);
+}
+
+class TotalReportDialogBlocState {
+  final ViolatorAddress address;
+
+  TotalReportDialogBlocState(this.address);
 }

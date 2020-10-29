@@ -14,13 +14,11 @@ import 'package:inspector/style/accept_dialog.dart';
 import 'package:inspector/style/appbar.dart';
 import 'package:inspector/style/button.dart';
 import 'package:inspector/style/colors.dart';
-import 'package:inspector/style/divider.dart';
+import 'package:inspector/style/image_picker.dart';
 import 'package:inspector/style/radio.dart';
-import 'package:inspector/style/text_field.dart';
-import 'package:inspector/style/text_style.dart';
-import 'package:inspector/style/title.dart';
-import 'package:inspector/widgets/image_picker.dart';
 import 'package:inspector/style/section.dart';
+import 'package:inspector/style/text_field.dart';
+import 'package:inspector/style/title.dart';
 
 class DiggReportPage extends StatefulWidget {
 
