@@ -19,6 +19,8 @@ class NavigationBloc extends Bloc<NavigationBlocEvent, NavigationBlocState> {
     if (event is ChangeScreen) {
       if (event.screen == Screens.MapScreen)
         _openMap();
+      else if (event.screen == Screens.VKScreen) 
+        _openControl();
       else
         yield (BottomNavigationStateChanged(event.screen));
     }
@@ -29,6 +31,12 @@ class NavigationBloc extends Bloc<NavigationBlocEvent, NavigationBlocState> {
       await launch('yandexmaps://');
     } else if (Platform.isAndroid) {
       await platform.invokeMethod('openYandexMap');
+    }
+  }
+
+  Future<void> _openControl() async {
+    if (await canLaunch('https://212.46.14.26:9929/oati-insp-mobile/')) {
+      await launch('https://212.46.14.26:9929/oati-insp-mobile/');
     }
   }
 }
