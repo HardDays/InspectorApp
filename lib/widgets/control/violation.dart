@@ -1,13 +1,17 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:inspector/model/violation.dart';
 import 'package:inspector/pages/control_violation_page.dart';
 import 'package:inspector/style/colors.dart';
 import 'package:inspector/style/text_style.dart';
+import 'package:intl/intl.dart';
 
 class ControlViolationWidget extends StatefulWidget {
 
+  final Violation violation;
 
+  const ControlViolationWidget({Key key, @required this.violation}) : super(key: key);
 
   @override
   ControlViolationWidgetState createState() => ControlViolationWidgetState();
@@ -82,16 +86,16 @@ class ControlViolationWidgetState extends State<ControlViolationWidget> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text('Нарушение № 22-61-К21-00165 от 22:05 ',
+                                Text('${widget.violation.violationNum} от ${widget.violation.violationDate} ',
                                   style: ProjectTextStyles.baseBold.apply(color: ProjectColors.blue),
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(top: 10, bottom: 10),
-                                  child: Text('Проезжая часть',
+                                  child: Text(widget.violation.objectCategory.name,
                                     style: ProjectTextStyles.base.apply(color: ProjectColors.black),
                                   ),
                                 ),
-                                Text('Не удовлетворительное состояние разметки',
+                                Text(widget.violation.violationType.name,
                                   style: ProjectTextStyles.base.apply(color: ProjectColors.black),
                                 ),
                               ],

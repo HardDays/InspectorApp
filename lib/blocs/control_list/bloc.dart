@@ -1,41 +1,41 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:inspector/blocs/control_list/event.dart';
 import 'package:inspector/blocs/control_list/state.dart';
-import 'package:inspector/model/address.dart';
-import 'package:inspector/model/oati_department.dart';
-import 'package:inspector/model/object_category.dart';
-import 'package:inspector/model/special_object.dart';
-import 'package:inspector/model/violation.dart';
+import 'package:inspector/model/user.dart';
+import 'package:inspector/providers/exceptions/api_exception.dart';
+import 'package:inspector/services/api/dictionary_service.dart';
+import 'package:inspector/services/dictionary_service.dart';
+import 'package:inspector/services/instructions_service.dart';
+import 'package:inspector/services/persistance_service.dart';
 
 class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
-  ControlListBloc() : super(LoadingState()) {
+  final InstructionsService _instructionsService;
+  final PersistanceService _persistanceService;
+  final DictionaryService _dictionaryService = DictionaryService();
+  final ApiDictionaryService _apiDictionaryService = ApiDictionaryService();
+  User _user;
+  
+
+  ControlListBloc(
+    this._instructionsService,
+    this._persistanceService,
+  ) : super(LoadingState()) {
     add(LoadControlListEvent());
   }
 
   @override
-  Stream<ControlListBlocState> mapEventToState(ControlListBlocEvent event) {
-    // TODO: implement mapEventToState
-    throw UnimplementedError();
+  Stream<ControlListBlocState> mapEventToState(
+      ControlListBlocEvent event) async* {
+    if (event is LoadControlListEvent) {
+      try {
+        final objects = await _apiDictionaryService.getControlObjects(0, 500);
+        print('');
+      } on ApiException catch (e) {
+        print(e.message);
+        print(e.details);
+      }
+    }
   }
-}
 
-class ControlListObject {
-  final SpecialObject type;
-  final ObjectCategory category;
-  final OatiDepartment department;
-  final Address address;
-  final int cameras;
-  final List<Violation> violations;
-  final DateTime checkDate;
 
-  ControlListObject({
-    @required this.type,
-    @required this.category,
-    @required this.department,
-    @required this.address,
-    @required this.cameras,
-    @required this.violations,
-    @required this.checkDate,
-  });
 }
