@@ -1,24 +1,24 @@
+import 'dart:convert' as c;
+
 import 'package:dio/dio.dart';
-import 'package:inspector/model/area.dart';
-import 'package:inspector/model/control_object.dart';
-import 'package:inspector/model/district.dart';
-import 'package:inspector/model/instruction_status.dart';
-import 'package:inspector/model/special_object.dart';
-import 'package:inspector/model/street.dart';
-import 'package:inspector/providers/exceptions/api_exception.dart';
 import 'package:inspector/model/address.dart';
+import 'package:inspector/model/area.dart';
 import 'package:inspector/model/check_status.dart';
 import 'package:inspector/model/check_type.dart';
+import 'package:inspector/model/control_object.dart';
 import 'package:inspector/model/department_code.dart';
+import 'package:inspector/model/district.dart';
 import 'package:inspector/model/employee.dart';
 import 'package:inspector/model/instruction_status.dart';
 import 'package:inspector/model/normative_act.dart';
 import 'package:inspector/model/normative_act_article.dart';
 import 'package:inspector/model/oati_department.dart';
 import 'package:inspector/model/object_category.dart';
+import 'package:inspector/model/report.dart';
 import 'package:inspector/model/report_status.dart';
 import 'package:inspector/model/resolution_type.dart';
 import 'package:inspector/model/special_object.dart';
+import 'package:inspector/model/street.dart';
 import 'package:inspector/model/violation_kind.dart';
 import 'package:inspector/model/violation_status.dart';
 import 'package:inspector/model/violation_type.dart';
@@ -34,9 +34,10 @@ import 'package:inspector/providers/exceptions/unauthorized_exception.dart';
 import 'package:inspector/providers/exceptions/unhadled_exception.dart';
 
 class ApiProvider {
-  static const _url = 'http://212.46.14.26:9930/oati-integration-rest';
+  static const _url = 'http://212.46.14.26:9930/oati-integration';
   static const _loginPath = '/login';
   static const _instructionsPath = '/instructions';
+  static const _reportsPath = '/reports';
 
   static const Map<Type, String> _dictionaryMap = {
     SpecialObject: '/dict/special-objects',
@@ -98,13 +99,32 @@ class ApiProvider {
       } else {
         throw UnhandledException(ex.message);
       }
+    } 
+  }
+
+  void _removeJsonNulls(Map<String, dynamic> json) {
+    json.removeWhere((key, value) => key == null || value == null);
+    for (final value in json.values) {
+      if (value is Map) {
+        _removeJsonNulls(value);
+      } else if (value is List) {
+        for (final item in value) {
+          if (item is Map) {
+            _removeJsonNulls(item);
+          }
+        }
+      }
     }
   }
 
   void setToken(String token) {
-    dio.options.headers = {
-      'Authorization': "Bearer " + token
-    };
+    if (token == null) {
+      dio.options.headers.remove('Authorization');
+    } else {
+      dio.options.headers = {
+        'Authorization': "Bearer " + token
+      };
+    }
   }
 
   Future<dynamic> login(String user, String password) async {
@@ -145,12 +165,30 @@ class ApiProvider {
     );
   }
 
+  Future<dynamic> getInstructionReports(int id) async {
+    return _request(
+      ()=> dio.get(_instructionsPath + '/$id' + _reportsPath)
+    );
+  }
+
   Future<dynamic> updateInstruction(int id, {InstructionStatus instructionStatus}) async {
     return _request(
       ()=> dio.patch(_instructionsPath + '/$id',
         data: {
           'instructionStatus': instructionStatus.toJson()
         }
+      )
+    );
+  }
+
+  Future<dynamic> createReport(Report report) async {
+    final json = report.toJson();
+    _removeJsonNulls(json);
+    var t = c.json.encode(json);
+    //print(t);
+    return _request(
+      ()=> dio.post(_reportsPath,
+        data: json
       )
     );
   }

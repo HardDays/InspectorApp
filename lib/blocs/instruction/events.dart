@@ -8,11 +8,14 @@ class FlushEvent extends InstructionBlocEvent {
 
 class LoadReportsEvent extends InstructionBlocEvent {
 
-  LoadReportsEvent();
+}
+
+class RefreshReportsEvent extends InstructionBlocEvent {
+
 }
 
 class UpadteInstructionStatusEvent extends InstructionBlocEvent {
-  final String status;
+  final int status;
 
   UpadteInstructionStatusEvent(this.status);
 }

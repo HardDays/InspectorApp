@@ -8,11 +8,11 @@ class NormativeActArticle {
   final String normativeAct;
   
   NormativeActArticle({
-    @required this.id,
-    @required this.name,
-    @required this.code,
-    @required this.normativeActId,
-    @required this.normativeAct,
+    this.id,
+    this.name,
+    this.code,
+    this.normativeActId,
+    this.normativeAct,
   });
 
   factory NormativeActArticle.fromJson(Map<String, dynamic> json) {
@@ -41,6 +41,6 @@ class NormativeActArticle {
 
   @override
   String toString() {
-    return '$code $name';
+    return [code, name].where((e) => e != null).join(' ');
   }
 }

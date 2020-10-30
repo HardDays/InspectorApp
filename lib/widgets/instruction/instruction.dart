@@ -12,6 +12,7 @@ import 'package:inspector/style/text_style.dart';
 import 'package:inspector/widgets/instruction/check.dart';
 import 'package:inspector/style/paragraph.dart';
 import 'package:inspector/widgets/instruction/status.dart';
+import 'package:intl/intl.dart';
 
 class InstructionWidget extends StatefulWidget {
 
@@ -63,41 +64,34 @@ class InstructionWidgetState extends State<InstructionWidget> with SingleTickerP
     });
   }
 
-  void _onTap() {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => InstructionPage(widget.instruction)));
-  }
-
-  Color get _color => widget.instruction.instructionStatus.name == InstructionStatusStrings.complete ? ProjectColors.mediumBlue : ProjectColors.black;
+  Color get _color => widget.instruction.instructionStatus.id == InstructionStatusIds.complete ? ProjectColors.mediumBlue : ProjectColors.black;
 
   @override
   Widget build(BuildContext context) {
     return ProjectCard(
-      color: widget.instruction.instructionStatus.name == InstructionStatusStrings.complete ? Colors.transparent : Colors.white,
+      color: widget.instruction.instructionStatus.id == InstructionStatusIds.complete ? Colors.transparent : Colors.white,
       margin: const EdgeInsets.only(bottom: 20, left: 30, right: 30),
-      child: InkWell(
-        onTap: _onTap,
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                _buildTitle(),
-                _buildStatus(),
-              ],
-            ),
-            _buildDate(),
-            _buildFirstCheck(),
-            _buildRestChecks(),
-            _buildInk()
-          ],
-        ),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              _buildTitle(),
+              _buildStatus(),
+            ],
+          ),
+          _buildDate(),
+          _buildFirstCheck(),
+          _buildRestChecks(),
+          _buildInk()
+        ],
       ),
     );
   }
 
   Widget _buildTitle() {
     return Flexible(
-      child: Text('Поручение № ${widget.instruction.instructionNum} от ${widget.instruction.instructionDate}',
+      child: Text('Поручение № ${widget.instruction.instructionNum} от ${DateFormat('dd.MM.yyyy').format(widget.instruction.instructionDate)}',
         style: ProjectTextStyles.subTitle.apply(color: _color),
       ),
     );
@@ -110,7 +104,7 @@ class InstructionWidgetState extends State<InstructionWidget> with SingleTickerP
   }
 
   Widget _buildDate() {
-    return ProjectParagraph(ProjectIcons.calendarIcon(), widget.instruction.checkDate,
+    return ProjectParagraph(ProjectIcons.calendarIcon(), DateFormat('dd.MM.yyyy').format(widget.instruction.checkDate),
       padding: const EdgeInsets.only(top: 12, left: 8),
       color: _color,
     );

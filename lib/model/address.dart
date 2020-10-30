@@ -14,38 +14,68 @@ class Address {
   final String buildNum;
   final String constructionNum;
   final String specifiedAddress;
-  final String unom;
-  final String unad;
-  // final int areaId;
-  // final int districtId;
-  // final int streetId;
+  final int unom;
+  final int unad;
+  final int areaId;
+  final int districtId;
+  final int streetId;
   final Area area;
   final District district;
   final Street street;
 
   Address({
-    @required this.id,
-    @required this.latitude,
-    @required this.longitude,
-    @required this.houseNum,
-    @required this.buildNum,
-    @required this.constructionNum,
-    @required this.specifiedAddress,
-    @required this.unom,
-    @required this.unad,
-    @required this.area,
-    @required this.district,
-    @required this.street,
-    // @required this.areaId,
-    // @required this.districtId,
-    // @required this.streetId,
+    this.id,
+    this.latitude,
+    this.longitude,
+    this.houseNum,
+    this.buildNum,
+    this.constructionNum,
+    this.specifiedAddress,
+    this.unom,
+    this.unad,
+    this.area,
+    this.district,
+    this.street,
+    this.areaId,
+    this.districtId,
+    this.streetId,
   });
 
+  Address copyWith({
+    int id,
+    double latitude,
+    double longitude,
+    Area area,
+    District district,
+    Street street,
+    String houseNum,
+    String buildNum,
+    String constructionNum,
+    String specifiedAddress
+  }) {
+    return Address(
+      id: id ?? this.id,
+      latitude: latitude,
+      longitude: longitude,
+      houseNum: houseNum ?? this.houseNum,
+      buildNum: buildNum ?? this.buildNum,
+      constructionNum: constructionNum ?? this.constructionNum,
+      specifiedAddress: specifiedAddress ?? this.specifiedAddress,
+      unom: unom,
+      unad: unad,
+      area: area ?? this.area,
+      district: district ?? this.district,
+      street: street ?? this.street,
+      areaId: areaId,
+      streetId: streetId,
+      districtId: districtId
+    );
+  }
+
   factory Address.fromJson(Map<String, dynamic> json, {bool stringified = false}) {
-    // final area = json['area'] != null ? Area.fromJson(json['area']) : Area(id: json['areaId']);
-    // final district = json['district'] != null ? District.fromJson(json['district']) : District(id: json['districtId']);
-    // final street = json['street'] != null ? Street.fromJson(json['street']) : Street(id: json['streetId']);
-    var t = 0;
+    final area = json['area'] != null ? Area.fromJson(stringified ? c.json.decode(json['area']) : json['area']) : null;
+    final district = json['district'] != null ? District.fromJson(stringified ? c.json.decode(json['district']) : json['district']) : null;
+    final street = json['street'] != null ? Street.fromJson(stringified ? c.json.decode(json['street']) : json['street']) : null;
     return Address(
       id: json['id'], 
       latitude: json['latitude'], 
@@ -56,12 +86,12 @@ class Address {
       specifiedAddress: json['specifiedAddress'],
       unom: json['unom'],
       unad: json['unad'],
-      area:  Area.fromJson(stringified ? c.json.decode(json['area']) : json['area']),
-      district: District.fromJson(stringified ? c.json.decode(json['district']) : json['district']),
-      street: Street.fromJson(stringified ? c.json.decode(json['street']) : json['street']),
-      // areaId: area.id,
-      // districtId: district.id,
-      // streetId: street.id
+      area: area,
+      district: district,
+      street: street,
+      areaId: area?.id,
+      districtId: district?.id,
+      streetId: street?.id
     );
   }
 
@@ -79,6 +109,9 @@ class Address {
       'area': stringified ? c.json.encode(area?.toJson()) : area?.toJson(),
       'district': stringified ? c.json.encode(district?.toJson()) : district?.toJson(),
       'street': stringified ? c.json.encode(street?.toJson()) : street?.toJson(),
+      'areaId': areaId,
+      'districtId': districtId,
+      'streetId': streetId,
     };
   }
 
@@ -94,6 +127,11 @@ class Address {
 
   String toLongString() {
     final data = [area?.toString(), district?.toString(), street?.toString(), houseNum, buildNum != null ? 'к. $buildNum' : null, constructionNum != null ? 'стр. $constructionNum' : null];
+    return data.where((element) => element != null).join(', ');
+  }
+
+  String toSearchString() {
+    final data = ['Москва', street?.toString(), houseNum, buildNum != null ? 'к. $buildNum' : null, constructionNum != null ? 'стр. $constructionNum' : null];
     return data.where((element) => element != null).join(', ');
   }
 }

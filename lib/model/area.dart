@@ -7,7 +7,7 @@ class Area {
   final String code;
   
   Area({
-    @required this.id,
+    this.id,
     this.name,
     this.code,
   });
@@ -34,6 +34,6 @@ class Area {
 
   @override
   String toString() {
-    return name;
+    return name ?? '';
   }
 }

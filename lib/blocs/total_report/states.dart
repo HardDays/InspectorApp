@@ -1,61 +1,61 @@
-import 'package:inspector/model/address.dart';
-import 'package:inspector/model/area.dart';
-import 'package:inspector/model/department_code.dart';
-import 'package:inspector/model/district.dart';
-import 'package:inspector/model/normative_act.dart';
-import 'package:inspector/model/normative_act_article.dart';
 import 'package:inspector/model/report.dart';
-import 'package:inspector/model/special_object.dart';
-import 'package:inspector/model/street.dart';
-import 'package:inspector/model/violation_type.dart';
-import 'package:inspector/model/violator_type.dart';
+import 'package:inspector/model/violator_address.dart';
+import 'package:inspector/providers/exceptions/api_exception.dart';
+import 'package:latlong/latlong.dart';
 
 class TotalReportBlocState {
 
   final Report report;
+  final LatLng userLocation;
+  final LatLng violationLocation;
 
-  // final List<Street> streets;
-  // final List<Area> areas;
-  // final List<District> districts;
-  // final List<Address> addresses;
-  // final List<SpecialObject> specialObjects;
-  // final List<NormativeAct> normativeActs;
-  // final List<NormativeActArticle> normativeActArticles;
-  // final List<ViolationType> violationTypes;
-  // final List<ViolatorType> violatorTypes;
-  // final List<DepartmentCode> departmentCodes;
-
-  TotalReportBlocState({
+  TotalReportBlocState(
     this.report,
-    // this.streets = const [],
-    // this.addresses = const [],
-    // this.areas = const [],
-    // this.districts = const [],
-    // this.specialObjects = const [],
-    // this.normativeActs = const [],
-    // this.normativeActArticles = const [],
-    // this.violationTypes = const [],
-    // this.violatorTypes = const [],
-    // this.departmentCodes = const [],
-  });
+    this.userLocation,
+    this.violationLocation
+  );
 
-  TotalReportBlocState copyWith({Report report}) {
+  TotalReportBlocState copyWith({Report report, LatLng userLocation, LatLng violationLocation}) {
     return TotalReportBlocState(
-      report: report,
-      // streets: streets,
-      // addresses: addresses,
-      // areas: areas,
-      // districts: districts,
-      // specialObjects: specialObjects,
-      // normativeActs: normativeActs,
-      // normativeActArticles: normativeActArticles,
-      // violationTypes: violationTypes,
-      // violatorTypes: violatorTypes,
-      // departmentCodes: departmentCodes,
+      report ?? this.report,
+      userLocation ?? this.userLocation,
+      violationLocation ?? this.violationLocation
     );
   }
 }
 
 class LoadDictState extends TotalReportBlocState {
-  LoadDictState(Report report) : super(report: report);
+  LoadDictState(Report report, LatLng userLocation, LatLng violationLocation) : super(report, userLocation, violationLocation);
+}
+
+class UserLocationLoadedState extends TotalReportBlocState {
+  UserLocationLoadedState(Report report, LatLng userLocation, LatLng violationLocation) : super(report, userLocation, violationLocation);
+}
+
+class ViolationLocationLoadedState extends TotalReportBlocState {
+  ViolationLocationLoadedState(Report report, LatLng userLocation, LatLng violationLocation) : super(report, userLocation, violationLocation);
+}
+
+class AddressFromLocationState extends TotalReportBlocState {
+  AddressFromLocationState(Report report, LatLng userLocation, LatLng violationLocation) : super(report, userLocation, violationLocation);
+}
+
+class SuccessState extends TotalReportBlocState {
+  SuccessState(Report report, LatLng userLocation, LatLng violationLocation) : super(report, userLocation, violationLocation);
+}
+
+class ErrorState extends TotalReportBlocState {
+  final ApiException exception;
+  
+  ErrorState(this.exception, Report report, LatLng userLocation, LatLng violationLocation) : super(report, userLocation, violationLocation);
+}
+
+class DeletedState extends TotalReportBlocState {
+  DeletedState(Report report, LatLng userLocation, LatLng violationLocation) : super(report, userLocation, violationLocation);
+}
+
+class TotalReportDialogBlocState {
+  final ViolatorAddress address;
+
+  TotalReportDialogBlocState(this.address);
 }

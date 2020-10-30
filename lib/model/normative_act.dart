@@ -7,9 +7,9 @@ class NormativeAct {
   final String code;
   
   NormativeAct({
-    @required this.id,
-    @required this.name,
-    @required this.code,
+    this.id,
+    this.name,
+    this.code,
   });
 
   factory NormativeAct.fromJson(Map<String, dynamic> json) {
@@ -34,6 +34,6 @@ class NormativeAct {
 
   @override
   String toString() {
-    return '$name';
+    return name ?? '';
   }
 }

@@ -8,7 +8,7 @@ class District {
   final String code;
   
   District({
-    @required this.id,
+    this.id,
     this.areaId,
     this.name,
     this.code,
@@ -38,6 +38,6 @@ class District {
 
   @override
   String toString() {
-    return name != null ? 'район $name': null;
+    return name ?? '';
   }
 }

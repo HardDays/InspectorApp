@@ -27,11 +27,18 @@ class InstructionListBloc extends Bloc<InstructionListBlocEvent, InstructionList
       final filters = await _service.filters();
 
       try {
-        final result = await _service.all(reload: true);       
         final date = await _service.date();
-        
+
+        final reload = event is RefreshEvent || (date == null) || (date != null && DateTime.now().difference(date).inMinutes > 10);
+        final result = await _service.all(reload: reload);       
         final data = _processData(sort, filters, result);
-        yield NewDataState(data, date, sort, filters);
+        
+        if (reload) {
+          final date = await _service.date();
+          yield NewDataState(data, date, sort, filters);
+        } else {
+          yield DataState(data, date, sort, filters);
+        }
       } on ApiException catch (ex) {
         try {
           final result = await _service.all();
@@ -72,25 +79,27 @@ class InstructionListBloc extends Bloc<InstructionListBlocEvent, InstructionList
     List<Instruction> result = data;
     if (filters != null) {
       if (filters.instructionStatus != null) {
-        result = result.where((e) => e.instructionStatus.name == filters.instructionStatus).toList();
+        result = result.where((e) => e.instructionStatus.id == filters.instructionStatus).toList();
       }
       if (filters.instructionNum != null) {
         result = result.where((e) => e.instructionNum.toLowerCase().startsWith(filters.instructionNum.toLowerCase())).toList();
       }
       if (filters.checkDates != null) {
-        final dates = filters.checkDates.map((e) => DateFormat('yyyy-MM-dd').format(e)).toList();
+        final dates = filters.checkDates;
         if (dates.length == 1) {
-          result = result.where((e) => e.checkDate == dates.first).toList();
+          final date = DateFormat('yyyy-MM-dd').format(dates.first);
+          result = result.where((e) => DateFormat('yyyy-MM-dd').format(e.checkDate) == date).toList();
         } else if (dates.length == 2) {
-          result = result.where((e) => e.checkDate.compareTo(dates[0]) >= 0 && e.checkDate.compareTo(dates[1]) <= 0).toList();
+          result = result.where((e) => dates[0].isBefore(e.checkDate) && dates[1].isAfter(e.checkDate)).toList();
         }
       }
        if (filters.instructionDates != null) {
-        final dates = filters.instructionDates.map((e) => DateFormat('yyyy-MM-dd').format(e)).toList();
+        final dates = filters.instructionDates;
         if (dates.length == 1) {
-          result = result.where((e) => e.instructionDate == dates.first).toList();
+          final date = DateFormat('yyyy-MM-dd').format(dates.first);
+          result = result.where((e) => DateFormat('yyyy-MM-dd').format(e.instructionDate) == date).toList();
         } else if (dates.length == 2) {
-          result = result.where((e) => e.instructionDate.compareTo(dates[0]) >= 0 && e.instructionDate.compareTo(dates[1]) <= 0).toList();
+          result = result.where((e) => dates[0].isBefore(e.instructionDate) && dates[1].isAfter(e.instructionDate)).toList();
         }
       }
     }
@@ -101,7 +110,8 @@ class InstructionListBloc extends Bloc<InstructionListBlocEvent, InstructionList
     } else if (sort == InstructionSortStrings.instructionDate) {
       result.sort((c1, c2) => c1.instructionDate.compareTo(c2.instructionDate));
     } else {
-      result.sort((c1, c2) => InstructionStatusStrings.all.indexOf(c1.instructionStatus.name).compareTo(InstructionStatusStrings.all.indexOf(c2.instructionStatus.name)));
+      result.sort((c1, c2) => c1.instructionStatus.id.compareTo(c2.instructionStatus.id));
+     // result.sort((c1, c2) => InstructionStatusStrings.all.indexOf(c1.instructionStatus.name).compareTo(InstructionStatusStrings.all.indexOf(c2.instructionStatus.name)));
     }
     return result;
   }

@@ -11,12 +11,10 @@ class ViolationKind {
   });
 
   factory ViolationKind.fromJson(Map<String, dynamic> json) {
-    if (json != null) {
-      return ViolationKind(
-        id: json['id'], 
-        name: json['name'], 
-      );
-    }
+    return ViolationKind(
+      id: json['id'], 
+      name: json['name'], 
+    );
   }
 
   Map<String, dynamic> toJson() {

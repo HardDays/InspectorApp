@@ -7,7 +7,7 @@ import 'package:inspector/blocs/instruction_filters/events.dart';
 import 'package:inspector/model/instruction.dart';
 import 'package:inspector/model/instruction_status.dart';
 import 'package:inspector/style/button.dart';
-import 'package:inspector/style/date_range.dart';
+import 'package:inspector/style/date_picker.dart';
 import 'package:inspector/style/select.dart';
 import 'package:inspector/style/text_field.dart';
 
@@ -36,7 +36,7 @@ class InstructionFiltersWidget extends StatelessWidget {
     Navigator.pop(context, InstructionFilters());
   }
 
-  void _onStatus(BuildContext context, String status) {
+  void _onStatus(BuildContext context, int status) {
     BlocProvider.of<InstructionFiltersBloc>(context).add(SetInstructionStatusEvent(status));  
   }
 
@@ -51,7 +51,7 @@ class InstructionFiltersWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context)=> InstructionFiltersBloc(InstructionFiltersBlocState(filters))..add(LoadEvent()),
+      create: (context)=> InstructionFiltersBloc(InstructionFiltersBlocState([], filters))..add(LoadEvent()),
       child: BlocBuilder<InstructionFiltersBloc, InstructionFiltersBlocState>(
         builder: (context, state) {
           return Column(
@@ -69,10 +69,10 @@ class InstructionFiltersWidget extends StatelessWidget {
                   Padding(padding: const EdgeInsets.only(left: 35)),
                   Flexible(
                     child: ProjectSelect(
-                      InstructionStatusStrings.all.length,
+                      state.statuses.length,
                       state.filters.instructionStatus,
-                      (index) => InstructionStatusStrings.all[index],
-                      (index) => InstructionStatusStrings.all[index],
+                      (index) => state.statuses[index].id,
+                      (index) => state.statuses[index].name,
                       title: 'Статус поручения',
                       hintText: 'Все',
                       onChanged: (status)=> _onStatus(context, status),
@@ -86,7 +86,7 @@ class InstructionFiltersWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Flexible(
-                      child: ProjectDateRange(
+                      child: ProjectDatePicker(
                         title: 'Дата поручения',
                         hintText: 'Выберите дату или период',
                         values: state.filters.instructionDates,
@@ -95,7 +95,7 @@ class InstructionFiltersWidget extends StatelessWidget {
                     ),
                     Padding(padding: const EdgeInsets.only(left: 35)),
                     Flexible(
-                      child: ProjectDateRange(
+                      child: ProjectDatePicker(
                         title: 'Дата обследования',
                         hintText: 'Выберите дату или период',
                         values: state.filters.checkDates,

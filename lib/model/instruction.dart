@@ -18,7 +18,7 @@ abstract class InstructionSortStrings {
 
 class InstructionFilters {
   final String instructionNum;
-  final String instructionStatus;
+  final int instructionStatus;
   final List<DateTime> instructionDates;
   final List<DateTime> checkDates;
 
@@ -52,9 +52,9 @@ class Instruction {
 
   final int id;
   final String instructionNum;
-  final String instructionDate;
-  final String reportDate;
-  final String checkDate;
+  final DateTime instructionDate;
+  final DateTime reportDate;
+  final DateTime checkDate;
   final CheckType checkType;
   final User instructionCreator;
   final InstructionStatus instructionStatus;
@@ -78,9 +78,9 @@ class Instruction {
     return Instruction(
       id: json['id'], 
       instructionNum: json['instructionNum'], 
-      instructionDate: json['instructionDate'], 
-      reportDate: json['reportDate'], 
-      checkDate: json['checkDate'],
+      instructionDate: json['instructionDate'] != null ? DateTime.parse(json['instructionDate']) : null, 
+      reportDate: json['reportDate'] != null ? DateTime.parse(json['reportDate']) : null, 
+      checkDate: json['checkDate'] != null ? DateTime.parse(json['checkDate']) : null, 
       checkType: CheckType.fromJson(json['checkType']),
       instructionCreator: User.fromJson(json['instructionCreator']),
       instructionStatus: InstructionStatus.fromJson(json['instructionStatus']),
@@ -93,9 +93,9 @@ class Instruction {
     return {
       'id': id,
       'instructionNum': instructionNum,
-      'instructionDate': instructionDate,
-      'reportDate': reportDate,
-      'checkDate': checkDate,
+      'instructionDate': instructionDate?.toString(),
+      'reportDate': reportDate?.toString(),
+      'checkDate': checkDate?.toString(),
       'checkType': checkType.toJson(),
       'instructionCreator': instructionCreator.toJson(),
       'instructionStatus': instructionStatus.toJson(),

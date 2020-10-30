@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -9,56 +10,55 @@ import 'package:inspector/style/colors.dart';
 
 import 'package:image_picker/image_picker.dart' as p;
 
-class ImagePicker extends StatefulWidget {
+// class ImagePicker extends StatefulWidget {
 
+//   final EdgeInsets margin;
+
+//   ImagePicker({this.margin = const EdgeInsets.only(top: 20)});
+
+//   @override
+//   ImagePickerState createState() => ImagePickerState();
+// }
+
+
+class ImagePicker extends StatelessWidget {
+  final bool enabled;
   final EdgeInsets margin;
+  final List<Uint8List> images;
+  final Function(File) onPicked;
+  final Function(int) onRemoved;
 
-  ImagePicker({this.margin = const EdgeInsets.only(top: 20)});
-
-  @override
-  ImagePickerState createState() => ImagePickerState();
-}
-
-
-class ImagePickerState extends State<ImagePicker> with SingleTickerProviderStateMixin {
-
-  // todo: replace to normal state manager
-  
   final picker = p.ImagePicker();
 
-  final files = List<File>();
-
-  @override
-  void initState() {
-    super.initState();
-
-  }
-
-   @override
-  void dispose() {
-    super.dispose();
-  }
+  ImagePicker({
+    this.onPicked, 
+    this.onRemoved, 
+    this.enabled = true,
+    this.images = const [],
+    this.margin = const EdgeInsets.only(top: 20)
+  });
 
   void _onPick() async {
-    final image = await picker.getImage(source: p.ImageSource.gallery);
-    if (image != null) {
-      setState(() {
-        files.add(File(image.path));
-      });
+    if (enabled) {
+      final image = await picker.getImage(source: p.ImageSource.gallery);
+      if (image != null && onPicked != null) {
+        onPicked(File(image.path));
+      }
     }
   }
 
   void _onDelete(int index) {
-    setState(() {
-      files.removeAt(index);
-    });
+    if (enabled) {
+      if (onRemoved != null) {
+        onRemoved(index);
+      }
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width * 0.27;
     return Padding(
-      padding: widget.margin,
+      padding: margin,
         child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -66,7 +66,7 @@ class ImagePickerState extends State<ImagePicker> with SingleTickerProviderState
             width: MediaQuery.of(context).size.width,
             child: Wrap(
               alignment: WrapAlignment.spaceBetween,
-              children: List.generate(files.length, 
+              children: List.generate(images.length, 
                 (index) => Column(
                   children: [
                     SizedBox(
@@ -74,7 +74,7 @@ class ImagePickerState extends State<ImagePicker> with SingleTickerProviderState
                       height: 140,
                       child: Image(
                         fit: BoxFit.cover,
-                        image: FileImage(files[index],)
+                        image: MemoryImage(images[index],)
                       ),
                     ),
                     InkWell(
@@ -88,15 +88,17 @@ class ImagePickerState extends State<ImagePicker> with SingleTickerProviderState
                     ),
                   ]
                 ),
-              )..add((files.length - 2) % 3 == 0 ? SizedBox(width: 210) : Container()),
+              )..add((images.length - 2) % 3 == 0 ? SizedBox(width: 210) : Container()),
             ),
           ),
           Container(
             alignment: Alignment.topLeft,
             padding: const EdgeInsets.only(bottom: 2),
             child: ProjectButton.buildOutlineButton('Добавить фото',
-              icon: ProjectIcons.camera2Icon(),
-              onPressed: _onPick,
+              icon: ProjectIcons.camera2Icon(
+                color: enabled ? ProjectColors.blue : ProjectColors.lightBlue
+              ),
+              onPressed: enabled ? _onPick : null,
               style: ProjectTextStyles.subTitle
             ),
           ),

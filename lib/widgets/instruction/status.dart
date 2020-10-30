@@ -4,25 +4,6 @@ import 'package:inspector/model/instruction_status.dart';
 import 'package:inspector/style/colors.dart';
 import 'package:inspector/style/text_style.dart';
 
-class InstructionStatusColors {
-  static const _colors = const {
-    InstructionStatusStrings.assigned: ProjectColors.cyan,
-    InstructionStatusStrings.withdrawn: ProjectColors.red,
-    InstructionStatusStrings.partInProgress: ProjectColors.yellow,
-    InstructionStatusStrings.inProgress: ProjectColors.yellow,
-    InstructionStatusStrings.partComplete: ProjectColors.green,
-    InstructionStatusStrings.complete: ProjectColors.green
-  };
-
-  static Color color(String status) {
-    if (_colors.containsKey(status)) {
-      return _colors[status];
-    } else {
-      return ProjectColors.cyan;
-    }
-  }
-}
-
 class InstructionStatusWidget extends StatelessWidget {
 
   final InstructionStatus status;
@@ -39,7 +20,7 @@ class InstructionStatusWidget extends StatelessWidget {
           margin: const EdgeInsets.only(right: 8),
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: InstructionStatusColors.color(status.name),
+            color: InstructionStatusColors.color(status.id),
           ),
         ),
         Text(status.name,

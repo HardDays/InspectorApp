@@ -30,4 +30,10 @@ class ObjectCategory {
   Map<String, dynamic> toSqliteJson() {
     return toJson();
   }
+
+  @override
+  String toString() {
+    return '$code $name';
+  }
+
 }

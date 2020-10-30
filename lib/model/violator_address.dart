@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'dart:convert' as c;
 
 class ViolatorAddress {
   final String cladrCode;
@@ -33,33 +34,11 @@ class ViolatorAddress {
     @required this.placeType,
     @required this.streetName,
     @required this.streetType,
-    @required this.house,
-    @required this.building,
-    @required this.buildingExt,
-    @required this.flat,
+    this.house,
+    this.building,
+    this.buildingExt,
+    this.flat,
   });
-
-  Map<String, dynamic> toJson() {
-    return {
-      'cladrCode': cladrCode,
-      'zipCode': zipCode,
-      'subjectCode': subjectCode,
-      'subjectName': subjectName,
-      'subjectType': subjectType,
-      'regionName': regionName,
-      'regionType': regionType,
-      'cityName': cityName,
-      'cityType': cityType,
-      'placeName': placeName,
-      'placeType': placeType,
-      'streetName': streetName,
-      'streetType': streetType,
-      'house': house,
-      'building': building,
-      'buildingExt': buildingExt,
-      'flat': flat,
-    };
-  }
 
   factory ViolatorAddress.fromJson(Map<String, dynamic> json) {
     return ViolatorAddress(
@@ -82,4 +61,76 @@ class ViolatorAddress {
       flat: json['flat'],
     );
   }
+
+  ViolatorAddress copyWith({
+    String zipCode,
+    String subjectName,
+    String regionName,
+    String cityName,
+    String placeName,
+    String streetName,
+    String house,
+    String building,
+    String buildingExt,
+    String flat
+  }) {
+    return ViolatorAddress(
+      cladrCode: cladrCode,
+      zipCode: zipCode,
+      subjectCode: subjectCode,
+      subjectName: subjectName,
+      subjectType: subjectType,
+      regionName: regionName,
+      regionType: regionType,
+      cityName: cityName,
+      placeName: placeName,
+      placeType: placeType,
+      streetName: streetName,
+      streetType: streetType,
+      house: house,
+      building: building,
+      buildingExt: buildingExt,
+      flat: flat,
+      cityType: cityType
+    );
+  }
+  
+  Map<String, dynamic> toJson() {
+    return {
+      'cladrCode': cladrCode,
+      'zipCode': zipCode,
+      'subjectCode': subjectCode,
+      'subjectName': subjectName,
+      'subjectType': subjectType,
+      'regionName': regionName,
+      'regionType': regionType,
+      'cityName': cityName,
+      'cityType': cityType,
+      'placeName': placeName,
+      'placeType': placeType,
+      'streetName': streetName,
+      'streetType': streetType,
+      'house': house,
+      'building': building,
+      'buildingExt': buildingExt,
+      'flat': flat,
+    };
+  }
+
+  @override 
+  String toString() {
+    final data = [zipCode, regionType, regionName, cityType, cityName, streetType, streetName, house, building, buildingExt, flat];
+    return data.where((e)=> e != null && e.isNotEmpty).join(', ');
+  }
+
+  static ViolatorAddress parse(dynamic json, bool stringified) {
+    if (json != null) {
+      if (stringified) {
+        return ViolatorAddress.fromJson(c.json.decode(json));
+      } else {
+        return ViolatorAddress.fromJson(json);
+      }
+    }
+  }
+  
 }

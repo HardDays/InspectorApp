@@ -38,6 +38,7 @@ class AuthService {
 
   Future<void> logout() async {
     await persistanceService.clearAllData();
+    apiProvider.setToken(null);
   }
 
   Future<User> authentificate(String login, String password) async {

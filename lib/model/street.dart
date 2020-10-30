@@ -9,7 +9,7 @@ class Street {
   final String code;
   
   Street({
-    @required this.id,
+    this.id,
     this.areaId,
     this.districtId,
     this.name,
@@ -42,7 +42,7 @@ class Street {
 
   @override
   String toString() {
-    return name;
+    return name ?? '';
   }
 
 }

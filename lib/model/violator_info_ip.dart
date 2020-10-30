@@ -1,9 +1,11 @@
-import 'package:flutter/foundation.dart';
-import 'package:inspector/model/violator_address.dart';
+import 'dart:convert' as c;
 
-class ViolatorInfoIp {
-  final int id;
-  final String phone;
+import 'package:inspector/model/violator_address.dart';
+import 'package:inspector/model/violator_info.dart';
+
+class ViolatorInfoIp extends ViolatorInfo {
+  // final int id;
+  // final String phone;
   final String name;
   final String lastName;
   final String firstName;
@@ -22,27 +24,29 @@ class ViolatorInfoIp {
   final String bik;
 
   ViolatorInfoIp({
-    @required this.id,
-    @required this.phone,
-    @required this.name,
-    @required this.lastName,
-    @required this.firstName,
-    @required this.patronym,
-    @required this.inn,
-    @required this.snils,
-    @required this.ogrnip,
-    @required this.registrationDate,
-    @required this.gender,
-    @required this.birthDate,
-    @required this.birthPlace,
-    @required this.registrationAddress,
-    @required this.account,
-    @required this.corrAccount,
-    @required this.bank,
-    @required this.bik,
-  });
+    // this.id,
+    // this.phone,
+    int id,
+    String phone,
+    this.name,
+    this.lastName,
+    this.firstName,
+    this.patronym,
+    this.inn,
+    this.snils,
+    this.ogrnip,
+    this.registrationDate,
+    this.gender,
+    this.birthDate,
+    this.birthPlace,
+    this.registrationAddress,
+    this.account,
+    this.corrAccount,
+    this.bank,
+    this.bik,
+  }) : super(id: id, phone: phone);
 
-  factory ViolatorInfoIp.fromJson(Map<String, dynamic> json) {
+  factory ViolatorInfoIp.fromJson(Map<String, dynamic> json, {bool stringified = false}) {
     return ViolatorInfoIp(
       id: json['id'],
       phone: json['phone'],
@@ -57,8 +61,7 @@ class ViolatorInfoIp {
       gender: json['gender'],
       birthDate: json['birthDate'] != null ? DateTime.parse(json['birthDate']) : null,
       birthPlace: json['birthPlace'],
-      registrationAddress:  json['registrationAddress'] != null ? 
-          ViolatorAddress.fromJson(json['registrationAddress']) : null,  
+      registrationAddress: json['registrationAddress'] != null ? ViolatorAddress.parse(json['registrationAddress'], stringified) : null,  
       account: json['account'],
       corrAccount: json['corrAccount'],
       bank: json['bank'],
@@ -66,7 +69,33 @@ class ViolatorInfoIp {
     );
   }
 
-  Map<String, dynamic> toJson() {
+  ViolatorInfoIp copyWith({
+    ViolatorAddress registrationAddress
+  }) {
+    return ViolatorInfoIp(
+      id: id,
+      phone: phone,
+      name: name,
+      lastName: lastName,
+      firstName: firstName,
+      patronym: patronym,
+      inn: inn,
+      snils: snils,
+      ogrnip: ogrnip,
+      registrationDate: registrationDate,
+      account: account,
+      corrAccount: corrAccount,
+      bank: bank,
+      bik: bik,
+      gender: gender,
+      birthDate: birthDate,
+      birthPlace: birthPlace,
+      registrationAddress: registrationAddress ?? this.registrationAddress
+    );
+  }
+
+
+  Map<String, dynamic> toJson({bool stringified = false}) {
     return {
       'id': id,
       'phone': phone,
@@ -77,11 +106,11 @@ class ViolatorInfoIp {
       'inn': inn,
       'snils': snils,
       'ogrnip': ogrnip,
-      'registrationDate': registrationDate,
+      'registrationDate': registrationDate?.toString(),
       'gender': gender,
-      'birthDate': birthDate,
+      'birthDate': birthDate?.toString(),
       'birthPlace': birthPlace,
-      'registrationAddress': registrationAddress,
+      'registrationAddress': registrationAddress != null ? stringified ? c.json.encode(registrationAddress.toJson()) : registrationAddress.toJson() : null,
       'account': account,
       'corrAccount': corrAccount,
       'bank': bank,
@@ -90,6 +119,12 @@ class ViolatorInfoIp {
   }
 
   Map<String, dynamic> toSqliteJson() {
-    return toJson();
+    return toJson(stringified: true);
+  }
+
+  @override
+  String toString() {
+    final data = [firstName, lastName, patronym, ogrnip != null ? 'ОГРНИП $ogrnip' : null, inn != null ? 'ИНН $inn' : null];
+    return data.where((e)=> e !=null).join(' ');
   }
 }
