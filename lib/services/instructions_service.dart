@@ -40,7 +40,10 @@ class InstructionsService {
     return await _persistanceService.getInstructionsSort();
   }
 
-  Future<Instruction> find(int id, {bool reload = false}) async {
+  Future<Instruction> find(int id, {bool reload = true}) async {
+    if(!reload || !(await _persistanceService.getDataSendingState())) {
+      return (await _instructionsDbService.all(query: {'key': id})).first;
+    }
     return await _apiService.getInstruction(id);
   }
 
@@ -77,7 +80,7 @@ class InstructionsService {
   }
 
   Future<Instruction> updateInstruction(int id, {InstructionStatus instructionStatus}) async {
-    if(await _persistanceService.getDataSendingState()) {
+    if(!(await _persistanceService.getDataSendingState())) {
       _instructionRequestService.save(id, instructionStatus);
       final instruction = (await _instructionsDbService.all(query: {'id': id})).first;
       final newInstructionJson = instruction.toJson();

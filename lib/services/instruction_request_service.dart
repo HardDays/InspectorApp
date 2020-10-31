@@ -14,10 +14,12 @@ class InstructionRequestService extends ObjectDBService {
   InstructionRequestService._internal();
 
   Future<void> save(int id, InstructionStatus status) async {
+    await init();
     await _saveKeyValue(id, status.toJson());
   }
 
   Future<Map<int, InstructionStatus>> all() async {
+    await init();
     final Map<int, InstructionStatus> resultMap = Map<int, InstructionStatus>();
     (await db.find({})).forEach((element) {
       resultMap[element['key']] = InstructionStatus.fromJson(element['value']);
@@ -26,6 +28,7 @@ class InstructionRequestService extends ObjectDBService {
   }
 
   Future<void> remove(int id) async {
+    await init();
     await _removeKeyValue(id);
   }
 

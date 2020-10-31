@@ -52,7 +52,7 @@ class ProfileBloc extends Bloc<ProfileBlocEvent, ProfileBlocState> {
         _apiProvider.createReport(element);
         _reportsService.remove(element);
       }
-      yield(_copyFilledBlocState(state as FilledBlocState, sending: false));
+      yield(_copyFilledBlocState(state as FilledBlocState, sending: false, canBeSended: false));
     }
   }
 
@@ -72,7 +72,7 @@ class ProfileBloc extends Bloc<ProfileBlocEvent, ProfileBlocState> {
         await _persistanceService.getLastDataSendingDate();
     bool useFingerPrint = await _persistanceService.getFingerprintState();
     bool dataSendingMode = await _persistanceService.getDataSendingState();
-    bool canBeSended = (await _reportsService.readyToSend()).isNotEmpty;
+    bool canBeSended = (await _reportsService.readyToSend()).isNotEmpty || (await _instructionRequestService.all()).isNotEmpty;
     return FilledBlocState(
       appVersion: '001-0124',
       dataSendingMode: dataSendingMode == null ? false : dataSendingMode,
