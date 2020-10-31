@@ -5,6 +5,7 @@ import 'package:inspector/style/text_style.dart';
 abstract class ProjectButton {
   static Widget builtFlatButton(
     String data, {
+    bool disabled = false,
     VoidCallback onPressed,
     TextStyle style,
     Color textColor = ProjectColors.white,
@@ -13,7 +14,7 @@ abstract class ProjectButton {
     Color disabledTextColor = ProjectColors.grey,
   }) {
     return FlatButton(
-      onPressed: onPressed,
+      onPressed: !disabled ? onPressed : null,
       textColor: textColor,
       color: color,
       splashColor: Color(0x00000000),

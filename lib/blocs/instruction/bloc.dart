@@ -47,7 +47,7 @@ class InstructionBloc extends Bloc<InstructionBlocEvent, InstructionBlocState> {
         final statuses = await _dictionaryService.getInstructionStatuses();
         final status = statuses.firstWhere((element) => element.id == event.status);
         await _instructionService.updateInstruction(state.instruction.id, instructionStatus: status);
-        final instruction = await _instructionService.find(state.instruction.id, reload: true);
+        final instruction = await _instructionService.find(state.instruction.id);
 
         yield SuccessState(state.date, instruction, state.reports);
       } on ApiException catch (ex) {

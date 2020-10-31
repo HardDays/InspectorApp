@@ -9,6 +9,8 @@ class ControlStatusWidget extends StatelessWidget {
   static const colors = const {
     'ОДХ': ProjectColors.cyan,
     'КП': ProjectColors.brown,
+    'ДТ': ProjectColors.green,
+    'КР': ProjectColors.yellow,
   };
 
   final String status;

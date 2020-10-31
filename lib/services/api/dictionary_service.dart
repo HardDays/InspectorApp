@@ -2,6 +2,7 @@ import 'package:inspector/model/address.dart';
 import 'package:inspector/model/area.dart';
 import 'package:inspector/model/check_status.dart';
 import 'package:inspector/model/check_type.dart';
+import 'package:inspector/model/control_object.dart';
 import 'package:inspector/model/department_code.dart';
 import 'package:inspector/model/district.dart';
 import 'package:inspector/model/employee.dart';
@@ -126,5 +127,8 @@ class ApiDictionaryService {
       _loadDictionary<District>((d) => District.fromJson(d), from, to); 
 
   Future<List<Street>> getStreets(int from, int to) =>
-      _loadDictionary<Street>((d) => Street.fromJson(d), from, to); 
+      _loadDictionary<Street>((d) => Street.fromJson(d), from, to);
+
+  Future<List<ControlObject>> getControlObjects(int from, int to) =>
+      _loadDictionary<ControlObject>((d) => ControlObject.fromJson(d), from, to);
 }

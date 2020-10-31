@@ -1,12 +1,14 @@
 import 'package:inspector/model/dictionary_metadata.dart';
+import 'package:inspector/model/report.dart';
 import 'package:inspector/model/user.dart';
 import 'package:inspector/model/instruction.dart';
+import 'package:inspector/services/objectdb/objectdb_collection_service.dart';
 import 'package:inspector/services/objectdb/objectdb_service.dart';
 import 'package:inspector/services/persistance_service.dart';
 import 'package:intl/intl.dart';
 
-class ObjectDbPersistanceService extends ObjectDBService implements PersistanceService {
-
+class ObjectDbPersistanceService extends ObjectDBService
+    implements PersistanceService {
   static final _instance = ObjectDbPersistanceService._internal();
 
   factory ObjectDbPersistanceService() {
@@ -23,10 +25,7 @@ class ObjectDbPersistanceService extends ObjectDBService implements PersistanceS
       await db.remove({
         'key': key,
       });
-      await db.insert({
-        'key': key,
-        'value': value
-      });
+      await db.insert({'key': key, 'value': value});
       await db.tidy();
     } catch (e) {
       print(e);
@@ -73,7 +72,7 @@ class ObjectDbPersistanceService extends ObjectDBService implements PersistanceS
 
   @override
   Future<bool> getDataSendingState() async {
-    return await _getKeyValue('dataSendingState');
+    return (await _getKeyValue('dataSendingState')) ?? false;
   }
 
   @override
@@ -81,10 +80,11 @@ class ObjectDbPersistanceService extends ObjectDBService implements PersistanceS
     return await _getKeyValue('fingerPrintState');
   }
 
-
   Future<DateTime> getInstructionsDate() async {
     final dateTime = await _getKeyValue('instructionsDate');
-    return dateTime == null ? null : DateTime.fromMillisecondsSinceEpoch(dateTime);
+    return dateTime == null
+        ? null
+        : DateTime.fromMillisecondsSinceEpoch(dateTime);
   }
 
   Future<String> getInstructionsSort() async {
@@ -94,7 +94,9 @@ class ObjectDbPersistanceService extends ObjectDBService implements PersistanceS
   @override
   Future<DateTime> getLastDataSendingDate() async {
     final dateTime = await _getKeyValue('lastDataSendingDate');
-    return dateTime == null ? null : DateTime.fromMillisecondsSinceEpoch(dateTime);
+    return dateTime == null
+        ? null
+        : DateTime.fromMillisecondsSinceEpoch(dateTime);
   }
 
   @override
@@ -105,7 +107,9 @@ class ObjectDbPersistanceService extends ObjectDBService implements PersistanceS
   @override
   Future<User> getPreviousUser() async {
     final user = await _getKeyValue('previousUser');
-    return user == null ? null : User.fromJson(await _getKeyValue('previousUser'));
+    return user == null
+        ? null
+        : User.fromJson(await _getKeyValue('previousUser'));
   }
 
   @override
@@ -120,12 +124,15 @@ class ObjectDbPersistanceService extends ObjectDBService implements PersistanceS
   }
 
   Future<InstructionFilters> getInstructionFilters() async {
-    return InstructionFilters.fromJson(await _getKeyValue('instructionFilters') ?? {});
+    return InstructionFilters.fromJson(
+        await _getKeyValue('instructionFilters') ?? {});
   }
-  
+
   Future<DateTime> getInstructionReportDate(int instructionId) async {
     final dateTime = await _getKeyValue('instructionReportDate$instructionId');
-    return dateTime == null ? null : DateTime.fromMillisecondsSinceEpoch(dateTime);
+    return dateTime == null
+        ? null
+        : DateTime.fromMillisecondsSinceEpoch(dateTime);
   }
 
   @override
@@ -143,15 +150,17 @@ class ObjectDbPersistanceService extends ObjectDBService implements PersistanceS
   }
 
   Future<void> saveInstructionsDate() async {
-    await _saveKeyValue('instructionsDate', DateTime.now().millisecondsSinceEpoch);
+    await _saveKeyValue(
+        'instructionsDate', DateTime.now().millisecondsSinceEpoch);
   }
-  
+
   Future saveInstructionFilters(InstructionFilters value) async {
     await _saveKeyValue('instructionFilters', value.toJson());
   }
 
   Future<void> saveInstructionsReportDate(int instructionId) async {
-    await _saveKeyValue('instructionReportDate$instructionId', DateTime.now().millisecondsSinceEpoch);
+    await _saveKeyValue('instructionReportDate$instructionId',
+        DateTime.now().millisecondsSinceEpoch);
   }
 
   @override
@@ -178,4 +187,41 @@ class ObjectDbPersistanceService extends ObjectDBService implements PersistanceS
   Future<void> setToken(String token) async {
     await _saveKeyValue('token', token);
   }
+
+  // @override
+  // Future<void> saveInstructionForSending(Instruction instruction) async {
+  //   List<Instruction> instructions = await getInstructionsForSending();
+  //   instructions.add(instruction);
+  //   await saveInstructionsForSending(instructions);
+  // }
+
+  // @override
+  // Future<void> saveReportForSending(Report report) {
+  //   // TODO: implement saveReportForSending
+  //   throw UnimplementedError();
+  // }
+
+  // @override
+  // Future<Iterable<Instruction>> getInstructionsForSending() async {
+  //   return (await _getKeyValue('instructionsForSending')).map((e) => Instruction.fromJson(e)).cast<Instruction>().toList();
+  // }
+
+  // @override
+  // Future<Iterable<Report>> getReportsForSending() {
+  //   // TODO: implement getReportsForSending
+  //   throw UnimplementedError();
+  // }
+
+  // @override
+  // Future<void> saveInstructionsForSending(
+  //     Iterable<Instruction> instructions) async {
+  //   await _saveKeyValue(
+  //       'instructionsForSending', instructions.map((e) => e.toJson()).toList());
+  // }
+
+  // @override
+  // Future<void> saveReportsForSending(Iterable<Report> reports) async {
+  //   // TODO: implement saveReportsForSending
+  //   throw UnimplementedError();
+  // }
 }

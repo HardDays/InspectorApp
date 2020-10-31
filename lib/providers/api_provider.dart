@@ -5,6 +5,7 @@ import 'package:inspector/model/address.dart';
 import 'package:inspector/model/area.dart';
 import 'package:inspector/model/check_status.dart';
 import 'package:inspector/model/check_type.dart';
+import 'package:inspector/model/control_object.dart';
 import 'package:inspector/model/department_code.dart';
 import 'package:inspector/model/district.dart';
 import 'package:inspector/model/employee.dart';
@@ -64,6 +65,7 @@ class ApiProvider {
     ViolatorInfoIp: '/dict/violator-info-ip',
     ResolutionType: '/dict/resolution-types',
     NormativeActArticle: '/dict/normative-act-articles',
+    ControlObject: '/dict/dc-objects',
   };
 
   final dio = Dio(BaseOptions(baseUrl: _url));

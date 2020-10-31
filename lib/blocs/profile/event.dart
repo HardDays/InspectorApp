@@ -12,6 +12,8 @@ class SetDataSendingMode extends ProfileBlocEvent {
   SetDataSendingMode(this.dataSendingMode);
 }
 
+class SendDataEvent extends ProfileBlocEvent {}
+
 class InitEvent extends ProfileBlocEvent {}
 
 class SendEmailEvent extends ProfileBlocEvent {}

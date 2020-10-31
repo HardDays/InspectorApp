@@ -3,4 +3,5 @@ mixin DataSendingConfigurationMixin {
   Future<DateTime> getLastDataSendingDate();
   Future<void> saveFingerprintState(bool state);
   Future<void> saveDataSendingState(bool state);
+  Future<bool> getDataSendingState(); 
 }

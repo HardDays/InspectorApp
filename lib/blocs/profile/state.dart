@@ -11,6 +11,8 @@ class FilledBlocState extends ProfileBlocState {
   final bool dataSendingMode;
   final bool useFingerprint;
   final String userName;
+  final bool sending;
+  final bool canBeSended;
 
   FilledBlocState({
     this.userName,
@@ -20,5 +22,7 @@ class FilledBlocState extends ProfileBlocState {
     this.dataSendingState,
     this.dataSendingMode,
     this.useFingerprint,
+    this.sending,
+    this.canBeSended,
   });
 }

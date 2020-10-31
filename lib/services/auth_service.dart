@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:device_info/device_info.dart';
 import 'package:inspector/model/user.dart';
 import 'package:inspector/providers/api_provider.dart';
+import 'package:inspector/providers/exceptions/api_exception.dart';
 import 'package:inspector/services/auth_exception.dart';
 import 'package:inspector/services/persistance_service.dart';
 
@@ -62,8 +63,8 @@ class AuthService {
       persistanceService.setToken(response['token']);
       apiProvider.setToken(response['token']);
       return user;
-    } catch (e) {
-      throw AuthException('');
+    } on ApiException catch (e) {
+      throw AuthException(e.message);
     }
   }
 }
