@@ -528,7 +528,7 @@ class InstructionPage extends StatelessWidget {
       InstructionStatusIds.partInProgress: 'Подтвердить исполнение',
       InstructionStatusIds.partComplete: 'Подтвердить исполнение',
     };
-     final functions = {
+    final functions = {
       InstructionStatusIds.assigned: ()=> _onStatus(context, InstructionStatusIds.inProgress),
       InstructionStatusIds.complete: null,
       InstructionStatusIds.withdrawn: null,

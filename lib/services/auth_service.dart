@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:device_info/device_info.dart';
 import 'package:inspector/model/user.dart';
 import 'package:inspector/providers/api_provider.dart';
 import 'package:inspector/services/auth_exception.dart';
@@ -42,7 +45,14 @@ class AuthService {
 
   Future<User> authentificate(String login, String password) async {
     try {
-      final response = await apiProvider.login(login, password);
+      final deviceInfo = DeviceInfoPlugin();
+      String deviceId;
+      if (Platform.isIOS) {
+        deviceId = (await deviceInfo.iosInfo).identifierForVendor;
+      } else {
+        deviceId = (await deviceInfo.androidInfo).androidId;
+      }
+      final response = await apiProvider.login(login, password, deviceId);
       final user = User.fromJson(response['employee']);
       final prev = await persistanceService.getPreviousUser();
       if(prev != null && prev.id != user.id) {

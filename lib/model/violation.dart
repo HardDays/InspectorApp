@@ -119,7 +119,7 @@ class Violation {
       'violationAddress': violationAddress?.toJson(),
       'objectCategory': objectCategory?.toJson(),
       'violationType': violationType?.toJson(),
-      'normativeActArticles': normativeActArticles != null ? normativeActArticles.where((e) => e.id != null).map((e) => e.toJson()).toList() : [],
+      'normativeActArticles': normativeActArticles != null ? normativeActArticles.map((e) => e.toJson()).toList() : [],
       'violators': violators.map((e) => e.toJson()).toList(),
       'photos': photos.map((e) => e.toJson()).toList(),
     };
