@@ -31,12 +31,12 @@ class ProfilePage extends StatelessWidget {
             appBar: AppBar(
               centerTitle: true,
               elevation: 0.0,
-              actions: [
-                IconButton(
-                  icon: Icon(Icons.code),
-                  onPressed: () => ExtendedNavigator.root.push(Routes.testPage),
-                )
-              ],
+              // actions: [
+              //   IconButton(
+              //     icon: Icon(Icons.code),
+              //     onPressed: () => ExtendedNavigator.root.push(Routes.testPage),
+              //   )
+              // ],
               backgroundColor: ProjectColors.darkBlue,
               title: Text(
                 'Профиль',
@@ -98,7 +98,10 @@ class ProfilePage extends StatelessWidget {
                       _buildSectionItem(
                         'Дата установки',
                         Text(
-                          state.installDate != null ? DateFormat('dd.MM.yyyy').format(state.installDate) : 'Не определено',
+                          state.installDate != null
+                              ? DateFormat('dd.MM.yyyy')
+                                  .format(state.installDate)
+                              : 'Не определено',
                           style: ProjectTextStyles.base
                               .apply(color: ProjectColors.black),
                         ),
@@ -141,7 +144,16 @@ class ProfilePage extends StatelessWidget {
                           flex: 1,
                           child: Container(),
                         ),
-                        ProjectButton.builtFlatButton('Отправить данные'),
+                        if (!state.sending)
+                          ProjectButton.builtFlatButton(
+                            'Отправить данные',
+                            disabled: state.dataSendingMode && !state.canBeSended,
+                            onPressed: () =>
+                                BlocProvider.of<ProfileBloc>(context)
+                                    .add(SendDataEvent()),
+                          )
+                        else
+                          CircularProgressIndicator()
                       ],
                     ),
                   ),

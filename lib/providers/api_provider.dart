@@ -34,7 +34,7 @@ import 'package:inspector/providers/exceptions/unauthorized_exception.dart';
 import 'package:inspector/providers/exceptions/unhadled_exception.dart';
 
 class ApiProvider {
-  static const _url = 'http://212.46.14.26:9930/oati-integration';
+  static const _url = 'http://212.46.14.26:9930/oati-integration-rest';
   static const _loginPath = '/login';
   static const _instructionsPath = '/instructions';
   static const _reportsPath = '/reports';
