@@ -1,21 +1,15 @@
 import 'package:bloc/bloc.dart';
-import 'package:flutter/services.dart';
 import 'package:inspector/blocs/instruction_list/events.dart';
 import 'package:inspector/blocs/instruction_list/states.dart';
 import 'package:inspector/model/instruction.dart';
-import 'package:inspector/model/instruction_status.dart';
 import 'package:inspector/providers/exceptions/api_exception.dart';
-import 'package:inspector/services/api/api_service.dart';
 import 'package:inspector/services/instructions_service.dart';
-import 'package:inspector/services/objectdb/objectdb_persistance_service.dart';
 import 'package:intl/intl.dart';
 
 
 class InstructionListBloc extends Bloc<InstructionListBlocEvent, InstructionListBlocState> {
   InstructionListBloc(initialState) : super(initialState);
 
-  // final _apiService = ApiService();
-  // final _dbService = ObjectDBInstructionsService();
   final _service = InstructionsService();
 
   @override
@@ -111,7 +105,6 @@ class InstructionListBloc extends Bloc<InstructionListBlocEvent, InstructionList
       result.sort((c1, c2) => c1.instructionDate.compareTo(c2.instructionDate));
     } else {
       result.sort((c1, c2) => c1.instructionStatus.id.compareTo(c2.instructionStatus.id));
-     // result.sort((c1, c2) => InstructionStatusStrings.all.indexOf(c1.instructionStatus.name).compareTo(InstructionStatusStrings.all.indexOf(c2.instructionStatus.name)));
     }
     return result;
   }

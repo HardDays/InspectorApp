@@ -287,7 +287,7 @@ class InstructionPage extends StatelessWidget {
                 child: IntrinsicWidth(
                   child: Column(
                     children: [
-                      Text('Рапорт № ${report.reportNum} от ${DateFormat('dd.MM.yyyy').format(report.reportDate)}',
+                      Text('Рапорт № ${report.reportNum} от ${report.reportDate != null ? DateFormat('dd.MM.yyyy').format(report.reportDate) : ''}',
                         style: ProjectTextStyles.baseBold.apply(color: ProjectColors.blue),
                       ),
                       Container(

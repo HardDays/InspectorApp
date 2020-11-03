@@ -833,7 +833,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
           }  
           return Scaffold(
             backgroundColor: Colors.white,
-            appBar: ProjectAppbar('Рапорт ${widget.report.reportNum ?? ''}'),
+            appBar: ProjectAppbar('Рапорт ${widget.report.reportNum ?? ''}',),
             body: SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.only(left: 30, right: 30, top: 20),

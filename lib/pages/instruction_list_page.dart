@@ -7,9 +7,11 @@ import 'package:inspector/blocs/instruction_list/bloc.dart';
 import 'package:inspector/blocs/instruction_list/states.dart';
 import 'package:inspector/blocs/instruction_list/events.dart';
 import 'package:inspector/model/instruction.dart';
+import 'package:inspector/model/instruction_status.dart';
 import 'package:inspector/pages/instruction_page.dart';
 import 'package:inspector/style/colors.dart';
 import 'package:inspector/style/filter_appbar.dart';
+import 'package:inspector/style/text_style.dart';
 import 'package:inspector/style/top_dialog.dart';
 import 'package:inspector/widgets/instruction/filters.dart';
 import 'package:inspector/widgets/instruction/instruction.dart';
@@ -104,6 +106,7 @@ class InstructionListPageState extends State<InstructionListPage> with Automatic
             appBar: FilterAppbar('Поручения', 
               state.date != null ? DateFormat('dd.MM.yyyy HH:mm').format(state.date) : 'Не обновлялось',
               state.sort ?? InstructionSortStrings.instructionStatus,
+              titleIcon: _buildIcons(state),
               onUpdate: ()=> _onUpdate(context),
               onSort: ()=> _onSort(context, state.sort),
               onFilter: ()=> _onFilter(context, state.filters),
@@ -133,6 +136,45 @@ class InstructionListPageState extends State<InstructionListPage> with Automatic
     }  else {
       return Container();
     }
+  }
+
+  Widget _buildIcons(InstructionListBlocState state) {
+    int totalCount = 0;
+    int newCount = 0;
+    if (state is DataState) {
+      totalCount = state.instructions.length;
+      newCount = state.instructions.where((e) => e.instructionStatus.id == InstructionStatusIds.assigned).length;
+    }
+    return Container(
+      height: 25,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(30),
+        color: ProjectColors.blue
+      ),  
+      margin: const EdgeInsets.only(left: 8, top: 3),
+      child: Row(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: ProjectColors.cyan
+            ),
+            height: 25,
+            width: 25,
+            alignment: Alignment.center,
+            child: Text('$newCount',
+              style: ProjectTextStyles.baseBold,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 5, right: 10),
+            child: Text('$totalCount',
+              style: ProjectTextStyles.baseBold,
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   Widget _buildLoader() {

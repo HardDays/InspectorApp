@@ -34,6 +34,7 @@ import 'package:inspector/services/api/datata_service.dart';
 import 'package:inspector/services/api/here_service.dart';
 import 'package:inspector/services/dictionary_service.dart';
 import 'package:inspector/services/geo_service.dart';
+import 'package:inspector/services/objectdb/objectdb_persistance_service.dart';
 import 'package:inspector/services/reports_service.dart';
 
 import 'package:latlong/latlong.dart';
@@ -85,6 +86,7 @@ class TotalReportDialogBloc extends Bloc<TotalReportDialogBlocEvent, TotalReport
 class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {
   TotalReportBloc(initialState) : super(initialState);
 
+  final _persistanceService = ObjectDbPersistanceService();
   final _dictionaryService = DictionaryService();
   final _reportsService = ReportsService();
   final _geoService = GeoService();
@@ -443,12 +445,18 @@ class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {
       final statuses = await _dictionaryService.getReportStatuses(id: event.status);
       final status = statuses.first;
       final photos = event.photos.map((e) => c.base64Encode(e)).map((e) => Photo(data: e)).toList();
+      final user = await _persistanceService.getUser();
+      final local = status.id == ReportStatusIds.new_ || status.id == ReportStatusIds.project;
+      final date = state.report.reportDate ?? DateTime.now();
+      final number = state.report.reportNum ?? Random().nextInt(1000000).toString();
+
       Report report = state.report;
       if (state.report.violationNotPresent) {
         report = report.copyWith(
           reportStatus: status,
-          reportDate: state.report.reportDate ?? DateTime.now(),
-          reportNum: state.report.reportNum ?? Random().nextInt(1000000).toString(),
+          reportDate: date,
+          reportNum: number,
+          reportAuthor: user,
           photos: photos
         );
       } else {
@@ -461,11 +469,12 @@ class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {
             location = LatLng(resLocation.lat, resLocation.lng);
           }
         }
-
+                
         report = report.copyWith(
           reportStatus: status,
-          reportDate: state.report.reportDate ?? DateTime.now(),
-          reportNum: state.report.reportNum ?? Random().nextInt(1000000).toString(),
+          reportDate: date,
+          reportNum: number,
+          reportAuthor: user,
           violation: violation.copyWith(
             violators: event.violators,
             photos: photos,
@@ -481,10 +490,10 @@ class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {
         );
       }
       try {
-        final local = status.id == ReportStatusIds.new_ || status.id == ReportStatusIds.project;
         final res = await _reportsService.create(report, local: local);
         yield SuccessState(res, state.userLocation, state.violationLocation);
       } on ApiException catch (ex) {
+        await _reportsService.createError(ReportError(report: report, error: '${ex.message} ${ex.details}'));
         yield ErrorState(ex, state.report, state.userLocation, state.violationLocation);
       } catch (ex) {
         yield ErrorState(UnhandledException(ex.toString()), state.report, state.userLocation, state.violationLocation);

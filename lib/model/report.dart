@@ -13,6 +13,29 @@ abstract class ReportStatusIds {
   static const changed = 5;
 }
 
+class ReportError {
+  final Report report;
+  final String error;
+
+  ReportError({this.report, this.error});
+
+   factory ReportError.fromJson(Map<String, dynamic> json) {
+     return ReportError(
+       report: Report.fromJson(json['report']),
+       error: json['error']
+     );
+   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'report': report.toJson(),
+      'instructionId': report.instructionId,
+      'checkId': report.checkId,
+      'error': error
+    };
+  }
+}
+
 class Report {
   final int id;
   final int instructionId;
@@ -76,10 +99,11 @@ class Report {
   Report copyWith({
     bool violationNotPresent,
     String reportNum,
+    DateTime reportDate,
     ReportStatus reportStatus,
     Violation violation,
+    User reportAuthor,
     List<Photo> photos,
-    DateTime reportDate,
   }) {
     return Report(
       id: id,
@@ -89,14 +113,14 @@ class Report {
       reportNum: reportNum ?? this.reportNum,
       reportDate: reportDate ?? this.reportDate,
       reportStatus: reportStatus ?? this.reportStatus,
-      reportAuthor: reportAuthor,
+      reportAuthor: reportAuthor ?? this.reportAuthor,
       violation: violation ?? this.violation?.copyWith(),
       diggRequestChecks: List.from(diggRequestChecks),
       photos: List.from(photos ?? this.photos),
     );
   }
   
-   Map<String, dynamic> toJson() {
+  Map<String, dynamic> toJson() {
     return {
       'id': id,
       'instructionId': instructionId,

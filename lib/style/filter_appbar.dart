@@ -10,6 +10,7 @@ class FilterAppbar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final String date;
   final String sort;
+  final Widget titleIcon;
   final Function onUpdate;
   final Function onSort;
   final Function onFilter;
@@ -18,6 +19,7 @@ class FilterAppbar extends StatelessWidget implements PreferredSizeWidget {
     this.title, 
     this.date, 
     this.sort, {
+      this.titleIcon,
       this.onUpdate,
       this.onSort,
       this.onFilter
@@ -45,35 +47,8 @@ class FilterAppbar extends StatelessWidget implements PreferredSizeWidget {
               textAlign: TextAlign.center,
             ),
             Container(
-              height: 25,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(30),
-                color: ProjectColors.blue
-              ),  
-              margin: const EdgeInsets.only(left: 8, top: 3),
-              child: Row(
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: ProjectColors.cyan
-                    ),
-                    height: 25,
-                    width: 25,
-                    alignment: Alignment.center,
-                    child: Text('1',
-                      style: ProjectTextStyles.baseBold,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 5, right: 10),
-                    child: Text('1',
-                      style: ProjectTextStyles.baseBold,
-                    ),
-                  ),
-                ],
-              ),
-            ),
+              child: titleIcon,
+            )
           ],
         ),
       ),
