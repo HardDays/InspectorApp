@@ -57,7 +57,7 @@ class ReportsService {
     await _reportErrorsDbService.save({'instructionId': reportError.report.instructionId, 'checkId': reportError.report.checkId}, reportError);
   }
 
-  Future<List<ReportError>> errors() async {
+  Future<List<ReportError>> reportErrors() async {
     return await _reportErrorsDbService.all();
   }
 
