@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:inspector/blocs/documents_for_sending/events.dart';
-import 'package:inspector/blocs/documents_for_sending/states.dart';
+import 'package:inspector/blocs/documents_for_editing/events.dart';
+import 'package:inspector/blocs/documents_for_editing/states.dart';
 import 'package:inspector/model/report.dart';
 import 'package:inspector/services/reports_service.dart';
 
@@ -13,16 +13,15 @@ class DocumentsBloc extends Bloc<DocumentsBlocEvent, DocumentsBlocState> {
 
   @override
   Stream<DocumentsBlocState> mapEventToState(DocumentsBlocEvent event) async* {
-    if(event is LoadEvent) _onLoadEvent(event);
+    if (event is LoadEvent) yield* _onLoadEvent(event);
   }
 
   Stream<DocumentsBlocState> _onLoadEvent(LoadEvent _) async* {
-    final reports = (await _reportsService.all()).where((e) => _isReportReadyToSend(e)).toList();
-    yield(LoadedState(reports));
+    final reports = await _reportsService.reportErrors();
+    if (reports.isEmpty) {
+      yield (EmptyState());
+    } else {
+      yield (LoadedState(reports));
+    }
   }
-
-  bool _isReportReadyToSend(Report report) {
-    return report.reportStatus.id != ReportStatusIds.new_ && report.reportStatus.id != ReportStatusIds.project;
-  }
-
 }

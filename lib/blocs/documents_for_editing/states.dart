@@ -1,4 +1,3 @@
-import 'package:inspector/blocs/documents_for_sending/events.dart';
 import 'package:inspector/model/report.dart';
 
 abstract class DocumentsBlocState {}
@@ -6,7 +5,9 @@ abstract class DocumentsBlocState {}
 class LoadingState extends DocumentsBlocState {}
 
 class LoadedState extends DocumentsBlocState {
-  final Iterable<Report> reports;
+  final Iterable<ReportError> reports;
 
   LoadedState(this.reports);
 }
+
+class EmptyState extends DocumentsBlocState {}
