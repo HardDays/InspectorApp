@@ -39,21 +39,23 @@ class Document extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        GestureDetector(
-          onTap: () async {
-            await Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        TotalReportPage(report: report.report)));
-          },
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              'Рапорт №${report.report.reportNum} от ${DateFormat("dd.MM.yyyy").format(report.report.reportDate)}',
-              style: ProjectTextStyles.subTitle.apply(
-                color: ProjectColors.blue,
-                decoration: TextDecoration.underline,
+        Flexible(
+          child: GestureDetector(
+            onTap: () async {
+              await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          TotalReportPage(report: report.report)));
+            },
+            child: Padding(
+              padding: const EdgeInsets.only(right: 8, top: 8, bottom: 8),
+              child: Text(
+                'Рапорт №${report.report.reportNum} от ${DateFormat("dd.MM.yyyy").format(report.report.reportDate)}',
+                style: ProjectTextStyles.subTitle.apply(
+                  color: ProjectColors.blue,
+                  decoration: TextDecoration.underline,
+                ),
               ),
             ),
           ),

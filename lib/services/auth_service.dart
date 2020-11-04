@@ -26,7 +26,8 @@ class AuthService {
 
   Future<bool> isAuthentificated() async {
     final token = await persistanceService.getToken();
-    if(token != null) {       
+    if (token != null) {       
+      //todo в другой метод может быть
       try {
         final refreshToken = await persistanceService.getRefreshToken();
         final deviceId = await _deviceId();
@@ -39,9 +40,7 @@ class AuthService {
       }
     }
     return (await persistanceService.getUser()) != null;
-  }
-
-  
+  }  
 
   Future<bool> isPinCorrect(String pin) async {
     return (await persistanceService.getPin()) == pin;

@@ -15,8 +15,8 @@ class HereService {
           street: address['street'],
           district: address['district'],
           house: address['houseNumber'],
-          lat: data['position']['lat'],
-          lng: data['position']['lng'],
+          lat: data['position'] != null ? data['position']['lat'] : null,
+          lng: data['position'] != null ? data['position']['lng'] : null,
         ),
       );
     }

@@ -204,7 +204,7 @@ class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {
       if (position != null && position.latitude != 0 && position.longitude != 0) {
         yield UserLocationLoadedState(event.report, LatLng(position.latitude, position.longitude), state.violationLocation);
       }
-
+      
       final address = state.report.violation?.violationAddress;
       if (address?.latitude != null && address?.longitude != null) {
         yield ViolationLocationLoadedState(event.report, state.userLocation, LatLng(address.latitude, address.longitude));
