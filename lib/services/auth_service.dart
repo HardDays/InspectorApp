@@ -13,13 +13,35 @@ class AuthService {
 
   AuthService(this.persistanceService);
 
+  Future<String> _deviceId() async {
+    final deviceInfo = DeviceInfoPlugin();
+    String deviceId;
+    if (Platform.isIOS) {
+      deviceId = (await deviceInfo.iosInfo).identifierForVendor;
+    } else {
+      deviceId = (await deviceInfo.androidInfo).androidId;
+    }
+    return deviceId;
+  }
+
   Future<bool> isAuthentificated() async {
-    String token = await persistanceService.getToken();
-    if(token != null) {
-      apiProvider.setToken(token);
+    final token = await persistanceService.getToken();
+    if(token != null) {       
+      try {
+        final refreshToken = await persistanceService.getRefreshToken();
+        final deviceId = await _deviceId();
+        final response = await apiProvider.refresh(refreshToken, deviceId);
+        apiProvider.setToken(response['token']);
+        await persistanceService.setToken(response['token']);
+        await persistanceService.setRefreshToken(response['refreshToken']);
+      } catch (ex) {
+        apiProvider.setToken(token);
+      }
     }
     return (await persistanceService.getUser()) != null;
   }
+
+  
 
   Future<bool> isPinCorrect(String pin) async {
     return (await persistanceService.getPin()) == pin;
@@ -46,13 +68,7 @@ class AuthService {
 
   Future<User> authentificate(String login, String password) async {
     try {
-      final deviceInfo = DeviceInfoPlugin();
-      String deviceId;
-      if (Platform.isIOS) {
-        deviceId = (await deviceInfo.iosInfo).identifierForVendor;
-      } else {
-        deviceId = (await deviceInfo.androidInfo).androidId;
-      }
+      final deviceId = await _deviceId();
       final response = await apiProvider.login(login, password, deviceId);
       final user = User.fromJson(response['employee']);
       final prev = await persistanceService.getPreviousUser();
@@ -61,6 +77,7 @@ class AuthService {
       }
       persistanceService.saveUser(user);
       persistanceService.setToken(response['token']);
+      persistanceService.setRefreshToken(response['refreshToken']);
       apiProvider.setToken(response['token']);
       return user;
     } on ApiException catch (e) {

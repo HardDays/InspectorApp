@@ -8,7 +8,9 @@ mixin UserMixin {
   Future<void> saveFingerprintState(bool state);
   Future<void> saveDataSendingState(bool state);
   Future<String> getToken();
+  Future<String> getRefreshToken();
   Future<void> setToken(String token);
+  Future<void> setRefreshToken(String token);
 
   Future<bool> getFingerprintState();
   Future<bool> getDataSendingState();

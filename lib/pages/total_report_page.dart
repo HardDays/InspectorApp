@@ -1677,13 +1677,15 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
             mapController: _mapController,
             options: MapOptions(
               center: LatLng(55.746875, 37.6200),
-              zoom: 16.5,
+              zoom: 14,
               onTap: (value)=> _onMapTap(context, value)
             ),
             layers: [
               TileLayerOptions(
                 urlTemplate: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
                 subdomains: ['a', 'b', 'c']
+                // tileProvider: AssetTileProvider(),
+                // urlTemplate: "assets/map_tiles/{z}/{x}/{y}.png",
               ),
               MarkerLayerOptions(
                 markers: markers

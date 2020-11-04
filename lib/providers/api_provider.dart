@@ -36,6 +36,7 @@ import 'package:inspector/providers/exceptions/unhadled_exception.dart';
 class ApiProvider {
   static const _url = 'http://212.46.14.26:9930/oati-integration';
   static const _loginPath = '/auth/login';
+  static const _refreshPath = '/auth/refresh';
   static const _instructionsPath = '/instructions';
   static const _reportsPath = '/reports';
 
@@ -134,6 +135,19 @@ class ApiProvider {
           'user': user,
           'password': password
         },
+        options: Options(
+          headers: {
+            'Device-UID': deviceId
+          }
+        )
+      )
+    );
+  }
+
+  Future<dynamic> refresh(String refreshToken, String deviceId) async {
+    return _request(
+      ()=> dio.post(_refreshPath,
+        data: refreshToken,
         options: Options(
           headers: {
             'Device-UID': deviceId

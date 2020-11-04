@@ -46,7 +46,7 @@ class ReportsService {
   }
 
   bool _isReportLocal(Report report) {
-    return report.reportStatus.id == ReportStatusIds.new_ || report.reportStatus.id == ReportStatusIds.project;
+    return report.reportStatus?.id == ReportStatusIds.new_ || report.reportStatus?.id == ReportStatusIds.project;
   }
 
   Future remove(Report report) async {
