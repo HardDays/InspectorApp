@@ -13,6 +13,7 @@ import 'package:inspector/style/colors.dart';
 import 'package:inspector/style/icons.dart';
 import 'package:inspector/style/text_style.dart';
 import 'package:inspector/style/switch.dart';
+import 'package:inspector/widgets/profile/documents_for_editing.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -132,7 +133,7 @@ class ProfilePage extends StatelessWidget {
                       ),
                       _buildSectionItem(
                         'Документы, требующие изменений',
-                        Container(),
+                        DocumentsForEditingWidget(),
                       ),
                     ],
                   ),
