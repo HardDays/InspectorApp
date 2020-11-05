@@ -4,12 +4,14 @@ import 'package:inspector/services/api/api_service.dart';
 import 'package:inspector/services/mixins/data_sending_configuration_mixin.dart';
 import 'package:inspector/services/objectdb/objectdb_collection_service.dart';
 import 'package:inspector/services/objectdb/objectdb_persistance_service.dart';
+import 'package:inspector/services/sqlite/sqlite_reports_service.dart';
 
 class ReportsService {
 
   final _apiService = ApiService();
-  final _reportsDbService = ObjectDbCollectionService<Report>('reports.db', (json) => Report.fromJson(json));
-  final _reportErrorsDbService = ObjectDbCollectionService<ReportError>('report_errors.db', (json) => ReportError.fromJson(json));
+  //final _reportsDbService = ObjectDbCollectionService<Report>('reports.db', (json) => Report.fromJson(json));
+  final _reportsDbService = SqliteReportsService();
+  //final _reportErrorsDbService = ObjectDbCollectionService<ReportError>('report_errors.db', (json) => ReportError.fromJson(json));
 
   final DataSendingConfigurationMixin _dataSendingConfiguration = ObjectDbPersistanceService();
 
@@ -30,14 +32,16 @@ class ReportsService {
   }
 
   Future<Iterable<Report>> readyToSend() async {
-    return (await _reportsDbService.all()).where((element) => !_isReportLocal(element)).toList();
+    final ready = await _reportsDbService.all();
+    return ready.where((element) => !element.isNew).toList();
+    //return (await _reportsDbService.all()).where((element) => !element.isNew).toList();
   }
 
-  Future<Report> create(Report report, {bool local = false}) async {
+  Future<Report> create(Report report, {String error, bool local = false}) async {
     // для тестирования
-    //throw ApiException('Ошибка', details: 'Ошибка н111н');
     if (local || !(await _dataSendingConfiguration.getDataSendingState())) {
-      await _reportsDbService.save({'instructionId': report.instructionId, 'checkId': report.checkId}, report);
+      //await _reportsDbService.save({'instructionId': report.instructionId, 'checkId': report.checkId}, report);
+      await _reportsDbService.save(report, error: error);
       return report;
     } else {
       await _dataSendingConfiguration.saveLastDataSendingDate(DateTime.now());
@@ -45,20 +49,13 @@ class ReportsService {
     }
   }
 
-  bool _isReportLocal(Report report) {
-    return report.reportStatus?.id == ReportStatusIds.new_ || report.reportStatus?.id == ReportStatusIds.project;
-  }
-
   Future remove(Report report) async {
-    await _reportsDbService.remove({'instructionId': report.instructionId, 'checkId': report.checkId});
-  }
-
-  Future createError(ReportError reportError) async {
-    await _reportErrorsDbService.save({'instructionId': reportError.report.instructionId, 'checkId': reportError.report.checkId}, reportError);
+    await _reportsDbService.remove(report);
   }
 
   Future<List<ReportError>> reportErrors() async {
-    return await _reportErrorsDbService.all();
+   //return [];
+    return await _reportsDbService.errors();
   }
 
 }

@@ -5,13 +5,15 @@ import 'package:inspector/services/api/api_service.dart';
 import 'package:inspector/services/instruction_request_service.dart';
 import 'package:inspector/services/objectdb/objectdb_collection_service.dart';
 import 'package:inspector/services/objectdb/objectdb_persistance_service.dart';
+import 'package:inspector/services/sqlite/sqlite_reports_service.dart';
 
 class InstructionsService {
 
   final _apiService = ApiService();
   final _persistanceService = ObjectDbPersistanceService();
   final _instructionsDbService = ObjectDbCollectionService<Instruction>('instructions.db', (json) => Instruction.fromJson(json));
-  final _reportsDbService = ObjectDbCollectionService<Report>('reports.db', (json) => Report.fromJson(json));
+  //final _reportsDbService = ObjectDbCollectionService<Report>('reports.db', (json) => Report.fromJson(json));
+  final _reportsDbService = SqliteReportsService();
   final _instructionRequestService = InstructionRequestService();
 
   static final _instance = InstructionsService._internal();
@@ -51,7 +53,7 @@ class InstructionsService {
     if (reload) {
       final data = await _apiService.getInstructions();
       await _persistanceService.saveInstructionsDate();
-      _instructionsDbService.saveAll(data);
+      await _instructionsDbService.saveAll(data);
       return data;
     } else {
       return await _instructionsDbService.all();
@@ -64,7 +66,7 @@ class InstructionsService {
       await _persistanceService.saveInstructionsReportDate(id);
       if (data.isNotEmpty) {
         for (final report in data) {
-          await _reportsDbService.save({'instructionId': id, 'checkId': report.checkId}, report);
+          await _reportsDbService.save(report);
         }
         return data;
       } else {

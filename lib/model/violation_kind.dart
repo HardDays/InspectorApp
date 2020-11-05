@@ -7,7 +7,7 @@ class ViolationKind {
   
   ViolationKind({
     @required this.id,
-    @required this.name,
+    this.name,
   });
 
   factory ViolationKind.fromJson(Map<String, dynamic> json) {

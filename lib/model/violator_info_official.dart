@@ -78,7 +78,7 @@ class ViolatorInfoOfficial extends ViolatorInfo {
       'orgInn': orgInn,
       'orgOgrn': orgOgrn,
       'orgKpp': orgKpp,
-      'orgRegDate': orgRegDate?.toString(),
+      'orgRegDate': orgRegDate?.toIso8601String(),
       'orgPhone': orgPhone,
       'orgLegalAddress': orgLegalAddress != null ? stringified ? c.json.encode(orgLegalAddress.toJson()) : orgLegalAddress.toJson() : null,
       'orgPostalAddress': orgPostalAddress != null ? stringified ? c.json.encode(orgPostalAddress.toJson()) : orgPostalAddress.toJson() : null,

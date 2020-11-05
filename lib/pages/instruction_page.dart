@@ -326,7 +326,15 @@ class InstructionPage extends StatelessWidget {
       );
     } else {
       if (state is LoadingReportsState) {
-        return Container();
+        return Container(
+          width: 20,
+          height: 20,
+          //margin: const EdgeInsets.only(left: 10),
+          child: CircularProgressIndicator(
+            strokeWidth: 2,
+            valueColor: AlwaysStoppedAnimation(ProjectColors.darkBlue),
+          ),
+        );
       } else {
         return _buildReportButton(context, report, check, instruction);
       }
@@ -353,11 +361,11 @@ class InstructionPage extends StatelessWidget {
 
   Widget _buildDiggReuestCheck(BuildContext context, Report report, InstructionCheck check, DiggRequestCheck diggRequestCheck, bool divider) {
     final enabled = report != null && 
-                    report.reportStatus.id != ReportStatusIds.onApproval && 
-                    report.reportStatus.id != ReportStatusIds.accepted &&
-                    (instruction.instructionStatus.id == InstructionStatusIds.inProgress ||
-                    instruction.instructionStatus.id == InstructionStatusIds.partComplete ||
-                    instruction.instructionStatus.id == InstructionStatusIds.partInProgress);
+      report.reportStatus.id != ReportStatusIds.onApproval && 
+      report.reportStatus.id != ReportStatusIds.accepted &&
+      (instruction.instructionStatus.id == InstructionStatusIds.inProgress ||
+      instruction.instructionStatus.id == InstructionStatusIds.partComplete ||
+      instruction.instructionStatus.id == InstructionStatusIds.partInProgress);
     String status;
     if (diggRequestCheck.workCompleted) {
       if (diggRequestCheck.landscapingRestored) {

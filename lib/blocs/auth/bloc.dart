@@ -21,6 +21,7 @@ class AuthBloc extends Bloc<AuthBlocEvent, AuthBlocStates> {
       SetPasswordEvent: (event) =>
           _onSetPasswordEvent(event as SetPasswordEvent),
       SetLoginEvent: (event) => _onSetLoginEvent(event as SetLoginEvent),
+      SetUrlEvent: (event) => _onSetUrlEvent(event as SetUrlEvent),
       LoginEvent: (event) => _onLoginEvent(event as LoginEvent),
     };
     add(EnterAuthScreenEvent());
@@ -102,6 +103,10 @@ class AuthBloc extends Bloc<AuthBlocEvent, AuthBlocStates> {
     } on AuthException catch (e) {
       yield ShowLoginErrorScreen(e.message);
     }
+  }
+
+  Stream<AuthBlocStates> _onSetUrlEvent(SetUrlEvent event) {
+    _authService.setUrl(event.url);
   }
 
   Future<bool> _checkBiometric() async {

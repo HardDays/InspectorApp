@@ -7,7 +7,7 @@ class Info extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 38.0),
+      padding: const EdgeInsets.only(bottom: 20.0),
       child: Column(
         children: [
           RichText(

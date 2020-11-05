@@ -21,4 +21,12 @@ class SetLoginEvent extends AuthBlocEvent {
 
 }
 
+class SetUrlEvent extends AuthBlocEvent {
+  final String url;
+
+  SetUrlEvent(this.url);
+
+}
+
+
 class LoginEvent extends AuthBlocEvent {}

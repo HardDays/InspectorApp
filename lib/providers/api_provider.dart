@@ -34,7 +34,7 @@ import 'package:inspector/providers/exceptions/unauthorized_exception.dart';
 import 'package:inspector/providers/exceptions/unhadled_exception.dart';
 
 class ApiProvider {
-  static const _url = 'http://212.46.14.26:9930/oati-integration';
+  static const _defaultUrl = 'http://212.46.14.26:9930/oati-integration';
   static const _loginPath = '/auth/login';
   static const _refreshPath = '/auth/refresh';
   static const _instructionsPath = '/instructions';
@@ -69,7 +69,7 @@ class ApiProvider {
     ControlObject: '/dict/dc-objects',
   };
 
-  final dio = Dio(BaseOptions(baseUrl: _url));
+  final dio = Dio(BaseOptions(baseUrl: _defaultUrl));
 
   static final _instance = ApiProvider._internal();
 
@@ -125,6 +125,14 @@ class ApiProvider {
       dio.options.headers = {
         'Authorization': "Bearer " + token
       };
+    }
+  }
+
+  void setUrl(String url) {
+    if (url != null && url.isNotEmpty) {
+      dio.options.baseUrl = url;
+    } else {
+      dio.options.baseUrl = _defaultUrl;
     }
   }
 

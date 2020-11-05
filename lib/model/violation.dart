@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 import 'package:inspector/model/address.dart';
 import 'package:inspector/model/normative_act.dart';
@@ -5,6 +7,7 @@ import 'package:inspector/model/normative_act_article.dart';
 import 'package:inspector/model/object_category.dart';
 import 'package:inspector/model/photo.dart';
 import 'package:inspector/model/special_object.dart';
+import 'package:inspector/model/violation_kind.dart';
 import 'package:inspector/model/violation_status.dart';
 import 'package:inspector/model/violation_type.dart';
 import 'package:inspector/model/violator.dart';
@@ -23,6 +26,7 @@ class Violation {
   final Address violationAddress;
   final ObjectCategory objectCategory;
   final ViolationType violationType;
+  final ViolationKind violationKind;
   
   final List<NormativeActArticle> normativeActArticles;
   final List<Violator> violators;
@@ -43,6 +47,7 @@ class Violation {
     this.normativeActArticles,
     this.violators,
     this.photos,
+    this.violationKind,
   });
 
   factory Violation.empty() {
@@ -54,6 +59,7 @@ class Violation {
       violators: [
         Violator.empty()
       ],
+      violationKind: ViolationKind(id: 3),
       photos: []
     );
   }
@@ -71,6 +77,7 @@ class Violation {
       violationAddress: json['violationAddress'] != null ? Address.fromJson(json['violationAddress']) : null,
       objectCategory: json['objectCategory'] != null ? ObjectCategory.fromJson(json['objectCategory']) : null,
       violationType: json['violationType'] != null ? ViolationType.fromJson(json['violationType']) : null,
+      violationKind: json['violationKind'] != null ? ViolationKind.fromJson(json['violationKind']) : null,
       normativeActArticles: json['normativeActArticles'] != null ? List<NormativeActArticle>.from(json['normativeActArticles'].map((p) => NormativeActArticle.fromJson(p))) : [],
       violators: json['violators'] != null ? List<Violator>.from(json['violators'].map((p) => Violator.fromJson(p))) : [],
       photos: json['photos'] != null ? List<Photo>.from(json['photos'].map((p) => Photo.fromJson(p))) : [],
@@ -103,6 +110,7 @@ class Violation {
       normativeActArticles: normativeActArticles ?? List.from(this.normativeActArticles),
       violators: violators ?? List.from(this.violators),
       photos: photos ?? List.from(this.photos),
+      violationKind: violationKind,
     );
   }
   
@@ -122,6 +130,7 @@ class Violation {
       'normativeActArticles': normativeActArticles != null ? normativeActArticles.map((e) => e.toJson()).toList() : [],
       'violators': violators.map((e) => e.toJson()).toList(),
       'photos': photos.map((e) => e.toJson()).toList(),
+      'violationKind': violationKind?.toJson()
     };
   }
 }

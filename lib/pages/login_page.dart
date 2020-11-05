@@ -40,8 +40,8 @@ class LoginPage extends StatelessWidget {
                 Spacer(),
                 Image.asset(
                   'images/logo.png',
-                  width: 200.0,
-                  height: 200.0,
+                  width: 180.0,
+                  height: 180.0,
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 35.0, bottom: 34.0),
@@ -73,6 +73,24 @@ class LoginPage extends StatelessWidget {
                 ),
                 button,
                 Spacer(),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 20),
+                  child: TextField(
+                  style: TextStyle(
+                    color: ProjectColors.darkBlue,
+                    ).merge(ProjectTextStyles.base),
+                    decoration: InputDecoration(
+                      hintText: 'Адрес сервера',
+                      hintStyle: TextStyle(
+                        color: ProjectColors.mediumBlue,
+                      ).merge(ProjectTextStyles.base),
+                      border: UnderlineInputBorder(
+                        borderSide: BorderSide(color: ProjectColors.mediumBlue),
+                      ),
+                    ),
+                    onChanged: (login) => BlocProvider.of<AuthBloc>(context).add(SetUrlEvent(login)),
+                  ),
+                ),
                 Info(),
               ],
             ),

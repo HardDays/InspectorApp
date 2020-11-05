@@ -94,7 +94,7 @@ class ViolatorInfoPrivate extends ViolatorInfo{
       'docSeries': docSeries,
       'docNumber': docNumber,
       'gender': gender,
-      'birthDate': birthDate?.toString(),
+      'birthDate': birthDate?.toIso8601String(),
       'birthPlace': birthPlace,
       'registrationAddress': registrationAddress != null ? stringified ? c.json.encode(registrationAddress.toJson()) : registrationAddress.toJson() : null,
     };

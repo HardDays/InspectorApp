@@ -367,8 +367,18 @@ class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {
           departmentCode: event.departmentCode
         );
       } else if (event is SetViolatorInfoEvent) {
+        ViolatorInfo violatorInfo = violator?.violatorPerson;
+        if (violator?.type?.id == ViolatorTypeIds.ip) {
+          violatorInfo = ViolatorInfoIp();
+        } else if (violator?.type?.id== ViolatorTypeIds.private) {
+          violatorInfo = ViolatorInfoPrivate();
+        } else if (violator?.type?.id == ViolatorTypeIds.official) {
+          violatorInfo = ViolatorInfoOfficial();
+        } else if (violator?.type?.id == ViolatorTypeIds.legal) {
+          violatorInfo = ViolatorInfoLegal();
+        }
         violator = violator.copyWith(
-          violatorPerson: event.violatorPerson ?? ViolatorInfo()
+          violatorPerson: event.violatorPerson ?? violatorInfo
         );
       } else if (event is SetViolatorDocumentTypeEvent) {
         final person = violator.violatorPerson;
@@ -493,7 +503,8 @@ class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {
         final res = await _reportsService.create(report, local: local);
         yield SuccessState(res, state.userLocation, state.violationLocation);
       } on ApiException catch (ex) {
-        await _reportsService.createError(ReportError(report: report, error: '${ex.message} ${ex.details}'));
+        final status = await _dictionaryService.getReportStatuses(id: ReportStatusIds.new_);
+        await _reportsService.create(report.copyWith(reportStatus: status.first), error: '${ex.message} ${ex.details}', local: true);
         yield ErrorState(ex, state.report, state.userLocation, state.violationLocation);
       } catch (ex) {
         yield ErrorState(UnhandledException(ex.toString()), state.report, state.userLocation, state.violationLocation);

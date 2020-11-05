@@ -24,6 +24,10 @@ class AuthService {
     return deviceId;
   }
 
+  void setUrl(String url) {
+    apiProvider.setUrl(url);
+  }
+
   Future<bool> isAuthentificated() async {
     final token = await persistanceService.getToken();
     if (token != null) {       

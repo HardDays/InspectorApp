@@ -84,7 +84,7 @@ class ViolatorInfoLegal extends ViolatorInfo {
       'inn': inn,
       'ogrn': ogrn,
       'kpp': kpp,
-      'regDate': regDate?.toString(),
+      'regDate': regDate?.toIso8601String(),
       'legalAddress': legalAddress != null ? stringified ? c.json.encode(legalAddress.toJson()) : legalAddress.toJson() : null,
       'postalAddress': postalAddress != null ? stringified ? c.json.encode(postalAddress.toJson()) : postalAddress.toJson() : null,
       'account': account,
