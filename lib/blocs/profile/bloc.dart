@@ -75,7 +75,7 @@ class ProfileBloc extends Bloc<ProfileBlocEvent, ProfileBlocState> {
     bool hasErrorReports = (await _reportsService.reportErrors()).isNotEmpty;
     bool canBeSended = (await _reportsService.readyToSend()).isNotEmpty || (await _instructionRequestService.all()).isNotEmpty;
     return FilledBlocState(
-      appVersion: '001-0124',
+      appVersion: '4.3.13-SNAPSHOT',
       dataSendingMode: dataSendingMode == null ? false : dataSendingMode,
       dataSendingState: hasErrorReports ? 'Ошибка' : 'Успешно',
       installDate: await _getInstallDate(),
