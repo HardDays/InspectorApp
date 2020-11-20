@@ -32,7 +32,6 @@ class HereService {
         return [];
       }
     } catch (ex) {
-      print(ex);
       return [];
     }
   }

@@ -26,9 +26,9 @@ class Violator {
     this.departmentCode
   });
 
-  factory Violator.empty() { 
+  factory Violator.empty({bool violatorNotFound = false}) { 
     return Violator(
-      violatorNotFound: false,
+      violatorNotFound: violatorNotFound,
       foreign: false,
     );
   }

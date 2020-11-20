@@ -24,8 +24,9 @@ class AuthService {
     return deviceId;
   }
 
-  void setUrl(String url) {
+  Future setUrl(String url) async {
     apiProvider.setUrl(url);
+    await persistanceService.setUrl(url);
   }
 
   Future<bool> isAuthentificated() async {
@@ -33,6 +34,8 @@ class AuthService {
     if (token != null) {       
       //todo в другой метод может быть
       try {
+        final url = await persistanceService.getUrl();
+        apiProvider.setUrl(url);
         final refreshToken = await persistanceService.getRefreshToken();
         final deviceId = await _deviceId();
         final response = await apiProvider.refresh(refreshToken, deviceId);

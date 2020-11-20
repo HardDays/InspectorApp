@@ -23,8 +23,12 @@ class MainPage extends StatelessWidget {
           NavigationBloc(InitialNavigationBlocState()),
       child: Scaffold(
         body: BlocListener<NavigationBloc, NavigationBlocState>(
-          listenWhen: (prev, next) => prev.currentScreen != next.currentScreen,
-          listener: (context, state) => ExtendedNavigator.named('mainPageNavigator').replace(_pagesMap[state.currentScreen]),
+          // им надо чтобы оно возвращало в рут при нажатии на таб внизу
+          //listenWhen: (prev, next) => prev.currentScreen != next.currentScreen,
+          listener: (context, state) {
+            ExtendedNavigator.named('mainPageNavigator').popUntilRoot();
+            ExtendedNavigator.named('mainPageNavigator').replace(_pagesMap[state.currentScreen]);
+          },
           child: ExtendedNavigator(name: 'mainPageNavigator'),
         ),
         bottomNavigationBar: BlocBuilder<NavigationBloc, NavigationBlocState>(

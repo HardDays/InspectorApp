@@ -14,6 +14,10 @@ class FlushEvent extends InstructionListBlocEvent {
   
 } 
 
+class LoadSilentEvent extends InstructionListBlocEvent {
+  
+} 
+
 class SortEvent extends InstructionListBlocEvent {
   final String sort;
 

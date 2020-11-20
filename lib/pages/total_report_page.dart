@@ -214,9 +214,11 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
           _addViolatorControllers();
         }
         for (int i = 0; i < violation.violators.length; i++) {
+          if ( violation.violators[i].type != null) {
+            _violatorTypeControllers[i].text = violation.violators[i].type.toString();
+          }
           final violator = violation.violators[i].violatorPerson;
           if (violator != null) {
-            _violatorTypeControllers[i].text = violation.violators[i].type.toString();
             _addViolatorInfo(i, violator);
           }
         } 
@@ -332,10 +334,21 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
     BlocProvider.of<TotalReportBloc>(context).add(SetViolationDistrictEvent(value));  
   }
 
-  void _onStreetSelect(BuildContext context, Street value) {
+  void _onStreetSelect(BuildContext context, Street value) async {
+    final bloc = BlocProvider.of<TotalReportBloc>(context);
     _streetController.text = value?.toString() ?? '';
+    if (value != null) {
+      final area = await bloc.getArea(value.areaId);
+      if (area != null) {
+        _areaController.text = area.toString();
+      }
+      final district = await bloc.getDistrict(value.districtId);
+      if (district != null) {
+        _districtController.text = district.toString();
+      }
+    }
     _addressController.clear();
-    BlocProvider.of<TotalReportBloc>(context).add(SetViolationStreetEvent(value));  
+    bloc.add(SetViolationStreetEvent(value));  
   }
 
   void _onAddressSelect(BuildContext context, Address value) {
@@ -1218,6 +1231,12 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
   Widget _buildViolator(BuildContext context, Violator violator, int index) {
     return Column(
       children: [
+        _buildAutocomplete('Тип нарушителя', 'Выберите значение',  
+          _violatorTypeControllers[index],
+          (value)=> _onViolatorTypeSearch(context, value), 
+          (value)=> _onViolatorTypeSelect(context, index, value), 
+          validator: (value) => _nullValidator(violator?.type)
+        ),
         _buildCheckBox(
           'Нарушитель не выявлен', 
           violator.violatorNotFound,
@@ -1228,12 +1247,6 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
           key: _violatorFormKeys[index],
           child: Column(
             children: [
-              _buildAutocomplete('Тип нарушителя', 'Выберите значение',  
-                _violatorTypeControllers[index],
-                (value)=> _onViolatorTypeSearch(context, value), 
-                (value)=> _onViolatorTypeSelect(context, index, value), 
-                validator: (value) => _nullValidator(violator?.type)
-              ),
               _buildAutocomplete('Нарушитель', 'Выберите значение',  
                 _violatorControllers[index],
                 (value)=> _onViolatorSearch(context, index, value), 

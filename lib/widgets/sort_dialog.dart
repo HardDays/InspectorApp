@@ -2,14 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:inspector/style/colors.dart';
 import 'package:inspector/style/text_style.dart';
 
-class SortDialog extends StatelessWidget {
-  
+class SortDialog extends StatefulWidget {
   final String value;
   final List<String> values;
   final List<String> titles;
 
   const SortDialog(this.value, this.values, this.titles);
 
+  @override
+  SortDialogState createState() => SortDialogState();
+}
+
+class SortDialogState extends State<SortDialog> {
+
+  String value;
+
+  @override
+  void initState() {
+    value = widget.value;
+  }
+  
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -25,7 +37,7 @@ class SortDialog extends StatelessWidget {
               _buildTitle(),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: List.generate(values.length, 
+                children: List.generate(widget.values.length, 
                   (index) => _buildButton(context, index)
                 ),
               ),
@@ -46,9 +58,15 @@ class SortDialog extends StatelessWidget {
   }
 
   Widget _buildButton(BuildContext context, int index) {
-    final enabled = values[index] == value;
+    final enabled = widget.values[index] == value;
     return InkWell(
-      onTap: ()=> Navigator.pop(context, values[index]),
+      onTap: () async {
+        setState(() {
+          value = widget.values[index];
+        });
+        await Future.delayed(Duration(milliseconds: 400));
+        Navigator.pop(context, widget.values[index]);
+      },
       child: Container(
         width: MediaQuery.of(context).size.width,
         padding: const EdgeInsets.only(left: 30, right: 30, top: 10, bottom: 10),
@@ -57,7 +75,7 @@ class SortDialog extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(titles[index],
+            Text(widget.titles[index],
               style: ProjectTextStyles.base.apply(color: enabled ? Colors.white : ProjectColors.black),
             ),
             Icon(Icons.check,

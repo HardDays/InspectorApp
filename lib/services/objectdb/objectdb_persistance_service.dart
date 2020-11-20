@@ -123,6 +123,11 @@ class ObjectDbPersistanceService extends ObjectDBService
   }
 
   @override
+  Future<String> getUrl() async {
+    return await _getKeyValue('url');
+  }
+
+  @override
   Future<User> getUser() async {
     final user = await _getKeyValue('user');
     return user == null ? null : User.fromJson(await _getKeyValue('user'));
@@ -193,9 +198,14 @@ class ObjectDbPersistanceService extends ObjectDBService
     await _saveKeyValue('token', token);
   }
 
-   @override
+  @override
   Future<void> setRefreshToken(String token) async {
     await _saveKeyValue('refresh_token', token);
+  }
+
+  @override
+  Future<void> setUrl(String url) async {
+    await _saveKeyValue('url', url);
   }
 
 

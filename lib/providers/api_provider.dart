@@ -1,4 +1,5 @@
 import 'dart:convert' as c;
+import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:inspector/model/address.dart';
@@ -98,7 +99,13 @@ class ApiProvider {
       } else if (ex.type == DioErrorType.CONNECT_TIMEOUT || ex.type == DioErrorType.RECEIVE_TIMEOUT || ex.type == DioErrorType.SEND_TIMEOUT) {
         throw TimeoutException(ex.response.data?.toString());
       } else {
-        throw UnhandledException(ex.message);
+        if (ex.error is SocketException) {
+          throw TimeoutException(
+            ex.error.toString(),
+          );
+        } else {
+          throw UnhandledException(ex.message);
+        }
       }
     } 
   }

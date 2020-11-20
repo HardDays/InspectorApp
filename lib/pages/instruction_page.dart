@@ -5,6 +5,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:inspector/blocs/instruction/bloc.dart';
 import 'package:inspector/blocs/instruction/events.dart';
 import 'package:inspector/blocs/instruction/states.dart';
+import 'package:inspector/blocs/instruction_list/bloc.dart';
 import 'package:inspector/model/address.dart';
 import 'package:inspector/model/check_status.dart';
 import 'package:inspector/model/digg_request_check.dart';
