@@ -3,15 +3,16 @@ import 'package:inspector/model/instruction_status.dart';
 import 'package:inspector/model/report.dart';
 import 'package:inspector/services/api/api_service.dart';
 import 'package:inspector/services/instruction_request_service.dart';
-import 'package:inspector/services/objectdb/objectdb_collection_service.dart';
 import 'package:inspector/services/objectdb/objectdb_persistance_service.dart';
+import 'package:inspector/services/sqlite/sqlite_instructions_service.dart';
 import 'package:inspector/services/sqlite/sqlite_reports_service.dart';
 
 class InstructionsService {
 
   final _apiService = ApiService();
   final _persistanceService = ObjectDbPersistanceService();
-  final _instructionsDbService = ObjectDbCollectionService<Instruction>('instructions.db', (json) => Instruction.fromJson(json));
+  final _instructionsDbService = SqliteInstructionsService();
+  //final _instructionsDbService = ObjectDbCollectionService<Instruction>('instructions.db', (json) => Instruction.fromJson(json));
   //final _reportsDbService = ObjectDbCollectionService<Report>('reports.db', (json) => Report.fromJson(json));
   final _reportsDbService = SqliteReportsService();
   final _instructionRequestService = InstructionRequestService();
@@ -88,7 +89,7 @@ class InstructionsService {
       final newInstructionJson = instruction.toJson();
       newInstructionJson['instructionStatus'] = instructionStatus.toJson();
       final newInstruction = Instruction.fromJson(newInstructionJson);
-      await _instructionsDbService.save({'id': newInstruction.id}, newInstruction);
+      await _instructionsDbService.update(newInstruction);
       return newInstruction;
     } else {
       _persistanceService.saveLastDataSendingDate(DateTime.now());

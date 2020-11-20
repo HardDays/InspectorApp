@@ -81,19 +81,4 @@ class SqliteReportsService {
 
     }
   }
-
-  // Future<List<T>> all<T>(String name, Function(Map<String, dynamic>) fromJson, {List<Query> queries = const [], int limit}) async {
-  //   await init();
-  //   try {
-  //     final whereKeys = queries.where((e) => e.keys.isNotEmpty).map((e) => '(${e.keys})').join(' AND ');
-  //     final whereValues = queries.where((e) => e.values.isNotEmpty).map((e) => e.values).expand((e) => e).toList();
-  //     final data = await _database.query(name, where: whereKeys.isNotEmpty ? whereKeys : null, whereArgs: whereValues, limit: limit);
-  //     return List<T>.from(data.map((e) => fromJson(e)));
-  //   } catch (ex) {
-  //     print(ex);
-  //     throw ParseException();
-  //   }
-  // }
-
-
 }
