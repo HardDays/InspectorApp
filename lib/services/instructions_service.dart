@@ -20,7 +20,7 @@ class InstructionsService {
   static final _instance = InstructionsService._internal();
 
   factory InstructionsService() {
-    return _instance;
+    return _instance; 
   }
 
   InstructionsService._internal();
