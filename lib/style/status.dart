@@ -12,11 +12,11 @@ class ProjectStatus extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final border = BorderSide(color: color, width: 1);
+    //final border = BorderSide(color: color, width: 1);
     return Container(
       decoration: BoxDecoration(
         borderRadius: rounded ? BorderRadius.circular(5) : null,
-        border: Border(left: border, top: border, bottom: border, right: rightBorder ? border : BorderSide(width: 0, color: Colors.transparent))
+        border: Border.all(color: color, width: 1)
       ),
       padding: const EdgeInsets.only(left: 5, right: 5, top: 2, bottom: 4),
       child: Text(title,

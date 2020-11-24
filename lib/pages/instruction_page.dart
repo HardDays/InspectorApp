@@ -191,7 +191,7 @@ class InstructionPage extends StatelessWidget {
   Widget _buildInstructionCheckStatus(CheckStatus checkStatus) {
     return Container(
       alignment: Alignment.topRight,
-      margin: const EdgeInsets.only(top: 20),
+      margin: const EdgeInsets.only(top: 15, right: 18),
       child: ProjectStatus(
         checkStatus.name,
         rightBorder: false,
@@ -301,7 +301,7 @@ class InstructionPage extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 10, top: 2),
+              padding: const EdgeInsets.only(left: 10, top: 2, right: 10),
               child: ProjectStatus(report.reportStatus.name, 
                 color: ReportStatusColors.color(report.reportStatus.id)
               ),
@@ -413,7 +413,7 @@ class InstructionPage extends StatelessWidget {
               Align(
                 alignment: Alignment.topRight,
                 child: Padding(
-                  padding: const EdgeInsets.only(top: 17),
+                  padding: const EdgeInsets.only(top: 18, right: 18),
                   child: ProjectStatus(status,
                     color: DiggRequestCheckColors.color(diggRequestCheck.workCompleted, diggRequestCheck.landscapingRestored),
                     rightBorder: false,
