@@ -44,6 +44,7 @@ class ReportsService {
       await _reportsDbService.save(report, error: error);
       return report;
     } else {
+      // throw ApiException('Ошибка', details: 'Ошибка н111н');
       await _dataSendingConfiguration.saveLastDataSendingDate(DateTime.now());
       return await _apiService.createReport(report);
     }

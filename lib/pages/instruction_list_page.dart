@@ -32,7 +32,7 @@ class InstructionListPageState extends State<InstructionListPage> with Automatic
 
   void _onTap(BuildContext context, Instruction instruction) async {
     await Navigator.push(context, MaterialPageRoute(builder: (context) => InstructionPage(instruction)));
-    //BlocProvider.of<InstructionListBloc>(context).add(RefreshEvent());  
+    BlocProvider.of<InstructionListBloc>(context).add(LoadSilentEvent());
   }
 
   Future _onUpdate(BuildContext context) async {
@@ -123,10 +123,10 @@ class InstructionListPageState extends State<InstructionListPage> with Automatic
 
   Widget _buildBody(BuildContext context, InstructionListBlocState state) {
     if (state is NewDataState) { 
-      _showSnackBar('Загружены новые данные', ProjectColors.green);
+      _showSnackBar('Данные успешно обновлены', ProjectColors.green);
       _flush(context);
     } else if (state is OldDataState) {
-      _showSnackBar('Загружены старые данные. ${state.exception.message}  ${state.exception.details}', ProjectColors.yellow);
+      _showSnackBar('Не удалось обновить данные. ${state.exception.message}  ${state.exception.details}', ProjectColors.yellow);
       _flush(context);
     } 
     if (state is LoadingState) {

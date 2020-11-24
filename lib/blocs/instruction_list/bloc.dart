@@ -4,6 +4,8 @@ import 'package:inspector/blocs/instruction_list/states.dart';
 import 'package:inspector/model/instruction.dart';
 import 'package:inspector/providers/exceptions/api_exception.dart';
 import 'package:inspector/services/instructions_service.dart';
+import 'package:inspector/services/objectdb/objectdb_persistance_service.dart';
+import 'package:inspector/services/persistance_service.dart';
 import 'package:intl/intl.dart';
 
 
@@ -11,6 +13,7 @@ class InstructionListBloc extends Bloc<InstructionListBlocEvent, InstructionList
   InstructionListBloc(initialState) : super(initialState);
 
   final _service = InstructionsService();
+  final _persistanceService = ObjectDbPersistanceService();
 
   @override
   Stream<InstructionListBlocState> mapEventToState(InstructionListBlocEvent event) async* {
@@ -66,6 +69,15 @@ class InstructionListBloc extends Bloc<InstructionListBlocEvent, InstructionList
       if (state is DataState) {
         yield DataState((state as DataState).instructions, state.date, state.sort, state.filters);
       }
+    } else if (event is LoadSilentEvent) {
+      final online = await _persistanceService.getDataSendingState();
+      final sort = await _service.sort();
+      final filters = await _service.filters();
+
+      final result = await _service.all(reload: online);       
+      final data = _processData(sort, filters, result);
+      final date = await _service.date();
+      yield DataState(data, date, sort, filters);
     }
   } 
 

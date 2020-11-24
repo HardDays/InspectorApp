@@ -1,3 +1,5 @@
+import 'dart:convert' as c;
+
 import 'package:flutter/material.dart';
 import 'package:inspector/model/check_type.dart';
 import 'package:inspector/model/instruction_check.dart';
@@ -74,33 +76,35 @@ class Instruction {
     @required this.instructionCreator
   });
 
-  factory Instruction.fromJson(Map<String, dynamic> json) {
+  factory Instruction.fromJson(Map<String, dynamic> json, {bool stringified = false}) {
     return Instruction(
       id: json['id'], 
       instructionNum: json['instructionNum'], 
       instructionDate: json['instructionDate'] != null ? DateTime.parse(json['instructionDate']) : null, 
       reportDate: json['reportDate'] != null ? DateTime.parse(json['reportDate']) : null, 
       checkDate: json['checkDate'] != null ? DateTime.parse(json['checkDate']) : null, 
-      checkType: CheckType.fromJson(json['checkType']),
-      instructionCreator: User.fromJson(json['instructionCreator']),
-      instructionStatus: InstructionStatus.fromJson(json['instructionStatus']),
-      instructionChecks: List<InstructionCheck>.from(json['instructionChecks'].map((p) => InstructionCheck.fromJson(p))),
-      normativeActs: List<NormativeAct>.from(json['normativeActs'].map((p) => NormativeAct.fromJson(p))),
+      checkType: CheckType.fromJson(stringified ? c.json.decode(json['checkType']) : json['checkType']),
+      instructionCreator: User.fromJson(stringified ? c.json.decode(json['instructionCreator']) : json['instructionCreator']),
+      instructionStatus: InstructionStatus.fromJson(stringified ? c.json.decode(json['instructionStatus']) : json['instructionStatus']),
+      instructionChecks: List<InstructionCheck>.from((stringified ? c.json.decode(json['instructionChecks']) : json['instructionChecks']).map((p) => InstructionCheck.fromJson(p))),
+      normativeActs: List<NormativeAct>.from((stringified ? c.json.decode(json['normativeActs']) : json['normativeActs']).map((p) => NormativeAct.fromJson(p))),
     );
   }
 
-   Map<String, dynamic> toJson() {
+  Map<String, dynamic> toJson({bool stringified = false}) {
+    final checks = instructionChecks.map((e) => e.toJson()).toList();
+    final acts = normativeActs.map((e) => e.toJson()).toList();
     return {
       'id': id,
       'instructionNum': instructionNum,
       'instructionDate': instructionDate?.toString(),
       'reportDate': reportDate?.toString(),
       'checkDate': checkDate?.toString(),
-      'checkType': checkType.toJson(),
-      'instructionCreator': instructionCreator.toJson(),
-      'instructionStatus': instructionStatus.toJson(),
-      'instructionChecks': instructionChecks.map((e) => e.toJson()).toList(),
-      'normativeActs': normativeActs.map((e) => e.toJson()).toList()
+      'checkType': (stringified ? c.json.encode(checkType.toJson()) : checkType.toJson()),
+      'instructionCreator': (stringified ? c.json.encode(instructionCreator.toJson()) : instructionCreator.toJson()),
+      'instructionStatus': (stringified ? c.json.encode(instructionStatus.toJson()) : instructionStatus.toJson()),
+      'instructionChecks': (stringified ? c.json.encode(checks) : checks),
+      'normativeActs': (stringified ? c.json.encode(acts) : acts),
     };
   }
 }

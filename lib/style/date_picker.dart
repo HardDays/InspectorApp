@@ -36,6 +36,7 @@ class ProjectDatePicker extends StatelessWidget {
       if (singleDate) {
         final picked = await showDatePicker(
           context: context, 
+          locale: Locale('ru', 'RU'),
           initialDate: DateTime.now(), 
           firstDate: DateTime(1917),
           lastDate: DateTime(2050)
@@ -46,6 +47,7 @@ class ProjectDatePicker extends StatelessWidget {
       } else {
         final List<DateTime> picked = await dr.showDatePicker(
           context: context,
+          locale: Locale('ru', 'RU'),
           initialFirstDate: DateTime.now(),
           initialLastDate: (DateTime.now()).add(Duration(days: 7)),
           firstDate: DateTime(2018),

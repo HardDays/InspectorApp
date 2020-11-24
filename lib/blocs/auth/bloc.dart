@@ -105,7 +105,7 @@ class AuthBloc extends Bloc<AuthBlocEvent, AuthBlocStates> {
     }
   }
 
-  Stream<AuthBlocStates> _onSetUrlEvent(SetUrlEvent event) {
+  Stream<AuthBlocStates> _onSetUrlEvent(SetUrlEvent event) async* {
     _authService.setUrl(event.url);
   }
 

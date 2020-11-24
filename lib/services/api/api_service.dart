@@ -9,6 +9,7 @@ import 'package:inspector/providers/api_provider.dart';
 import 'package:inspector/providers/exceptions/parse_exception.dart';
 import 'package:inspector/model/instruction.dart';
 import 'package:inspector/model/instruction_status.dart';
+import 'dart:convert';
 
 class ApiService {
 
@@ -55,6 +56,8 @@ class ApiService {
   // reports
 
   Future<Report> createReport(Report report) async {
+        var t = json.encode(report.toJson());
+
     final data = await api.createReport(report);
     return await _parse(
       ()=> Report.fromJson(data)

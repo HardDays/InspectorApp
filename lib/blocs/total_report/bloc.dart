@@ -100,78 +100,93 @@ class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {
   }
 
   Future<Iterable<Area>> getAreas(String name) async {
-    if (name.isNotEmpty) {
+   // if (name.isNotEmpty) {
       return await _dictionaryService.getAreas(name: name);
-    }
+    //}
   }
 
   Future<Iterable<District>> getDistricts(String name) async {
     final address = state.report.violation?.violationAddress;
-    if (name.isNotEmpty) {
+    //if (address?.area?.id != null) {
       return await _dictionaryService.getDitricts(name: name, areaId: address?.area?.id);
-    }
+    //}
   }
 
   Future<Iterable<Street>> getStreets(String name) async {
     final address = state.report.violation?.violationAddress;
-    if (name.isNotEmpty) {
+   // if (address?.district?.id != null) {
       return await _dictionaryService.getStreets(name: name, districtId: address?.district?.id);
-    }
+   // }
   }
 
   Future<Iterable<Address>> getAddresses(String houseNum) async {
     final address = state.report.violation?.violationAddress;
-    if (houseNum.isNotEmpty) {
+    if (address?.street?.id != null) {
       return await _dictionaryService.getAddresses(houseNum: houseNum, streetId: address?.street?.id);
     }
   }
 
   Future<Iterable<ObjectCategory>> getObjectCategories(String name) async {
-    if (name.isNotEmpty) {
+   // if (name.isNotEmpty) {
       return await _dictionaryService.getObjectCategories(name: name);
-    }
+   // }
   }
 
   Future<Iterable<NormativeAct>> getNormativeActs(String name) async {
-    if (name.isNotEmpty) {
+   // if (name.isNotEmpty) {
       return await _dictionaryService.getNormativeActs(name: name);
-    }
+   // }
   }
 
   Future<Iterable<NormativeActArticle>> getNormativeActArticles(int index, String name) async {
-    if (name.isNotEmpty) {
-      final act = state.report.violation?.normativeActArticles[index];
-      return await _dictionaryService.getNormativeActArticles(name: name, normativeActId: act?.normativeActId);
+    final act = state.report.violation?.normativeActArticles[index];
+    if (act?.normativeActId != null) {
+      return await _dictionaryService.getNormativeActArticles(name: name, normativeActId: act.normativeActId);
     }
   }
 
   Future<Iterable<ViolationType>> getViolationTypes(String name) async {
-    if (name.isNotEmpty) {
+    //if (name.isNotEmpty) {
       return await _dictionaryService.getViolationTypes(name: name);
-    }
+    //}
   }
 
   Future<Iterable<ViolatorType>> getViolatorTypes(String name) async {
-    if (name.isNotEmpty) {
+    //if (name.isNotEmpty) {
       return await _dictionaryService.getViolatorTypes(name: name);
-    }
+    //}
   }
 
   Future<Iterable<ViolatorDocumentType>> getViolatorDocumentTypes(String name) async {
-    if (name.isNotEmpty) {
+    //if (name.isNotEmpty) {
       return await _dictionaryService.getViolatorDocumentTypes(name: name);
-    }
+    //}
   }
 
   Future<Iterable<DepartmentCode>> getDepartmentCodes(String name) async {
-    if (name.isNotEmpty) {
+    //if (name.isNotEmpty) {
       return await _dictionaryService.getDepartmentCodes(name: name);
+    //}
+  }
+
+  Future<District> getDistrict(int id) async {
+    final districts = await _dictionaryService.getDitrictsById(id: id);
+    if (districts.isNotEmpty) {
+      return districts.first;
     }
   }
 
+  Future<Area> getArea(int id) async {
+    final areas = await _dictionaryService.getAreas(id: id);
+    if (areas.isNotEmpty) {
+      return areas.first;
+    }
+  }
+
+
   Future<Iterable<dynamic>> getViolators(int index, String name) async {
     final violatorType = state.report?.violation?.violators?.elementAt(index)?.type;
-    if (name.isNotEmpty && violatorType != null) {
+    if (violatorType != null) {
       if (violatorType.id == ViolatorTypeIds.legal) {
         return await _dictionaryService.getViolatorInfoLegals(name: name);
       } else if (violatorType.id == ViolatorTypeIds.official) {
@@ -276,18 +291,21 @@ class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {
           ),
         );
       } else if (event is SetViolationDistrictEvent) {
+        final area = await getArea(event.district?.areaId);
         violation = violation.copyWith(
           violationAddress: Address(
             district: event.district,
-            area: violation.violationAddress.area,
+            area: area ?? violation.violationAddress.area
           ),
         );
       } else if (event is SetViolationStreetEvent) {
+        final area = await getArea(event.street?.areaId);
+        final district = await getDistrict(event.street?.districtId);
         violation = violation.copyWith(
           violationAddress: Address(
             street: event.street,
-            area: violation.violationAddress.area,
-            district: violation.violationAddress.district,
+            area: area ?? violation.violationAddress.area,
+            district: district ?? violation.violationAddress.district,
           ),
         );
       } else if (event is SetViolationAddressEvent) {
@@ -358,7 +376,7 @@ class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {
             violatorInfo = ViolatorInfoLegal();
           }
         }
-        violator = Violator.empty().copyWith(
+        violator = Violator.empty(violatorNotFound: violator?.violatorNotFound ?? false).copyWith(
           type: event.type,
           violatorPerson: violatorInfo
         );

@@ -15,6 +15,9 @@ mixin UserMixin {
   Future<bool> getFingerprintState();
   Future<bool> getDataSendingState();
 
+  Future<void> setUrl(String url);
+  Future<String> getUrl();
+
   Future<void> clearUserData();
   Future<User> getPreviousUser();
   Future<void> savePreviousUser(User user);
