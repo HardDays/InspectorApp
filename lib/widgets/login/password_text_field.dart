@@ -43,7 +43,7 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
             onPressed: () => setState(() {
               showPassword = !showPassword;
             }),
-            icon: ProjectIcons.viewIcon(color: ProjectColors.darkBlue),
+            icon: showPassword ? Icon(Icons.visibility_off, color: ProjectColors.darkBlue) : ProjectIcons.viewIcon(color: ProjectColors.darkBlue),
           ),
         ),
       ],
