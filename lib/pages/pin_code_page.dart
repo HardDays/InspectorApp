@@ -112,7 +112,7 @@ class PinCodePage extends StatelessWidget {
   }
 
   Widget _buildIncorrectPinTitle() {
-    return Text('Неверный PIN',
+    return Text('PIN-код введен неверно. Попробуйте еще раз',
         style: ProjectTextStyles.title.apply(color: ProjectColors.red));
   }
 

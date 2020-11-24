@@ -8,6 +8,7 @@ import 'package:inspector/blocs/profile/state.dart';
 import 'package:inspector/navigation.gr.dart';
 import 'package:inspector/services/auth_service.dart';
 import 'package:inspector/services/persistance_service.dart';
+import 'package:inspector/style/accept_dialog.dart';
 import 'package:inspector/style/button.dart';
 import 'package:inspector/style/colors.dart';
 import 'package:inspector/style/icons.dart';
@@ -33,7 +34,7 @@ class ProfilePage extends StatelessWidget {
               centerTitle: true,
               elevation: 0.0,
               // actions: [
-              //   IconButton(  
+              //   IconButton(
               //     icon: Icon(Icons.code),
               //     onPressed: () => ExtendedNavigator.root.push(Routes.testPage),
               //   )
@@ -65,10 +66,17 @@ class ProfilePage extends StatelessWidget {
                       Padding(
                         padding: EdgeInsets.fromLTRB(0.0, 20.0, 28.0, 0.0),
                         child: GestureDetector(
-                          onTap: () {
-                            Provider.of<AuthService>(context, listen: false)
-                                .logout();
-                            ExtendedNavigator.root.replace(Routes.authPage);
+                          onTap: () async {
+                            if ((await showDialog(
+                                    context: context,
+                                    child: AcceptDialog(
+                                        message:
+                                            'Вход в приложение будет осуществлен с помощью логина и пароля. Текущие настройки быстрого доступа будут сброшены. Продолжить?'))) !=
+                                null) {
+                              Provider.of<AuthService>(context, listen: false)
+                                  .logout();
+                              ExtendedNavigator.root.replace(Routes.authPage);
+                            }
                           },
                           child: Row(
                             children: [
@@ -147,8 +155,9 @@ class ProfilePage extends StatelessWidget {
                         ),
                         if (!state.sending)
                           ProjectButton.builtFlatButton(
-                            'Отправить данные',
-                            disabled: state.dataSendingMode && !state.canBeSended,
+                            'Отправить данные в ЕИС ОАТИ',
+                            disabled:
+                                state.dataSendingMode && !state.canBeSended,
                             onPressed: () =>
                                 BlocProvider.of<ProfileBloc>(context)
                                     .add(SendDataEvent()),
