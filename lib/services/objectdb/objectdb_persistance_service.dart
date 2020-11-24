@@ -72,7 +72,7 @@ class ObjectDbPersistanceService extends ObjectDBService
 
   @override
   Future<bool> getDataSendingState() async {
-    return (await _getKeyValue('dataSendingState')) ?? false;
+    return (await _getKeyValue('dataSendingState')) ?? true;
   }
 
   @override
