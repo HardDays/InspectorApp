@@ -87,6 +87,8 @@ class AuthService {
       apiProvider.setToken(response['token']);
       return user;
     } on ApiException catch (e) {
+      if(e.message == "Не авторизован")
+        throw(AuthException('Неверный логин или пароль'));
       throw AuthException(e.message);
     }
   }

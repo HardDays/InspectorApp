@@ -104,6 +104,9 @@ class _PinCodeNumpadState extends State<PinCodeNumpad> {
     return InkResponse(
       onTap: () {
         _controller.text += title;
+        if(_controller.text.length >= 4) {
+          _controller.text = '';
+        }
       },
       child: Column(
         mainAxisSize: MainAxisSize.min,

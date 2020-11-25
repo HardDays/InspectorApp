@@ -15,20 +15,19 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(scaffoldBackgroundColor: ProjectColors.grey),
       //home: ControlListPage()
-      localizationsDelegates: [
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate
-      ],
-      supportedLocales: [
-        const Locale('en'),
-        const Locale('ru')
-      ],
       home: InjectorWidget(
         child: ExtendedNavigator<InspectorRouter>(
           router: InspectorRouter(),
         ),
       ),
+      locale: const Locale('ru'),
+      supportedLocales: [
+        const Locale('ru'),
+      ],
+      localizationsDelegates: [
+        GlobalWidgetsLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+      ],
     );
   }
 }

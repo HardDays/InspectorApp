@@ -78,7 +78,7 @@ class AuthBloc extends Bloc<AuthBlocEvent, AuthBlocStates> {
         if (event.pin.length == 4) {
           if (event.pin == pin) {
             await _authService.setPin(event.pin);
-            yield ShowPinCodeField(true);
+            yield AutorizedState();
           } else {
             yield IncorrencRepeatPinState();
           }

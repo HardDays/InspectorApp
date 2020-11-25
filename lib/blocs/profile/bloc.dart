@@ -75,12 +75,12 @@ class ProfileBloc extends Bloc<ProfileBlocEvent, ProfileBlocState> {
     bool hasErrorReports = (await _reportsService.reportErrors()).isNotEmpty;
     bool canBeSended = (await _reportsService.readyToSend()).isNotEmpty || (await _instructionRequestService.all()).isNotEmpty;
     return FilledBlocState(
-      appVersion: '001-0124',
-      dataSendingMode: dataSendingMode == null ? false : dataSendingMode,
+      appVersion: '4.3.13-SNAPSHOT',
+      dataSendingMode: dataSendingMode == null ? true : dataSendingMode,
       dataSendingState: hasErrorReports ? 'Ошибка' : 'Успешно',
       installDate: await _getInstallDate(),
       lastDataSendingDate: lastDataSendingDate,
-      useFingerprint: useFingerPrint == null ? true : useFingerPrint,
+      useFingerprint: useFingerPrint == null ? false : useFingerPrint,
       userName: name,
       sending: isSending,
       canBeSended: canBeSended,
