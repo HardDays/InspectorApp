@@ -64,8 +64,8 @@ class ViolatorInfoOfficial extends ViolatorInfo {
       orgOgrn: orgOgrn,
       orgKpp: orgKpp,
       orgRegDate: orgRegDate,
-      orgLegalAddress: orgLegalAddress ?? this.orgLegalAddress,
       orgPhone: orgPhone,
+      orgLegalAddress: orgLegalAddress ?? this.orgLegalAddress,
       orgPostalAddress: orgPostalAddress ?? this.orgPostalAddress
     );
   }
