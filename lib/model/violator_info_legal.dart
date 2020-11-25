@@ -1,6 +1,7 @@
 import 'dart:convert' as c;
 
 import 'package:flutter/foundation.dart';
+import 'package:inspector/model/department_code.dart';
 import 'package:inspector/model/violator_address.dart';
 import 'package:inspector/model/violator_info.dart';
 
@@ -57,7 +58,7 @@ class ViolatorInfoLegal extends ViolatorInfo {
 
   ViolatorInfoLegal copyWith({
     ViolatorAddress legalAddress,
-    ViolatorAddress postalAddress
+    ViolatorAddress postalAddress,
   }) {
     return ViolatorInfoLegal(
       id: id,

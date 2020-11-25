@@ -56,8 +56,6 @@ class ApiService {
   // reports
 
   Future<Report> createReport(Report report) async {
-        var t = json.encode(report.toJson());
-
     final data = await api.createReport(report);
     return await _parse(
       ()=> Report.fromJson(data)
