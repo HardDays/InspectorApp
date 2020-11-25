@@ -217,6 +217,9 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
           if ( violation.violators[i].type != null) {
             _violatorTypeControllers[i].text = violation.violators[i].type.toString();
           }
+          if (violation.violators[i].departmentCode != null) {
+            _departmentCodeControllers[i].text = violation.violators[i].departmentCode.toString();
+          }
           final violator = violation.violators[i].violatorPerson;
           if (violator != null) {
             _addViolatorInfo(i, violator);
@@ -716,7 +719,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
     _phoneControllers[index].text = violator.phone ?? '';
     _legalAddressControllers[index].text = violator.legalAddress?.toString() ?? '';
     _postalAddressControllers[index].text = violator.postalAddress?.toString() ?? '';
-    _registerDates[index] = violator.regDate;
+    //_registerDates[index] = violator.regDate;
   } 
 
   void _officialToControllers(int index, ViolatorInfoOfficial violator) {

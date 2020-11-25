@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:inspector/model/department_code.dart';
 import 'package:inspector/model/violator_address.dart';
 import 'dart:convert' as c;
 
