@@ -32,6 +32,8 @@ class PinCodePage extends StatelessWidget {
               footer = _buildSubtitle(context);
             } else if (state is IncorrencRepeatPinState) {
               header = _buildIncorrectPinTitle();
+            } else if (state is AwaitForNextTry) {
+              header = _buildAwaitForNextTryTitle(state.duration);
             }
             return Column(
               mainAxisSize: MainAxisSize.min,
@@ -42,9 +44,10 @@ class PinCodePage extends StatelessWidget {
                   padding: EdgeInsets.only(bottom: 29.0),
                   child: header,
                 ),
-                PinCodeNumpad(listener: (s) {
-                  BlocProvider.of<AuthBloc>(context).add(SetPinEvent(s));
-                }),
+                if(state is !AwaitForNextTry) 
+                  PinCodeNumpad(listener: (s) {
+                    BlocProvider.of<AuthBloc>(context).add(SetPinEvent(s));
+                  }),
                 footer,
                 Spacer(/*flex: 440*/),
                 Info(),
@@ -113,6 +116,11 @@ class PinCodePage extends StatelessWidget {
 
   Widget _buildIncorrectPinTitle() {
     return Text('PIN-код введен неверно. Попробуйте еще раз',
+        style: ProjectTextStyles.title.apply(color: ProjectColors.red));
+  }
+
+  Widget _buildAwaitForNextTryTitle(Duration duration) {
+    return Text('PIN-код введен неверно 5 раз. Повторите попытку через ${duration.inMinutes}:${duration.inSeconds % 60}',
         style: ProjectTextStyles.title.apply(color: ProjectColors.red));
   }
 

@@ -22,4 +22,7 @@ mixin UserMixin {
   Future<User> getPreviousUser();
   Future<void> savePreviousUser(User user);
   Future<void> clearAllData();
+
+  Future<DateTime> getDateForNextTry();
+  Future<void> setDateForNextTry(DateTime dateTime);
 }

@@ -32,6 +32,7 @@ class AuthBloc extends Bloc<AuthBlocEvent, AuthBlocStates> {
   String pin;
   String login;
   String password;
+  int wrongTries = 0;
 
   Map<Type, Dispatcher<AuthBlocEvent, AuthBlocStates>> _dispatchersMap;
 
@@ -46,7 +47,14 @@ class AuthBloc extends Bloc<AuthBlocEvent, AuthBlocStates> {
       EnterAuthScreenEvent event) async* {
     if (await _authService.isAuthentificated()) {
       if (await _authService.isPinSetted()) {
+        DateTime nextTryDate = await _persistanceService.getDateForNextTry();
         yield ShowPinCodeField(true);
+        if(nextTryDate != null) {
+          Duration duration = nextTryDate.difference(DateTime.now());
+          if(!duration.isNegative) {
+            yield* _awaitForNextTry(duration);
+          }
+        }
         final useFingerPrint = await _persistanceService.getFingerprintState();
         if (useFingerPrint != null && !useFingerPrint &&
             await _checkBiometric()) {
@@ -65,7 +73,15 @@ class AuthBloc extends Bloc<AuthBlocEvent, AuthBlocStates> {
       if (await _authService.isPinCorrect(event.pin)) {
         yield AutorizedState();
       } else if (event.pin.length >= 4) {
-        yield IncorrencPinState();
+        if(wrongTries <= 5) {
+          yield IncorrencPinState();
+          wrongTries++;
+        } else {          
+          Duration duration = Duration(minutes: 5);
+          _persistanceService.setDateForNextTry(DateTime.now().add(duration));
+          yield* _awaitForNextTry(duration);
+          wrongTries = 0;
+        }
       } else {
         yield ShowPinCodeField(false);
       }
@@ -86,6 +102,18 @@ class AuthBloc extends Bloc<AuthBlocEvent, AuthBlocStates> {
       }
     }
   }
+
+
+  Stream<AuthBlocStates> _awaitForNextTry(Duration duration) async* {
+    yield AwaitForNextTry(duration);
+    while(duration.inSeconds > 0) {
+      await Future.delayed(Duration(seconds: 1));
+      yield(AwaitForNextTry(duration));
+      duration = Duration(seconds: duration.inSeconds-1);
+    }
+    yield ShowPinCodeField(false);
+  }
+
 
   Stream<AuthBlocStates> _onSetPasswordEvent(SetPasswordEvent event) async* {
     password = event.password;

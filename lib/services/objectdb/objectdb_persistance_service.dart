@@ -208,6 +208,17 @@ class ObjectDbPersistanceService extends ObjectDBService
     await _saveKeyValue('url', url);
   }
 
+  @override
+  Future<DateTime> getDateForNextTry() async {
+    String dateString = await _getKeyValue('dateForNextTry');
+    return dateString == null ? null : DateTime.parse(dateString);
+  }
+
+  @override
+  Future<void> setDateForNextTry(DateTime dateTime) async {
+    await _saveKeyValue('dateForNextTry', dateTime.toIso8601String());
+  }
+
 
   // @override
   // Future<void> saveInstructionForSending(Instruction instruction) async {
