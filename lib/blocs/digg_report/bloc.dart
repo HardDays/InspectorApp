@@ -29,7 +29,7 @@ class DiggReportBloc extends Bloc<DiggReportBlocEvent, DiggReportBlocState> {
       final statuses = await _dictionaryService.getReportStatuses(id: event.status);
       final status = statuses.first;
       final photosBase64 = event.photos.map((e) => c.base64Encode(e)).toList();
-      final photos = List.generate(photosBase64.length, (i) => Photo(data: photosBase64[i],)); // name: event.photoNames[i]));
+      final photos = List.generate(photosBase64.length, (i) => Photo(data: photosBase64[i], name: event.photoNames[i]));
 
       final date = state.report.reportDate ?? DateTime.now();
       final number = state.report.reportNum ?? Random().nextInt(1000000).toString();

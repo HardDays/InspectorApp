@@ -115,7 +115,7 @@ class DiggReportPageState extends State<DiggReportPage> with SingleTickerProvide
   @override
   Widget build(BuildContext context) {
      return BlocProvider(
-      create: (context)=> DiggReportBloc(DiggReportBlocState(widget.status ?? widget.report.diggRequestChecks.isNotEmpty ? widget.report.diggRequestChecks.first.status : DiggRequestCheckStatus.landscapingNotRestored, widget.report)),
+      create: (context)=> DiggReportBloc(DiggReportBlocState(widget.status ?? (widget.report.diggRequestChecks.isNotEmpty ? widget.report.diggRequestChecks.first.status : DiggRequestCheckStatus.landscapingNotRestored), widget.report)),
       child: BlocBuilder<DiggReportBloc, DiggReportBlocState>(
         builder: (context, state) {
           if (state is SuccessState) { 
