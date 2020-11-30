@@ -1,7 +1,11 @@
+import 'dart:convert' as c;
+import 'dart:math';
+
 import 'package:bloc/bloc.dart';
 import 'package:inspector/blocs/digg_report/events.dart';
 import 'package:inspector/blocs/digg_report/states.dart';
 import 'package:inspector/model/digg_request_check.dart';
+import 'package:inspector/model/photo.dart';
 import 'package:inspector/model/report.dart';
 import 'package:inspector/providers/exceptions/api_exception.dart';
 import 'package:inspector/providers/exceptions/unhadled_exception.dart';
@@ -24,7 +28,18 @@ class DiggReportBloc extends Bloc<DiggReportBlocEvent, DiggReportBlocState> {
 
       final statuses = await _dictionaryService.getReportStatuses(id: event.status);
       final status = statuses.first;
-      report = report.copyWith(reportStatus: status);
+      final photosBase64 = event.photos.map((e) => c.base64Encode(e)).toList();
+      final photos = List.generate(photosBase64.length, (i) => Photo(data: photosBase64[i],)); // name: event.photoNames[i]));
+
+      final date = state.report.reportDate ?? DateTime.now();
+      final number = state.report.reportNum ?? Random().nextInt(1000000).toString();
+
+      report = report.copyWith(
+        reportStatus: status,
+        photos: photos,
+        reportDate: date,
+        reportNum: number
+      );
 
       bool found = false;
       for (int i = 0; i < report.diggRequestChecks.length; i++) {
@@ -58,8 +73,10 @@ class DiggReportBloc extends Bloc<DiggReportBlocEvent, DiggReportBlocState> {
         yield ErrorState(UnhandledException(ex.toString()), state.status, state.report);
       }
     } else if (event is RemoveReportEvent) {
-      await _reportsService.remove(state.report);
+      await _reportsService.removeLocal(state.report);
       yield DeletedState(state.status, state.report); 
+    } else if (event is FlushEvent) {
+      yield DiggReportBlocState(state.status, state.report);
     }
   } 
 }

@@ -33,25 +33,29 @@ class ReportsService {
 
   Future<Iterable<Report>> readyToSend() async {
     final ready = await _reportsDbService.all();
-    return ready.where((element) => !element.isNew).toList();
-    //return (await _reportsDbService.all()).where((element) => !element.isNew).toList();
+    return ready.where((element) => element.isReady).toList();
   }
 
   Future<Report> create(Report report, {String error, bool local = false}) async {
     // для тестирования
-    if (local || !(await _dataSendingConfiguration.getDataSendingState())) {
+    if ((local || !(await _dataSendingConfiguration.getDataSendingState()))) {
       //await _reportsDbService.save({'instructionId': report.instructionId, 'checkId': report.checkId}, report);
       await _reportsDbService.save(report, error: error);
       return report;
     } else {
-      // throw ApiException('Ошибка', details: 'Ошибка н111н');
-      await _dataSendingConfiguration.saveLastDataSendingDate(DateTime.now());
-      return await _apiService.createReport(report);
+      return await send(report);
     }
   }
 
-  Future remove(Report report) async {
-    await _reportsDbService.remove(report);
+  Future<Report> send(Report report) async {
+    await _dataSendingConfiguration.saveLastDataSendingDate(DateTime.now());
+    final res = await _apiService.createReport(report);
+    await _reportsDbService.removeLocal(report);
+    return res;
+  }
+
+  Future removeLocal(Report report) async {
+    await _reportsDbService.removeLocal(report);
   }
 
   Future<List<ReportError>> reportErrors() async {

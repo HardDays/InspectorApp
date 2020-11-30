@@ -472,7 +472,8 @@ class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {
     } else if (event is SaveReportEvent) {
       final statuses = await _dictionaryService.getReportStatuses(id: event.status);
       final status = statuses.first;
-      final photos = event.photos.map((e) => c.base64Encode(e)).map((e) => Photo(data: e)).toList();
+      final photosBase64 = event.photos.map((e) => c.base64Encode(e)).toList();
+      final photos = List.generate(photosBase64.length, (i) => Photo(data: photosBase64[i], name: event.photoNames[i]));
       final user = await _persistanceService.getUser();
       final local = status.id == ReportStatusIds.new_ || status.id == ReportStatusIds.project;
       final date = state.report.reportDate ?? DateTime.now();
@@ -508,7 +509,7 @@ class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {
             photos: photos,
             codexArticle: event.codexArticle,
             violationDescription: event.violationDescription,
-            violationDate: violation.violationDate ?? DateTime.now(),
+            violationDate: violation.violationDate ?? date..subtract(Duration(minutes: 5)),
             violationAddress: violation.violationAddress.copyWith(
               specifiedAddress: event.specifiedAddress ,
               latitude: location?.latitude,
@@ -528,7 +529,7 @@ class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {
         yield ErrorState(UnhandledException(ex.toString()), state.report, state.userLocation, state.violationLocation);
       }
     } else if (event is RemoveReportEvent) {
-      await _reportsService.remove(state.report);
+      await _reportsService.removeLocal(state.report);
       yield DeletedState(state.report, state.userLocation, state.violationLocation); 
     } else if (event is SetViolationLocationEvent) {
       yield TotalReportBlocState(state.report, state.userLocation, event.location);

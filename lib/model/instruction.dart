@@ -35,8 +35,8 @@ class InstructionFilters {
     return InstructionFilters(
       instructionNum: json['instructionNum'], 
       instructionStatus: json['instructionStatus'], 
-      instructionDates: json['instructionDates'] != null ? List<DateTime>.from(json['instructionDates'].map((e)=> DateTime.parse(e))) : null, 
-      checkDates: json['checkDates'] != null ? List<DateTime>.from(json['checkDates'].map((e)=> DateTime.parse(e))) : null, 
+      instructionDates: json['instructionDates'] != null ? List<DateTime>.from(json['instructionDates'].map((e)=> DateTime.parse(e))) : [DateTime.now()], 
+      checkDates: json['checkDates'] != null ? List<DateTime>.from(json['checkDates'].map((e)=> DateTime.parse(e))) : [DateTime.now()], 
     );
   }
 

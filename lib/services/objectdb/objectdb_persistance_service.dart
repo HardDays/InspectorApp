@@ -134,8 +134,7 @@ class ObjectDbPersistanceService extends ObjectDBService
   }
 
   Future<InstructionFilters> getInstructionFilters() async {
-    return InstructionFilters.fromJson(
-        await _getKeyValue('instructionFilters') ?? {});
+    return InstructionFilters.fromJson(await _getKeyValue('instructionFilters') ?? {});
   }
 
   Future<DateTime> getInstructionReportDate(int instructionId) async {

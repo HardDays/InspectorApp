@@ -35,16 +35,26 @@ class InstructionPage extends StatelessWidget {
 
   InstructionPage(this.instruction);
 
-  void _onTotalReport(BuildContext context, Report report, InstructionCheck check) async {
-    bool violationNotPresent = false;
-    if (report == null) {
-      violationNotPresent = await _showViolationDialog(context);
-    } 
-    if (violationNotPresent != null) {
+  void _onReport(BuildContext context, Report report, InstructionCheck check) async {
+    final res = await Navigator.push(context, 
+      MaterialPageRoute(
+        builder: (context) => TotalReportPage(
+          report: report
+        ),
+      ),
+    );  
+    if (res != null) {
+      BlocProvider.of<InstructionBloc>(context).add(RefreshReportsEvent());  
+    }
+  }
+
+  void _onCreateReport(BuildContext context, InstructionCheck check) async {
+     bool violationNotPresent = await _showViolationDialog(context);
+     if (violationNotPresent != null) {
       final res = await Navigator.push(context, 
         MaterialPageRoute(
           builder: (context) => TotalReportPage(
-            report: report?.copyWith() ?? Report.empty(violationNotPresent, check.id, instruction.id)
+            report: Report.empty(violationNotPresent, check.id, instruction.id)
           ),
         ),
       );  
@@ -54,8 +64,32 @@ class InstructionPage extends StatelessWidget {
     }
   }
 
-  void _onAddressReport(BuildContext context, DiggRequestCheck diggRequestCheck, Report report, String status) async {
-    final res = await Navigator.push(context, MaterialPageRoute(builder: (context) => DiggReportPage(diggRequestCheck, report, status)));
+  void _onDiggReport(BuildContext context, DiggRequestCheck diggRequestCheck, Report report) async {
+    final res = await Navigator.push(context, 
+      MaterialPageRoute(
+        builder: (context) => 
+          DiggReportPage(
+            diggRequestCheck: diggRequestCheck,
+            report: report
+          )
+        )
+      );
+     if (res != null) {
+      BlocProvider.of<InstructionBloc>(context).add(RefreshReportsEvent());  
+    }
+  }
+
+  void _onCreateDiggReport(BuildContext context, Instruction instruction, InstructionCheck check, DiggRequestCheck diggRequestCheck, String status) async {
+    final res = await Navigator.push(context, 
+      MaterialPageRoute(
+        builder: (context) =>
+          DiggReportPage(
+            diggRequestCheck: diggRequestCheck, 
+            report: Report.empty(true, check.id, instruction.id), 
+            status: status
+          )
+        )
+      );
      if (res != null) {
       BlocProvider.of<InstructionBloc>(context).add(RefreshReportsEvent());  
     }
@@ -143,7 +177,8 @@ class InstructionPage extends StatelessWidget {
                       children: List.generate(instruction.instructionChecks.length, 
                         (index) => _buildInstructionCheck(context, 
                           instruction.instructionChecks[index], 
-                          index < state.reports.length ? state.reports[index] : null, 
+                          state.reports.where((element) => element.checkId == instruction.instructionChecks[index].id).toList(),
+                          //index < state.reports.length ? state.reports[index] : null, 
                           instruction
                         ),
                       ),
@@ -250,95 +285,108 @@ class InstructionPage extends StatelessWidget {
     );
   }
 
-  Widget _buildReportButton(BuildContext context, Report report, InstructionCheck check, Instruction instruction) {
+  Widget _buildReload(BuildContext context) {
     final state = BlocProvider.of<InstructionBloc>(context).state;
-    final status = instruction.instructionStatus.id == InstructionStatusIds.inProgress || instruction.instructionStatus.id == InstructionStatusIds.partInProgress;
-    if (state is LoadingReportsState || !status) {
-      return Container();
+    if (state is LoadingReportsState) {
+      return Container(
+        width: 20,
+        height: 20,
+        margin: const EdgeInsets.only(left: 10),
+        child: CircularProgressIndicator(
+          strokeWidth: 2,
+          valueColor: AlwaysStoppedAnimation(ProjectColors.darkBlue),
+        ),
+      );
     } else {
       return Row(
         children: [
           Padding(
-            padding: const EdgeInsets.only(right: 10),
+            padding: const EdgeInsets.only(left: 10),
+            child: Text(state.date != null ? DateFormat('dd.MM.yyyy HH:mm').format(state.date) : 'Не обновлялось',
+              style: ProjectTextStyles.baseBold.apply(color: ProjectColors.black)
+            ),
+          ),
+          InkWell(
+            onTap: ()=> _onRefreshReport(context),
+            child: Padding(
+              padding: const EdgeInsets.only(left: 5),
+              child: const Icon(Icons.refresh,
+                size: 20,
+                color: ProjectColors.darkBlue
+              ),
+            ),
+          ),
+        ]
+      );
+    }
+  }
+
+
+  Widget _buildReportButton(BuildContext context, InstructionCheck check, Instruction instruction) {
+    final status = instruction.instructionStatus.id == InstructionStatusIds.inProgress || instruction.instructionStatus.id == InstructionStatusIds.partInProgress;
+    if (status) {
+      final state = BlocProvider.of<InstructionBloc>(context).state;
+      return Row(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(right: 10, left: 20),
             child: ProjectIcons.raportIcon(color: ProjectColors.blue.withOpacity(0.35)), 
           ),
           SizedBox(
             height: 38,
             child: ProjectButton.builtFlatButton('+ Добавить рапорт ', 
-              onPressed: ()=> _onTotalReport(context, report, check), 
+              onPressed: ()=> _onCreateReport(context, check), 
               style: ProjectTextStyles.baseBold
             ),
           ),
+         _buildReload(context)
         ],
       );
-    } 
+    } else {
+      return Container();
+    }
   }
 
   Widget _buildReport(BuildContext context, Report report, InstructionCheck check, Instruction instruction, Function onTap) {
-    final state = BlocProvider.of<InstructionBloc>(context).state;
     if (report != null) {
-      return Container(
-        child: Row(
-          children: [
-            ProjectIcons.raportIcon(color: ProjectColors.mediumBlue),
-            Padding(
-              padding: const EdgeInsets.only(left: 10),
-              child: InkWell(
-                onTap: onTap,
-                child: IntrinsicWidth(
-                  child: Column(
-                    children: [
-                      Text('Рапорт № ${report.reportNum} от ${report.reportDate != null ? DateFormat('dd.MM.yyyy').format(report.reportDate) : ''}',
-                        style: ProjectTextStyles.baseBold.apply(color: ProjectColors.blue),
-                      ),
-                      Container(
-                        height: 1,
-                        color: ProjectColors.blue
-                      ),
-                    ],
+      return Padding(
+        padding: const EdgeInsets.only(bottom: 15),
+        child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: [
+              ProjectIcons.raportIcon(color: ProjectColors.mediumBlue),
+              Padding(
+                padding: const EdgeInsets.only(left: 10),
+                child: InkWell(
+                  onTap: onTap,
+                  child: IntrinsicWidth(
+                    child: Column(
+                      children: [
+                        Text('Рапорт № ${report.reportNum} от ${report.reportDate != null ? DateFormat('dd.MM.yyyy').format(report.reportDate) : ''}',
+                          style: ProjectTextStyles.baseBold.apply(color: ProjectColors.blue),
+                        ),
+                        Container(
+                          height: 1,
+                          color: ProjectColors.blue
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 10, top: 2, right: 10),
-              child: ProjectStatus(report.reportStatus.name, 
-                color: ReportStatusColors.color(report.reportStatus.id)
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 10),
-              child: Text(state.date != null ? DateFormat('dd.MM.yyyy HH:mm').format(state.date) : 'Не обновлялось',
-                style: ProjectTextStyles.baseBold.apply(color: ProjectColors.black)
-              ),
-            ),
-            InkWell(
-              onTap: ()=> _onRefreshReport(context),
-              child: Padding(
-                padding: const EdgeInsets.only(left: 5),
-                child: const Icon(Icons.refresh,
-                  size: 20,
-                  color: ProjectColors.darkBlue
+              Padding(
+                padding: const EdgeInsets.only(left: 10, top: 2, right: 10),
+                child: ProjectStatus(report.reportStatus.name, 
+                  color: ReportStatusColors.color(report.reportStatus.id)
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       );
     } else {
-      if (state is LoadingReportsState) {
-        return Container(
-          width: 20,
-          height: 20,
-          //margin: const EdgeInsets.only(left: 10),
-          child: CircularProgressIndicator(
-            strokeWidth: 2,
-            valueColor: AlwaysStoppedAnimation(ProjectColors.darkBlue),
-          ),
-        );
-      } else {
-        return _buildReportButton(context, report, check, instruction);
-      }
+      return Container();
     }
   }
 
@@ -347,7 +395,7 @@ class InstructionPage extends StatelessWidget {
       return Container(
         color: ProjectColors.darkBlue,
         width: MediaQuery.of(context).size.width,
-        margin: const EdgeInsets.only(top: 10),
+        margin: const EdgeInsets.only(top: 20),
         padding: const EdgeInsets.only(left: 20, right: 20, top: 7, bottom: 7),
         child: Text('Обследование факта окончания работ и восстановления благоустройства',
           style: ProjectTextStyles.baseBold.apply(color: Colors.white),
@@ -360,28 +408,24 @@ class InstructionPage extends StatelessWidget {
     }
   }
 
-  Widget _buildDiggReuestCheck(BuildContext context, Report report, InstructionCheck check, DiggRequestCheck diggRequestCheck, bool divider) {
-    final enabled = report != null && 
-      report.reportStatus.id != ReportStatusIds.onApproval && 
-      report.reportStatus.id != ReportStatusIds.accepted &&
+  Widget _buildDiggReuestCheck(BuildContext context, List<Report> reports, Instruction instruction, InstructionCheck check, DiggRequestCheck diggRequestCheck, bool divider) {
+    Report report;
+    final found = reports.where((e) => e.diggRequestChecks.any((d) => d.id == diggRequestCheck.id));
+    if (found.isNotEmpty) {
+      report = found.first;
+    }
+    final enabled = report == null &&
+      // report.reportStatus.id != ReportStatusIds.onApproval && 
+      // report.reportStatus.id != ReportStatusIds.accepted &&
       (instruction.instructionStatus.id == InstructionStatusIds.inProgress ||
       instruction.instructionStatus.id == InstructionStatusIds.partComplete ||
       instruction.instructionStatus.id == InstructionStatusIds.partInProgress);
-    String status;
-    if (diggRequestCheck.workCompleted) {
-      if (diggRequestCheck.landscapingRestored) {
-        status = DiggRequestCheckStatus.landscapingRestored;
-      } else {
-        status = DiggRequestCheckStatus.landscapingNotRestored;
-      }
-    } else {
-      status = DiggRequestCheckStatus.workNotComplete;
-    }
+    final status = diggRequestCheck.status;
     return ClipRect(
       child: Container(
         width: MediaQuery.of(context).size.width,
         child: Slidable(
-          actionExtentRatio: 0.17,
+          actionExtentRatio: 0.22,
           actionPane: SlidableDrawerActionPane(),
           child: Stack(
             children: [
@@ -404,7 +448,7 @@ class InstructionPage extends StatelessWidget {
                     report?.diggRequestChecks?.any((e) => e.id == diggRequestCheck.id) ?? false ?
                     Padding(
                       padding: const EdgeInsets.only(top: 15), 
-                      child: _buildReport(context, report, check, instruction, ()=> _onAddressReport(context, diggRequestCheck, report, status))
+                      child: _buildReport(context, report, check, instruction, ()=> _onDiggReport(context, diggRequestCheck, report))
                      ) : Container(),
                     divider ? ProjectDivider() : Container(),
                   ],
@@ -426,6 +470,8 @@ class InstructionPage extends StatelessWidget {
           enabled: enabled,
           secondaryActions: [
             _buildAction(context,
+              instruction,
+              check,
               diggRequestCheck,
               report,
               DiggRequestCheckStatus.workNotComplete,
@@ -436,6 +482,8 @@ class InstructionPage extends StatelessWidget {
               'Работы не\nзавершены',
             ),
             _buildAction(context,
+              instruction,
+              check,
               diggRequestCheck,
               report,
               DiggRequestCheckStatus.landscapingNotRestored,
@@ -446,6 +494,8 @@ class InstructionPage extends StatelessWidget {
               'Благоустройство\nне восстановлено',
             ),
             _buildAction(context,
+              instruction,
+              check,
               diggRequestCheck,
               report,
               DiggRequestCheckStatus.landscapingRestored,
@@ -461,9 +511,9 @@ class InstructionPage extends StatelessWidget {
     );
   }
 
-  Widget _buildAction(BuildContext context, DiggRequestCheck diggRequestCheck, Report report, String status, Widget icon, String text) {
+  Widget _buildAction(BuildContext context, Instruction instruction, InstructionCheck check, DiggRequestCheck diggRequestCheck, Report report, String status, Widget icon, String text) {
     return InkWell(
-      onTap: ()=> _onAddressReport(context, diggRequestCheck, report, status),
+      onTap: ()=> _onCreateDiggReport(context, instruction, check, diggRequestCheck, status),
       child: Container(
         decoration: BoxDecoration(
           color: ProjectColors.grey,
@@ -486,7 +536,20 @@ class InstructionPage extends StatelessWidget {
     );
   }
 
-  Widget _buildInstructionCheck(BuildContext context, InstructionCheck instructionCheck, Report report, Instruction instruction) {
+  Widget _buildCheckReports(BuildContext context,  InstructionCheck instructionCheck, List<Report> reports) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 15, left: 20, right: 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: List.generate(reports.length, 
+          (index) => _buildReport(context, reports[index], instructionCheck, instruction, ()=> _onReport(context, reports[index], instructionCheck))
+        )
+      ), 
+    );
+
+  }
+
+  Widget _buildInstructionCheck(BuildContext context, InstructionCheck instructionCheck, List<Report> reports, Instruction instruction) {
     return ProjectCard(
       margin: const EdgeInsets.only(top: 20),
       padding: const EdgeInsets.only(top: 5),
@@ -510,14 +573,12 @@ class InstructionPage extends StatelessWidget {
                 ),
               ),
               _buildParagraph(ProjectIcons.themeIcon(), instructionCheck.checkSubject),
-              Padding(
-                padding: const EdgeInsets.only(top: 15, left: 20, right: 20, bottom: 10),
-                child: _buildReport(context, report, instructionCheck, instruction, ()=> _onTotalReport(context, report, instructionCheck))
-              ),
+              _buildCheckReports(context, instructionCheck, reports),
+              _buildReportButton(context, instructionCheck, instruction),
               _buildSplitter(context, instructionCheck.diggRequestChecks.length),
               Column(
                 children: List.generate(instructionCheck.diggRequestChecks.length, 
-                  (index) => _buildDiggReuestCheck(context, report, instructionCheck, instructionCheck.diggRequestChecks[index], index < instructionCheck.diggRequestChecks.length - 1),
+                  (index) => _buildDiggReuestCheck(context, reports, instruction, instructionCheck, instructionCheck.diggRequestChecks[index], index < instructionCheck.diggRequestChecks.length - 1),
                 ),
               ),
             ],

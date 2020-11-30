@@ -42,12 +42,24 @@ class DiggRequestCheck {
     return DiggRequestCheck(
       id: json['id'], 
       demandId: json['demandId'], 
-      workCompleted: json['workCompleted'],
-      landscapingRestored: json['landscapingRestored'],
+      workCompleted: json['workCompleted'] ?? false,
+      landscapingRestored: json['landscapingRestored'] ?? false,
       diggNum: json['diggNum'],
       diggAddress: json['diggAddress'],
       comment: json['comment'],
     );
+  }
+
+  String get status {
+    if (workCompleted) {
+      if (landscapingRestored) {
+        return DiggRequestCheckStatus.landscapingRestored;
+      } else {
+        return DiggRequestCheckStatus.landscapingNotRestored;
+      }
+    } else {
+      return DiggRequestCheckStatus.workNotComplete;
+    }
   }
 
   Map<String, dynamic> toJson() {

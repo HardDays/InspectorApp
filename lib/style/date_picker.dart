@@ -45,11 +45,25 @@ class ProjectDatePicker extends StatelessWidget {
           onChanged([picked]);
         }
       } else {
+        DateTime now = DateTime.now();
+        DateTime first = DateTime(now.year, now.month, now.day);
+        DateTime last = DateTime(now.year, now.month, now.day, 23, 59);
+
+        if (values != null) {
+          if (values.length == 1) {
+            first = values.first;
+            last = values.last.add(Duration(minutes: 10));
+          } else if (values.length == 2) {
+            first = values.first;
+            last = values.last;
+          }
+        }
+
         final List<DateTime> picked = await dr.showDatePicker(
           context: context,
           locale: Locale('ru', 'RU'),
-          initialFirstDate: DateTime.now(),
-          initialLastDate: (DateTime.now()).add(Duration(days: 7)),
+          initialFirstDate: first,
+          initialLastDate: last,
           firstDate: DateTime(2018),
           lastDate: DateTime(2050)
         );

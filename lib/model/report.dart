@@ -41,6 +41,7 @@ class ReportError {
 class Report {
 
   final int id;
+  final int dbId;
   final int instructionId;
   final int checkId;
   final bool violationNotPresent;
@@ -56,6 +57,7 @@ class Report {
 
   Report({
     this.id,
+    this.dbId,
     this.instructionId,
     this.checkId,
     this.violationNotPresent,
@@ -69,6 +71,7 @@ class Report {
   });
 
   bool get isNew => (reportStatus == null || reportStatus?.id == ReportStatusIds.new_ || reportStatus?.id == ReportStatusIds.project);
+  bool get isReady => (id == null && reportStatus?.id == ReportStatusIds.onApproval);
   bool get isUpdatable => isNew || reportStatus?.id == ReportStatusIds.declined;
   bool get isDeletable => reportStatus != null && isNew;
 
@@ -94,6 +97,7 @@ class Report {
   }) {
     return Report(
       id: id,
+      dbId: dbId,
       instructionId: instructionId,
       checkId: checkId,
       violationNotPresent: violationNotPresent ?? this.violationNotPresent,
@@ -112,10 +116,11 @@ class Report {
     final status = json['reportStatus'] != null ? ReportStatus.fromJson(stringified ? c.json.decode(json['reportStatus']) : json['reportStatus']) : null;
     final author = json['reportAuthor'] != null ? User.fromJson(stringified ? c.json.decode(json['reportAuthor']) : json['reportAuthor']) : null;
     final violation = json['violation'] != null ? Violation.fromJson(stringified ? c.json.decode(json['violation']) : json['violation']) : null;
-    final checks = json['diggRequestChecks'] != null ? List<DiggRequestCheck>.from((stringified ? c.json.decode(json['diggRequestChecks']): json['diggRequestChecks']).map((p) => DiggRequestCheck.fromJson(p))) : [];
-    final photos = json['photos'] != null ? List<Photo>.from((stringified ? c.json.decode(json['photos']) : json['photos']).map((p) => Photo.fromJson(p))) : [];
+    final List<DiggRequestCheck> checks = json['diggRequestChecks'] != null ? List<DiggRequestCheck>.from((stringified ? c.json.decode(json['diggRequestChecks']): json['diggRequestChecks']).map((p) => DiggRequestCheck.fromJson(p))) : [];
+    final List<Photo> photos = json['photos'] != null ? List<Photo>.from((stringified ? c.json.decode(json['photos']) : json['photos']).map((p) => Photo.fromJson(p))) : [];
     return Report(
       id: json['id'], 
+      dbId: json['dbId'],
       instructionId: json['instructionId'], 
       checkId: json['checkId'],
       reportNum: json['reportNum'],
@@ -134,6 +139,7 @@ class Report {
     final photosJson = photos != null ? photos.map((e) => e.toJson()).toList() : [];
     return {
       'id': id,
+      'dbId': dbId,
       'instructionId': instructionId,
       'checkId': checkId,
       'violationNotPresent': stringified ? ((violationNotPresent ?? false) ? 1 : 0) : violationNotPresent,

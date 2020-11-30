@@ -109,6 +109,7 @@ class InstructionListBloc extends Bloc<InstructionListBlocEvent, InstructionList
         }
       }
     }
+    result.sort((c1, c2) => c1.instructionNum.compareTo(c2.instructionNum));
     if (sort == InstructionSortStrings.instructionNum) {
       result.sort((c1, c2) => c1.instructionNum.compareTo(c2.instructionNum));
     } else if (sort == InstructionSortStrings.checkDate) {

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:path/path.dart' as p;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,7 +27,7 @@ class DiggReportPage extends StatefulWidget {
   final String status;
   final Report report;
 
-  DiggReportPage(this.diggRequestCheck, this.report, this.status);
+  DiggReportPage({this.diggRequestCheck, this.report, this.status});
 
   @override
   DiggReportPageState createState() => DiggReportPageState();
@@ -37,10 +38,8 @@ class DiggReportPageState extends State<DiggReportPage> with SingleTickerProvide
 
   final _commentController = TextEditingController();
 
-  final List<Uint8List> _photos = [
-
-  ];
-
+  final List<Uint8List> _photos = [];
+  final List<String> _photoNames = [];
   void initState() {
     super.initState();
 
@@ -53,13 +52,22 @@ class DiggReportPageState extends State<DiggReportPage> with SingleTickerProvide
 
     final decoder = Base64Decoder();
     for (int i = 0; i < widget.report.photos.length; i++) {
-      final image = decoder.convert(widget.report.photos[i].data);
+      final photo = widget.report.photos[i];
+      final image = decoder.convert(photo.data);
       _photos.add(image);
+      _photoNames.add(photo.name);
     }
   }
 
    void _onPhotoPick(BuildContext context, File file) {
     _photos.add(file.readAsBytesSync());
+    _photoNames.add(p.basename(file.path));
+    BlocProvider.of<DiggReportBloc>(context).add(FlushEvent());
+  }
+
+   void _onPhotoRemove(BuildContext context, int index) {
+    _photos.removeAt(index);
+    _photoNames.removeAt(index);
     BlocProvider.of<DiggReportBloc>(context).add(FlushEvent());
   }
 
@@ -70,7 +78,7 @@ class DiggReportPageState extends State<DiggReportPage> with SingleTickerProvide
   void _onSave(BuildContext context, int status) async {
     final res = await showDialog(context: context, child: AcceptDialog(message: 'Сохранить рапорт?'));
     if (res != null) {
-      BlocProvider.of<DiggReportBloc>(context).add(SaveReportEvent(widget.diggRequestCheck, status, _commentController.text));  
+      BlocProvider.of<DiggReportBloc>(context).add(SaveReportEvent(widget.diggRequestCheck, status, _commentController.text, _photos, _photoNames));  
     }
   }
 
@@ -107,7 +115,7 @@ class DiggReportPageState extends State<DiggReportPage> with SingleTickerProvide
   @override
   Widget build(BuildContext context) {
      return BlocProvider(
-      create: (context)=> DiggReportBloc(DiggReportBlocState(widget.status, widget.report)),
+      create: (context)=> DiggReportBloc(DiggReportBlocState(widget.status ?? widget.report.diggRequestChecks.isNotEmpty ? widget.report.diggRequestChecks.first.status : DiggRequestCheckStatus.landscapingNotRestored, widget.report)),
       child: BlocBuilder<DiggReportBloc, DiggReportBlocState>(
         builder: (context, state) {
           if (state is SuccessState) { 
@@ -153,15 +161,18 @@ class DiggReportPageState extends State<DiggReportPage> with SingleTickerProvide
                     ),
                     ProjectTitle('Фотоматериалы'),
                     ImagePicker(
-                      margin: const EdgeInsets.only(top: 20, bottom: 70),
+                      margin: const EdgeInsets.only(top: 20, bottom: 0),
+                      images: _photos,
                       onPicked: (file)=> _onPhotoPick(context, file),
-                    )
+                      onRemoved: (index)=> _onPhotoRemove(context, index),
+                    ),
+                    _buildButtons(context)
                   ],
                 ),
               ),
             ),
-            floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-            floatingActionButton: _buildButtons(context)
+            // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+            // floatingActionButton: _buildButtons(context)
           );
         }
       )
@@ -172,9 +183,11 @@ class DiggReportPageState extends State<DiggReportPage> with SingleTickerProvide
     final report = widget.report;
     return Container(
       color: Colors.white,
-      padding: const EdgeInsets.only(top: 30, bottom: 20, left: 30, right: 30),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      padding: const EdgeInsets.only(top: 30, bottom: 20),
+      child: Wrap(
+        spacing: 5,
+        alignment: WrapAlignment.center,
+        //mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           ProjectButton.builtFlatButton('Сохранить проект',
             onPressed: report.isNew ? () => _onSave(context, ReportStatusIds.project) : null,

@@ -67,9 +67,10 @@ class InstructionsService {
       await _persistanceService.saveInstructionsReportDate(id);
       if (data.isNotEmpty) {
         for (final report in data) {
+          await _reportsDbService.removeGlobal(report);
           await _reportsDbService.save(report);
         }
-        return data;
+        return await _reportsDbService.all(query: {'instructionId': id});
       } else {
         return await _reportsDbService.all(query: {'instructionId': id});
       }

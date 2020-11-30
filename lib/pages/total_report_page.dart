@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:path/path.dart' as p;
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -99,7 +100,9 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
   final List<Uint8List> _photos = [
 
   ];
+  final List<String> _photoNames = [
 
+  ];
   final _violatorFormKeys = [
     GlobalKey<FormState>()
   ];
@@ -181,8 +184,10 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
     if (widget.report.violationNotPresent) {
       final decoder = Base64Decoder();
       for (int i = 0; i < widget.report.photos.length; i++) {
-        final image = decoder.convert(widget.report.photos[i].data);
+        final photo = widget.report.photos[i];
+        final image = decoder.convert(photo.data);
         _photos.add(image);
+        _photoNames.add(photo.name);
       }
     } else {
       final violation = widget.report.violation;
@@ -377,11 +382,13 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
 
   void _onPhotoPick(BuildContext context, File file) {
     _photos.add(file.readAsBytesSync());
+    _photoNames.add(p.basename(file.path));
     BlocProvider.of<TotalReportBloc>(context).add(FlushEvent());
   }
 
   void _onPhotoRemove(BuildContext context, int index) {
     _photos.removeAt(index);
+    _photoNames.removeAt(index);
     BlocProvider.of<TotalReportBloc>(context).add(FlushEvent());
   }
 
@@ -543,7 +550,8 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
         BlocProvider.of<TotalReportBloc>(context).add(
           SaveReportEvent(
             status: status,
-            photos: _photos
+            photos: _photos,
+            photoNames: _photoNames
           ),
         );  
       } else {
@@ -640,7 +648,8 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
               violationDescription: _violationDescriptionController.text,
               specifiedAddress: _specifiedAddressController.text,
               codexArticle: _codexArticleController.text,
-              photos: _photos
+              photos: _photos,
+              photoNames: _photoNames
             ),
           );  
         } else {
@@ -1336,8 +1345,8 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
                 _departmentCodeControllers[index],
                 (value)=> _onDepartmentCodeSearch(context, value),
                 (value)=> _onDepartmentCodeSelect(context, index, value), 
-                enabled: enabled,
-                validator: enabled ? (value) => _nullValidator(violator?.departmentCode) : null
+                enabled: true,
+                //validator: enabled ? (value) => _nullValidator(violator?.departmentCode) : null
               ),
             ),
             Padding(padding: const EdgeInsets.only(left: 35)),
@@ -1632,8 +1641,9 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
     return Container(
       color: Colors.white,
       padding: const EdgeInsets.only(top: 30, bottom: 20),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      child: Wrap(
+        spacing: 5,
+        alignment: WrapAlignment.center,
         children: [
           ProjectButton.builtFlatButton('Сохранить проект',
             onPressed: report.isNew ? () => _onSave(context, ReportStatusIds.project) : null,
@@ -1801,10 +1811,12 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
             value: value,
             onChanged: widget.report.isUpdatable && enabled ? onChanged : (v){},
           ),
-          Padding(
+          Flexible(
+            child: Padding(
             padding: const EdgeInsets.only(left: 10),
-            child: Text(title,
-              style: (style ?? ProjectTextStyles.base).apply(color: ProjectColors.black),
+              child: Text(title,
+                style: (style ?? ProjectTextStyles.base).apply(color: ProjectColors.black),
+              ),
             ),
           ),
         ],

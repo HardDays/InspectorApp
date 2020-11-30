@@ -49,8 +49,11 @@ class ProfileBloc extends Bloc<ProfileBlocEvent, ProfileBlocState> {
       });
       final reports = await _reportsService.readyToSend();
       for (final element in reports) {
-        _apiProvider.createReport(element);
-        _reportsService.remove(element);
+        try {
+          await _reportsService.send(element);
+        } catch (ex) {
+          print(ex);
+        }
       }
       yield(_copyFilledBlocState(state as FilledBlocState, sending: false, canBeSended: false));
     }

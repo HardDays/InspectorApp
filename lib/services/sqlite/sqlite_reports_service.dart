@@ -13,12 +13,11 @@ class SqliteReportsService {
   Future init() async {
     if (_database == null) {
       _database = await openDatabase(
-        join(await getDatabasesPath(), 'reports2.db'),
+        join(await getDatabasesPath(), 'reports3.db'),
         onCreate: (db, version) async {
-          await db.execute('''CREATE TABLE reports(id INTEGER, instructionId INTEGER, checkId INTEGER, 
+          await db.execute('''CREATE TABLE reports(dbId INTEGER PRIMARY KEY, id INTEGER, instructionId INTEGER, checkId INTEGER, 
             violationNotPresent INTEGER, reportNum TEXT, reportDate TEXT, error TEXT,
-            reportStatus TEXT, reportAuthor TEXT, violation TEXT, diggRequestChecks TEXT, photos TEXT,
-            PRIMARY KEY (instructionId, checkId)
+            reportStatus TEXT, reportAuthor TEXT, violation TEXT, diggRequestChecks TEXT, photos TEXT
           )''');
         },
         onOpen: (db) async {
@@ -55,11 +54,11 @@ class SqliteReportsService {
       return [];
     }
   }
-
+  //todo: fix
   Future save(Report report, {String error}) async {
     try {
       await init();
-      final where = 'checkId = ${report.checkId} AND instructionId = ${report.instructionId}';
+      final where = 'dbId = ${report.dbId}';
       final created = await _database.query(_tableName, where: where);
       final json = report.toSqliteJson();
       json['error'] = error;
@@ -69,14 +68,23 @@ class SqliteReportsService {
         await _database.update(_tableName, json, where: where);
       }
     } catch (ex) {
+      print(ex);
+    }
+  } 
 
+  Future  removeGlobal(Report report) async {
+    try {
+      await init();
+      await _database.delete(_tableName, where: 'id = ${report.id}');
+    } catch (ex) {
+      print(ex);
     }
   }
 
-  Future remove(Report report) async {
+  Future removeLocal(Report report) async {
     try {
       await init();
-      await _database.delete(_tableName, where: 'checkId = ${report.checkId} AND instructionId = ${report.instructionId}');
+      await _database.delete(_tableName, where: 'dbId = ${report.dbId}');
     } catch (ex) {
 
     }

@@ -182,8 +182,9 @@ class SaveReportEvent extends TotalReportBlocEvent {
   final String codexArticle;
   final List<Violator> violators;
   final List<Uint8List> photos;
+  final List<String> photoNames;
 
-  SaveReportEvent({this.status, this.violationDescription, this.specifiedAddress, this.codexArticle, this.violators, this.photos});
+  SaveReportEvent({this.status, this.violationDescription, this.specifiedAddress, this.codexArticle, this.violators, this.photos, this.photoNames});
 }
 
 class RemoveReportEvent extends TotalReportBlocEvent {

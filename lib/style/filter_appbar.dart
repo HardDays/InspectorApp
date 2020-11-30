@@ -26,7 +26,6 @@ class FilterAppbar extends StatelessWidget implements PreferredSizeWidget {
     }
   );
 
-
   @override
   final Size preferredSize = Size.fromHeight(kToolbarHeight);
 
@@ -56,7 +55,7 @@ class FilterAppbar extends StatelessWidget implements PreferredSizeWidget {
         _buildIcon(Icon(Icons.refresh, size: 25), date, onUpdate),
         _buildIcon(ProjectIcons.sortIcon(color: Colors.white), sort, onSort),
         _buildIcon(ProjectIcons.filterIcon(color: Colors.white), 'Фильтр', onFilter),
-        Padding(padding: const EdgeInsets.only(right: 15))
+        Padding(padding: const EdgeInsets.only(right: 20))
       ],
     );
   }
@@ -68,7 +67,7 @@ class FilterAppbar extends StatelessWidget implements PreferredSizeWidget {
         children: [
           icon,
           Padding(
-            padding: const EdgeInsets.only(left: 8, right: 15),
+            padding: const EdgeInsets.only(left: 5, right: 10),
             child: Text(title,
               style: ProjectTextStyles.small,
             ),
@@ -77,5 +76,4 @@ class FilterAppbar extends StatelessWidget implements PreferredSizeWidget {
       ),
     );
   }
-
 }
