@@ -129,6 +129,7 @@ class ApiProvider {
     if (token == null) {
       dio.options.headers.remove('Authorization');
     } else {
+      print(token);
       dio.options.headers = {
         'Authorization': "Bearer " + token
       };
