@@ -15,3 +15,9 @@ class BottomNavigationStateChanged extends NavigationBlocState {
   BottomNavigationStateChanged(this.currentScreen);
 
 }
+
+class OpenMapsErrorState extends NavigationBlocState {
+  final Screens currentScreen;
+
+  OpenMapsErrorState(this.currentScreen);
+}
