@@ -19,6 +19,7 @@ class ViolatorInfoPrivate extends ViolatorInfo{
   final int gender;
   final DateTime birthDate;
   final String birthPlace;
+  final String registrationAddressString;
   final ViolatorAddress registrationAddress;
 
   ViolatorInfoPrivate({
@@ -37,8 +38,15 @@ class ViolatorInfoPrivate extends ViolatorInfo{
     this.gender,
     this.birthDate,
     this.birthPlace,
+    this.registrationAddressString,
     this.registrationAddress,
   }) : super(id: id, phone: phone);
+
+  String get name {
+    final data = [firstName, lastName, patronym];
+    return data.where((e)=> e !=null).join(' ');
+  }
+
 
   factory ViolatorInfoPrivate.fromJson(Map<String, dynamic> json, {bool stringified = false}) {
     return ViolatorInfoPrivate(
@@ -55,6 +63,7 @@ class ViolatorInfoPrivate extends ViolatorInfo{
       gender: json['gender'],
       birthDate: json['birthDate'] != null ? DateTime.parse(json['birthDate']) : null,
       birthPlace: json['birthPlace'],
+      registrationAddressString: json['registrationAddressString'],
       registrationAddress: json['registrationAddress'] != null ? ViolatorAddress.parse(json['registrationAddress'], stringified) : null,
     );
   }
@@ -77,6 +86,7 @@ class ViolatorInfoPrivate extends ViolatorInfo{
       gender: gender,
       birthDate: birthDate,
       birthPlace: birthPlace,
+      registrationAddressString: registrationAddressString,
       registrationAddress: registrationAddress ?? this.registrationAddress,
     );
   }
@@ -96,6 +106,7 @@ class ViolatorInfoPrivate extends ViolatorInfo{
       'gender': gender,
       'birthDate': birthDate?.toIso8601String(),
       'birthPlace': birthPlace,
+      'registrationAddressString': registrationAddressString,
       'registrationAddress': registrationAddress != null ? stringified ? c.json.encode(registrationAddress.toJson()) : registrationAddress.toJson() : null,
     };
   }
@@ -106,7 +117,7 @@ class ViolatorInfoPrivate extends ViolatorInfo{
 
   @override
   String toString() {
-    final data = [firstName, lastName, patronym, birthDate?.toString(), inn != null ? 'ИНН $inn' : null];
+    final data = [name, birthDate?.toString(), inn != null ? 'ИНН $inn' : null];
     return data.where((e)=> e !=null).join(' ');
   }
 

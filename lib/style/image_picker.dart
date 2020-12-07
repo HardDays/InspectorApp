@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:inspector/style/button.dart';
+import 'package:inspector/style/dialog.dart';
 import 'package:inspector/style/icons.dart';
 import 'package:inspector/style/text_style.dart';
 import 'package:inspector/style/colors.dart';
@@ -38,11 +39,37 @@ class ImagePicker extends StatelessWidget {
     this.margin = const EdgeInsets.only(top: 20)
   });
 
-  void _onPick() async {
+
+  Future<p.ImageSource> _showViolationDialog(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) => ProjectDialog(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ProjectButton.builtFlatButton('Галерея',
+              onPressed: ()=> Navigator.pop(context, p.ImageSource.gallery)
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 20),
+            ),
+            ProjectButton.buildOutlineButton('Камера',
+              onPressed: ()=> Navigator.pop(context, p.ImageSource.camera)
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _onPick(BuildContext context) async {
     if (enabled) {
-      final image = await picker.getImage(source: p.ImageSource.gallery);
-      if (image != null && onPicked != null) {
-        onPicked(File(image.path));
+      final source = await _showViolationDialog(context);
+      if (source != null) {
+        final image = await picker.getImage(source: source);
+        if (image != null && onPicked != null) {
+          onPicked(File(image.path));
+        }
       }
     }
   }
@@ -98,7 +125,7 @@ class ImagePicker extends StatelessWidget {
               icon: ProjectIcons.camera2Icon(
                 color: enabled ? ProjectColors.blue : ProjectColors.lightBlue
               ),
-              onPressed: enabled ? _onPick : null,
+              onPressed: enabled ? ()=> _onPick(context) : null,
               style: ProjectTextStyles.subTitle
             ),
           ),

@@ -35,11 +35,12 @@ class InstructionPage extends StatelessWidget {
 
   InstructionPage(this.instruction);
 
-  void _onReport(BuildContext context, Report report, InstructionCheck check) async {
+  void _onReport(BuildContext context, int violationIndex, Report report, InstructionCheck check) async {
     final res = await Navigator.push(context, 
       MaterialPageRoute(
         builder: (context) => TotalReportPage(
-          report: report
+          report: report,
+          violationIndex: violationIndex,
         ),
       ),
     );  
@@ -54,7 +55,8 @@ class InstructionPage extends StatelessWidget {
       final res = await Navigator.push(context, 
         MaterialPageRoute(
           builder: (context) => TotalReportPage(
-            report: Report.empty(violationNotPresent, check.id, instruction.id)
+            report: Report.empty(violationNotPresent, check.id, instruction.id),
+            violationIndex: 0,
           ),
         ),
       );  
@@ -537,16 +539,27 @@ class InstructionPage extends StatelessWidget {
   }
 
   Widget _buildCheckReports(BuildContext context,  InstructionCheck instructionCheck, List<Report> reports) {
+    final reportList = List<Report>();
+    final indexList = List<int>();
+    for (final report in reports) {
+        reportList.add(report);
+      if (report.violations.isNotEmpty) {
+        for (int i = 0; i < report.violations.length; i++) {
+          indexList.add(i);
+        }
+      } else {
+        indexList.add(0);
+      }
+    }
     return Padding(
       padding: const EdgeInsets.only(top: 15, left: 20, right: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: List.generate(reports.length, 
-          (index) => _buildReport(context, reports[index], instructionCheck, instruction, ()=> _onReport(context, reports[index], instructionCheck))
-        )
+          (index) => _buildReport(context, reports[index], instructionCheck, instruction, ()=> _onReport(context, indexList[index], reportList[index], instructionCheck))
+        ),
       ), 
     );
-
   }
 
   Widget _buildInstructionCheck(BuildContext context, InstructionCheck instructionCheck, List<Report> reports, Instruction instruction) {
@@ -612,10 +625,13 @@ class InstructionPage extends StatelessWidget {
         valueColor: AlwaysStoppedAnimation(ProjectColors.darkBlue),
       );
     } else {
+      final canDecline = instruction.instructionStatus.id  == InstructionStatusIds.inProgress && 
+                        (state.reports != null && state.reports.isEmpty) &&
+                        !(state is LoadingReportsState);
       return Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          instruction.instructionStatus.id == InstructionStatusIds.assigned ? Padding(
+          canDecline ? Padding(
             padding: const EdgeInsets.only(right: 20),
             child: ProjectButton.buildOutlineButton('Отклонить',
               onPressed: ()=> _onStatus(context, InstructionStatusIds.withdrawn)

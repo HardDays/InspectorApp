@@ -13,11 +13,11 @@ class SqliteReportsService {
   Future init() async {
     if (_database == null) {
       _database = await openDatabase(
-        join(await getDatabasesPath(), 'reports3.db'),
+        join(await getDatabasesPath(), 'reports4.db'),
         onCreate: (db, version) async {
           await db.execute('''CREATE TABLE reports(dbId INTEGER PRIMARY KEY, id INTEGER, instructionId INTEGER, checkId INTEGER, 
             violationNotPresent INTEGER, reportNum TEXT, reportDate TEXT, error TEXT,
-            reportStatus TEXT, reportAuthor TEXT, violation TEXT, diggRequestChecks TEXT, photos TEXT
+            reportStatus TEXT, reportAuthor TEXT, violations TEXT, diggRequestChecks TEXT, photos TEXT
           )''');
         },
         onOpen: (db) async {

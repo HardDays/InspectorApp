@@ -59,7 +59,7 @@ class Violation {
       violators: [
         Violator.empty()
       ],
-      violationKind: ViolationKind(id: 3),
+      violationKind: ViolationKind(id: 19, name: 'Другие объекты контроля'),
       photos: []
     );
   }

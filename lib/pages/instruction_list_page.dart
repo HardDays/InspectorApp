@@ -106,6 +106,7 @@ class InstructionListPageState extends State<InstructionListPage> with Automatic
             appBar: FilterAppbar('Поручения', 
               state.date != null ? DateFormat('dd.MM.yyyy HH:mm').format(state.date) : 'Не обновлялось',
               state.sort ?? InstructionSortStrings.instructionStatus,
+              state.order ?? SortOrder.asc,
               titleIcon: _buildIcons(state),
               onUpdate: ()=> _onUpdate(context),
               onSort: ()=> _onSort(context, state.sort),

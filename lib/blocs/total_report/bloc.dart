@@ -86,6 +86,8 @@ class TotalReportDialogBloc extends Bloc<TotalReportDialogBlocEvent, TotalReport
 class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {
   TotalReportBloc(initialState) : super(initialState);
 
+  int violationIndex = 0;
+
   final _persistanceService = ObjectDbPersistanceService();
   final _dictionaryService = DictionaryService();
   final _reportsService = ReportsService();
@@ -106,21 +108,21 @@ class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {
   }
 
   Future<Iterable<District>> getDistricts(String name) async {
-    final address = state.report.violation?.violationAddress;
+    final address = state.report.violation(violationIndex)?.violationAddress;
     //if (address?.area?.id != null) {
       return await _dictionaryService.getDitricts(name: name, areaId: address?.area?.id);
     //}
   }
 
   Future<Iterable<Street>> getStreets(String name) async {
-    final address = state.report.violation?.violationAddress;
+    final address = state.report.violation(violationIndex)?.violationAddress;
    // if (address?.district?.id != null) {
       return await _dictionaryService.getStreets(name: name, districtId: address?.district?.id);
    // }
   }
 
   Future<Iterable<Address>> getAddresses(String houseNum) async {
-    final address = state.report.violation?.violationAddress;
+    final address = state.report.violation(violationIndex)?.violationAddress;
     if (address?.street?.id != null) {
       return await _dictionaryService.getAddresses(houseNum: houseNum, streetId: address?.street?.id);
     }
@@ -139,7 +141,7 @@ class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {
   }
 
   Future<Iterable<NormativeActArticle>> getNormativeActArticles(int index, String name) async {
-    final act = state.report.violation?.normativeActArticles[index];
+    final act = state.report.violation(violationIndex)?.normativeActArticles[index];
     if (act?.normativeActId != null) {
       return await _dictionaryService.getNormativeActArticles(name: name, normativeActId: act.normativeActId);
     }
@@ -185,7 +187,7 @@ class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {
 
 
   Future<Iterable<dynamic>> getViolators(int index, String name) async {
-    final violatorType = state.report?.violation?.violators?.elementAt(index)?.type;
+    final violatorType = state.report?.violation(violationIndex)?.violators?.elementAt(index)?.type;
     if (violatorType != null) {
       if (violatorType.id == ViolatorTypeIds.legal) {
         return await _dictionaryService.getViolatorInfoLegals(name: name);
@@ -209,18 +211,18 @@ class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {
           await Future.delayed(Duration(seconds: 2));
           yield TotalReportBlocState(state.report, state.userLocation, state.violationLocation);
         } else {
-          add(InitEvent(event.report));
+          add(InitEvent(event.violationIndex, event.report));
         } 
       } catch (ex) {
         print(ex);
       }
     } else if (event is InitEvent) {
+      violationIndex = event.violationIndex;
       final position = await Geolocator.getLastKnownPosition();
       if (position != null && position.latitude != 0 && position.longitude != 0) {
         yield UserLocationLoadedState(event.report, LatLng(position.latitude, position.longitude), state.violationLocation);
       }
-      
-      final address = state.report.violation?.violationAddress;
+      final address = state.report.violation(violationIndex)?.violationAddress;
       if (address?.latitude != null && address?.longitude != null) {
         yield ViolationLocationLoadedState(event.report, state.userLocation, LatLng(address.latitude, address.longitude));
       }
@@ -228,11 +230,11 @@ class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {
       yield state.copyWith(
         report: state.report.copyWith(
           violationNotPresent: event.violationNotPresent,
-          violation: state.report.violation ?? Violation.empty()
+          violations: event.violationNotPresent ? (state.report.violations) : [Violation.empty()]
         ),
       );
     } else if (event is ChangeViolationEvent) {
-      Violation violation = state.report.violation;
+      Violation violation = state.report.violation(violationIndex);
       if (event is SearchAddressByLocation) {
         if (state.userLocation != null) {
           final res = await _geoService.reverseGeocode(state.userLocation.latitude, state.userLocation.longitude);
@@ -281,7 +283,9 @@ class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {
                 longitude: state.userLocation.longitude
               ),
             );
-            yield AddressFromLocationState(state.report.copyWith(violation: violation), state.userLocation, LatLng(state.userLocation.latitude, state.userLocation.longitude));
+            final violations = state.report.violations;
+            violations[violationIndex] = violation;
+            yield AddressFromLocationState(state.report.copyWith(violations: violations), state.userLocation, LatLng(state.userLocation.latitude, state.userLocation.longitude));
           }
         }
       } else if (event is SetViolationAreaEvent) {
@@ -336,6 +340,12 @@ class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {
         violation = violation.copyWith(
           normativeActArticles: articles
         );
+      } else if (event is DeleteViolationNormativeActEvent) {
+        final articles = violation.normativeActArticles;
+        articles.removeAt(event.index);
+        violation = violation.copyWith(
+          normativeActArticles: articles
+        );
       } else if (event is SetViolationTypeEvent) {
         violation = violation.copyWith(
           violationType: event.violationType
@@ -346,14 +356,23 @@ class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {
         );
       }
       if (!(event is SearchAddressByLocation)) { 
+        final violations = state.report.violations;
+        violations[violationIndex] = violation;
         yield state.copyWith(
           report: state.report.copyWith(
-            violation: violation
+            violations: violations
           ),
         );
       }
+      if (event is SetViolationAddressEvent) {
+        final resLocation = await _geoService.geocode(event.address.toSearchString());
+        await Future.delayed(const Duration(milliseconds: 300));
+        if (resLocation != null) {
+          yield AddressFromLocationState(state.report, null, LatLng(resLocation.lat, resLocation.lng));
+        }
+      }
     } else if (event is ChangeViolatorEvent) { 
-      final violators = state.report.violation.violators;
+      final violators = state.report.violation(violationIndex).violators;
       Violator violator = violators[event.index];
       if (event is SetViolatorNotFoundEvent) {
         violator = violator.copyWith(
@@ -454,19 +473,30 @@ class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {
         }
       }
       violators[event.index] = violator;
+
+      final violations = state.report.violations;
+      violations[violationIndex] = state.report.violation(violationIndex).copyWith(
+        violators: violators
+      );
       yield state.copyWith(
         report: state.report.copyWith(
-          violation: state.report.violation.copyWith(
-            violators: violators
-          ),
+          violations: violations
         ),
+        // report: state.report.copyWith(
+        //   violation: state.report.violation.copyWith(
+        //     violators: violators
+        //   ),
+        // ),
       );
     } else if (event is AddViolatorEvent) {
+      final violations = state.report.violations;
+      final violation = state.report.violation(violationIndex);
+      violations[violationIndex] =  violation.copyWith(
+        violators: violation.violators..add(Violator.empty())
+      );
       yield state.copyWith(
         report: state.report.copyWith(
-          violation: state.report.violation.copyWith(
-            violators: state.report.violation.violators..add(Violator.empty())
-          ),
+          violations: violations
         ),
       );
     } else if (event is SaveReportEvent) {
@@ -486,10 +516,11 @@ class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {
           reportDate: date,
           reportNum: number,
           reportAuthor: user,
-          photos: photos
+          photos: photos,
+          violations: []
         );
       } else {
-        final violation = state.report.violation;
+        final violation = state.report.violation(violationIndex);
 
         LatLng location = state.violationLocation;
         if (location == null) {
@@ -499,23 +530,38 @@ class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {
           }
         }
                 
+        final violations = state.report.violations;
+        violations[violationIndex] = violation.copyWith(
+          violators: event.violators,
+          photos: photos,
+          codexArticle: event.codexArticle,
+          violationDescription: event.violationDescription,
+          violationDate: violation.violationDate ?? date..subtract(Duration(minutes: 5)),
+          violationAddress: violation.violationAddress.copyWith(
+            specifiedAddress: event.specifiedAddress ,
+            latitude: location?.latitude,
+            longitude: location?.longitude
+          ),
+        );
+
         report = report.copyWith(
           reportStatus: status,
           reportDate: date,
           reportNum: number,
           reportAuthor: user,
-          violation: violation.copyWith(
-            violators: event.violators,
-            photos: photos,
-            codexArticle: event.codexArticle,
-            violationDescription: event.violationDescription,
-            violationDate: violation.violationDate ?? date..subtract(Duration(minutes: 5)),
-            violationAddress: violation.violationAddress.copyWith(
-              specifiedAddress: event.specifiedAddress ,
-              latitude: location?.latitude,
-              longitude: location?.longitude
-            ),
-          ),
+          violations: violations,
+          // violation: violation.copyWith(
+          //   violators: event.violators,
+          //   photos: photos,
+          //   codexArticle: event.codexArticle,
+          //   violationDescription: event.violationDescription,
+          //   violationDate: violation.violationDate ?? date..subtract(Duration(minutes: 5)),
+          //   violationAddress: violation.violationAddress.copyWith(
+          //     specifiedAddress: event.specifiedAddress ,
+          //     latitude: location?.latitude,
+          //     longitude: location?.longitude
+          //   ),
+          // ),
         );
       }
       try {
