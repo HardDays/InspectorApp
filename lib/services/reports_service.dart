@@ -50,7 +50,7 @@ class ReportsService {
   Future<Report> send(Report report) async {
     await _dataSendingConfiguration.saveLastDataSendingDate(DateTime.now());
     final res = await _apiService.createReport(report);
-    await _reportsDbService.removeLocal(report);
+    await removeLocal(report);
     return res;
   }
 

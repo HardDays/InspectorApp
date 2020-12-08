@@ -41,6 +41,8 @@ import 'package:latlong/latlong.dart';
 
 import 'dart:convert' as c;
 
+import 'package:uuid/uuid.dart';
+
 class TotalReportDialogBloc extends Bloc<TotalReportDialogBlocEvent, TotalReportDialogBlocState> {
   TotalReportDialogBloc(initialState) : super(initialState);
 
@@ -507,7 +509,7 @@ class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {
       final user = await _persistanceService.getUser();
       final local = status.id == ReportStatusIds.new_ || status.id == ReportStatusIds.project;
       final date = state.report.reportDate ?? DateTime.now();
-      final number = state.report.reportNum ?? Random().nextInt(1000000).toString();
+      final number = state.report.reportNum ?? Uuid().v4().substring(0, 16);
 
       Report report = state.report;
       if (state.report.violationNotPresent) {

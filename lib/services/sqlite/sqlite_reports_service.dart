@@ -1,6 +1,8 @@
 
 
 import 'package:inspector/model/report.dart';
+import 'package:inspector/model/violation.dart';
+import 'package:inspector/services/images/images_service.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -13,7 +15,7 @@ class SqliteReportsService {
   Future init() async {
     if (_database == null) {
       _database = await openDatabase(
-        join(await getDatabasesPath(), 'reports4.db'),
+        join(await getDatabasesPath(), 'reports5.db'),
         onCreate: (db, version) async {
           await db.execute('''CREATE TABLE reports(dbId INTEGER PRIMARY KEY, id INTEGER, instructionId INTEGER, checkId INTEGER, 
             violationNotPresent INTEGER, reportNum TEXT, reportDate TEXT, error TEXT,
@@ -37,7 +39,28 @@ class SqliteReportsService {
       await init();
       final where = query.keys.map((key) => '$key = ${query[key]}').join(' AND ');
       final data = await _database.query(_tableName, where: query.isNotEmpty ? where : null);
-      return List<Report>.from(data.map((e) => Report.fromJson(e, stringified: true)));
+      
+      final reports = List<Report>.from(data.map((e) => Report.fromJson(e, stringified: true)));
+      final res = List<Report>();
+      
+      for (final report in reports) {
+        final violations = List<Violation>();
+        for (int i = 0; i < report.violations.length; i++) {
+          final violation = report.violations[i];
+          violations.add(
+            violation.copyWith(
+              photos:  await ImagesService.readReportViolations(report, i),
+            )
+          );
+        }
+        res.add(
+          report.copyWith(
+            photos: await ImagesService.readReport(report),
+            violations: violations
+          )
+        );
+      }
+      return res;
     } catch (ex) {
       print(ex);
       return [];
@@ -62,6 +85,7 @@ class SqliteReportsService {
       final created = await _database.query(_tableName, where: where);
       final json = report.toSqliteJson();
       json['error'] = error;
+      await ImagesService.saveReport(report);
       if (created.isEmpty) {
         await _database.insert(_tableName, json);
       } else {

@@ -146,7 +146,7 @@ class Report {
   Map<String, dynamic> toJson({bool stringified = false}) {
     final diggRequestsJson = diggRequestChecks != null ? diggRequestChecks.map((e) => e.toJson()).toList() : [];
     final photosJson = photos != null ? photos.map((e) => e.toJson()).toList() : [];
-    final violationsJson = violations != null ? violations.map((e) => e.toJson()).toList() : [];
+    final violationsJson = violations != null ? violations.map((e) => e.toJson(stringified: stringified)).toList() : [];
     return {
       'id': id,
       'dbId': dbId,
@@ -160,7 +160,8 @@ class Report {
       'violations': stringified ? c.json.encode(violationsJson) : violationsJson,
       //'violation': violation != null ? (stringified ? c.json.encode(violation.toJson()) : violation.toJson()) : null,
       'diggRequestChecks': stringified ? c.json.encode(diggRequestsJson) : diggRequestsJson,
-      'photos': stringified ? c.json.encode(photosJson) : photosJson,
+      'photos': stringified ? '[]' : photosJson,
+      // 'photos': stringified ? c.json.encode(photosJson) : photosJson,
     };
   }
 
