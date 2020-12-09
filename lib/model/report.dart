@@ -41,6 +41,7 @@ class ReportError {
 class Report {
 
   final int id;
+  final int dbId;
   final int instructionId;
   final int checkId;
   final bool violationNotPresent;
@@ -49,13 +50,15 @@ class Report {
   
   final ReportStatus reportStatus;
   final User reportAuthor;
-  final Violation violation;
+  // final Violation violation;
   
+  final List<Violation> violations;
   final List<DiggRequestCheck> diggRequestChecks;
   final List<Photo> photos;
 
   Report({
     this.id,
+    this.dbId,
     this.instructionId,
     this.checkId,
     this.violationNotPresent,
@@ -63,12 +66,13 @@ class Report {
     this.reportDate,
     this.reportStatus,
     this.reportAuthor,
-    this.violation,
+    this.violations,
     this.diggRequestChecks,
     this.photos,
   });
 
   bool get isNew => (reportStatus == null || reportStatus?.id == ReportStatusIds.new_ || reportStatus?.id == ReportStatusIds.project);
+  bool get isReady => (id == null && reportStatus?.id == ReportStatusIds.onApproval);
   bool get isUpdatable => isNew || reportStatus?.id == ReportStatusIds.declined;
   bool get isDeletable => reportStatus != null && isNew;
 
@@ -77,7 +81,7 @@ class Report {
       instructionId: instructionId,
       checkId: checkId,
       violationNotPresent: violationNotPresent,
-      violation: Violation.empty(),
+      violations:  violationNotPresent ? List<Violation>() : [Violation.empty()],
       photos: [],
       diggRequestChecks: []
     );
@@ -88,12 +92,14 @@ class Report {
     String reportNum,
     DateTime reportDate,
     ReportStatus reportStatus,
-    Violation violation,
+    //Violation violation,
     User reportAuthor,
+    List<Violation> violations,
     List<Photo> photos,
   }) {
     return Report(
       id: id,
+      dbId: dbId,
       instructionId: instructionId,
       checkId: checkId,
       violationNotPresent: violationNotPresent ?? this.violationNotPresent,
@@ -101,21 +107,29 @@ class Report {
       reportDate: reportDate ?? this.reportDate,
       reportStatus: reportStatus ?? this.reportStatus,
       reportAuthor: reportAuthor ?? this.reportAuthor,
-      violation: violation ?? this.violation?.copyWith(),
+      violations: List<Violation>.from(violations ?? this.violations ?? []),
+      //violation: violation ?? this.violation?.copyWith(),
       diggRequestChecks: List.from(diggRequestChecks),
       photos: List.from(photos ?? this.photos),
     );
   }
 
-  
+  Violation violation(int index) {
+    if (violations != null && index != null && index < violations.length) {
+      return violations[index];
+    }
+  }
+
   factory Report.fromJson(Map<String, dynamic> json, {bool stringified = false}) {
     final status = json['reportStatus'] != null ? ReportStatus.fromJson(stringified ? c.json.decode(json['reportStatus']) : json['reportStatus']) : null;
     final author = json['reportAuthor'] != null ? User.fromJson(stringified ? c.json.decode(json['reportAuthor']) : json['reportAuthor']) : null;
-    final violation = json['violation'] != null ? Violation.fromJson(stringified ? c.json.decode(json['violation']) : json['violation']) : null;
-    final checks = json['diggRequestChecks'] != null ? List<DiggRequestCheck>.from((stringified ? c.json.decode(json['diggRequestChecks']): json['diggRequestChecks']).map((p) => DiggRequestCheck.fromJson(p))) : [];
-    final photos = json['photos'] != null ? List<Photo>.from((stringified ? c.json.decode(json['photos']) : json['photos']).map((p) => Photo.fromJson(p))) : [];
+    //final violation = json['violation'] != null ? Violation.fromJson(stringified ? c.json.decode(json['violation']) : json['violation']) : null;
+    final List<Violation> violations = json['violations'] != null ? List<Violation>.from((stringified ? c.json.decode(json['violations']): json['violations']).map((p) => Violation.fromJson(p))) : [];
+    final List<DiggRequestCheck> checks = json['diggRequestChecks'] != null ? List<DiggRequestCheck>.from((stringified ? c.json.decode(json['diggRequestChecks']): json['diggRequestChecks']).map((p) => DiggRequestCheck.fromJson(p))) : [];
+    final List<Photo> photos = json['photos'] != null ? List<Photo>.from((stringified ? c.json.decode(json['photos']) : json['photos']).map((p) => Photo.fromJson(p))) : [];
     return Report(
       id: json['id'], 
+      dbId: json['dbId'],
       instructionId: json['instructionId'], 
       checkId: json['checkId'],
       reportNum: json['reportNum'],
@@ -123,7 +137,7 @@ class Report {
       reportDate: json['reportDate'] != null ? DateTime.parse(json['reportDate']) : null, 
       reportStatus: status,
       reportAuthor: author,
-      violation: violation,
+      violations: violations,
       diggRequestChecks: checks,
       photos: photos,
     );
@@ -132,8 +146,10 @@ class Report {
   Map<String, dynamic> toJson({bool stringified = false}) {
     final diggRequestsJson = diggRequestChecks != null ? diggRequestChecks.map((e) => e.toJson()).toList() : [];
     final photosJson = photos != null ? photos.map((e) => e.toJson()).toList() : [];
+    final violationsJson = violations != null ? violations.map((e) => e.toJson(stringified: stringified)).toList() : [];
     return {
       'id': id,
+      'dbId': dbId,
       'instructionId': instructionId,
       'checkId': checkId,
       'violationNotPresent': stringified ? ((violationNotPresent ?? false) ? 1 : 0) : violationNotPresent,
@@ -141,9 +157,11 @@ class Report {
       'reportDate': reportDate?.toIso8601String(),
       'reportStatus': reportStatus != null ? (stringified ? c.json.encode(reportStatus.toJson()) : reportStatus.toJson()) : null,
       'reportAuthor': reportAuthor != null ? (stringified ? c.json.encode(reportAuthor.toJson()) : reportAuthor.toJson()) : null,
-      'violation': violation != null ? (stringified ? c.json.encode(violation.toJson()) : violation.toJson()) : null,
+      'violations': stringified ? c.json.encode(violationsJson) : violationsJson,
+      //'violation': violation != null ? (stringified ? c.json.encode(violation.toJson()) : violation.toJson()) : null,
       'diggRequestChecks': stringified ? c.json.encode(diggRequestsJson) : diggRequestsJson,
-      'photos': stringified ? c.json.encode(photosJson) : photosJson,
+      'photos': stringified ? '[]' : photosJson,
+      // 'photos': stringified ? c.json.encode(photosJson) : photosJson,
     };
   }
 

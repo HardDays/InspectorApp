@@ -3,10 +3,11 @@ import 'package:inspector/providers/exceptions/api_exception.dart';
 
 abstract class InstructionListBlocState {
   final String sort;
+  final String order;
   final DateTime date;
   final InstructionFilters filters;
 
-  InstructionListBlocState({this.sort, this.date, this.filters});
+  InstructionListBlocState({this.sort, this.order, this.date, this.filters});
 }
 
 class LoadingState extends InstructionListBlocState {
@@ -20,8 +21,10 @@ class DataState extends InstructionListBlocState {
     this.instructions, 
     DateTime date, 
     String sort, 
+    String order,
     InstructionFilters filters) : 
   super(
+    order: order,
     sort: sort, 
     date: date,
     filters: filters
@@ -36,12 +39,14 @@ class OldDataState extends DataState {
     List<Instruction> instructions, 
     DateTime date, 
     String sort, 
+    String order,
     InstructionFilters filters,
     this.exception
   ) : super(
     instructions, 
     date, 
     sort, 
+    order,
     filters,
   );
 }
@@ -53,11 +58,13 @@ class NewDataState extends DataState {
     List<Instruction> instructions, 
     DateTime date, 
     String sort, 
+    String order,
     InstructionFilters filters
   ) : super(
     instructions, 
     date, 
     sort, 
+    order,
     filters,
   );
 }

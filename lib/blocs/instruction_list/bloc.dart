@@ -21,6 +21,7 @@ class InstructionListBloc extends Bloc<InstructionListBlocEvent, InstructionList
       await _service.init();
 
       final sort = await _service.sort();
+      final order = await _service.sortOrder();
       final filters = await _service.filters();
 
       try {
@@ -28,21 +29,21 @@ class InstructionListBloc extends Bloc<InstructionListBlocEvent, InstructionList
 
         final reload = event is RefreshEvent || (date == null) || (date != null && DateTime.now().difference(date).inMinutes > 10);
         final result = await _service.all(reload: reload);       
-        final data = _processData(sort, filters, result);
+        final data = _processData(sort, order, filters, result);
         
         if (reload) {
           final date = await _service.date();
-          yield NewDataState(data, date, sort, filters);
+          yield NewDataState(data, date, sort, order, filters);
         } else {
-          yield DataState(data, date, sort, filters);
+          yield DataState(data, date, sort, order, filters);
         }
       } on ApiException catch (ex) {
         try {
           final result = await _service.all();
           final date = await _service.date();
           
-          final data = _processData(sort, filters, result);
-          yield OldDataState(data, date, sort, filters, ex);
+          final data = _processData(sort, order, filters, result);
+          yield OldDataState(data, date, sort, order, filters, ex);
         } catch (ex) {
           print(ex);
         }
@@ -50,38 +51,50 @@ class InstructionListBloc extends Bloc<InstructionListBlocEvent, InstructionList
         print(ex);
       }
     } else if (event is SortEvent) {
-      _service.saveSort(event.sort);
-
+      await _service.saveSort(event.sort);
+      String order = SortOrder.asc;
+      if (event.sort == state.sort) {
+        if (state.order == SortOrder.asc) {
+          order = SortOrder.desc;
+        } else {
+          order = SortOrder.asc;
+        }
+      }
+      await _service.saveSortOrder(order);
       if (state is DataState) {
         List<Instruction> data = await _service.all();
-        data = _processData(event.sort, state.filters, data);
-        yield DataState(data, state.date, event.sort, state.filters);
+        data = _processData(event.sort, order, state.filters, data);
+        yield DataState(data, state.date, event.sort, order, state.filters);
       }
     } else if (event is FilterEvent) {
       _service.saveFilters(event.filters);
 
       if (state is DataState) {
         List<Instruction> data = await _service.all();
-        data = _processData(state.sort, event.filters, data);
-        yield DataState(data, state.date, state.sort, event.filters);
+        data = _processData(state.sort, state.order, event.filters, data);
+        yield DataState(data, state.date, state.sort, state.order, event.filters);
       }
     } else if (event is FlushEvent) {
       if (state is DataState) {
-        yield DataState((state as DataState).instructions, state.date, state.sort, state.filters);
+        yield DataState((state as DataState).instructions, state.date, state.sort, state.order, state.filters);
       }
     } else if (event is LoadSilentEvent) {
       final online = await _persistanceService.getDataSendingState();
       final sort = await _service.sort();
+      final order = await _service.sortOrder();
       final filters = await _service.filters();
-
-      final result = await _service.all(reload: online);       
-      final data = _processData(sort, filters, result);
-      final date = await _service.date();
-      yield DataState(data, date, sort, filters);
+      try {
+        final result = await _service.all(reload: online);       
+        final data = _processData(sort, order, filters, result);
+        final date = await _service.date();
+        yield DataState(data, date, sort, order, filters);
+      } catch (ex) {
+        
+      }
     }
   } 
 
-  List<Instruction> _processData(String sort, InstructionFilters filters, List<Instruction> data) {
+  List<Instruction> _processData(String sort, String order, InstructionFilters filters, List<Instruction> data) {
     List<Instruction> result = data;
     if (filters != null) {
       if (filters.instructionStatus != null) {
@@ -93,22 +106,27 @@ class InstructionListBloc extends Bloc<InstructionListBlocEvent, InstructionList
       if (filters.checkDates != null) {
         final dates = filters.checkDates;
         if (dates.length == 1) {
-          final date = DateFormat('yyyy-MM-dd').format(dates.first);
-          result = result.where((e) => DateFormat('yyyy-MM-dd').format(e.checkDate) == date).toList();
+          final date = DateTime(dates[0].year, dates[0].month, dates[0].day);
+          result = result.where((e) => date == DateTime(e.checkDate.year, e.checkDate.month, e.checkDate.day)).toList();
         } else if (dates.length == 2) {
-          result = result.where((e) => dates[0].isBefore(e.checkDate) && dates[1].isAfter(e.checkDate)).toList();
+          final first = dates[0].subtract(Duration(seconds: 1));
+          final last = DateTime(dates[1].year, dates[1].month, dates[1].day, 23, 59);
+          result = result.where((e) => first.isBefore(e.checkDate) && last.isAfter(e.checkDate)).toList();
         }
       }
        if (filters.instructionDates != null) {
         final dates = filters.instructionDates;
         if (dates.length == 1) {
-          final date = DateFormat('yyyy-MM-dd').format(dates.first);
-          result = result.where((e) => DateFormat('yyyy-MM-dd').format(e.instructionDate) == date).toList();
+          final date = DateTime(dates[0].year, dates[0].month, dates[0].day);
+          result = result.where((e) => date == DateTime(e.instructionDate.year, e.instructionDate.month, e.instructionDate.day)).toList();
         } else if (dates.length == 2) {
-          result = result.where((e) => dates[0].isBefore(e.instructionDate) && dates[1].isAfter(e.instructionDate)).toList();
+          final first = dates[0].subtract(Duration(seconds: 1));
+          final last = DateTime(dates[1].year, dates[1].month, dates[1].day, 23, 59);
+          result = result.where((e) => first.isBefore(e.instructionDate) && last.isAfter(e.instructionDate)).toList();
         }
       }
     }
+    result.sort((c1, c2) => c1.instructionNum.compareTo(c2.instructionNum));
     if (sort == InstructionSortStrings.instructionNum) {
       result.sort((c1, c2) => c1.instructionNum.compareTo(c2.instructionNum));
     } else if (sort == InstructionSortStrings.checkDate) {
@@ -117,6 +135,9 @@ class InstructionListBloc extends Bloc<InstructionListBlocEvent, InstructionList
       result.sort((c1, c2) => c1.instructionDate.compareTo(c2.instructionDate));
     } else {
       result.sort((c1, c2) => c1.instructionStatus.id.compareTo(c2.instructionStatus.id));
+    }
+    if (order == SortOrder.desc) {
+      result = result.reversed.toList();
     }
     return result;
   }

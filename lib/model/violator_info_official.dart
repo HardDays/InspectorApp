@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:inspector/model/department_code.dart';
 import 'package:inspector/model/violator_address.dart';
 import 'dart:convert' as c;
 
@@ -14,6 +15,8 @@ class ViolatorInfoOfficial extends ViolatorInfo {
   final String orgKpp;
   final DateTime orgRegDate;
   final String orgPhone;
+  final String orgLegalAddressString;
+  final String orgPostalAddressString;
   final ViolatorAddress orgLegalAddress;
   final ViolatorAddress orgPostalAddress;
 
@@ -29,6 +32,8 @@ class ViolatorInfoOfficial extends ViolatorInfo {
     this.orgKpp,
     this.orgRegDate,
     this.orgPhone,
+    this.orgLegalAddressString,
+    this.orgPostalAddressString,
     this.orgLegalAddress,
     this.orgPostalAddress,
   }) : super(id: id, phone: phone);
@@ -44,6 +49,8 @@ class ViolatorInfoOfficial extends ViolatorInfo {
       orgKpp: json['orgKpp'],
       orgRegDate: json['orgRegDate'] != null ? DateTime.parse(json['orgRegDate']) : null,
       orgPhone: json['orgPhone'],
+      orgLegalAddressString: json['orgLegalAddressString'],
+      orgPostalAddressString: json['orgPostalAddressString'],
       orgLegalAddress: json['orgLegalAddress'] != null ? ViolatorAddress.parse(json['orgLegalAddress'], stringified) : null,
       orgPostalAddress: json['orgPostalAddress'] != null ? ViolatorAddress.parse(json['orgPostalAddress'], stringified)  : null,
     );
@@ -63,11 +70,15 @@ class ViolatorInfoOfficial extends ViolatorInfo {
       orgOgrn: orgOgrn,
       orgKpp: orgKpp,
       orgRegDate: orgRegDate,
-      orgLegalAddress: orgLegalAddress ?? this.orgLegalAddress,
       orgPhone: orgPhone,
+      orgLegalAddressString: orgLegalAddressString,
+      orgPostalAddressString: orgPostalAddressString,
+      orgLegalAddress: orgLegalAddress ?? this.orgLegalAddress,
       orgPostalAddress: orgPostalAddress ?? this.orgPostalAddress
     );
   }
+
+  String get name => orgName;
 
   Map<String, dynamic> toJson({bool stringified = false}) {
     return {
@@ -80,6 +91,8 @@ class ViolatorInfoOfficial extends ViolatorInfo {
       'orgKpp': orgKpp,
       'orgRegDate': orgRegDate?.toIso8601String(),
       'orgPhone': orgPhone,
+      'orgLegalAddressString': orgLegalAddressString,
+      'orgPostalAddressString': orgPostalAddressString,
       'orgLegalAddress': orgLegalAddress != null ? stringified ? c.json.encode(orgLegalAddress.toJson()) : orgLegalAddress.toJson() : null,
       'orgPostalAddress': orgPostalAddress != null ? stringified ? c.json.encode(orgPostalAddress.toJson()) : orgPostalAddress.toJson() : null,
     };

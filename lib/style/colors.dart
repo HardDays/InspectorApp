@@ -23,9 +23,9 @@ abstract class InstructionStatusColors {
   static const _colors = const {
     InstructionStatusIds.assigned: ProjectColors.cyan,
     InstructionStatusIds.withdrawn: ProjectColors.red,
-    InstructionStatusIds.partInProgress: ProjectColors.yellow,
+    InstructionStatusIds.partInProgress: ProjectColors.blue,
     InstructionStatusIds.inProgress: ProjectColors.yellow,
-    InstructionStatusIds.partComplete: ProjectColors.green,
+    InstructionStatusIds.partComplete: ProjectColors.yellow,
     InstructionStatusIds.complete: ProjectColors.green
   };
 

@@ -59,7 +59,7 @@ class Violation {
       violators: [
         Violator.empty()
       ],
-      violationKind: ViolationKind(id: 3),
+      violationKind: ViolationKind(id: 19, name: 'Другие объекты контроля'),
       photos: []
     );
   }
@@ -114,7 +114,7 @@ class Violation {
     );
   }
   
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toJson({bool stringified = false}) {
     return {
       'id': id,
       'violationDescription': violationDescription,
@@ -129,7 +129,7 @@ class Violation {
       'violationType': violationType?.toJson(),
       'normativeActArticles': normativeActArticles != null ? normativeActArticles.map((e) => e.toJson()).toList() : [],
       'violators': violators.map((e) => e.toJson()).toList(),
-      'photos': photos.map((e) => e.toJson()).toList(),
+      'photos': stringified ? [] : photos.map((e) => e.toJson()).toList(),
       'violationKind': violationKind?.toJson()
     };
   }

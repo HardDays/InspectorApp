@@ -48,25 +48,29 @@ class TableDefinitions {
     DictionaryNames.normativeActArticles: '''CREATE TABLE normativeActArticles(id INTEGER PRIMARY KEY, name TEXT, 
       code TEXT, normativeActId INTEGER, normativeAct TEXT
     )''',
-    DictionaryNames.violationTypes: '''CREATE TABLE violationTypes(id INTEGER PRIMARY KEY, name TEXT, code TEXT)''',
+    DictionaryNames.violationTypes: '''CREATE TABLE violationTypes(id INTEGER PRIMARY KEY, name TEXT, code TEXT, koap TEXT)''',
     DictionaryNames.violatorTypes: '''CREATE TABLE violatorTypes(id INTEGER PRIMARY KEY, name TEXT, code TEXT)''',
     DictionaryNames.departmentCodes: '''CREATE TABLE departmentCodes(id INTEGER PRIMARY KEY, name TEXT, code TEXT)''',
     DictionaryNames.objectCategories: '''CREATE TABLE objectCategories(id INTEGER PRIMARY KEY, name TEXT, code TEXT)''',
     DictionaryNames.violatorInfoIps: '''CREATE TABLE violatorInfoIps(id INTEGER PRIMARY KEY, phone TEXT, name TEXT, 
       lastName TEXT, firstName TEXT, patronym TEXT, 
-      inn TEXT, snils TEXT, ogrnip TEXT, registrationDate TEXT, gender INTEGER, birthDate TEXT, birthPlace TEXT, registrationAddress TEXT,
+      inn TEXT, snils TEXT, ogrnip TEXT, registrationDate TEXT, gender INTEGER, birthDate TEXT, birthPlace TEXT, 
+      registrationAddress TEXT, registrationAddressString TEXT,
       account TEXT, corrAccount TEXT, bank TEXT, bik TEXT
     )''',
     DictionaryNames.violatorInfoLegals: '''CREATE TABLE violatorInfoLegals(id INTEGER PRIMARY KEY, phone TEXT, name TEXT, 
-      inn TEXT, ogrn TEXT, kpp TEXT, regDate TEXT, legalAddress TEXT, postalAddress TEXT,
+      inn TEXT, ogrn TEXT, kpp TEXT, regDate TEXT, 
+      legalAddress TEXT, postalAddress TEXT, legalAddressString TEXT, postalAddressString TEXT,
       account TEXT, corrAccount TEXT, bank TEXT, bik TEXT
     )''',
     DictionaryNames.violatorInfoOfficials: '''CREATE TABLE violatorInfoOfficials(id INTEGER PRIMARY KEY, phone TEXT, orgId INTEGER, orgName TEXT,
-      orgInn TEXT, orgOgrn TEXT, orgKpp TEXT, orgRegDate TEXT, orgPhone TEXT, orgLegalAddress TEXT, orgPostalAddress TEXT
+      orgInn TEXT, orgOgrn TEXT, orgKpp TEXT, orgRegDate TEXT, orgPhone TEXT, 
+      orgLegalAddress TEXT, orgPostalAddress TEXT, orgLegalAddressString TEXT, orgPostalAddressString TEXT
     )''',
     DictionaryNames.violatorInfoPrivates: '''CREATE TABLE violatorInfoPrivates(id INTEGER PRIMARY KEY, phone TEXT,
       lastName TEXT, firstName TEXT, patronym TEXT, 
-      inn TEXT, snils TEXT, docType TEXT, docSeries TEXT, docNumber TEXT, gender INTEGER, birthDate TEXT, birthPlace TEXT, registrationAddress TEXT
+      inn TEXT, snils TEXT, docType TEXT, docSeries TEXT, docNumber TEXT, gender INTEGER, birthDate TEXT, birthPlace TEXT, 
+      registrationAddress TEXT, registrationAddressString TEXT
     )''',
     DictionaryNames.violatorDocumentTypes: '''CREATE TABLE violatorDocumentTypes(id INTEGER PRIMARY KEY, name TEXT)''',
     DictionaryNames.reportStatuses: '''CREATE TABLE reportStatuses(id INTEGER PRIMARY KEY, name TEXT)''',
@@ -90,7 +94,7 @@ class SqliteDictionaryService {
   Future init() async {
     if (_database == null) {
       _database = await openDatabase(
-        join(await getDatabasesPath(), 'dictionaries5.db'),
+        join(await getDatabasesPath(), 'dictionaries6.db'),
         onCreate: (db, version) async {
           for (final key in TableDefinitions.all.keys) {
             await db.execute(TableDefinitions.all[key]);
@@ -99,7 +103,8 @@ class SqliteDictionaryService {
           await db.insert(TableDefinitions.metadata, {'id': 1, 'data': json.encode({})});
         },
         onOpen: (db) async {
-          //await db.execute(TableDefinitions.all[ DictionaryNames.reportStatuses]);
+          // await db.execute('drop table violationTypes');
+          // await db.execute(TableDefinitions.all[ DictionaryNames.violationTypes]);
           // await db.execute(TableDefinitions.all[ DictionaryNames.violatorInfoIps]);
           // await db.execute(TableDefinitions.all[ DictionaryNames.violatorInfoLegals]);
           // await db.execute(TableDefinitions.all[ DictionaryNames.violatorInfoOfficials]);

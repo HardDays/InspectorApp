@@ -33,7 +33,7 @@ class InstructionFiltersWidget extends StatelessWidget {
   }
 
   void _onClear(BuildContext context) {
-    Navigator.pop(context, InstructionFilters());
+    Navigator.pop(context, InstructionFilters(instructionDates: [DateTime.now()], checkDates: [DateTime.now()]));
   }
 
   void _onStatus(BuildContext context, int status) {
@@ -41,11 +41,15 @@ class InstructionFiltersWidget extends StatelessWidget {
   }
 
   void _onCheckDates(BuildContext context, List<DateTime> dates) {
-    BlocProvider.of<InstructionFiltersBloc>(context).add(SetCheckDatesEvent(dates));  
+    if (dates != null) {
+      BlocProvider.of<InstructionFiltersBloc>(context).add(SetCheckDatesEvent(dates)); 
+    } 
   }
 
   void _onInstructionDates(BuildContext context, List<DateTime> dates) {
-    BlocProvider.of<InstructionFiltersBloc>(context).add(SetInstructionDatesEvent(dates));  
+    if (dates != null) {
+      BlocProvider.of<InstructionFiltersBloc>(context).add(SetInstructionDatesEvent(dates));  
+    }
   }
 
   @override

@@ -18,6 +18,11 @@ abstract class InstructionSortStrings {
   ];
 }
 
+abstract class SortOrder {
+  static const asc = 'asc';
+  static const desc = 'desc';
+}
+
 class InstructionFilters {
   final String instructionNum;
   final int instructionStatus;
@@ -29,14 +34,14 @@ class InstructionFilters {
     this.instructionStatus,
     this.instructionDates,
     this.checkDates
-  });
+  }); 
 
   factory InstructionFilters.fromJson(Map<String, dynamic> json) {
     return InstructionFilters(
       instructionNum: json['instructionNum'], 
       instructionStatus: json['instructionStatus'], 
-      instructionDates: json['instructionDates'] != null ? List<DateTime>.from(json['instructionDates'].map((e)=> DateTime.parse(e))) : null, 
-      checkDates: json['checkDates'] != null ? List<DateTime>.from(json['checkDates'].map((e)=> DateTime.parse(e))) : null, 
+      instructionDates: json['instructionDates'] != null ? List<DateTime>.from(json['instructionDates'].map((e)=> DateTime.parse(e))) : [DateTime.now()], 
+      checkDates: json['checkDates'] != null ? List<DateTime>.from(json['checkDates'].map((e)=> DateTime.parse(e))) : [DateTime.now()], 
     );
   }
 

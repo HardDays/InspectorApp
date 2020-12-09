@@ -21,9 +21,10 @@ import 'package:latlong/latlong.dart';
 abstract class TotalReportBlocEvent { }
 
 class LoadEvent extends TotalReportBlocEvent {
+  final int violationIndex;
   final Report report;
 
-  LoadEvent(this.report);
+  LoadEvent(this.violationIndex, this.report);
 }
 
 class FlushEvent extends TotalReportBlocEvent {
@@ -31,9 +32,10 @@ class FlushEvent extends TotalReportBlocEvent {
 } 
 
 class InitEvent extends TotalReportBlocEvent {
+  final int violationIndex;
   final Report report;
 
-  InitEvent(this.report);
+  InitEvent(this.violationIndex, this.report);
 }
 
 class SetViolationNotPresentEvent extends TotalReportBlocEvent {
@@ -85,6 +87,12 @@ class SetViolationNormativeActEvent extends ChangeViolationEvent {
   final NormativeAct normativeAct;
 
   SetViolationNormativeActEvent(this.index, this.normativeAct);
+}
+
+class DeleteViolationNormativeActEvent extends ChangeViolationEvent {
+  final int index;
+
+  DeleteViolationNormativeActEvent(this.index);
 }
 
 class SetViolationNormativeActArticleEvent extends ChangeViolationEvent {
@@ -182,8 +190,9 @@ class SaveReportEvent extends TotalReportBlocEvent {
   final String codexArticle;
   final List<Violator> violators;
   final List<Uint8List> photos;
+  final List<String> photoNames;
 
-  SaveReportEvent({this.status, this.violationDescription, this.specifiedAddress, this.codexArticle, this.violators, this.photos});
+  SaveReportEvent({this.status, this.violationDescription, this.specifiedAddress, this.codexArticle, this.violators, this.photos, this.photoNames});
 }
 
 class RemoveReportEvent extends TotalReportBlocEvent {

@@ -91,6 +91,10 @@ class ObjectDbPersistanceService extends ObjectDBService
     return await _getKeyValue('instructionSort');
   }
 
+   Future<String> getInstructionSortOrder() async {
+    return await _getKeyValue('instructionSortOrder');
+  }
+
   @override
   Future<DateTime> getLastDataSendingDate() async {
     final dateTime = await _getKeyValue('lastDataSendingDate');
@@ -134,8 +138,7 @@ class ObjectDbPersistanceService extends ObjectDBService
   }
 
   Future<InstructionFilters> getInstructionFilters() async {
-    return InstructionFilters.fromJson(
-        await _getKeyValue('instructionFilters') ?? {});
+    return InstructionFilters.fromJson(await _getKeyValue('instructionFilters') ?? {});
   }
 
   Future<DateTime> getInstructionReportDate(int instructionId) async {
@@ -157,6 +160,10 @@ class ObjectDbPersistanceService extends ObjectDBService
 
   Future<void> saveInstructionSort(String value) async {
     await _saveKeyValue('instructionSort', value);
+  }
+
+  Future<void> saveInstructionSortOrder(String value) async {
+    await _saveKeyValue('instructionSortOrder', value);
   }
 
   Future<void> saveInstructionsDate() async {

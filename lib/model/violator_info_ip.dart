@@ -17,6 +17,7 @@ class ViolatorInfoIp extends ViolatorInfo {
   final int gender;
   final DateTime birthDate;
   final String birthPlace;
+  final String registrationAddressString;
   final ViolatorAddress registrationAddress;
   final String account;
   final String corrAccount;
@@ -39,6 +40,7 @@ class ViolatorInfoIp extends ViolatorInfo {
     this.gender,
     this.birthDate,
     this.birthPlace,
+    this.registrationAddressString,
     this.registrationAddress,
     this.account,
     this.corrAccount,
@@ -61,6 +63,7 @@ class ViolatorInfoIp extends ViolatorInfo {
       gender: json['gender'],
       birthDate: json['birthDate'] != null ? DateTime.parse(json['birthDate']) : null,
       birthPlace: json['birthPlace'],
+      registrationAddressString: json['registrationAddressString'],
       registrationAddress: json['registrationAddress'] != null ? ViolatorAddress.parse(json['registrationAddress'], stringified) : null,  
       account: json['account'],
       corrAccount: json['corrAccount'],
@@ -90,6 +93,7 @@ class ViolatorInfoIp extends ViolatorInfo {
       gender: gender,
       birthDate: birthDate,
       birthPlace: birthPlace,
+      registrationAddressString: registrationAddressString,
       registrationAddress: registrationAddress ?? this.registrationAddress
     );
   }
@@ -110,6 +114,7 @@ class ViolatorInfoIp extends ViolatorInfo {
       'gender': gender,
       'birthDate': birthDate?.toIso8601String(),
       'birthPlace': birthPlace,
+      'registrationAddressString': registrationAddressString,
       'registrationAddress': registrationAddress != null ? stringified ? c.json.encode(registrationAddress.toJson()) : registrationAddress.toJson() : null,
       'account': account,
       'corrAccount': corrAccount,

@@ -106,6 +106,7 @@ class InstructionListPageState extends State<InstructionListPage> with Automatic
             appBar: FilterAppbar('Поручения', 
               state.date != null ? DateFormat('dd.MM.yyyy HH:mm').format(state.date) : 'Не обновлялось',
               state.sort ?? InstructionSortStrings.instructionStatus,
+              state.order ?? SortOrder.asc,
               titleIcon: _buildIcons(state),
               onUpdate: ()=> _onUpdate(context),
               onSort: ()=> _onSort(context, state.sort),
@@ -151,7 +152,7 @@ class InstructionListPageState extends State<InstructionListPage> with Automatic
         borderRadius: BorderRadius.circular(30),
         color: ProjectColors.blue
       ),  
-      margin: const EdgeInsets.only(left: 8, top: 3),
+      margin: const EdgeInsets.only(left: 5, top: 3),
       child: Row(
         children: [
           Container(
@@ -163,13 +164,13 @@ class InstructionListPageState extends State<InstructionListPage> with Automatic
             width: 25,
             alignment: Alignment.center,
             child: Text('$newCount',
-              style: ProjectTextStyles.baseBold,
+              style: ProjectTextStyles.smallBold,
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(left: 5, right: 10),
+            padding: const EdgeInsets.only(left: 3, right: 7),
             child: Text('$totalCount',
-              style: ProjectTextStyles.baseBold,
+              style: ProjectTextStyles.smallBold,
             ),
           ),
         ],
@@ -184,14 +185,22 @@ class InstructionListPageState extends State<InstructionListPage> with Automatic
   }
 
   Widget _buildList(BuildContext context, List<Instruction> instructions) {
-     return ListView(
-      padding: const EdgeInsets.only(top: 20),
-      children: List.generate(instructions.length, 
-        (index) => InkWell(
-          onTap: ()=> _onTap(context, instructions[index]),
-          child: InstructionWidget(instructions[index]),
+    if (instructions.isNotEmpty) {
+      return ListView(
+        padding: const EdgeInsets.only(top: 20),
+        children: List.generate(instructions.length, 
+          (index) => InkWell(
+            onTap: ()=> _onTap(context, instructions[index]),
+            child: InstructionWidget(instructions[index]),
+          ),
         ),
-      ),
-    );
+      );
+    } else {
+      return Center(
+        child: Text('Поручения не найдены',
+          style: ProjectTextStyles.base.apply(color: ProjectColors.black),
+        ),
+      );
+    }
   }
 }

@@ -88,6 +88,12 @@ class DictionaryService {
         return false;
       }
     }
+    // metadata.loaded.remove(DictionaryNames.violationTypes);
+    // await _dbService.saveMetadata(DictionaryMetadata(
+    //     loaded: metadata.loaded, 
+    //   )
+    // );
+
     return true;
   }
 
@@ -100,7 +106,7 @@ class DictionaryService {
         for (final key in keys ?? _loaders.keys) {
           if (!metadata.loaded.containsKey(key) || reload) {
             await _dbService.clear(key);
-            metadata.loaded.remove(key);;
+            metadata.loaded.remove(key);
             await _dbService.saveMetadata(metadata);
 
             int count = 0;
