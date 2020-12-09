@@ -21,7 +21,7 @@ class DocumentsForEditingWidget extends StatelessWidget {
             return DocumentsList(reportsList: state.reports);
           }
           if(state is EmptyState) {
-            return Text('Пусто', style: ProjectTextStyles.base);
+            return Text('Отсутствуют', style: ProjectTextStyles.base);
           }
           return CircularProgressIndicator();
         },
