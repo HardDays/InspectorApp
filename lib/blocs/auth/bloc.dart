@@ -47,18 +47,24 @@ class AuthBloc extends Bloc<AuthBlocEvent, AuthBlocStates> {
       EnterAuthScreenEvent event) async* {
     if (await _authService.isAuthentificated()) {
       if (await _authService.isPinSetted()) {
-        DateTime nextTryDate = await _persistanceService.getDateForNextTry();
-        yield ShowPinCodeField(true);
-        if(nextTryDate != null) {
-          Duration duration = nextTryDate.difference(DateTime.now());
-          if(!duration.isNegative) {
-            yield* _awaitForNextTry(duration);
+        if (await _persistanceService.getUsePinState()) {
+          DateTime nextTryDate = await _persistanceService.getDateForNextTry();
+          yield ShowPinCodeField(true);
+          if (nextTryDate != null) {
+            Duration duration = nextTryDate.difference(DateTime.now());
+            if (!duration.isNegative) {
+              yield* _awaitForNextTry(duration);
+            }
           }
-        }
-        final useFingerPrint = await _persistanceService.getFingerprintState();
-        if (useFingerPrint != null && !useFingerPrint &&
-            await _checkBiometric()) {
-          yield AutorizedState();
+          final useFingerPrint =
+              await _persistanceService.getFingerprintState();
+          if (useFingerPrint != null &&
+              !useFingerPrint &&
+              await _checkBiometric()) {
+            yield AutorizedState();
+          }
+        } else {
+           yield AutorizedState();
         }
       } else {
         yield ShowSetPinScreen(true);
@@ -73,10 +79,10 @@ class AuthBloc extends Bloc<AuthBlocEvent, AuthBlocStates> {
       if (await _authService.isPinCorrect(event.pin)) {
         yield AutorizedState();
       } else if (event.pin.length >= 4) {
-        if(wrongTries <= 5) {
+        if (wrongTries < 4) {
           yield IncorrencPinState();
           wrongTries++;
-        } else {          
+        } else {
           Duration duration = Duration(minutes: 5);
           _persistanceService.setDateForNextTry(DateTime.now().add(duration));
           yield* _awaitForNextTry(duration);
@@ -103,17 +109,21 @@ class AuthBloc extends Bloc<AuthBlocEvent, AuthBlocStates> {
     }
   }
 
-
   Stream<AuthBlocStates> _awaitForNextTry(Duration duration) async* {
     yield AwaitForNextTry(duration);
-    while(duration.inSeconds > 0) {
+    while (duration.inSeconds > 0) {
       await Future.delayed(Duration(seconds: 1));
-      yield(AwaitForNextTry(duration));
-      duration = Duration(seconds: duration.inSeconds-1);
+      yield (AwaitForNextTry(duration));
+      DateTime dateForNextTry = await _persistanceService.getDateForNextTry();
+      if (dateForNextTry != null) {
+        duration = (await _persistanceService.getDateForNextTry())
+            .difference(DateTime.now());
+      } else {
+        duration = Duration.zero;
+      }
     }
     yield ShowPinCodeField(false);
   }
-
 
   Stream<AuthBlocStates> _onSetPasswordEvent(SetPasswordEvent event) async* {
     password = event.password;
