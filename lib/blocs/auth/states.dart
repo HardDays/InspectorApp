@@ -58,3 +58,13 @@ class ShowLoginErrorScreen extends AuthBlocStates {
   @override
   bool get needRebuild => false;
 }
+
+class AwaitForNextTry extends AuthBlocStates {
+  AwaitForNextTry(this.duration);
+
+  @override
+  bool get needRebuild => false;
+
+  final Duration duration;
+
+}

@@ -160,10 +160,10 @@ class ProfilePage extends StatelessWidget {
                                 state.dataSendingMode && !state.canBeSended,
                             onPressed: () =>
                                 BlocProvider.of<ProfileBloc>(context)
-                                    .add(SendDataEvent()),
+                                    .add(SendDataEvent(context)),
                           )
                         else
-                          CircularProgressIndicator()
+                          Center(child: CircularProgressIndicator())
                       ],
                     ),
                   ),
@@ -196,6 +196,7 @@ class ProfilePage extends StatelessWidget {
                           ],
                         ),
                       ),
+                      if(state.showFingerPrintSwitch)
                       _buildSectionItem(
                         'Быстрый доступ по Touch ID',
                         Row(
@@ -217,6 +218,33 @@ class ProfilePage extends StatelessWidget {
                             ),
                             Text(
                               'Выключен',
+                              style: ProjectTextStyles.medium
+                                  .apply(color: ProjectColors.black),
+                            ),
+                          ],
+                        ),
+                      ),
+                      _buildSectionItem(
+                        'Быстрый доступ по PIN-коду',
+                        Row(
+                          children: [
+                            Text(
+                              'Выключен',
+                              style: ProjectTextStyles.medium
+                                  .apply(color: ProjectColors.black),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(
+                                  8.1, 0.0, 10.0, 0.0),
+                              child: ProjectSwitch(
+                                checked: state.usePin,
+                                onChanged: (value) =>
+                                    BlocProvider.of<ProfileBloc>(context)
+                                        .add(SetUsingPinMode(value)),
+                              ),
+                            ),
+                            Text(
+                              'Включен',
                               style: ProjectTextStyles.medium
                                   .apply(color: ProjectColors.black),
                             ),

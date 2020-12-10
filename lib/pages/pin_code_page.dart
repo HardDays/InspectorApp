@@ -5,6 +5,7 @@ import 'package:inspector/blocs/auth/bloc.dart';
 import 'package:inspector/blocs/auth/events.dart';
 import 'package:inspector/blocs/auth/states.dart';
 import 'package:inspector/services/auth_service.dart';
+import 'package:inspector/style/accept_dialog.dart';
 import 'package:inspector/style/colors.dart';
 import 'package:inspector/style/text_style.dart';
 import 'package:inspector/widgets/auth/info.dart';
@@ -15,6 +16,7 @@ class PinCodePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: ProjectColors.white,
       body: Center(
         child: BlocBuilder<AuthBloc, AuthBlocStates>(
           builder: (context, state) {
@@ -32,6 +34,9 @@ class PinCodePage extends StatelessWidget {
               footer = _buildSubtitle(context);
             } else if (state is IncorrencRepeatPinState) {
               header = _buildIncorrectPinTitle();
+            } else if (state is AwaitForNextTry) {
+              header = _buildAwaitForNextTryTitle(state.duration);
+              footer = _buildSubtitle(context);
             }
             return Column(
               mainAxisSize: MainAxisSize.min,
@@ -42,9 +47,10 @@ class PinCodePage extends StatelessWidget {
                   padding: EdgeInsets.only(bottom: 29.0),
                   child: header,
                 ),
-                PinCodeNumpad(listener: (s) {
-                  BlocProvider.of<AuthBloc>(context).add(SetPinEvent(s));
-                }),
+                if (state is! AwaitForNextTry)
+                  PinCodeNumpad(listener: (s) {
+                    BlocProvider.of<AuthBloc>(context).add(SetPinEvent(s));
+                  }),
                 footer,
                 Spacer(/*flex: 440*/),
                 Info(),
@@ -83,9 +89,16 @@ class PinCodePage extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.only(top: 17.0),
       child: GestureDetector(
-        onTap: () {
-          Provider.of<AuthService>(context, listen: false).changePin();
-          BlocProvider.of<AuthBloc>(context).add(EnterAuthScreenEvent());
+        onTap: () async {
+          if ((await showDialog(
+                  context: context,
+                  child: AcceptDialog(
+                      message:
+                          'Вход в приложение будет осуществлен с помощью логина и пароля. Текущие настройки быстрого доступа будут сброшены. Продолжить?'))) !=
+              null) {
+            await Provider.of<AuthService>(context, listen: false).changePin();
+            BlocProvider.of<AuthBloc>(context).add(EnterAuthScreenEvent());
+          }
         },
         child: Text(
           'Забыли PIN / Сменить пользователя?',
@@ -113,6 +126,12 @@ class PinCodePage extends StatelessWidget {
 
   Widget _buildIncorrectPinTitle() {
     return Text('PIN-код введен неверно. Попробуйте еще раз',
+        style: ProjectTextStyles.title.apply(color: ProjectColors.red));
+  }
+
+  Widget _buildAwaitForNextTryTitle(Duration duration) {
+    return Text(
+        'PIN-код введен неверно 5 раз. Повторите попытку через ${duration.inMinutes}:${duration.inSeconds % 60}',
         style: ProjectTextStyles.title.apply(color: ProjectColors.red));
   }
 

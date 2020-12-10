@@ -26,8 +26,16 @@ class MainPage extends StatelessWidget {
           // им надо чтобы оно возвращало в рут при нажатии на таб внизу
           //listenWhen: (prev, next) => prev.currentScreen != next.currentScreen,
           listener: (context, state) {
+            if (state is OpenMapsErrorState) {
+              Scaffold.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Приложение Yandex.Maps не установлено'),
+                ),
+              );
+            }
             ExtendedNavigator.named('mainPageNavigator').popUntilRoot();
-            ExtendedNavigator.named('mainPageNavigator').replace(_pagesMap[state.currentScreen]);
+            ExtendedNavigator.named('mainPageNavigator')
+                .replace(_pagesMap[state.currentScreen]);
           },
           child: ExtendedNavigator(name: 'mainPageNavigator'),
         ),

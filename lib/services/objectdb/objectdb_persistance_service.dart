@@ -67,6 +67,8 @@ class ObjectDbPersistanceService extends ObjectDBService
     await _removeKeyValue('user');
     await _removeKeyValue('pin');
     await _removeKeyValue('token');
+    await _removeKeyValue('usePin');
+    await _removeKeyValue('dateForNextTry');
     await db.tidy();
   }
 
@@ -213,6 +215,27 @@ class ObjectDbPersistanceService extends ObjectDBService
   @override
   Future<void> setUrl(String url) async {
     await _saveKeyValue('url', url);
+  }
+
+  @override
+  Future<DateTime> getDateForNextTry() async {
+    String dateString = await _getKeyValue('dateForNextTry');
+    return dateString == null ? null : DateTime.parse(dateString);
+  }
+
+  @override
+  Future<void> setDateForNextTry(DateTime dateTime) async {
+    await _saveKeyValue('dateForNextTry', dateTime.toIso8601String());
+  }
+
+  @override
+  Future<bool> getUsePinState() async {
+    return (await _getKeyValue('usePin')) ?? true;
+  }
+
+  @override
+  Future<void> saveUsePinState(bool state) async {
+    await _saveKeyValue('usePin', state);
   }
 
 
