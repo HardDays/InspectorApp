@@ -117,10 +117,17 @@ class ViolatorAddress {
     };
   }
 
+  List<String> data() {
+    return [zipCode, regionType, regionName, cityType, cityName, streetType, streetName, house, building, buildingExt, flat].where((e)=> e != null && e.isNotEmpty).toList();
+  }
+
+  bool valid() {
+    return data().isNotEmpty;
+  }
+
   @override 
   String toString() {
-    final data = [zipCode, regionType, regionName, cityType, cityName, streetType, streetName, house, building, buildingExt, flat];
-    return data.where((e)=> e != null && e.isNotEmpty).join(', ');
+    return data().join(', ');
   }
 
   static ViolatorAddress parse(dynamic json, bool stringified) {

@@ -147,6 +147,8 @@ class InstructionPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+        print(instruction.id);
+
     return BlocProvider(
       create: (context)=> InstructionBloc(InstructionBlocState(null, instruction, []))..add(LoadReportsEvent()),
       child: BlocBuilder<InstructionBloc, InstructionBlocState>(

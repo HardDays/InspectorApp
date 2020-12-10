@@ -80,6 +80,22 @@ class ViolatorInfoOfficial extends ViolatorInfo {
 
   String get name => orgName;
 
+  String get orgLegalAddressFormatted {
+    if (orgLegalAddress != null && orgLegalAddress.valid()) {
+      return orgLegalAddress.toString();
+    } else {
+      return orgLegalAddressString ?? '';
+    }
+  }
+
+  String get orgPostalAddressFormatted {
+    if (orgPostalAddress != null && orgPostalAddress.valid()) {
+      return orgPostalAddress.toString();
+    } else {
+      return orgPostalAddressString ?? '';
+    }
+  }
+
   Map<String, dynamic> toJson({bool stringified = false}) {
     return {
       'id': id,

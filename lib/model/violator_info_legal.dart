@@ -40,6 +40,22 @@ class ViolatorInfoLegal extends ViolatorInfo {
     this.bik,
   }) : super(id: id, phone: phone);
 
+  String get legalAddressFormatted {
+    if (legalAddress != null && legalAddress.valid()) {
+      return legalAddress.toString();
+    } else {
+      return legalAddressString ?? '';
+    }
+  }
+
+  String get postalAddressFormatted {
+    if (postalAddress != null && postalAddress.valid()) {
+      return postalAddress.toString();
+    } else {
+      return postalAddressString ?? '';
+    }
+  }
+
   factory ViolatorInfoLegal.fromJson(Map<String, dynamic> json, {bool stringified = false}) {
     return ViolatorInfoLegal(
       id: json['id'],

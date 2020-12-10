@@ -738,10 +738,9 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
     _ogrnControllers[index].text = violator.ogrn ?? '';
     _kppControllers[index].text = violator.kpp ?? '';
     _phoneControllers[index].text = violator.phone ?? '';
-    _legalAddressControllers[index].text = violator.legalAddress?.toString() ?? violator.legalAddressString ?? '';
-    _postalAddressControllers[index].text = violator.postalAddress?.toString() ?? violator.postalAddressString ?? '';
+    _legalAddressControllers[index].text = violator.legalAddressFormatted;
+    _postalAddressControllers[index].text = violator.postalAddressFormatted;
     _registerDates[index] = violator.regDate;
-    //_registerDates[index] = violator.regDate;
   } 
 
   void _officialToControllers(int index, ViolatorInfoOfficial violator) {
@@ -749,8 +748,8 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
     _ogrnControllers[index].text = violator.orgOgrn ?? '';
     _kppControllers[index].text = violator.orgKpp ?? '';
     _phoneControllers[index].text = violator.phone ?? '';
-    _legalAddressControllers[index].text = violator.orgLegalAddress?.toString() ?? violator.orgLegalAddressString ?? '';
-    _postalAddressControllers[index].text = violator.orgPostalAddress?.toString() ?? violator.orgPostalAddressString?? '';
+    _legalAddressControllers[index].text = violator.orgLegalAddressFormatted;
+    _postalAddressControllers[index].text = violator.orgPostalAddressFormatted;
     _registerDates[index] = violator.orgRegDate;
   } 
 
@@ -763,9 +762,9 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
     _snilsControllers[index].text = violator.snils ?? '';
     _phoneControllers[index].text = violator.phone ?? '';
     _birthPlaceControllers[index].text = violator.birthPlace ?? '';
-    _registrationAddressControllers[index].text = violator.registrationAddress?.toString() ?? violator.registrationAddressString ?? '';
+    _registrationAddressControllers[index].text = violator.registerAddressFormatted;
     _registerDates[index] = violator.registrationDate;
-    _birthDates[index] = violator.birthDate;
+    //_birthDates[index] = violator.birthDate;
   } 
 
   void _privateToControllers(int index, ViolatorInfoPrivate violator) {
@@ -779,8 +778,8 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
     _snilsControllers[index].text = violator.snils ?? '';
     _phoneControllers[index].text = violator.phone ?? '';
     _birthPlaceControllers[index].text = violator.birthPlace ?? '';
-    _registrationAddressControllers[index].text = violator.registrationAddress?.toString() ?? violator.registrationAddressString ?? '';
-    _birthDates[index] = violator.birthDate;
+    _registrationAddressControllers[index].text = violator.registerAddressFormatted;
+    //_birthDates[index] = violator.birthDate;
   } 
 
   void _addViolatorControllers() {
@@ -1240,7 +1239,8 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
                   Padding(padding: const EdgeInsets.only(left: 35)),
                   Flexible(
                     child: _buildTextField('Статья КоАП', 'Введите данные', _codexArticleController,
-                      validator: _emptyValidator
+                      //validator: _emptyValidator,
+                      enabled: false
                     ),
                   ),
                 ],

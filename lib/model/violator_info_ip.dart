@@ -48,6 +48,14 @@ class ViolatorInfoIp extends ViolatorInfo {
     this.bik,
   }) : super(id: id, phone: phone);
 
+  String get registerAddressFormatted {
+    if (registrationAddress != null && registrationAddress.valid()) {
+      return registrationAddress.toString();
+    } else {
+      return registrationAddressString ?? '';
+    }
+  }
+
   factory ViolatorInfoIp.fromJson(Map<String, dynamic> json, {bool stringified = false}) {
     return ViolatorInfoIp(
       id: json['id'],

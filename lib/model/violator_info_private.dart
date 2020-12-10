@@ -47,6 +47,13 @@ class ViolatorInfoPrivate extends ViolatorInfo{
     return data.where((e)=> e !=null).join(' ');
   }
 
+  String get registerAddressFormatted {
+    if (registrationAddress != null && registrationAddress.valid()) {
+      return registrationAddress.toString();
+    } else {
+      return registrationAddressString ?? '';
+    }
+  }
 
   factory ViolatorInfoPrivate.fromJson(Map<String, dynamic> json, {bool stringified = false}) {
     return ViolatorInfoPrivate(
