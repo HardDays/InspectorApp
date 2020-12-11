@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -54,37 +55,50 @@ class ProfileBloc extends Bloc<ProfileBlocEvent, ProfileBlocState> {
       await _sendEmail();
     }
     if (event is SendDataEvent) {
-      yield (_copyFilledBlocState(state as FilledBlocState, sending: true));
-      try {
-        final requests = await _instructionRequestService.all();
-        for (final id in requests.keys) {
-          await _apiProvider.updateInstruction(id, instructionStatus: requests[id]);
-          await _instructionRequestService.remove(id);
-        }
-        final reports = await _reportsService.readyToSend();
-        for (final element in reports) {
-          await _reportsService.send(element);
-          await _instructionsService.flushReportsDate(element.instructionId);
-        }
+      var connectivityResult = await Connectivity().checkConnectivity();
+      if(connectivityResult == ConnectivityResult.none) {
         await showDialog(
-          context: event.context,
-          child: AcceptDialog(
-            acceptTitle: 'Ок',
-            cancelTitle: null,
-            message:
-                'Данные успешно переданы в ЕИС ОАТИ',
-          ),
-        );
-      } catch (ex) {
-        await showDialog(
-          context: event.context,
-          child: AcceptDialog(
-            cancelTitle: null,
-            acceptTitle: 'Ок',
-            message:
-                'При передаче данных в ЕИС ОАТИ возникла ошибка. ${ex.message}. Обратитесь в СТП',
-          ),
-        );
+            context: event.context,
+            child: AcceptDialog(
+              cancelTitle: null,
+              acceptTitle: 'Ок',
+              message:
+                  'Отсутствует интернет-соединение',
+            ),
+          );
+      } else {
+        yield (_copyFilledBlocState(state as FilledBlocState, sending: true));
+        try {
+          final requests = await _instructionRequestService.all();
+          for (final id in requests.keys) {
+            await _apiProvider.updateInstruction(id, instructionStatus: requests[id]);
+            await _instructionRequestService.remove(id);
+          }
+          final reports = await _reportsService.readyToSend();
+          for (final element in reports) {
+            await _reportsService.send(element);
+            await _instructionsService.flushReportsDate(element.instructionId);
+          }
+          await showDialog(
+            context: event.context,
+            child: AcceptDialog(
+              acceptTitle: 'Ок',
+              cancelTitle: null,
+              message:
+                  'Данные успешно переданы в ЕИС ОАТИ',
+            ),
+          );
+        } catch (ex) {
+          await showDialog(
+            context: event.context,
+            child: AcceptDialog(
+              cancelTitle: null,
+              acceptTitle: 'Ок',
+              message:
+                  'При передаче данных в ЕИС ОАТИ возникла ошибка. ${ex.message}. Обратитесь в СТП',
+            ),
+          );
+        }
       }
       yield (_copyFilledBlocState(state as FilledBlocState,
           sending: false, canBeSended: false));
