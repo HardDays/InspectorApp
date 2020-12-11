@@ -13,7 +13,7 @@ class ReportsService {
   final _reportsDbService = SqliteReportsService();
   //final _reportErrorsDbService = ObjectDbCollectionService<ReportError>('report_errors.db', (json) => ReportError.fromJson(json));
 
-  final DataSendingConfigurationMixin _dataSendingConfiguration = ObjectDbPersistanceService();
+  final _persistanceService = ObjectDbPersistanceService();
 
   static final _instance = ReportsService._internal();
 
@@ -31,6 +31,10 @@ class ReportsService {
     return await _reportsDbService.all();
   }
 
+  Future<int> lastNumber() async {
+    return await _persistanceService.getReportNumber();
+  }
+
   Future<Iterable<Report>> readyToSend() async {
     final ready = await _reportsDbService.all();
     return ready.where((element) => element.isReady).toList();
@@ -38,9 +42,11 @@ class ReportsService {
 
   Future<Report> create(Report report, {String error, bool local = false}) async {
     // для тестирования
-    if ((local || !(await _dataSendingConfiguration.getDataSendingState()))) {
+    if ((local || !(await _persistanceService.getDataSendingState()))) {
       //await _reportsDbService.save({'instructionId': report.instructionId, 'checkId': report.checkId}, report);
       await _reportsDbService.save(report, error: error);
+      final number = await _persistanceService.getReportNumber();
+      await _persistanceService.setReportNumber(number + 1);
       return report;
     } else {
       return await send(report);
@@ -48,7 +54,7 @@ class ReportsService {
   }
 
   Future<Report> send(Report report) async {
-    await _dataSendingConfiguration.saveLastDataSendingDate(DateTime.now());
+    await _persistanceService.saveLastDataSendingDate(DateTime.now());
     final res = await _apiService.createReport(report);
     await removeLocal(report);
     return res;

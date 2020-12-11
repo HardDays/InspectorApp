@@ -33,7 +33,8 @@ class InstructionFiltersWidget extends StatelessWidget {
   }
 
   void _onClear(BuildContext context) {
-    Navigator.pop(context, InstructionFilters(instructionDates: [DateTime.now()], checkDates: [DateTime.now()]));
+    BlocProvider.of<InstructionFiltersBloc>(context).add(SaveEvent(InstructionFilters(instructionDates: [DateTime.now()], checkDates: [DateTime.now()])));  
+   // Navigator.pop(context, InstructionFilters(instructionDates: [DateTime.now()], checkDates: [DateTime.now()]));
   }
 
   void _onStatus(BuildContext context, int status) {

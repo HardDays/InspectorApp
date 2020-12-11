@@ -15,25 +15,21 @@ class SqliteReportsService {
   Future init() async {
     if (_database == null) {
       _database = await openDatabase(
-        join(await getDatabasesPath(), 'reports5.db'),
+        join(await getDatabasesPath(), 'reports6.db'),
         onCreate: (db, version) async {
-          await db.execute('''CREATE TABLE reports(dbId INTEGER PRIMARY KEY, id INTEGER, instructionId INTEGER, checkId INTEGER, 
+          await db.execute('''CREATE TABLE reports(dbId INTEGER PRIMARY KEY, localId TEXT,
+            id INTEGER, instructionId INTEGER, checkId INTEGER, 
             violationNotPresent INTEGER, reportNum TEXT, reportDate TEXT, error TEXT,
             reportStatus TEXT, reportAuthor TEXT, violations TEXT, diggRequestChecks TEXT, photos TEXT
           )''');
         },
         onOpen: (db) async {
-          //await db.execute(TableDefinitions.all[ DictionaryNames.reportStatuses]);
-          // await db.execute(TableDefinitions.all[ DictionaryNames.violatorInfoIps]);
-          // await db.execute(TableDefinitions.all[ DictionaryNames.violatorInfoLegals]);
-          // await db.execute(TableDefinitions.all[ DictionaryNames.violatorInfoOfficials]);
-          // await db.execute(TableDefinitions.all[ DictionaryNames.violatorInfoPrivates]);
         },
         version: 1,
       );
     }
   }
-  
+  //todo: move images outside
   Future<List<Report>> all({Map<String, dynamic> query = const {}}) async {
     try {
       await init();
@@ -77,11 +73,11 @@ class SqliteReportsService {
       return [];
     }
   }
-  //todo: fix
+  //todo: move images outside
   Future save(Report report, {String error}) async {
     try {
       await init();
-      final where = 'dbId = ${report.dbId}';
+      final where = 'localId = "${report.localId}"';
       final created = await _database.query(_tableName, where: where);
       final json = report.toSqliteJson();
       json['error'] = error;
@@ -99,7 +95,7 @@ class SqliteReportsService {
   Future  removeGlobal(Report report) async {
     try {
       await init();
-      await _database.delete(_tableName, where: 'id = ${report.id}');
+      await _database.delete(_tableName, where: 'id = "${report.id}"');
     } catch (ex) {
       print(ex);
     }
@@ -108,9 +104,9 @@ class SqliteReportsService {
   Future removeLocal(Report report) async {
     try {
       await init();
-      await _database.delete(_tableName, where: 'dbId = ${report.dbId}');
+      await _database.delete(_tableName, where: 'localId = "${report.localId}"');
     } catch (ex) {
-
+      print(ex);
     }
   }
 }

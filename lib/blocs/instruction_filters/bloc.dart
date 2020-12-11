@@ -10,6 +10,7 @@ import 'package:inspector/services/sqlite/sqlite_dictionary_service.dart';
 class InstructionFiltersBloc extends Bloc<InstructionFiltersBlocEvent, InstructionFiltersBlocState> {
   
   final _dictionaryService = DictionaryService();
+  final _service = InstructionsService();
 
   InstructionFiltersBloc(initialState) : super(initialState);
 
@@ -59,6 +60,12 @@ class InstructionFiltersBloc extends Bloc<InstructionFiltersBlocEvent, Instructi
           instructionNum: event.instructionNum,
         ),
       );
+    } else if (event is SaveEvent) {
+      await _service.saveFilters(event.filters);
+       yield InstructionFiltersBlocState(
+        state.statuses,
+        event.filters
+       );
     }
   } 
 }

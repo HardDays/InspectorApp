@@ -1,3 +1,5 @@
+import 'package:inspector/model/instruction.dart';
+
 abstract class InstructionFiltersBlocEvent {}
 
 class LoadEvent extends InstructionFiltersBlocEvent {
@@ -26,4 +28,10 @@ class SetInstructionStatusEvent extends InstructionFiltersBlocEvent {
   final int instructionStatus;
 
   SetInstructionStatusEvent(this.instructionStatus);
+}
+
+class SaveEvent extends InstructionFiltersBlocEvent {
+  final InstructionFilters filters;
+
+  SaveEvent(this.filters);
 }

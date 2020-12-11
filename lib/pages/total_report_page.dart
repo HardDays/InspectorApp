@@ -46,7 +46,7 @@ import 'package:inspector/widgets/dictionary_dialog.dart';
 import 'package:inspector/style/image_picker.dart';
 import 'package:latlong/latlong.dart';
 
-class TotalReportPage extends StatefulWidget {
+class   TotalReportPage extends StatefulWidget {
 
   // final bool violationNotPresent;
   // final int instructionId;
@@ -393,6 +393,11 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
     BlocProvider.of<TotalReportBloc>(context).add(FlushEvent());
   }
 
+  void _onPhotoRotate(BuildContext context, int index, Uint8List image) {
+    _photos[index] = image;
+    BlocProvider.of<TotalReportBloc>(context).add(FlushEvent());
+  }
+
   void _onPhotoRemove(BuildContext context, int index) {
     _photos.removeAt(index);
     _photoNames.removeAt(index);
@@ -438,6 +443,13 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
   void _onViolatorSelect(BuildContext context, int index, dynamic violator) {
     _addViolatorInfo(index, violator);
     BlocProvider.of<TotalReportBloc>(context).add(SetViolatorInfoEvent(index, violator));
+  }
+
+   void _onViolatorDelete(BuildContext context, int index) {
+    if (widget.report.isUpdatable) {
+      _removeViolatorControllers(index);
+      BlocProvider.of<TotalReportBloc>(context).add(DeleteViolatorEvent(index));  
+    }
   }
 
   Future<Iterable<ViolatorAddress>> _onAddressDialogSubjectSearch(BuildContext context, int index, String name) async {
@@ -553,117 +565,121 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
   void _onSave(BuildContext context, int status) async {
     final res = await showDialog(context: context, child: AcceptDialog(message: 'Сохранить рапорт?'));
     if (res != null) {
-      final report = BlocProvider.of<TotalReportBloc>(context).state.report;
-      if (report.violationNotPresent) {
-        _showSnackBar(context, 'Рапорт сохраняется...', flush: false);
-        BlocProvider.of<TotalReportBloc>(context).add(
-          SaveReportEvent(
-            status: status,
-            photos: _photos,
-            photoNames: _photoNames
-          ),
-        );  
+      if (_photos.isEmpty) {
+        _showSnackBar(context, 'Пожалуйста, добавьте минимум одну фотографию', flush: false);
       } else {
-        bool validViolators = true;
-        final resViolators = List<Violator>();
-        final curViolators = report.violation(widget.violationIndex)?.violators ?? [];
-        for (int i = 0; i < curViolators.length; i++) {
-          final violator = curViolators[i];
-          final violatorPerson = violator.violatorPerson;
-          if (!violator.violatorNotFound) {
-            if (violatorPerson?.id == null) {
-              validViolators = validViolators && _violatorFormKeys[i].currentState.validate();
-              if (violator?.type?.id == ViolatorTypeIds.legal) {
-                final person = (violator?.violatorPerson as ViolatorInfoLegal);
-                final newViolator = violator.copyWith(
-                  violatorPerson: ViolatorInfoLegal(
-                    name: _violatorControllers[i].text,
-                    phone: _phoneControllers[i].text,
-                    inn: _innControllers[i].text,
-                    ogrn: _ogrnControllers[i].text,
-                    kpp: _kppControllers[i].text,
-                    regDate: _registerDates[i],
-                    legalAddress: person?.legalAddress,
-                    postalAddress: person?.postalAddress
-                  ),
-                );
-                resViolators.add(newViolator);
-              } else if (violator?.type?.id == ViolatorTypeIds.official) {
-                final person = (violator?.violatorPerson as ViolatorInfoOfficial);
-                final newViolator = violator.copyWith(
-                  violatorPerson: ViolatorInfoOfficial(
-                    orgName: _violatorControllers[i].text,
-                    phone: _phoneControllers[i].text,
-                    orgInn: _innControllers[i].text,
-                    orgOgrn: _ogrnControllers[i].text,
-                    orgKpp: _kppControllers[i].text,
-                    orgRegDate: _registerDates[i],
-                    orgLegalAddress: person?.orgLegalAddress,
-                    orgPostalAddress: person?.orgPostalAddress
-                  ),
-                );
-                resViolators.add(newViolator);
-              } else if (violator?.type?.id == ViolatorTypeIds.ip) {
-                final person = (violator?.violatorPerson as ViolatorInfoIp);
-                final newViolator = violator.copyWith(
-                  violatorPerson: ViolatorInfoIp(
-                    name: _violatorControllers[i].text,
-                    firstName: _firstNameControllers[i].text,
-                    lastName: _lastNameControllers[i].text,
-                    patronym: _patronymControllers[i].text,
-                    phone: _phoneControllers[i].text,
-                    snils: _snilsControllers[i].text,
-                    inn: _innControllers[i].text,
-                    ogrnip: _ogrnControllers[i].text,
-                    registrationDate: _registerDates[i],
-                    birthDate: _birthDates[i],
-                    birthPlace: _birthPlaceControllers[i].text,
-                    registrationAddress: person?.registrationAddress
-                  ),
-                );
-                resViolators.add(newViolator);
-              } else if (violator?.type?.id == ViolatorTypeIds.private) {
-                final person = (violator?.violatorPerson as ViolatorInfoPrivate);
-                final newViolator = violator.copyWith(
-                  violatorPerson: ViolatorInfoPrivate(
-                    firstName: _firstNameControllers[i].text,
-                    lastName: _lastNameControllers[i].text,
-                    patronym: _patronymControllers[i].text,
-                    phone: _phoneControllers[i].text,
-                    snils: _snilsControllers[i].text,
-                    inn: _innControllers[i].text,
-                    docNumber: _docNumberControllers[i].text,
-                    docSeries: _docSeriesControllers[i].text,
-                    docType: person?.docType,
-                    birthDate: _birthDates[i],
-                    birthPlace: _birthPlaceControllers[i].text,
-                    registrationAddress: person?.registrationAddress
-                  ),
-                );
-                resViolators.add(newViolator);
-              }
-            } else {
-              resViolators.add(violator);
-            }
-          } else {
-            resViolators.add(violator);
-          }
-        }
-        if (_formKey.currentState.validate() && validViolators) {
+        final report = BlocProvider.of<TotalReportBloc>(context).state.report;
+        if (report.violationNotPresent) {
           _showSnackBar(context, 'Рапорт сохраняется...', flush: false);
           BlocProvider.of<TotalReportBloc>(context).add(
             SaveReportEvent(
               status: status,
-              violators: resViolators,
-              violationDescription: _violationDescriptionController.text,
-              specifiedAddress: _specifiedAddressController.text,
-              codexArticle: _codexArticleController.text,
               photos: _photos,
               photoNames: _photoNames
             ),
           );  
         } else {
-          _showSnackBar(context, 'Пожалуйста, проверьте все поля');
+          bool validViolators = true;
+          final resViolators = List<Violator>();
+          final curViolators = report.violation(widget.violationIndex)?.violators ?? [];
+          for (int i = 0; i < curViolators.length; i++) {
+            final violator = curViolators[i];
+            final violatorPerson = violator.violatorPerson;
+            if (!violator.violatorNotFound) {
+              if (violatorPerson?.id == null) {
+                validViolators = validViolators && _violatorFormKeys[i].currentState.validate();
+                if (violator?.type?.id == ViolatorTypeIds.legal) {
+                  final person = (violator?.violatorPerson as ViolatorInfoLegal);
+                  final newViolator = violator.copyWith(
+                    violatorPerson: ViolatorInfoLegal(
+                      name: _violatorControllers[i].text,
+                      phone: _phoneControllers[i].text,
+                      inn: _innControllers[i].text,
+                      ogrn: _ogrnControllers[i].text,
+                      kpp: _kppControllers[i].text,
+                      regDate: _registerDates[i],
+                      legalAddress: person?.legalAddress,
+                      postalAddress: person?.postalAddress
+                    ),
+                  );
+                  resViolators.add(newViolator);
+                } else if (violator?.type?.id == ViolatorTypeIds.official) {
+                  final person = (violator?.violatorPerson as ViolatorInfoOfficial);
+                  final newViolator = violator.copyWith(
+                    violatorPerson: ViolatorInfoOfficial(
+                      orgName: _violatorControllers[i].text,
+                      phone: _phoneControllers[i].text,
+                      orgInn: _innControllers[i].text,
+                      orgOgrn: _ogrnControllers[i].text,
+                      orgKpp: _kppControllers[i].text,
+                      orgRegDate: _registerDates[i],
+                      orgLegalAddress: person?.orgLegalAddress,
+                      orgPostalAddress: person?.orgPostalAddress
+                    ),
+                  );
+                  resViolators.add(newViolator);
+                } else if (violator?.type?.id == ViolatorTypeIds.ip) {
+                  final person = (violator?.violatorPerson as ViolatorInfoIp);
+                  final newViolator = violator.copyWith(
+                    violatorPerson: ViolatorInfoIp(
+                      name: _violatorControllers[i].text,
+                      firstName: _firstNameControllers[i].text,
+                      lastName: _lastNameControllers[i].text,
+                      patronym: _patronymControllers[i].text,
+                      phone: _phoneControllers[i].text,
+                      snils: _snilsControllers[i].text,
+                      inn: _innControllers[i].text,
+                      ogrnip: _ogrnControllers[i].text,
+                      registrationDate: _registerDates[i],
+                      birthDate: _birthDates[i],
+                      birthPlace: _birthPlaceControllers[i].text,
+                      registrationAddress: person?.registrationAddress
+                    ),
+                  );
+                  resViolators.add(newViolator);
+                } else if (violator?.type?.id == ViolatorTypeIds.private) {
+                  final person = (violator?.violatorPerson as ViolatorInfoPrivate);
+                  final newViolator = violator.copyWith(
+                    violatorPerson: ViolatorInfoPrivate(
+                      firstName: _firstNameControllers[i].text,
+                      lastName: _lastNameControllers[i].text,
+                      patronym: _patronymControllers[i].text,
+                      phone: _phoneControllers[i].text,
+                      snils: _snilsControllers[i].text,
+                      inn: _innControllers[i].text,
+                      docNumber: _docNumberControllers[i].text,
+                      docSeries: _docSeriesControllers[i].text,
+                      docType: person?.docType,
+                      birthDate: _birthDates[i],
+                      birthPlace: _birthPlaceControllers[i].text,
+                      registrationAddress: person?.registrationAddress
+                    ),
+                  );
+                  resViolators.add(newViolator);
+                }
+              } else {
+                resViolators.add(violator);
+              }
+            } else {
+              resViolators.add(violator);
+            }
+          }
+          if (_formKey.currentState.validate() && validViolators) {
+            _showSnackBar(context, 'Рапорт сохраняется...', flush: false);
+            BlocProvider.of<TotalReportBloc>(context).add(
+              SaveReportEvent(
+                status: status,
+                violators: resViolators,
+                violationDescription: _violationDescriptionController.text,
+                specifiedAddress: _specifiedAddressController.text,
+                codexArticle: _codexArticleController.text,
+                photos: _photos,
+                photoNames: _photoNames
+              ),
+            );  
+          } else {
+            _showSnackBar(context, 'Пожалуйста, проверьте все поля');
+          }
         }
       }
     }
@@ -790,6 +806,16 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
     _violatorTypeControllers.add(TextEditingController());
     _birthDates.add(null);
     _registerDates.add(null);
+  }
+
+  void _removeViolatorControllers(int index) {
+    _violatorFormKeys.removeAt(index);
+    for (final list in _allViolatorControllers) {
+      list.removeAt(index);
+    }
+    _violatorTypeControllers.removeAt(index);
+    _birthDates.removeAt(index);
+    _registerDates.removeAt(index);
   }
 
   void _addNormativeActControllers() {
@@ -1065,7 +1091,9 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
         children: [
           ImagePicker(
             images: _photos,
+            names: _photoNames,
             enabled: widget.report.isUpdatable,
+            onRotated: (index, image)=> _onPhotoRotate(context, index, image),
             onPicked: (file) => _onPhotoPick(context, file),
             onRemoved: (index)=> _onPhotoRemove(context, index),
           ),
@@ -1073,6 +1101,22 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
         ],
       ),
     );
+  }
+
+  Widget _buildDeleteButton(int index, Function onTap) {
+    if (index > 0) {
+      return InkWell(
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.only(top: 10, right: 30, left: 30),
+          child: Text('Удалить',
+            style: ProjectTextStyles.base.apply(color: ProjectColors.red),
+          ),
+        ),
+      );
+    } else {
+      return Container();
+    }
   }
   
   Widget _buildViolationPresent(BuildContext context, TotalReportBlocState state) {
@@ -1205,15 +1249,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
                               validator: (value) => _nullValidator(state.report?.violation(widget.violationIndex)?.normativeActArticles[index].id),
                               padding: const EdgeInsets.only(top: 20, right: 30)
                             ),
-                            index > 0 ? InkWell(
-                              onTap: ()=> _onNormativeActDelete(context, index),
-                              child: Padding(
-                                padding: const EdgeInsets.only(top: 10, right: 30, left: 30),
-                                child: Text('Удалить',
-                                  style: ProjectTextStyles.base.apply(color: ProjectColors.red),
-                                ),
-                              ),
-                            ) : Container(),
+                            _buildDeleteButton(index, ()=> _onNormativeActDelete(context, index))
                           ],
                         ),
                       ),
@@ -1248,7 +1284,9 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
               _buildTitle('Фотоматериалы нарушения'),
               ImagePicker(
                 images: _photos,
+                names: _photoNames,
                 enabled: widget.report.isUpdatable,
+                onRotated: (index, image)=> _onPhotoRotate(context, index, image),
                 onPicked: (file)=> _onPhotoPick(context, file),
                 onRemoved: (index)=> _onPhotoRemove(context, index)
               ),
@@ -1268,34 +1306,53 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
   }
 
   Widget _buildViolator(BuildContext context, Violator violator, int index) {
-    return Column(
-      children: [
-        _buildAutocomplete('Тип нарушителя', 'Выберите значение',  
-          _violatorTypeControllers[index],
-          (value)=> _onViolatorTypeSearch(context, value), 
-          (value)=> _onViolatorTypeSelect(context, index, value), 
-          validator: (value) => _nullValidator(violator?.type)
+    return Theme(
+     data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+      child: ExpansionTile(
+        initiallyExpanded: true,
+        tilePadding: EdgeInsets.zero,
+        title: Text('Нарушитель ${index + 1}',
+          style: ProjectTextStyles.base
         ),
-        _buildCheckBox(
-          'Нарушитель не выявлен', 
-          violator.violatorNotFound,
-          (value)=> _onViolatorNotFound(context, value, index),
-        ),
-        violator.violatorNotFound ? Container() :
-        Form(
-          key: _violatorFormKeys[index],
-          child: Column(
+        children: [
+          Column(
             children: [
-              _buildAutocomplete('Нарушитель', 'Выберите значение',  
-                _violatorControllers[index],
-                (value)=> _onViolatorSearch(context, index, value), 
-                (value)=> _onViolatorSelect(context, index, value), 
+              _buildAutocomplete('Тип нарушителя', 'Выберите значение',  
+                _violatorTypeControllers[index],
+                (value)=> _onViolatorTypeSearch(context, value), 
+                (value)=> _onViolatorTypeSelect(context, index, value), 
+                validator: (value) => _nullValidator(violator?.type)
               ),
-              _buildViolatorInfo(context, index, violator)
+              _buildCheckBox(
+                'Нарушитель не выявлен', 
+                violator.violatorNotFound,
+                (value)=> _onViolatorNotFound(context, value, index),
+              ),
+              violator.violatorNotFound ? Container() :
+              Form(
+                key: _violatorFormKeys[index],
+                child: Column(
+                  children: [
+                    _buildAutocomplete('Нарушитель', 'Выберите значение',  
+                      _violatorControllers[index],
+                      (value)=> _onViolatorSearch(context, index, value), 
+                      (value)=> _onViolatorSelect(context, index, value), 
+                    ),
+                    _buildViolatorInfo(context, index, violator)
+                  ],
+                ),
+              ),
+              Align(
+                alignment: Alignment.centerRight,
+                child: Padding(
+                  padding: const EdgeInsets.only(),
+                  child: _buildDeleteButton(index, ()=> _onViolatorDelete(context, index)),
+                )
+              ),
             ],
           ),
-        ),
-      ],
+          ],
+      ),
     );
   }
 

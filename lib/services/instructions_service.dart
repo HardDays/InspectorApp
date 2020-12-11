@@ -110,9 +110,12 @@ class InstructionsService {
     await _persistanceService.saveInstructionSortOrder(order);
   }
 
-
   Future saveFilters(InstructionFilters filters) async {
     await _persistanceService.saveInstructionFilters(filters);
+  }
+
+  Future flushReportsDate(int instructionId) async {
+    await _persistanceService.saveInstructionsReportDate(instructionId, date: DateTime.now().subtract(Duration(minutes: 15)));
   }
 
 }

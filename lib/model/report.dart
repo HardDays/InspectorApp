@@ -41,7 +41,8 @@ class ReportError {
 class Report {
 
   final int id;
-  final int dbId;
+  // final int dbId;
+  final String localId;
   final int instructionId;
   final int checkId;
   final bool violationNotPresent;
@@ -58,7 +59,8 @@ class Report {
 
   Report({
     this.id,
-    this.dbId,
+    this.localId,
+    //this.dbId,
     this.instructionId,
     this.checkId,
     this.violationNotPresent,
@@ -89,6 +91,7 @@ class Report {
 
   Report copyWith({
     bool violationNotPresent,
+    String localId,
     String reportNum,
     DateTime reportDate,
     ReportStatus reportStatus,
@@ -99,9 +102,9 @@ class Report {
   }) {
     return Report(
       id: id,
-      dbId: dbId,
-      instructionId: instructionId,
+      instructionId: instructionId, 
       checkId: checkId,
+      localId: localId ?? this.localId,
       violationNotPresent: violationNotPresent ?? this.violationNotPresent,
       reportNum: reportNum ?? this.reportNum,
       reportDate: reportDate ?? this.reportDate,
@@ -129,7 +132,8 @@ class Report {
     final List<Photo> photos = json['photos'] != null ? List<Photo>.from((stringified ? c.json.decode(json['photos']) : json['photos']).map((p) => Photo.fromJson(p))) : [];
     return Report(
       id: json['id'], 
-      dbId: json['dbId'],
+      localId: json['localId'],
+      //dbId: json['dbId'],
       instructionId: json['instructionId'], 
       checkId: json['checkId'],
       reportNum: json['reportNum'],
@@ -149,7 +153,8 @@ class Report {
     final violationsJson = violations != null ? violations.map((e) => e.toJson(stringified: stringified)).toList() : [];
     return {
       'id': id,
-      'dbId': dbId,
+      'localId': localId,
+      //'dbId': dbId,
       'instructionId': instructionId,
       'checkId': checkId,
       'violationNotPresent': stringified ? ((violationNotPresent ?? false) ? 1 : 0) : violationNotPresent,

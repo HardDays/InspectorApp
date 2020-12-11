@@ -177,6 +177,10 @@ class SetViolatorPostalAddressEvent extends ChangeViolatorEvent {
   SetViolatorPostalAddressEvent(int index, this.address) : super(index);
 }
 
+class DeleteViolatorEvent extends ChangeViolatorEvent {
+  DeleteViolatorEvent(int index) : super(index);
+}
+
 class SetViolationLocationEvent extends TotalReportBlocEvent {
   final LatLng location;
 

@@ -36,6 +36,7 @@ import 'package:inspector/services/dictionary_service.dart';
 import 'package:inspector/services/geo_service.dart';
 import 'package:inspector/services/objectdb/objectdb_persistance_service.dart';
 import 'package:inspector/services/reports_service.dart';
+import 'package:intl/intl.dart';
 
 import 'package:latlong/latlong.dart';
 
@@ -474,8 +475,11 @@ class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {
           );
         }
       }
-      violators[event.index] = violator;
-
+      if (event is DeleteViolatorEvent) {
+        violators.removeAt(event.index);
+      } else {
+        violators[event.index] = violator;
+      }
       final violations = state.report.violations;
       violations[violationIndex] = state.report.violation(violationIndex).copyWith(
         violators: violators
@@ -484,11 +488,6 @@ class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {
         report: state.report.copyWith(
           violations: violations
         ),
-        // report: state.report.copyWith(
-        //   violation: state.report.violation.copyWith(
-        //     violators: violators
-        //   ),
-        // ),
       );
     } else if (event is AddViolatorEvent) {
       final violations = state.report.violations;
@@ -509,11 +508,14 @@ class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {
       final user = await _persistanceService.getUser();
       final local = status.id == ReportStatusIds.new_ || status.id == ReportStatusIds.project;
       final date = state.report.reportDate ?? DateTime.now();
-      final number = state.report.reportNum ?? Uuid().v4().substring(0, 16);
+      final lastNum = await _reportsService.lastNumber();
+      final number = state.report.reportNum ?? 'Рапорт $lastNum ${DateFormat('dd.MM.yyyy').format(date)}';
+      final localId = state.report.localId ?? Uuid().v1();
 
       Report report = state.report;
       if (state.report.violationNotPresent) {
         report = report.copyWith(
+          localId: localId,
           reportStatus: status,
           reportDate: date,
           reportNum: number,
@@ -547,6 +549,7 @@ class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {
         );
 
         report = report.copyWith(
+          localId: localId,
           reportStatus: status,
           reportDate: date,
           reportNum: number,

@@ -67,8 +67,6 @@ class InstructionListBloc extends Bloc<InstructionListBlocEvent, InstructionList
         yield DataState(data, state.date, event.sort, order, state.filters);
       }
     } else if (event is FilterEvent) {
-      _service.saveFilters(event.filters);
-
       if (state is DataState) {
         List<Instruction> data = await _service.all();
         data = _processData(state.sort, state.order, event.filters, data);

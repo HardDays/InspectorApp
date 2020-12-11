@@ -8,6 +8,7 @@ import 'package:inspector/blocs/profile/state.dart';
 import 'package:inspector/model/user.dart';
 import 'package:inspector/providers/api_provider.dart';
 import 'package:inspector/services/instruction_request_service.dart';
+import 'package:inspector/services/instructions_service.dart';
 import 'package:inspector/services/persistance_service.dart';
 import 'package:inspector/services/reports_service.dart';
 import 'package:inspector/style/accept_dialog.dart';
@@ -26,6 +27,8 @@ class ProfileBloc extends Bloc<ProfileBlocEvent, ProfileBlocState> {
   final InstructionRequestService _instructionRequestService =
       InstructionRequestService();
   final ApiProvider _apiProvider = ApiProvider();
+
+  final _instructionsService = InstructionsService();
 
   @override
   Stream<ProfileBlocState> mapEventToState(ProfileBlocEvent event) async* {
@@ -54,12 +57,14 @@ class ProfileBloc extends Bloc<ProfileBlocEvent, ProfileBlocState> {
       yield (_copyFilledBlocState(state as FilledBlocState, sending: true));
       try {
         final requests = await _instructionRequestService.all();
-        requests.forEach((key, value) {
-          _apiProvider.updateInstruction(key, instructionStatus: value);
-        });
+        for (final id in requests.keys) {
+          await _apiProvider.updateInstruction(id, instructionStatus: requests[id]);
+          await _instructionRequestService.remove(id);
+        }
         final reports = await _reportsService.readyToSend();
         for (final element in reports) {
           await _reportsService.send(element);
+          await _instructionsService.flushReportsDate(element.instructionId);
         }
         await showDialog(
           context: event.context,

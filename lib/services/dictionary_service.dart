@@ -159,7 +159,7 @@ class DictionaryService {
           'streetId = ?': streetId
         }),
       ],
-      limit: 10
+      limit: 50
     );
   }
 
@@ -174,7 +174,7 @@ class DictionaryService {
           queryType: 'OR'
         ),
       ],
-      limit: 10
+      limit: 50
     );
   }
 
@@ -186,7 +186,7 @@ class DictionaryService {
           'areaId = ?': areaId,
         }),
       ],
-      limit: 10
+      limit: 50
     );
   }
 
@@ -197,7 +197,7 @@ class DictionaryService {
           'name LIKE ?': '$name%',
         }),
       ],
-      limit: 10
+      limit: 50
     );
   }
 
@@ -208,7 +208,7 @@ class DictionaryService {
           'id = ?': id,
         }),
       ],
-      limit: 10
+      limit: 50
     );
   }
 
@@ -220,7 +220,7 @@ class DictionaryService {
           'districtId = ?': districtId
         }),
       ],
-      limit: 10
+      limit: 50
     );
   }
 
@@ -235,7 +235,7 @@ class DictionaryService {
           queryType: 'OR'
         ),
       ],
-      limit: 10
+      limit: 50
     );
   }
 
@@ -250,7 +250,7 @@ class DictionaryService {
           'name LIKE ?': '%$name%',
         }),
       ],
-      limit: 10
+      limit: 50
     );
   }
 
@@ -265,7 +265,7 @@ class DictionaryService {
           queryType: 'OR'
         ),
       ],
-      limit: 10
+      limit: 50
     );
   }
 
@@ -276,7 +276,7 @@ class DictionaryService {
           'name LIKE ?': '%$name%',
         }),
       ],
-      limit: 10
+      limit: 50
     );
   }
 
@@ -296,7 +296,7 @@ class DictionaryService {
           }
         )
       ],
-      limit: 10
+      limit: 50
     );  
   }
 
@@ -323,7 +323,7 @@ class DictionaryService {
           queryType: 'OR'
         ),
       ],
-      limit: 10
+      limit: 50
     );
   }
 
@@ -339,7 +339,7 @@ class DictionaryService {
           queryType: 'OR'
         ),
       ],
-      limit: 10
+      limit: 50
     );
   }
 
@@ -355,7 +355,7 @@ class DictionaryService {
           queryType: 'OR'
         ),
       ],
-      limit: 10
+      limit: 50
     );
   }
 
@@ -368,7 +368,7 @@ class DictionaryService {
           },
         ),
       ],
-      limit: 10
+      limit: 50
     );
   }
 
@@ -387,7 +387,7 @@ class DictionaryService {
           queryType: 'OR'
         ),
       ],
-      limit: 10
+      limit: 50
     );
   }
 
@@ -405,7 +405,7 @@ class DictionaryService {
           queryType: 'OR'
         ),
       ],
-      limit: 10
+      limit: 50
     );
   }
 
@@ -418,7 +418,7 @@ class DictionaryService {
           },
         ),
       ],
-      limit: 10
+      limit: 50
     );
   }
 }
