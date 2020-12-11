@@ -7,8 +7,10 @@ import 'package:inspector/style/button.dart';
 class AcceptDialog extends StatelessWidget {
 
   final String message;
+  final String acceptTitle;
+  final String cancelTitle;
 
-  const AcceptDialog({this.message});
+  const AcceptDialog({this.message, this.acceptTitle = 'Подтвердить', this.cancelTitle = 'Отмена'});
 
   @override
   Widget build(BuildContext context) {
@@ -24,15 +26,17 @@ class AcceptDialog extends StatelessWidget {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                ProjectButton.buildOutlineButton('Отмена',
-                  onPressed: () {
-                    Navigator.pop(context);
-                  }
-                ),
+                if(cancelTitle != null)
+                  ProjectButton.buildOutlineButton(cancelTitle,
+                    onPressed: () {
+                      Navigator.pop(context);
+                    }
+                  ),
+                if(cancelTitle != null)
                 Padding(
                   padding: const EdgeInsets.only(left: 20),
                 ),
-                ProjectButton.builtFlatButton('Подтвердить',
+                ProjectButton.builtFlatButton(acceptTitle,
                   onPressed: () {
                     Navigator.pop(context, true);
                   }
