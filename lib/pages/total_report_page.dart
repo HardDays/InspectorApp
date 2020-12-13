@@ -1315,43 +1315,46 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
           style: ProjectTextStyles.base
         ),
         children: [
-          Column(
-            children: [
-              _buildAutocomplete('Тип нарушителя', 'Выберите значение',  
-                _violatorTypeControllers[index],
-                (value)=> _onViolatorTypeSearch(context, value), 
-                (value)=> _onViolatorTypeSelect(context, index, value), 
-                validator: (value) => _nullValidator(violator?.type)
-              ),
-              _buildCheckBox(
-                'Нарушитель не выявлен', 
-                violator.violatorNotFound,
-                (value)=> _onViolatorNotFound(context, value, index),
-              ),
-              violator.violatorNotFound ? Container() :
-              Form(
-                key: _violatorFormKeys[index],
-                child: Column(
-                  children: [
-                    _buildAutocomplete('Нарушитель', 'Выберите значение',  
-                      _violatorControllers[index],
-                      (value)=> _onViolatorSearch(context, index, value), 
-                      (value)=> _onViolatorSelect(context, index, value), 
-                    ),
-                    _buildViolatorInfo(context, index, violator)
-                  ],
+          Padding(
+            padding: const EdgeInsets.only(left: 2, right: 2),
+            child: Column(
+              children: [
+                _buildAutocomplete('Тип нарушителя', 'Выберите значение',  
+                  _violatorTypeControllers[index],
+                  (value)=> _onViolatorTypeSearch(context, value), 
+                  (value)=> _onViolatorTypeSelect(context, index, value), 
+                  validator: (value) => _nullValidator(violator?.type)
                 ),
-              ),
-              Align(
-                alignment: Alignment.centerRight,
-                child: Padding(
-                  padding: const EdgeInsets.only(),
-                  child: _buildDeleteButton(index, ()=> _onViolatorDelete(context, index)),
-                )
-              ),
-            ],
+                _buildCheckBox(
+                  'Нарушитель не выявлен', 
+                  violator.violatorNotFound,
+                  (value)=> _onViolatorNotFound(context, value, index),
+                ),
+                violator.violatorNotFound ? Container() :
+                Form(
+                  key: _violatorFormKeys[index],
+                  child: Column(
+                    children: [
+                      _buildAutocomplete('Нарушитель', 'Выберите значение',  
+                        _violatorControllers[index],
+                        (value)=> _onViolatorSearch(context, index, value), 
+                        (value)=> _onViolatorSelect(context, index, value), 
+                      ),
+                      _buildViolatorInfo(context, index, violator)
+                    ],
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: Padding(
+                    padding: const EdgeInsets.only(),
+                    child: _buildDeleteButton(index, ()=> _onViolatorDelete(context, index)),
+                  )
+                ),
+              ],
+            ),
           ),
-          ],
+        ],
       ),
     );
   }
