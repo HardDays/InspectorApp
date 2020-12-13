@@ -5,6 +5,7 @@ import 'package:inspector/model/photo.dart';
 import 'package:inspector/model/report_status.dart';
 import 'package:inspector/model/user.dart';
 import 'package:inspector/model/violation.dart';
+import 'package:intl/intl.dart';
 
 abstract class ReportStatusIds {
   static const project = 0;
@@ -130,15 +131,16 @@ class Report {
     final List<Violation> violations = json['violations'] != null ? List<Violation>.from((stringified ? c.json.decode(json['violations']): json['violations']).map((p) => Violation.fromJson(p))) : [];
     final List<DiggRequestCheck> checks = json['diggRequestChecks'] != null ? List<DiggRequestCheck>.from((stringified ? c.json.decode(json['diggRequestChecks']): json['diggRequestChecks']).map((p) => DiggRequestCheck.fromJson(p))) : [];
     final List<Photo> photos = json['photos'] != null ? List<Photo>.from((stringified ? c.json.decode(json['photos']) : json['photos']).map((p) => Photo.fromJson(p))) : [];
+    final date = json['reportDate'] != null ? DateTime.parse(json['reportDate']) : DateTime.now();
     return Report(
       id: json['id'], 
       localId: json['localId'],
       //dbId: json['dbId'],
       instructionId: json['instructionId'], 
       checkId: json['checkId'],
-      reportNum: json['reportNum'],
+      reportNum: json['reportNum'] ?? 'Проект рапорта от ${DateFormat('dd.MM.yyyy').format(date)}',
       violationNotPresent: stringified ? json['violationNotPresent'] == 1 : (json['violationNotPresent'] ?? false),
-      reportDate: json['reportDate'] != null ? DateTime.parse(json['reportDate']) : null, 
+      reportDate: date, 
       reportStatus: status,
       reportAuthor: author,
       violations: violations,
