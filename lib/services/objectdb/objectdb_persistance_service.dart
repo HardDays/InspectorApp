@@ -67,6 +67,8 @@ class ObjectDbPersistanceService extends ObjectDBService
     await _removeKeyValue('user');
     await _removeKeyValue('pin');
     await _removeKeyValue('token');
+    await _removeKeyValue('usePin');
+    await _removeKeyValue('dateForNextTry');
     await db.tidy();
   }
 
@@ -89,6 +91,10 @@ class ObjectDbPersistanceService extends ObjectDBService
 
   Future<String> getInstructionsSort() async {
     return await _getKeyValue('instructionSort');
+  }
+
+   Future<String> getInstructionSortOrder() async {
+    return await _getKeyValue('instructionSortOrder');
   }
 
   @override
@@ -139,9 +145,11 @@ class ObjectDbPersistanceService extends ObjectDBService
 
   Future<DateTime> getInstructionReportDate(int instructionId) async {
     final dateTime = await _getKeyValue('instructionReportDate$instructionId');
-    return dateTime == null
-        ? null
-        : DateTime.fromMillisecondsSinceEpoch(dateTime);
+    return dateTime == null ? null : DateTime.fromMillisecondsSinceEpoch(dateTime);
+  }
+
+  Future<int> getReportNumber() async {
+    return await _getKeyValue('lastReportNumber') ?? 1;
   }
 
   @override
@@ -158,6 +166,10 @@ class ObjectDbPersistanceService extends ObjectDBService
     await _saveKeyValue('instructionSort', value);
   }
 
+  Future<void> saveInstructionSortOrder(String value) async {
+    await _saveKeyValue('instructionSortOrder', value);
+  }
+
   Future<void> saveInstructionsDate() async {
     await _saveKeyValue(
         'instructionsDate', DateTime.now().millisecondsSinceEpoch);
@@ -167,9 +179,9 @@ class ObjectDbPersistanceService extends ObjectDBService
     await _saveKeyValue('instructionFilters', value.toJson());
   }
 
-  Future<void> saveInstructionsReportDate(int instructionId) async {
-    await _saveKeyValue('instructionReportDate$instructionId',
-        DateTime.now().millisecondsSinceEpoch);
+  Future<void> saveInstructionsReportDate(int instructionId, {DateTime date}) async {
+    date = date ?? DateTime.now();
+    await _saveKeyValue('instructionReportDate$instructionId', date.millisecondsSinceEpoch);
   }
 
   @override
@@ -207,6 +219,30 @@ class ObjectDbPersistanceService extends ObjectDBService
     await _saveKeyValue('url', url);
   }
 
+  @override
+  Future<DateTime> getDateForNextTry() async {
+    String dateString = await _getKeyValue('dateForNextTry');
+    return dateString == null ? null : DateTime.parse(dateString);
+  }
+
+  @override
+  Future<void> setDateForNextTry(DateTime dateTime) async {
+    await _saveKeyValue('dateForNextTry', dateTime.toIso8601String());
+  }
+
+  @override
+  Future<bool> getUsePinState() async {
+    return (await _getKeyValue('usePin')) ?? true;
+  }
+
+  @override
+  Future<void> saveUsePinState(bool state) async {
+    await _saveKeyValue('usePin', state);
+  }
+
+   Future setReportNumber(int number) async {
+    return await _saveKeyValue('lastReportNumber', number);
+  }
 
   // @override
   // Future<void> saveInstructionForSending(Instruction instruction) async {

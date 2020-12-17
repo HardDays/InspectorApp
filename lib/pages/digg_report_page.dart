@@ -65,6 +65,11 @@ class DiggReportPageState extends State<DiggReportPage> with SingleTickerProvide
     BlocProvider.of<DiggReportBloc>(context).add(FlushEvent());
   }
 
+  void _onPhotoRotate(BuildContext context, int index, Uint8List image) {
+    _photos[index] = image;
+    BlocProvider.of<DiggReportBloc>(context).add(FlushEvent());
+  }
+
    void _onPhotoRemove(BuildContext context, int index) {
     _photos.removeAt(index);
     _photoNames.removeAt(index);
@@ -76,9 +81,13 @@ class DiggReportPageState extends State<DiggReportPage> with SingleTickerProvide
   }
 
   void _onSave(BuildContext context, int status) async {
-    final res = await showDialog(context: context, child: AcceptDialog(message: 'Сохранить рапорт?'));
-    if (res != null) {
-      BlocProvider.of<DiggReportBloc>(context).add(SaveReportEvent(widget.diggRequestCheck, status, _commentController.text, _photos, _photoNames));  
+    if (_photos.isNotEmpty) {
+      final res = await showDialog(context: context, child: AcceptDialog(message: 'Сохранить рапорт?'));
+      if (res != null) {
+        BlocProvider.of<DiggReportBloc>(context).add(SaveReportEvent(widget.diggRequestCheck, status, _commentController.text, _photos, _photoNames));  
+      }
+    } else {
+      _showSnackBar(context, 'Пожалуйста, добавьте минимум одну фотографию');
     }
   }
 
@@ -154,15 +163,13 @@ class DiggReportPageState extends State<DiggReportPage> with SingleTickerProvide
                       value: DiggRequestCheckStatus.landscapingRestored,
                       onChanged: (value)=> _onStatus(context, value),
                     ),
-                    ProjectTitle('Комментарий'),
-                    ProjectTextField(
-                      hintText: 'Комментарий',
-                      controller: _commentController,
-                    ),
+                    _buildComment(state),
                     ProjectTitle('Фотоматериалы'),
                     ImagePicker(
                       margin: const EdgeInsets.only(top: 20, bottom: 0),
                       images: _photos,
+                      names: _photoNames,
+                      onRotated: (index, image) => _onPhotoRotate(context, index, image),
                       onPicked: (file)=> _onPhotoPick(context, file),
                       onRemoved: (index)=> _onPhotoRemove(context, index),
                     ),
@@ -177,6 +184,22 @@ class DiggReportPageState extends State<DiggReportPage> with SingleTickerProvide
         }
       )
     );
+  }
+
+  Widget _buildComment(DiggReportBlocState state) {
+    if (state.status != DiggRequestCheckStatus.landscapingRestored) {
+      return Column(
+        children: [
+          ProjectTitle('Комментарий'),
+          ProjectTextField(
+            hintText: 'Комментарий',
+            controller: _commentController,
+          ),
+        ],
+      );
+    } else {
+      return Container();
+    }
   }
 
   Widget _buildButtons(BuildContext context) {

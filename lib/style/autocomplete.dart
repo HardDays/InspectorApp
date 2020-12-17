@@ -44,6 +44,7 @@ class ProjectAutocomplete extends StatelessWidget {
               color: Colors.white,
               elevation: 1,
             ),
+            
             validator: validator,
             hideOnLoading: true,
             hideOnEmpty: true,
@@ -71,7 +72,7 @@ class ProjectAutocomplete extends StatelessWidget {
                 )
               );
             },
-            suggestionsCallback: suggestionsCallback
+            suggestionsCallback: suggestionsCallback,
           ),
           controller?.text?.isEmpty ?? false ? Padding(
             padding: const EdgeInsets.only(top: 13, right: 10),

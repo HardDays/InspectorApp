@@ -43,6 +43,10 @@ class InstructionsService {
     return await _persistanceService.getInstructionsSort();
   }
 
+  Future<String> sortOrder() async {
+    return await _persistanceService.getInstructionSortOrder() ?? SortOrder.asc;
+  }
+
   Future<Instruction> find(int id, {bool reload = true}) async {
     if(!reload || !(await _persistanceService.getDataSendingState())) {
       return (await _instructionsDbService.all(query: {'id': id})).first;
@@ -102,8 +106,16 @@ class InstructionsService {
     await _persistanceService.saveInstructionSort(sort);
   }
 
+  Future saveSortOrder(String order) async {
+    await _persistanceService.saveInstructionSortOrder(order);
+  }
+
   Future saveFilters(InstructionFilters filters) async {
     await _persistanceService.saveInstructionFilters(filters);
+  }
+
+  Future flushReportsDate(int instructionId) async {
+    await _persistanceService.saveInstructionsReportDate(instructionId, date: DateTime.now().subtract(Duration(minutes: 15)));
   }
 
 }

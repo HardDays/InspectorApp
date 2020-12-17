@@ -18,6 +18,11 @@ abstract class InstructionSortStrings {
   ];
 }
 
+abstract class SortOrder {
+  static const asc = 'asc';
+  static const desc = 'desc';
+}
+
 class InstructionFilters {
   final String instructionNum;
   final int instructionStatus;
@@ -29,7 +34,7 @@ class InstructionFilters {
     this.instructionStatus,
     this.instructionDates,
     this.checkDates
-  });
+  }); 
 
   factory InstructionFilters.fromJson(Map<String, dynamic> json) {
     return InstructionFilters(

@@ -49,7 +49,7 @@ class ControlListPageState extends State<ControlListPage> {
           body = _buildLoadedBody(context, state);
         }
         return Scaffold(
-          appBar: FilterAppbar('Ведомственный контроль', '', ''),
+          appBar: FilterAppbar('Ведомственный контроль', '', '', ''),
           body: body,
         );
       },

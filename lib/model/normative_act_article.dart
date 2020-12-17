@@ -41,6 +41,6 @@ class NormativeActArticle {
 
   @override
   String toString() {
-    return [code, name].where((e) => e != null).join(' ');
+    return code; //[code].where((e) => e != null).join(' ');
   }
 }

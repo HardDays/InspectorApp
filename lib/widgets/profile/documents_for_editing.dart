@@ -13,15 +13,21 @@ import 'package:intl/intl.dart';
 class DocumentsForEditingWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+
     return BlocProvider<DocumentsBloc>(
       create: (context) => DocumentsBloc()..add(LoadEvent()),
       child: BlocBuilder<DocumentsBloc, DocumentsBlocState>(
         builder: (context, state) {
           if (state is LoadedState) {
-            return DocumentsList(reportsList: state.reports);
+            return DocumentsList(
+              reportsList: state.reports,
+              onUpdate: () {
+                 BlocProvider.of<DocumentsBloc>(context)..add(LoadEvent());
+              }
+            );
           }
           if(state is EmptyState) {
-            return Text('Пусто', style: ProjectTextStyles.base);
+            return Text('Отсутствуют', style: ProjectTextStyles.base);
           }
           return CircularProgressIndicator();
         },
@@ -31,9 +37,10 @@ class DocumentsForEditingWidget extends StatelessWidget {
 }
 
 class Document extends StatelessWidget {
-  final ReportError report;
+  final Report report;
+  final Function onUpdate;
 
-  const Document({Key key, this.report}) : super(key: key);
+  const Document({Key key, this.report, this.onUpdate}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -47,12 +54,14 @@ class Document extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                       builder: (context) =>
-                          TotalReportPage(report: report.report)));
+                          TotalReportPage(report: report)));
+              print(onUpdate);
+              onUpdate();
             },
             child: Padding(
               padding: const EdgeInsets.only(right: 8, top: 8, bottom: 8),
               child: Text(
-                'Рапорт №${report.report.reportNum} от ${DateFormat("dd.MM.yyyy").format(report.report.reportDate)}',
+                'Рапорт №${report.reportNum} от ${DateFormat("dd.MM.yyyy").format(report.reportDate)}',
                 style: ProjectTextStyles.subTitle.apply(
                   color: ProjectColors.blue,
                   decoration: TextDecoration.underline,
@@ -86,9 +95,10 @@ class Document extends StatelessWidget {
 }
 
 class DocumentsList extends StatefulWidget {
-  final List<ReportError> reportsList;
+  final List<Report> reportsList;
+  final Function onUpdate;
 
-  const DocumentsList({Key key, this.reportsList}) : super(key: key);
+  const DocumentsList({Key key, this.reportsList, this.onUpdate}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => DocumentsListState();
@@ -185,7 +195,7 @@ class DocumentsListState extends State<DocumentsList>
   Widget build(BuildContext context) {
     return Column(
       children: [
-        ...widget.reportsList.take(5).map((e) => Document(report: e)),
+        ...widget.reportsList.take(5).map((e) => Document(report: e, onUpdate: widget.onUpdate)),
         _buildHidden(),
         _buildInk(),
       ],
@@ -200,7 +210,7 @@ class DocumentsListState extends State<DocumentsList>
         child: Column(
           children: widget.reportsList
               .skip(5)
-              .map((e) => Document(report: e))
+              .map((e) => Document(report: e, onUpdate: widget.onUpdate))
               .toList(),
         ),
       );

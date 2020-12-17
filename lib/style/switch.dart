@@ -14,7 +14,7 @@ class ProjectSwitch extends StatelessWidget {
       onTap: () => onChanged(!checked),
       child: CustomSwitchButton(
         checked: checked,
-        backgroundColor: ProjectColors.darkBlue,
+        backgroundColor: checked ? ProjectColors.darkBlue : ProjectColors.mediumBlue,
         animationDuration: Duration(milliseconds: 300),
         checkedColor: ProjectColors.white,
         unCheckedColor: ProjectColors.white,

@@ -1,7 +1,5 @@
 import 'dart:convert' as c;
 
-import 'package:flutter/foundation.dart';
-import 'package:inspector/model/department_code.dart';
 import 'package:inspector/model/violator_address.dart';
 import 'package:inspector/model/violator_info.dart';
 
@@ -13,6 +11,8 @@ class ViolatorInfoLegal extends ViolatorInfo {
   final String ogrn;
   final String kpp;
   final DateTime regDate;
+  final String legalAddressString;
+  final String postalAddressString;
   final ViolatorAddress legalAddress;
   final ViolatorAddress postalAddress;
   final String account;
@@ -30,6 +30,8 @@ class ViolatorInfoLegal extends ViolatorInfo {
     this.ogrn,
     this.kpp,
     this.regDate,
+    this.legalAddressString,
+    this.postalAddressString,
     this.legalAddress,
     this.postalAddress,
     this.account,
@@ -37,6 +39,22 @@ class ViolatorInfoLegal extends ViolatorInfo {
     this.bank,
     this.bik,
   }) : super(id: id, phone: phone);
+
+  String get legalAddressFormatted {
+    if (legalAddress != null && legalAddress.valid()) {
+      return legalAddress.toString();
+    } else {
+      return legalAddressString ?? '';
+    }
+  }
+
+  String get postalAddressFormatted {
+    if (postalAddress != null && postalAddress.valid()) {
+      return postalAddress.toString();
+    } else {
+      return postalAddressString ?? '';
+    }
+  }
 
   factory ViolatorInfoLegal.fromJson(Map<String, dynamic> json, {bool stringified = false}) {
     return ViolatorInfoLegal(
@@ -47,6 +65,8 @@ class ViolatorInfoLegal extends ViolatorInfo {
       ogrn: json['ogrn'],
       kpp: json['kpp'],
       regDate: json['regDate'] != null ? DateTime.parse(json['regDate']) : null,
+      legalAddressString: json['legalAddressString'],
+      postalAddressString: json['postalAddressString'],
       legalAddress: json['legalAddress'] != null ? ViolatorAddress.parse(json['legalAddress'], stringified) : null,
       postalAddress: json['postalAddress'] != null ? ViolatorAddress.parse(json['postalAddress'], stringified) : null,
       account: json['account'],
@@ -68,6 +88,8 @@ class ViolatorInfoLegal extends ViolatorInfo {
       ogrn: ogrn,
       kpp: kpp,
       regDate: regDate,
+      legalAddressString: legalAddressString,
+      postalAddressString: postalAddressString,
       legalAddress: legalAddress ?? this.legalAddress,
       postalAddress: postalAddress ?? this.postalAddress,
       account: account,
@@ -86,6 +108,8 @@ class ViolatorInfoLegal extends ViolatorInfo {
       'ogrn': ogrn,
       'kpp': kpp,
       'regDate': regDate?.toIso8601String(),
+      'legalAddressString': legalAddressString,
+      'postalAddressString': postalAddressString,
       'legalAddress': legalAddress != null ? stringified ? c.json.encode(legalAddress.toJson()) : legalAddress.toJson() : null,
       'postalAddress': postalAddress != null ? stringified ? c.json.encode(postalAddress.toJson()) : postalAddress.toJson() : null,
       'account': account,

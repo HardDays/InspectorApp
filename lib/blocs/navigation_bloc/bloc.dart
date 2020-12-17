@@ -18,7 +18,7 @@ class NavigationBloc extends Bloc<NavigationBlocEvent, NavigationBlocState> {
       NavigationBlocEvent event) async* {
     if (event is ChangeScreen) {
       if (event.screen == Screens.MapScreen)
-        _openMap();
+        yield*(_openMap());
       else if (event.screen == Screens.VKScreen) 
         _openControl();
       else
@@ -26,11 +26,11 @@ class NavigationBloc extends Bloc<NavigationBlocEvent, NavigationBlocState> {
     }
   }
 
-  Future<void> _openMap() async {
+  Stream<NavigationBlocState> _openMap() async* {
     if (await canLaunch('yandexmaps://')) {
       await launch('yandexmaps://');
-    } else if (Platform.isAndroid) {
-      await platform.invokeMethod('openYandexMap');
+    } else {
+      yield(OpenMapsErrorState(state.currentScreen));
     }
   }
 

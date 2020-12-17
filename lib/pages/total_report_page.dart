@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 import 'dart:typed_data';
 import 'package:path/path.dart' as p;
 
@@ -45,15 +46,15 @@ import 'package:inspector/widgets/dictionary_dialog.dart';
 import 'package:inspector/style/image_picker.dart';
 import 'package:latlong/latlong.dart';
 
-class TotalReportPage extends StatefulWidget {
+class   TotalReportPage extends StatefulWidget {
 
   // final bool violationNotPresent;
   // final int instructionId;
   // final int checkId;
-
+  final int violationIndex;
   final Report report;
 
-  TotalReportPage({this.report});
+  TotalReportPage({this.report, this.violationIndex = 0});
 
   @override
   TotalReportPageState createState() => TotalReportPageState();
@@ -190,7 +191,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
         _photoNames.add(photo.name);
       }
     } else {
-      final violation = widget.report.violation;
+      final violation = widget.report.violation(widget.violationIndex);
       if (violation != null) {
         _areaController.text = violation.violationAddress?.area?.toString() ?? '';
         _districtController.text = violation.violationAddress?.district?.toString() ?? '';
@@ -206,6 +207,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
         for (int i = 0; i < violation.photos.length; i++) {
           final image = decoder.convert(violation.photos[i].data);
           _photos.add(image);
+          _photoNames.add(violation.photos[i].name);
         }
         for (int i = 0; i < violation.normativeActArticles.length - 1; i++) {
           _addNormativeActControllers();
@@ -375,6 +377,12 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
     BlocProvider.of<TotalReportBloc>(context).add(SetViolationNormativeActEvent(index, value));  
   }
 
+  void _onNormativeActDelete(BuildContext context, int index) {
+    _normativeActControllers.removeAt(index);
+    _normativeActArticleControllers.removeAt(index);
+    BlocProvider.of<TotalReportBloc>(context).add(DeleteViolationNormativeActEvent(index));  
+  }
+
   void _onNormativeActArticleSelect(BuildContext context, int index, NormativeActArticle value) {
     _normativeActArticleControllers[index].text = value?.toString() ?? '';
     BlocProvider.of<TotalReportBloc>(context).add(SetViolationNormativeActArticleEvent(index, value));  
@@ -386,6 +394,11 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
     BlocProvider.of<TotalReportBloc>(context).add(FlushEvent());
   }
 
+  void _onPhotoRotate(BuildContext context, int index, Uint8List image) {
+    _photos[index] = image;
+    BlocProvider.of<TotalReportBloc>(context).add(FlushEvent());
+  }
+
   void _onPhotoRemove(BuildContext context, int index) {
     _photos.removeAt(index);
     _photoNames.removeAt(index);
@@ -394,6 +407,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
 
    void _onViolationTypeSelect(BuildContext context, ViolationType value) {
     _violationTypeController.text = value?.toString() ?? '';
+    _codexArticleController.text = value?.koap ?? '';
     BlocProvider.of<TotalReportBloc>(context).add(SetViolationTypeEvent(value));  
   }
 
@@ -430,6 +444,13 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
   void _onViolatorSelect(BuildContext context, int index, dynamic violator) {
     _addViolatorInfo(index, violator);
     BlocProvider.of<TotalReportBloc>(context).add(SetViolatorInfoEvent(index, violator));
+  }
+
+   void _onViolatorDelete(BuildContext context, int index) {
+    if (widget.report.isUpdatable) {
+      _removeViolatorControllers(index);
+      BlocProvider.of<TotalReportBloc>(context).add(DeleteViolatorEvent(index));  
+    }
   }
 
   Future<Iterable<ViolatorAddress>> _onAddressDialogSubjectSearch(BuildContext context, int index, String name) async {
@@ -545,115 +566,121 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
   void _onSave(BuildContext context, int status) async {
     final res = await showDialog(context: context, child: AcceptDialog(message: 'Сохранить рапорт?'));
     if (res != null) {
-      final report = BlocProvider.of<TotalReportBloc>(context).state.report;
-      if (report.violationNotPresent) {
-        BlocProvider.of<TotalReportBloc>(context).add(
-          SaveReportEvent(
-            status: status,
-            photos: _photos,
-            photoNames: _photoNames
-          ),
-        );  
+      if (_photos.isEmpty) {
+        _showSnackBar(context, 'Пожалуйста, добавьте минимум одну фотографию', flush: false);
       } else {
-        bool validViolators = true;
-        final resViolators = List<Violator>();
-        final curViolators = report.violation?.violators ?? [];
-        for (int i = 0; i < curViolators.length; i++) {
-          final violator = curViolators[i];
-          final violatorPerson = violator.violatorPerson;
-          if (!violator.violatorNotFound) {
-            if (violatorPerson?.id == null) {
-              validViolators = validViolators && _violatorFormKeys[i].currentState.validate();
-              if (violator?.type?.id == ViolatorTypeIds.legal) {
-                final person = (violator?.violatorPerson as ViolatorInfoLegal);
-                final newViolator = violator.copyWith(
-                  violatorPerson: ViolatorInfoLegal(
-                    name: _violatorControllers[i].text,
-                    phone: _phoneControllers[i].text,
-                    inn: _innControllers[i].text,
-                    ogrn: _ogrnControllers[i].text,
-                    kpp: _kppControllers[i].text,
-                    regDate: _registerDates[i],
-                    legalAddress: person?.legalAddress,
-                    postalAddress: person?.postalAddress
-                  ),
-                );
-                resViolators.add(newViolator);
-              } else if (violator?.type?.id == ViolatorTypeIds.official) {
-                final person = (violator?.violatorPerson as ViolatorInfoOfficial);
-                final newViolator = violator.copyWith(
-                  violatorPerson: ViolatorInfoOfficial(
-                    orgName: _violatorControllers[i].text,
-                    phone: _phoneControllers[i].text,
-                    orgInn: _innControllers[i].text,
-                    orgOgrn: _ogrnControllers[i].text,
-                    orgKpp: _kppControllers[i].text,
-                    orgRegDate: _registerDates[i],
-                    orgLegalAddress: person?.orgLegalAddress,
-                    orgPostalAddress: person?.orgPostalAddress
-                  ),
-                );
-                resViolators.add(newViolator);
-              } else if (violator?.type?.id == ViolatorTypeIds.ip) {
-                final person = (violator?.violatorPerson as ViolatorInfoIp);
-                final newViolator = violator.copyWith(
-                  violatorPerson: ViolatorInfoIp(
-                    name: _violatorControllers[i].text,
-                    firstName: _firstNameControllers[i].text,
-                    lastName: _lastNameControllers[i].text,
-                    patronym: _patronymControllers[i].text,
-                    phone: _phoneControllers[i].text,
-                    snils: _snilsControllers[i].text,
-                    inn: _innControllers[i].text,
-                    ogrnip: _ogrnControllers[i].text,
-                    registrationDate: _registerDates[i],
-                    birthDate: _birthDates[i],
-                    birthPlace: _birthPlaceControllers[i].text,
-                    registrationAddress: person?.registrationAddress
-                  ),
-                );
-                resViolators.add(newViolator);
-              } else if (violator?.type?.id == ViolatorTypeIds.private) {
-                final person = (violator?.violatorPerson as ViolatorInfoPrivate);
-                final newViolator = violator.copyWith(
-                  violatorPerson: ViolatorInfoPrivate(
-                    firstName: _firstNameControllers[i].text,
-                    lastName: _lastNameControllers[i].text,
-                    patronym: _patronymControllers[i].text,
-                    phone: _phoneControllers[i].text,
-                    snils: _snilsControllers[i].text,
-                    inn: _innControllers[i].text,
-                    docNumber: _docNumberControllers[i].text,
-                    docSeries: _docSeriesControllers[i].text,
-                    docType: person?.docType,
-                    birthDate: _birthDates[i],
-                    birthPlace: _birthPlaceControllers[i].text,
-                    registrationAddress: person?.registrationAddress
-                  ),
-                );
-                resViolators.add(newViolator);
-              }
-            } else {
-              resViolators.add(violator);
-            }
-          } else {
-            resViolators.add(violator);
-          }
-        }
-        if (_formKey.currentState.validate() && validViolators) {
+        final report = BlocProvider.of<TotalReportBloc>(context).state.report;
+        if (report.violationNotPresent) {
+          _showSnackBar(context, 'Рапорт сохраняется...', flush: false);
           BlocProvider.of<TotalReportBloc>(context).add(
             SaveReportEvent(
               status: status,
-              violators: resViolators,
-              violationDescription: _violationDescriptionController.text,
-              specifiedAddress: _specifiedAddressController.text,
-              codexArticle: _codexArticleController.text,
               photos: _photos,
               photoNames: _photoNames
             ),
           );  
         } else {
-          _showSnackBar(context, 'Пожалуйста, проверьте все поля');
+          bool validViolators = true;
+          final resViolators = List<Violator>();
+          final curViolators = report.violation(widget.violationIndex)?.violators ?? [];
+          for (int i = 0; i < curViolators.length; i++) {
+            final violator = curViolators[i];
+            final violatorPerson = violator.violatorPerson;
+            if (!violator.violatorNotFound) {
+              if (violatorPerson?.id == null) {
+                validViolators = validViolators && _violatorFormKeys[i].currentState.validate();
+                if (violator?.type?.id == ViolatorTypeIds.legal) {
+                  final person = (violator?.violatorPerson as ViolatorInfoLegal);
+                  final newViolator = violator.copyWith(
+                    violatorPerson: ViolatorInfoLegal(
+                      name: _violatorControllers[i].text,
+                      phone: _phoneControllers[i].text,
+                      inn: _innControllers[i].text,
+                      ogrn: _ogrnControllers[i].text,
+                      kpp: _kppControllers[i].text,
+                      regDate: _registerDates[i],
+                      legalAddress: person?.legalAddress,
+                      postalAddress: person?.postalAddress
+                    ),
+                  );
+                  resViolators.add(newViolator);
+                } else if (violator?.type?.id == ViolatorTypeIds.official) {
+                  final person = (violator?.violatorPerson as ViolatorInfoOfficial);
+                  final newViolator = violator.copyWith(
+                    violatorPerson: ViolatorInfoOfficial(
+                      orgName: _violatorControllers[i].text,
+                      phone: _phoneControllers[i].text,
+                      orgInn: _innControllers[i].text,
+                      orgOgrn: _ogrnControllers[i].text,
+                      orgKpp: _kppControllers[i].text,
+                      orgRegDate: _registerDates[i],
+                      orgLegalAddress: person?.orgLegalAddress,
+                      orgPostalAddress: person?.orgPostalAddress
+                    ),
+                  );
+                  resViolators.add(newViolator);
+                } else if (violator?.type?.id == ViolatorTypeIds.ip) {
+                  final person = (violator?.violatorPerson as ViolatorInfoIp);
+                  final newViolator = violator.copyWith(
+                    violatorPerson: ViolatorInfoIp(
+                      name: _violatorControllers[i].text,
+                      firstName: _firstNameControllers[i].text,
+                      lastName: _lastNameControllers[i].text,
+                      patronym: _patronymControllers[i].text,
+                      phone: _phoneControllers[i].text,
+                      snils: _snilsControllers[i].text,
+                      inn: _innControllers[i].text,
+                      ogrnip: _ogrnControllers[i].text,
+                      registrationDate: _registerDates[i],
+                      birthDate: _birthDates[i],
+                      birthPlace: _birthPlaceControllers[i].text,
+                      registrationAddress: person?.registrationAddress
+                    ),
+                  );
+                  resViolators.add(newViolator);
+                } else if (violator?.type?.id == ViolatorTypeIds.private) {
+                  final person = (violator?.violatorPerson as ViolatorInfoPrivate);
+                  final newViolator = violator.copyWith(
+                    violatorPerson: ViolatorInfoPrivate(
+                      firstName: _firstNameControllers[i].text,
+                      lastName: _lastNameControllers[i].text,
+                      patronym: _patronymControllers[i].text,
+                      phone: _phoneControllers[i].text,
+                      snils: _snilsControllers[i].text,
+                      inn: _innControllers[i].text,
+                      docNumber: _docNumberControllers[i].text,
+                      docSeries: _docSeriesControllers[i].text,
+                      docType: person?.docType,
+                      birthDate: _birthDates[i],
+                      birthPlace: _birthPlaceControllers[i].text,
+                      registrationAddress: person?.registrationAddress
+                    ),
+                  );
+                  resViolators.add(newViolator);
+                }
+              } else {
+                resViolators.add(violator);
+              }
+            } else {
+              resViolators.add(violator);
+            }
+          }
+          if (_formKey.currentState.validate() && validViolators) {
+            _showSnackBar(context, 'Рапорт сохраняется...', flush: false);
+            BlocProvider.of<TotalReportBloc>(context).add(
+              SaveReportEvent(
+                status: status,
+                violators: resViolators,
+                violationDescription: _violationDescriptionController.text,
+                specifiedAddress: _specifiedAddressController.text,
+                codexArticle: _codexArticleController.text,
+                photos: _photos,
+                photoNames: _photoNames
+              ),
+            );  
+          } else {
+            _showSnackBar(context, 'Пожалуйста, проверьте все поля');
+          }
         }
       }
     }
@@ -666,17 +693,19 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
     }
   }
 
-  void _showSnackBar(BuildContext context, String title) {
+  void _showSnackBar(BuildContext context, String title, {bool flush = true}) {
     WidgetsBinding.instance.addPostFrameCallback(
       (_) {
         Scaffold.of(context).showSnackBar(
           SnackBar(
             backgroundColor: ProjectColors.darkBlue,
             content: Text(title),
-            duration: Duration(seconds: 5),
+            duration: Duration(seconds: 3),
           ),
         );
-        BlocProvider.of<TotalReportBloc>(context).add(FlushEvent());
+        if (flush) {
+          BlocProvider.of<TotalReportBloc>(context).add(FlushEvent());
+        }
       }
     );
   }
@@ -690,7 +719,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
   }
 
   void _addViolatorInfo(int index, dynamic violator) {
-    _violatorControllers[index].text = violator?.toString() ?? '';
+    _violatorControllers[index].text = violator?.name ?? '';
     if (violator is ViolatorInfoLegal) {
       _legalToControllers(index, violator);
     } else if (violator is ViolatorInfoOfficial) {
@@ -726,18 +755,18 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
     _ogrnControllers[index].text = violator.ogrn ?? '';
     _kppControllers[index].text = violator.kpp ?? '';
     _phoneControllers[index].text = violator.phone ?? '';
-    _legalAddressControllers[index].text = violator.legalAddress?.toString() ?? '';
-    _postalAddressControllers[index].text = violator.postalAddress?.toString() ?? '';
-    //_registerDates[index] = violator.regDate;
+    _legalAddressControllers[index].text = violator.legalAddressFormatted;
+    _postalAddressControllers[index].text = violator.postalAddressFormatted;
+    _registerDates[index] = violator.regDate;
   } 
 
   void _officialToControllers(int index, ViolatorInfoOfficial violator) {
     _innControllers[index].text = violator.orgInn ?? '';
     _ogrnControllers[index].text = violator.orgOgrn ?? '';
     _kppControllers[index].text = violator.orgKpp ?? '';
-    _phoneControllers[index].text = violator.phone ?? '';
-    _legalAddressControllers[index].text = violator.orgLegalAddress?.toString() ?? '';
-    _postalAddressControllers[index].text = violator.orgPostalAddress?.toString() ?? '';
+    _phoneControllers[index].text = violator.orgPhone ?? '';
+    _legalAddressControllers[index].text = violator.orgLegalAddressFormatted;
+    _postalAddressControllers[index].text = violator.orgPostalAddressFormatted;
     _registerDates[index] = violator.orgRegDate;
   } 
 
@@ -750,7 +779,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
     _snilsControllers[index].text = violator.snils ?? '';
     _phoneControllers[index].text = violator.phone ?? '';
     _birthPlaceControllers[index].text = violator.birthPlace ?? '';
-    _registrationAddressControllers[index].text = violator.registrationAddress?.toString() ?? '';
+    _registrationAddressControllers[index].text = violator.registerAddressFormatted;
     _registerDates[index] = violator.registrationDate;
     _birthDates[index] = violator.birthDate;
   } 
@@ -766,7 +795,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
     _snilsControllers[index].text = violator.snils ?? '';
     _phoneControllers[index].text = violator.phone ?? '';
     _birthPlaceControllers[index].text = violator.birthPlace ?? '';
-    _registrationAddressControllers[index].text = violator.registrationAddress?.toString() ?? '';
+    _registrationAddressControllers[index].text = violator.registerAddressFormatted;
     _birthDates[index] = violator.birthDate;
   } 
 
@@ -778,6 +807,16 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
     _violatorTypeControllers.add(TextEditingController());
     _birthDates.add(null);
     _registerDates.add(null);
+  }
+
+  void _removeViolatorControllers(int index) {
+    _violatorFormKeys.removeAt(index);
+    for (final list in _allViolatorControllers) {
+      list.removeAt(index);
+    }
+    _violatorTypeControllers.removeAt(index);
+    _birthDates.removeAt(index);
+    _registerDates.removeAt(index);
   }
 
   void _addNormativeActControllers() {
@@ -799,16 +838,20 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
           barrierDismissible: false,
           child: DictionaryDialog()
         );
-        BlocProvider.of<TotalReportBloc>(context).add(InitEvent(widget.report));  
+        BlocProvider.of<TotalReportBloc>(context).add(InitEvent(widget.violationIndex, widget.report));  
       }
     );
   }
 
-  void _setViolationAddress(BuildContext context, Violation violation) {
+  void _setViolationAddress(BuildContext context, Violation violation, LatLng location) async {
     _areaController.text = violation.violationAddress?.area?.toString() ?? '';
     _districtController.text = violation.violationAddress?.district?.toString() ?? '';
     _streetController.text = violation.violationAddress?.street?.toString() ?? '';
     _addressController.text = violation.violationAddress?.toString() ?? '';
+    if (location != null) {
+      await _mapController.onReady;
+      _mapController.move(location, 17.5);
+    }
     BlocProvider.of<TotalReportBloc>(context).add(FlushEvent());
   }
 
@@ -835,7 +878,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context)=> TotalReportBloc(TotalReportBlocState(widget.report, null, null))..add(LoadEvent(widget.report)),
+      create: (context)=> TotalReportBloc(TotalReportBlocState(widget.report, null, null))..add(LoadEvent(widget.violationIndex, widget.report)),
       child: BlocBuilder<TotalReportBloc, TotalReportBlocState>(
         builder: (context, state) {
           if (state is LoadDictState) {
@@ -845,8 +888,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
           } else if (state is ViolationLocationLoadedState) {
             _centerMapToLocation(context, state.violationLocation);
           } else if (state is AddressFromLocationState) {
-            _setViolationAddress(context, state.report.violation);
-            _centerMapToLocation(context, state.violationLocation);
+            _setViolationAddress(context, state.report.violation(widget.violationIndex), state.violationLocation);
           } else if (state is SuccessState) { 
             _showSnackBar(context, 'Рапорт успешно сформирован');
             _back();
@@ -1050,13 +1092,32 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
         children: [
           ImagePicker(
             images: _photos,
+            names: _photoNames,
             enabled: widget.report.isUpdatable,
+            onRotated: (index, image)=> _onPhotoRotate(context, index, image),
             onPicked: (file) => _onPhotoPick(context, file),
+            onRemoved: (index)=> _onPhotoRemove(context, index),
           ),
           _buildButtons(context),
         ],
       ),
     );
+  }
+
+  Widget _buildDeleteButton(int index, Function onTap) {
+    if (index > 0) {
+      return InkWell(
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.only(top: 10, right: 30, left: 30),
+          child: Text('Удалить',
+            style: ProjectTextStyles.base.apply(color: ProjectColors.red),
+          ),
+        ),
+      );
+    } else {
+      return Container();
+    }
   }
   
   Widget _buildViolationPresent(BuildContext context, TotalReportBlocState state) {
@@ -1105,7 +1166,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
                       _areaController,
                       (value)=> _onAreaSearch(context, value), 
                       (value)=> _onAreaSelect(context, value),
-                      validator: (value) => _nullValidator(state.report?.violation?.violationAddress?.area)
+                      validator: (value) => _nullValidator(state.report?.violation(widget.violationIndex)?.violationAddress?.area)
                     ),
                   ),
                   Padding(padding: const EdgeInsets.only(left: 35)),
@@ -1116,7 +1177,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
                       _districtController,
                       (value)=> _onDistrictSearch(context, value), 
                       (value)=> _onDistrictSelect(context, value),
-                      validator: (value) => _nullValidator(state.report?.violation?.violationAddress?.district)
+                      validator: (value) => _nullValidator(state.report?.violation(widget.violationIndex)?.violationAddress?.district)
                     ),
                   ),
                 ],
@@ -1132,7 +1193,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
                       _streetController,
                       (value)=> _onStreetSearch(context, value), 
                       (value)=> _onStreetSelect(context, value),
-                      validator: (value) => _nullValidator(state.report?.violation?.violationAddress?.street)
+                      validator: (value) => _nullValidator(state.report?.violation(widget.violationIndex)?.violationAddress?.street)
                     ),
                   ),
                   Padding(padding: const EdgeInsets.only(left: 35)),
@@ -1143,7 +1204,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
                       _addressController,
                       (value)=> _onAddressSearch(context, value), 
                       (value)=> _onAddressSelect(context, value),
-                      validator: (value) => _nullValidator(state.report?.violation?.violationAddress?.houseNum),
+                      validator: (value) => _nullValidator(state.report?.violation(widget.violationIndex)?.violationAddress?.houseNum),
                     ),
                   ),
                 ],
@@ -1156,7 +1217,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
                 _objectCategoryController,
                 (value)=> _onObjectCategoriesSearch(context, value), 
                 (value)=> _onObjectCategorySelect(context, value),
-                validator: (value) => _nullValidator(state.report?.violation?.objectCategory),
+                validator: (value) => _nullValidator(state.report?.violation(widget.violationIndex)?.objectCategory),
               ),
               _buildTextField('Описание нарушения', 'Введите данные', _violationDescriptionController,
                 validator: _emptyValidator
@@ -1165,10 +1226,11 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
                 alignment: Alignment.topRight,
                 children: [
                   Column(
-                    children: List.generate(state.report.violation?.normativeActArticles?.length ?? 1, 
+                    children: List.generate(state.report.violation(widget.violationIndex)?.normativeActArticles?.length ?? 1, 
                       (index) => Padding(
                         padding: const EdgeInsets.only(top: 20),
                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                             _buildAutocomplete(
                               'Нормативно-правовой акт', 
@@ -1176,7 +1238,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
                               _normativeActControllers[index],
                               (value)=> _onNormativeActSearch(context, value), 
                               (value)=> _onNormativeActSelect(context, index, value), 
-                              validator: (value) => _nullValidator(state.report?.violation?.normativeActArticles[index].normativeActId),
+                              validator: (value) => _nullValidator(state.report?.violation(widget.violationIndex)?.normativeActArticles[index].normativeActId),
                               padding: const EdgeInsets.only(right: 30)
                             ),
                             _buildAutocomplete(
@@ -1185,15 +1247,16 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
                               _normativeActArticleControllers[index],
                               (value)=> _onNormativeActArticleSearch(context, index, value), 
                               (value)=> _onNormativeActArticleSelect(context, index, value), 
-                              validator: (value) => _nullValidator(state.report?.violation?.normativeActArticles[index].id),
+                              validator: (value) => _nullValidator(state.report?.violation(widget.violationIndex)?.normativeActArticles[index].id),
                               padding: const EdgeInsets.only(top: 20, right: 30)
                             ),
+                            _buildDeleteButton(index, ()=> _onNormativeActDelete(context, index))
                           ],
                         ),
                       ),
                     ),
                   ),
-                  _buildConnector(context, state.report.violation?.normativeActArticles?.length ?? 1),
+                  _buildConnector(context, state.report.violation(widget.violationIndex)?.normativeActArticles?.length ?? 1),
                 ],
               ),
               Row(
@@ -1207,13 +1270,14 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
                       _violationTypeController,
                       (value)=> _onViolationTypeSearch(context, value),
                       (value)=> _onViolationTypeSelect(context, value), 
-                      validator: (value)=> _nullValidator(state.report?.violation?.violationType)
+                      validator: (value)=> _nullValidator(state.report?.violation(widget.violationIndex)?.violationType)
                     ),
                   ),
                   Padding(padding: const EdgeInsets.only(left: 35)),
                   Flexible(
                     child: _buildTextField('Статья КоАП', 'Введите данные', _codexArticleController,
-                      validator: _emptyValidator
+                      //validator: _emptyValidator,
+                      enabled: false
                     ),
                   ),
                 ],
@@ -1221,7 +1285,9 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
               _buildTitle('Фотоматериалы нарушения'),
               ImagePicker(
                 images: _photos,
+                names: _photoNames,
                 enabled: widget.report.isUpdatable,
+                onRotated: (index, image)=> _onPhotoRotate(context, index, image),
                 onPicked: (file)=> _onPhotoPick(context, file),
                 onRemoved: (index)=> _onPhotoRemove(context, index)
               ),
@@ -1230,8 +1296,8 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
         ),
         _buildTitle('Нарушители'),
         Column(
-          children: List.generate(state.report.violation?.violators?.length ?? 1, 
-            (index) => _buildViolator(context, state.report.violation?.violators?.elementAt(index) ?? Violator.empty(), index),
+          children: List.generate(state.report.violation(widget.violationIndex)?.violators?.length ?? 1, 
+            (index) => _buildViolator(context, state.report.violation(widget.violationIndex)?.violators?.elementAt(index) ?? Violator.empty(), index),
           ),
         ),
         _buildAddViolator(context),
@@ -1241,34 +1307,56 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
   }
 
   Widget _buildViolator(BuildContext context, Violator violator, int index) {
-    return Column(
-      children: [
-        _buildAutocomplete('Тип нарушителя', 'Выберите значение',  
-          _violatorTypeControllers[index],
-          (value)=> _onViolatorTypeSearch(context, value), 
-          (value)=> _onViolatorTypeSelect(context, index, value), 
-          validator: (value) => _nullValidator(violator?.type)
+    return Theme(
+     data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+      child: ExpansionTile(
+        initiallyExpanded: true,
+        tilePadding: EdgeInsets.zero,
+        title: Text('Нарушитель ${index + 1}',
+          style: ProjectTextStyles.base
         ),
-        _buildCheckBox(
-          'Нарушитель не выявлен', 
-          violator.violatorNotFound,
-          (value)=> _onViolatorNotFound(context, value, index),
-        ),
-        violator.violatorNotFound ? Container() :
-        Form(
-          key: _violatorFormKeys[index],
-          child: Column(
-            children: [
-              _buildAutocomplete('Нарушитель', 'Выберите значение',  
-                _violatorControllers[index],
-                (value)=> _onViolatorSearch(context, index, value), 
-                (value)=> _onViolatorSelect(context, index, value), 
-              ),
-              _buildViolatorInfo(context, index, violator)
-            ],
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 2, right: 2),
+            child: Column(
+              children: [
+                _buildAutocomplete('Тип нарушителя', 'Выберите значение',  
+                  _violatorTypeControllers[index],
+                  (value)=> _onViolatorTypeSearch(context, value), 
+                  (value)=> _onViolatorTypeSelect(context, index, value), 
+                  validator: (value) => _nullValidator(violator?.type)
+                ),
+                _buildCheckBox(
+                  'Нарушитель не выявлен', 
+                  violator.violatorNotFound,
+                  (value)=> _onViolatorNotFound(context, value, index),
+                ),
+                violator.violatorNotFound ? Container() :
+                Form(
+                  key: _violatorFormKeys[index],
+                  child: Column(
+                    children: [
+                      _buildAutocomplete('Нарушитель', 'Выберите значение',  
+                        _violatorControllers[index],
+                        (value)=> _onViolatorSearch(context, index, value), 
+                        (value)=> _onViolatorSelect(context, index, value), 
+                      ),
+                      _buildViolatorInfo(context, index, violator)
+                    ],
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: Padding(
+                    padding: const EdgeInsets.only(),
+                    child: _buildDeleteButton(index, ()=> _onViolatorDelete(context, index)),
+                  )
+                ),
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -1317,7 +1405,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
                   hintText: 'Выберите дату',
                   singleDate: true,
                   enabled: widget.report.isUpdatable && enabled,
-                  values: _registerDates[index] != null ? [_registerDates[index] ] : null,
+                  values: _registerDates[index] != null ? [_registerDates[index]] : null,
                   onChanged: (date) => _onRegisterDateSelect(context, index, date),
                   validator: enabled ? (value) => _nullValidator(_registerDates[index]) : null
                 ),
@@ -1770,11 +1858,12 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
 
   Widget _buildConnector(BuildContext context, int count) {
     final border = BorderSide(color: ProjectColors.lightBlue); 
+    final deleteOffset = 92 - max(0, (count - 2) * 25);
     return Stack(
       children: [
         Container(
           width: 20,
-          height: count * 92 * 2.0 - 92,
+          height: count * 92 * 2.0 - deleteOffset,
           margin: const EdgeInsets.only(top: 65, right: 10),
           decoration: BoxDecoration(
             border: Border(top: border, right: border, bottom: border),

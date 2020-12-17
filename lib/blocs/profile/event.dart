@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 abstract class ProfileBlocEvent {}
 
 class SetUsingFingerPrint extends ProfileBlocEvent {
@@ -12,7 +14,18 @@ class SetDataSendingMode extends ProfileBlocEvent {
   SetDataSendingMode(this.dataSendingMode);
 }
 
-class SendDataEvent extends ProfileBlocEvent {}
+class SetUsingPinMode extends ProfileBlocEvent {
+  final bool usingPinMode;
+
+  SetUsingPinMode(this.usingPinMode);
+}
+
+
+class SendDataEvent extends ProfileBlocEvent {
+  final BuildContext context;
+
+  SendDataEvent(this.context);
+}
 
 class InitEvent extends ProfileBlocEvent {}
 

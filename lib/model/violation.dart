@@ -59,7 +59,7 @@ class Violation {
       violators: [
         Violator.empty()
       ],
-      violationKind: ViolationKind(id: 3),
+      violationKind: ViolationKind(id: 19, name: 'Другие объекты контроля'),
       photos: []
     );
   }
@@ -97,24 +97,24 @@ class Violation {
   }) {
     return Violation(
       id: id,
-      violationDescription: violationDescription ?? this.violationDescription,
       violationNum: violationNum,
-      violationDate: violationDate,
       cafapId: cafapId,
-      codexArticle: codexArticle ?? this.codexArticle,
       violationStatus: violationStatus, 
       controlSpecialObject: controlSpecialObject,
+      violationKind: violationKind,
+      violationDescription: violationDescription ?? this.violationDescription,
+      violationDate: violationDate ?? this.violationDate,
+      codexArticle: codexArticle ?? this.codexArticle,
       violationAddress: violationAddress ?? this.violationAddress,
       objectCategory: objectCategory ?? this.objectCategory,
       violationType: violationType ?? this.violationType,
       normativeActArticles: normativeActArticles ?? List.from(this.normativeActArticles),
       violators: violators ?? List.from(this.violators),
       photos: photos ?? List.from(this.photos),
-      violationKind: violationKind,
     );
   }
   
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toJson({bool stringified = false}) {
     return {
       'id': id,
       'violationDescription': violationDescription,
@@ -129,7 +129,7 @@ class Violation {
       'violationType': violationType?.toJson(),
       'normativeActArticles': normativeActArticles != null ? normativeActArticles.map((e) => e.toJson()).toList() : [],
       'violators': violators.map((e) => e.toJson()).toList(),
-      'photos': photos.map((e) => e.toJson()).toList(),
+      'photos': stringified ? [] : photos.map((e) => e.toJson()).toList(),
       'violationKind': violationKind?.toJson()
     };
   }

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:inspector/blocs/profile/event.dart';
@@ -7,8 +8,10 @@ import 'package:inspector/blocs/profile/state.dart';
 import 'package:inspector/model/user.dart';
 import 'package:inspector/providers/api_provider.dart';
 import 'package:inspector/services/instruction_request_service.dart';
+import 'package:inspector/services/instructions_service.dart';
 import 'package:inspector/services/persistance_service.dart';
 import 'package:inspector/services/reports_service.dart';
+import 'package:inspector/style/accept_dialog.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ProfileBloc extends Bloc<ProfileBlocEvent, ProfileBlocState> {
@@ -21,8 +24,11 @@ class ProfileBloc extends Bloc<ProfileBlocEvent, ProfileBlocState> {
   final PersistanceService _persistanceService;
 
   final ReportsService _reportsService = ReportsService();
-  final InstructionRequestService _instructionRequestService = InstructionRequestService();
+  final InstructionRequestService _instructionRequestService =
+      InstructionRequestService();
   final ApiProvider _apiProvider = ApiProvider();
+
+  final _instructionsService = InstructionsService();
 
   @override
   Stream<ProfileBlocState> mapEventToState(ProfileBlocEvent event) async* {
@@ -33,29 +39,49 @@ class ProfileBloc extends Bloc<ProfileBlocEvent, ProfileBlocState> {
     } else if (event is SetDataSendingMode) {
       FilledBlocState prev = state as FilledBlocState;
       await _persistanceService.saveDataSendingState(event.dataSendingMode);
-      yield (_copyFilledBlocState(prev, dataSendingMode: event.dataSendingMode));
+      yield (_copyFilledBlocState(prev,
+          dataSendingMode: event.dataSendingMode));
+    } else if (event is SetUsingPinMode) {
+      FilledBlocState prev = state as FilledBlocState;
+      await _persistanceService.saveUsePinState(event.usingPinMode);
+      yield (_copyFilledBlocState(prev,
+          usePin: event.usingPinMode));
     }
     if (event is InitEvent) {
-      yield(await _getFilledState(false));
+      yield (await _getFilledState(false));
     }
     if (event is SendEmailEvent) {
       await _sendEmail();
     }
     if (event is SendDataEvent) {
-      yield(_copyFilledBlocState(state as FilledBlocState, sending: true));
-      final requests = await _instructionRequestService.all();
-      requests.forEach((key, value) {
-        _apiProvider.updateInstruction(key, instructionStatus: value);
-      });
-      final reports = await _reportsService.readyToSend();
-      for (final element in reports) {
-        try {
-          await _reportsService.send(element);
-        } catch (ex) {
-          print(ex);
+      yield (_copyFilledBlocState(state as FilledBlocState, sending: true));
+      try {
+        final requests = await _instructionRequestService.all();
+        for (final id in requests.keys) {
+          await _apiProvider.updateInstruction(id, instructionStatus: requests[id]);
+          await _instructionRequestService.remove(id);
         }
+        final reports = await _reportsService.readyToSend();
+        for (final element in reports) {
+          await _reportsService.send(element);
+          await _instructionsService.flushReportsDate(element.instructionId);
+        }
+        await showDialog(
+          context: event.context,
+          child: AcceptDialog(
+            message: 'Данные успешно переданы в ЕИС ОАТИ',
+          ),
+        );
+      } catch (ex) {
+        await showDialog(
+          context: event.context,
+          child: AcceptDialog(
+            message: 'При передаче данных в ЕИС ОАТИ возникла ошибка. ${ex.message}. Обратитесь в СТП',
+          ),
+        );
       }
-      yield(_copyFilledBlocState(state as FilledBlocState, sending: false, canBeSended: false));
+      yield (_copyFilledBlocState(state as FilledBlocState,
+          sending: false, canBeSended: false));
     }
   }
 
@@ -76,7 +102,10 @@ class ProfileBloc extends Bloc<ProfileBlocEvent, ProfileBlocState> {
     bool useFingerPrint = await _persistanceService.getFingerprintState();
     bool dataSendingMode = await _persistanceService.getDataSendingState();
     bool hasErrorReports = (await _reportsService.reportErrors()).isNotEmpty;
-    bool canBeSended = (await _reportsService.readyToSend()).isNotEmpty || (await _instructionRequestService.all()).isNotEmpty;
+    bool canBeSended = (await _reportsService.readyToSend()).isNotEmpty ||
+        (await _instructionRequestService.all()).isNotEmpty;
+    bool usePin = await _persistanceService.getUsePinState();
+    bool showFingerprintSwitch = false;
     return FilledBlocState(
       appVersion: '4.3.13-SNAPSHOT',
       dataSendingMode: dataSendingMode == null ? true : dataSendingMode,
@@ -87,6 +116,8 @@ class ProfileBloc extends Bloc<ProfileBlocEvent, ProfileBlocState> {
       userName: name,
       sending: isSending,
       canBeSended: canBeSended,
+      usePin: usePin,
+      showFingerPrintSwitch: showFingerprintSwitch,
     );
   }
 
@@ -94,27 +125,33 @@ class ProfileBloc extends Bloc<ProfileBlocEvent, ProfileBlocState> {
     return first == null ? second : first;
   }
 
-  FilledBlocState _copyFilledBlocState(FilledBlocState prev, {
+  FilledBlocState _copyFilledBlocState(
+    FilledBlocState prev, {
     String appVersion,
     bool dataSendingMode,
-    String dataSendingState, 
+    String dataSendingState,
     DateTime installDate,
     DateTime lastDataSendingDate,
     bool useFingerPrint,
     String userName,
     bool sending,
     bool canBeSended,
+    bool showFingerprintSwitch,
+    bool usePin,
   }) {
     return FilledBlocState(
       appVersion: _whatIsNotNull(appVersion, prev.appVersion),
       dataSendingMode: _whatIsNotNull(dataSendingMode, prev.dataSendingMode),
       dataSendingState: _whatIsNotNull(dataSendingState, prev.dataSendingState),
       installDate: _whatIsNotNull(installDate, prev.installDate),
-      lastDataSendingDate: _whatIsNotNull(lastDataSendingDate, prev.lastDataSendingDate),
+      lastDataSendingDate:
+          _whatIsNotNull(lastDataSendingDate, prev.lastDataSendingDate),
       useFingerprint: _whatIsNotNull(useFingerPrint, prev.useFingerprint),
       userName: _whatIsNotNull(userName, prev.userName),
       sending: _whatIsNotNull(sending, prev.sending),
       canBeSended: _whatIsNotNull(canBeSended, prev.canBeSended),
+      usePin: _whatIsNotNull(usePin, prev.usePin),
+      showFingerPrintSwitch: _whatIsNotNull(showFingerprintSwitch, prev.showFingerPrintSwitch),
     );
   }
 

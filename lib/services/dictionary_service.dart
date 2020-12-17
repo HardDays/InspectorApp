@@ -88,6 +88,12 @@ class DictionaryService {
         return false;
       }
     }
+    // metadata.loaded.remove(DictionaryNames.violationTypes);
+    // await _dbService.saveMetadata(DictionaryMetadata(
+    //     loaded: metadata.loaded, 
+    //   )
+    // );
+
     return true;
   }
 
@@ -100,7 +106,7 @@ class DictionaryService {
         for (final key in keys ?? _loaders.keys) {
           if (!metadata.loaded.containsKey(key) || reload) {
             await _dbService.clear(key);
-            metadata.loaded.remove(key);;
+            metadata.loaded.remove(key);
             await _dbService.saveMetadata(metadata);
 
             int count = 0;
@@ -153,7 +159,7 @@ class DictionaryService {
           'streetId = ?': streetId
         }),
       ],
-      limit: 10
+      limit: 50
     );
   }
 
@@ -168,7 +174,7 @@ class DictionaryService {
           queryType: 'OR'
         ),
       ],
-      limit: 10
+      limit: 50
     );
   }
 
@@ -180,7 +186,7 @@ class DictionaryService {
           'areaId = ?': areaId,
         }),
       ],
-      limit: 10
+      limit: 50
     );
   }
 
@@ -191,7 +197,7 @@ class DictionaryService {
           'name LIKE ?': '$name%',
         }),
       ],
-      limit: 10
+      limit: 50
     );
   }
 
@@ -202,7 +208,7 @@ class DictionaryService {
           'id = ?': id,
         }),
       ],
-      limit: 10
+      limit: 50
     );
   }
 
@@ -214,7 +220,7 @@ class DictionaryService {
           'districtId = ?': districtId
         }),
       ],
-      limit: 10
+      limit: 50
     );
   }
 
@@ -229,7 +235,7 @@ class DictionaryService {
           queryType: 'OR'
         ),
       ],
-      limit: 10
+      limit: 50
     );
   }
 
@@ -244,7 +250,7 @@ class DictionaryService {
           'name LIKE ?': '%$name%',
         }),
       ],
-      limit: 10
+      limit: 50
     );
   }
 
@@ -259,7 +265,7 @@ class DictionaryService {
           queryType: 'OR'
         ),
       ],
-      limit: 10
+      limit: 50
     );
   }
 
@@ -270,7 +276,7 @@ class DictionaryService {
           'name LIKE ?': '%$name%',
         }),
       ],
-      limit: 10
+      limit: 50
     );
   }
 
@@ -290,7 +296,7 @@ class DictionaryService {
           }
         )
       ],
-      limit: 10
+      limit: 50
     );  
   }
 
@@ -317,7 +323,7 @@ class DictionaryService {
           queryType: 'OR'
         ),
       ],
-      limit: 10
+      limit: 50
     );
   }
 
@@ -333,7 +339,7 @@ class DictionaryService {
           queryType: 'OR'
         ),
       ],
-      limit: 10
+      limit: 50
     );
   }
 
@@ -349,7 +355,7 @@ class DictionaryService {
           queryType: 'OR'
         ),
       ],
-      limit: 10
+      limit: 50
     );
   }
 
@@ -362,7 +368,7 @@ class DictionaryService {
           },
         ),
       ],
-      limit: 10
+      limit: 50
     );
   }
 
@@ -381,7 +387,7 @@ class DictionaryService {
           queryType: 'OR'
         ),
       ],
-      limit: 10
+      limit: 50
     );
   }
 
@@ -399,7 +405,7 @@ class DictionaryService {
           queryType: 'OR'
         ),
       ],
-      limit: 10
+      limit: 50
     );
   }
 
@@ -412,7 +418,7 @@ class DictionaryService {
           },
         ),
       ],
-      limit: 10
+      limit: 50
     );
   }
 }
