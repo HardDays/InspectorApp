@@ -36,7 +36,7 @@ class DiggReportBloc extends Bloc<DiggReportBlocEvent, DiggReportBlocState> {
       final photos = List.generate(photosBase64.length, (i) => Photo(data: photosBase64[i], name: event.photoNames[i]));
       final date = state.report.reportDate ?? DateTime.now();
       final lastNum = await _persistanceService.getReportNumber();
-      final number = state.report.reportNum ??  'Рапорт $lastNum ${DateFormat('dd.MM.yyyy').format(date)}';
+      final number = state.report.reportNum ??  '$lastNum ${DateFormat('dd.MM.yyyy').format(date)}';
       final localId = state.report.localId ?? Uuid().v1();
 
       report = report.copyWith(

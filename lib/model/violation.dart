@@ -97,20 +97,20 @@ class Violation {
   }) {
     return Violation(
       id: id,
-      violationDescription: violationDescription ?? this.violationDescription,
       violationNum: violationNum,
-      violationDate: violationDate,
       cafapId: cafapId,
-      codexArticle: codexArticle ?? this.codexArticle,
       violationStatus: violationStatus, 
       controlSpecialObject: controlSpecialObject,
+      violationKind: violationKind,
+      violationDescription: violationDescription ?? this.violationDescription,
+      violationDate: violationDate ?? this.violationDate,
+      codexArticle: codexArticle ?? this.codexArticle,
       violationAddress: violationAddress ?? this.violationAddress,
       objectCategory: objectCategory ?? this.objectCategory,
       violationType: violationType ?? this.violationType,
       normativeActArticles: normativeActArticles ?? List.from(this.normativeActArticles),
       violators: violators ?? List.from(this.violators),
       photos: photos ?? List.from(this.photos),
-      violationKind: violationKind,
     );
   }
   

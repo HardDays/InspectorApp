@@ -54,7 +54,7 @@ class   TotalReportPage extends StatefulWidget {
   final int violationIndex;
   final Report report;
 
-  TotalReportPage({this.report, this.violationIndex});
+  TotalReportPage({this.report, this.violationIndex = 0});
 
   @override
   TotalReportPageState createState() => TotalReportPageState();
@@ -207,6 +207,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
         for (int i = 0; i < violation.photos.length; i++) {
           final image = decoder.convert(violation.photos[i].data);
           _photos.add(image);
+          _photoNames.add(violation.photos[i].name);
         }
         for (int i = 0; i < violation.normativeActArticles.length - 1; i++) {
           _addNormativeActControllers();
@@ -699,7 +700,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
           SnackBar(
             backgroundColor: ProjectColors.darkBlue,
             content: Text(title),
-            duration: Duration(seconds: 5),
+            duration: Duration(seconds: 3),
           ),
         );
         if (flush) {
@@ -763,7 +764,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
     _innControllers[index].text = violator.orgInn ?? '';
     _ogrnControllers[index].text = violator.orgOgrn ?? '';
     _kppControllers[index].text = violator.orgKpp ?? '';
-    _phoneControllers[index].text = violator.phone ?? '';
+    _phoneControllers[index].text = violator.orgPhone ?? '';
     _legalAddressControllers[index].text = violator.orgLegalAddressFormatted;
     _postalAddressControllers[index].text = violator.orgPostalAddressFormatted;
     _registerDates[index] = violator.orgRegDate;
@@ -780,7 +781,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
     _birthPlaceControllers[index].text = violator.birthPlace ?? '';
     _registrationAddressControllers[index].text = violator.registerAddressFormatted;
     _registerDates[index] = violator.registrationDate;
-    //_birthDates[index] = violator.birthDate;
+    _birthDates[index] = violator.birthDate;
   } 
 
   void _privateToControllers(int index, ViolatorInfoPrivate violator) {
@@ -795,7 +796,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
     _phoneControllers[index].text = violator.phone ?? '';
     _birthPlaceControllers[index].text = violator.birthPlace ?? '';
     _registrationAddressControllers[index].text = violator.registerAddressFormatted;
-    //_birthDates[index] = violator.birthDate;
+    _birthDates[index] = violator.birthDate;
   } 
 
   void _addViolatorControllers() {

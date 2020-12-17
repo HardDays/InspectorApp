@@ -69,16 +69,14 @@ class ProfileBloc extends Bloc<ProfileBlocEvent, ProfileBlocState> {
         await showDialog(
           context: event.context,
           child: AcceptDialog(
-            message:
-                'Данные успешно переданы в ЕИС ОАТИ',
+            message: 'Данные успешно переданы в ЕИС ОАТИ',
           ),
         );
       } catch (ex) {
         await showDialog(
           context: event.context,
           child: AcceptDialog(
-            message:
-                'При передаче данных в ЕИС ОАТИ возникла ошибка. ${ex.message}. Обратитесь в СТП',
+            message: 'При передаче данных в ЕИС ОАТИ возникла ошибка. ${ex.message}. Обратитесь в СТП',
           ),
         );
       }

@@ -19,11 +19,13 @@ class LoadingUpdateState extends InstructionBlocState {
 }
 
 class ErrorState extends InstructionBlocState {
+  final bool showMessage;
   final ApiException exception;
 
-  ErrorState(DateTime date, Instruction instruction, List<Report> reports, this.exception) : super(date, instruction, reports);
+  ErrorState(DateTime date, Instruction instruction, List<Report> reports, this.exception, this.showMessage) : super(date, instruction, reports);
 }
 
 class SuccessState extends InstructionBlocState {
-  SuccessState(DateTime date, Instruction instruction, List<Report> reports) : super(date, instruction, reports);
+  final bool showMessage;
+  SuccessState(DateTime date, Instruction instruction, List<Report> reports, this.showMessage) : super(date, instruction, reports);
 }

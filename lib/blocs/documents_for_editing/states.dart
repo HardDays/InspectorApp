@@ -5,7 +5,7 @@ abstract class DocumentsBlocState {}
 class LoadingState extends DocumentsBlocState {}
 
 class LoadedState extends DocumentsBlocState {
-  final Iterable<ReportError> reports;
+  final Iterable<Report> reports;
 
   LoadedState(this.reports);
 }

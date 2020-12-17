@@ -64,9 +64,8 @@ class ReportsService {
     await _reportsDbService.removeLocal(report);
   }
 
-  Future<List<ReportError>> reportErrors() async {
+  Future<List<Report>> reportErrors() async {
    //return [];
     return await _reportsDbService.errors();
   }
-
 }

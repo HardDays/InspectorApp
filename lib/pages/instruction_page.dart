@@ -102,7 +102,7 @@ class InstructionPage extends StatelessWidget {
   }
 
   void _onRefreshReport(BuildContext context) {
-    BlocProvider.of<InstructionBloc>(context).add(RefreshReportsEvent());  
+    BlocProvider.of<InstructionBloc>(context).add(RefreshReportsEvent(showMessage: true));  
   }
 
   void _showSnackBar(BuildContext context, String title) {
@@ -111,7 +111,7 @@ class InstructionPage extends StatelessWidget {
         SnackBar(
           backgroundColor: ProjectColors.darkBlue,
           content: Text(title),
-          duration: Duration(seconds: 5),
+          duration: Duration(seconds: 3),
         ),
       ),
     );
@@ -147,16 +147,16 @@ class InstructionPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-        print(instruction.id);
+    print(instruction.id);
 
     return BlocProvider(
       create: (context)=> InstructionBloc(InstructionBlocState(null, instruction, []))..add(LoadReportsEvent()),
       child: BlocBuilder<InstructionBloc, InstructionBlocState>(
         builder: (context, state) {
-          if (state is SuccessState) { 
+          if (state is SuccessState && state.showMessage) { 
             _showSnackBar(context, 'Данные обновлены');
             _flush(context);
-          } else if (state is ErrorState) {
+          } else if (state is ErrorState && state.showMessage) {
             _showSnackBar(context, 'Произошла ошибка. ${state.exception.message} ${state.exception.details}');
             _flush(context);
           } 

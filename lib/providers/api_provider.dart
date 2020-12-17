@@ -220,7 +220,9 @@ class ApiProvider {
     final json = report.toJson();
     _removeJsonNulls(json);
      var t = c.json.encode(json);
-     print(t);
+    //  print(report.reportNum);
+    //  print(report.violations.first.violationDate);
+     //print(t);
     return _request(
       ()=> dio.post(_reportsPath,
         data: json
