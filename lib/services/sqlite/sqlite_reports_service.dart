@@ -29,15 +29,9 @@ class SqliteReportsService {
       );
     }
   }
-  //todo: move images outside
-  Future<List<Report>> all({Map<String, dynamic> query = const {}}) async {
-    try {
-      await init();
-      final where = query.keys.map((key) => '$key = ${query[key]}').join(' AND ');
-      final data = await _database.query(_tableName, where: query.isNotEmpty ? where : null);
-      
-      final reports = List<Report>.from(data.map((e) => Report.fromJson(e, stringified: true)));
-      final res = List<Report>();
+  
+   Future<List<Report>> withImages(List<Report> reports) async {
+     final res = List<Report>();
       
       for (final report in reports) {
         final violations = List<Violation>();
@@ -57,17 +51,29 @@ class SqliteReportsService {
         );
       }
       return res;
+   }
+
+  //todo: move images outside
+  Future<List<Report>> all({Map<String, dynamic> query = const {}}) async {
+    try {
+      await init();
+      final where = query.keys.map((key) => '$key = ${query[key]}').join(' AND ');
+      final data = await _database.query(_tableName, where: query.isNotEmpty ? where : null);
+      
+      final reports = List<Report>.from(data.map((e) => Report.fromJson(e, stringified: true)));
+      return await withImages(reports);
     } catch (ex) {
       print(ex);
       return [];
     }
   }
 
-  Future<List<ReportError>> errors() async {
+  Future<List<Report>> errors() async {
     try {
       await init();
       final data = await _database.query(_tableName, where: 'error is NOT NULL');
-      return List<ReportError>.from(data.map((e) => ReportError.fromJson(e, stringified: true)));
+      final reports = List<Report>.from(data.map((e) => Report.fromJson(e, stringified: true)));
+      return await withImages(reports);
     } catch (ex) {
       print(ex);
       return [];

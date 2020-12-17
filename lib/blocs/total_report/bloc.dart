@@ -509,7 +509,7 @@ class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {
       final local = status.id == ReportStatusIds.new_ || status.id == ReportStatusIds.project;
       final date = state.report.reportDate ?? DateTime.now();
       final lastNum = await _reportsService.lastNumber();
-      final number = state.report.reportNum ?? 'Рапорт $lastNum ${DateFormat('dd.MM.yyyy').format(date)}';
+      final number = state.report.reportNum ?? '$lastNum ${DateFormat('dd.MM.yyyy').format(date)}';
       final localId = state.report.localId ?? Uuid().v1();
 
       Report report = state.report;
@@ -540,7 +540,7 @@ class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {
           photos: photos,
           codexArticle: event.codexArticle,
           violationDescription: event.violationDescription,
-          violationDate: violation.violationDate ?? date..subtract(Duration(minutes: 5)),
+          violationDate: violation.violationDate ?? date.subtract(Duration(minutes: 5)),
           violationAddress: violation.violationAddress.copyWith(
             specifiedAddress: event.specifiedAddress ,
             latitude: location?.latitude,

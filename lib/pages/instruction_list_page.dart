@@ -88,6 +88,7 @@ class InstructionListPageState extends State<InstructionListPage> with Automatic
         Scaffold.of(context).showSnackBar(
           SnackBar(
             backgroundColor: ProjectColors.darkBlue,
+            duration: Duration(seconds: 2),
             content: Text(title),
           ),
         );

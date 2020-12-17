@@ -102,7 +102,7 @@ class InstructionPage extends StatelessWidget {
   }
 
   void _onRefreshReport(BuildContext context) {
-    BlocProvider.of<InstructionBloc>(context).add(RefreshReportsEvent());  
+    BlocProvider.of<InstructionBloc>(context).add(RefreshReportsEvent(showMessage: true));  
   }
 
   void _showSnackBar(BuildContext context, String title) {
@@ -111,7 +111,7 @@ class InstructionPage extends StatelessWidget {
         SnackBar(
           backgroundColor: ProjectColors.darkBlue,
           content: Text(title),
-          duration: Duration(seconds: 5),
+          duration: Duration(seconds: 3),
         ),
       ),
     );
@@ -147,16 +147,16 @@ class InstructionPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-        print(instruction.id);
+    print(instruction.id);
 
     return BlocProvider(
       create: (context)=> InstructionBloc(InstructionBlocState(null, instruction, []))..add(LoadReportsEvent()),
       child: BlocBuilder<InstructionBloc, InstructionBlocState>(
         builder: (context, state) {
-          if (state is SuccessState) { 
+          if (state is SuccessState && state.showMessage) { 
             _showSnackBar(context, 'Данные обновлены');
             _flush(context);
-          } else if (state is ErrorState) {
+          } else if (state is ErrorState && state.showMessage) {
             _showSnackBar(context, 'Произошла ошибка. ${state.exception.message} ${state.exception.details}');
             _flush(context);
           } 
@@ -329,7 +329,6 @@ class InstructionPage extends StatelessWidget {
   Widget _buildReportButton(BuildContext context, InstructionCheck check, Instruction instruction) {
     final status = instruction.instructionStatus.id == InstructionStatusIds.inProgress || instruction.instructionStatus.id == InstructionStatusIds.partInProgress;
     if (status) {
-      final state = BlocProvider.of<InstructionBloc>(context).state;
       return Row(
         children: [
           Padding(
@@ -544,21 +543,22 @@ class InstructionPage extends StatelessWidget {
     final reportList = List<Report>();
     final indexList = List<int>();
     for (final report in reports) {
-        reportList.add(report);
       if (report.violations.isNotEmpty) {
         for (int i = 0; i < report.violations.length; i++) {
           indexList.add(i);
+          reportList.add(report);
         }
       } else {
         indexList.add(0);
+        reportList.add(report);
       }
     }
     return Padding(
       padding: const EdgeInsets.only(top: 15, left: 20, right: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: List.generate(reports.length, 
-          (index) => _buildReport(context, reports[index], instructionCheck, instruction, ()=> _onReport(context, indexList[index], reportList[index], instructionCheck))
+        children: List.generate(reportList.length, 
+          (index) => _buildReport(context, reportList[index], instructionCheck, instruction, ()=> _onReport(context, indexList[index], reportList[index], instructionCheck))
         ),
       ), 
     );

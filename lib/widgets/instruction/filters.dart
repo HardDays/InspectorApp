@@ -22,19 +22,18 @@ class InstructionFiltersWidget extends StatelessWidget {
   }
 
   void _onFind(BuildContext context, InstructionFilters filters) {
-    Navigator.pop(context, 
-      InstructionFilters(
-        instructionNum: _instructionNumController.text,
-        checkDates: filters.checkDates,
-        instructionDates: filters.instructionDates,
-        instructionStatus: filters.instructionStatus
-      ),
+    final newFilters = InstructionFilters(
+      instructionNum: _instructionNumController.text,
+      checkDates: filters.checkDates,
+      instructionDates: filters.instructionDates,
+      instructionStatus: filters.instructionStatus
     );
+    BlocProvider.of<InstructionFiltersBloc>(context).add(SaveEvent(newFilters));  
+    Navigator.pop(context, newFilters);
   }
 
   void _onClear(BuildContext context) {
     BlocProvider.of<InstructionFiltersBloc>(context).add(SaveEvent(InstructionFilters(instructionDates: [DateTime.now()], checkDates: [DateTime.now()])));  
-   // Navigator.pop(context, InstructionFilters(instructionDates: [DateTime.now()], checkDates: [DateTime.now()]));
   }
 
   void _onStatus(BuildContext context, int status) {
