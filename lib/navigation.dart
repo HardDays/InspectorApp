@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route_annotations.dart';
+import 'package:inspector/pages/control_list_page_webview.dart';
 import 'package:inspector/pages/instruction_list_page.dart';
 import 'package:inspector/pages/auth_page.dart';
 import 'package:inspector/pages/login_page.dart';
@@ -52,6 +53,9 @@ import 'package:inspector/pages/control_list_page.dart';
         ),
         MaterialRoute(
           page: ProfilePage,
+        ),
+        MaterialRoute(
+          page: ControlListPageWebView,
         ),
       ],
     ),
