@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:connectivity/connectivity.dart';
+import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,6 +19,8 @@ import 'package:url_launcher/url_launcher.dart';
 class ProfileBloc extends Bloc<ProfileBlocEvent, ProfileBlocState> {
   ProfileBloc(ProfileBlocState initialState, this._persistanceService)
       : super(initialState);
+
+  static const appVersion = '4.3.13-SNAPSHOT';
 
   static const platform =
       const MethodChannel('com.example.inspector/mainChannel');
@@ -127,7 +130,7 @@ class ProfileBloc extends Bloc<ProfileBlocEvent, ProfileBlocState> {
     bool usePin = await _persistanceService.getUsePinState();
     bool showFingerprintSwitch = false;
     return FilledBlocState(
-      appVersion: '4.3.13-SNAPSHOT',
+      appVersion: appVersion,
       dataSendingMode: dataSendingMode == null ? true : dataSendingMode,
       dataSendingState: hasErrorReports ? 'Ошибка' : 'Успешно',
       installDate: await _getInstallDate(),
@@ -176,8 +179,12 @@ class ProfileBloc extends Bloc<ProfileBlocEvent, ProfileBlocState> {
   }
 
   Future<void> _sendEmail() async {
+    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+    AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+    User user = await _persistanceService.getUser();
     final url = 'mailto:oati_support@mos.ru?subject=' +
-        Uri.encodeQueryComponent('Мобильное приложение ЕИС ОАТИ');
+        Uri.encodeQueryComponent('Мобильное приложение ЕИС ОАТИ') + 
+        '&body=' + Uri.encodeQueryComponent('Пользователь: ${user.code} ${user.surname} ${user.name} ${user.middleName}\nВерсия приложения: $appVersion\nУстройство: ${androidInfo.model}\n');
     if (await canLaunch(url)) {
       await launch(url);
     } else if (Platform.isAndroid) {
