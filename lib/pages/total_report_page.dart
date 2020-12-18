@@ -308,9 +308,22 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
     BlocProvider.of<TotalReportDialogBloc>(context).add(TotalReportDialogBlocEvent(address));  
   }
 
-  void _onAddressDialogClose(BuildContext context,ViolatorAddress address) {
+  void _onAddressDialogClose(BuildContext context, ViolatorAddress address) {
     if (_addressDialogKey.currentState.validate()) {
-      Navigator.pop(context, address);
+      Navigator.pop(context, 
+        (address ?? ViolatorAddress()).copyWith(
+          zipCode: _addressDialogIndexController.text,
+          subjectName: _addressDialogAutoSubjectController.text,
+          regionName: _addressDialogAutoRegionController.text,
+          cityName: _addressDialogAutoCityController.text,
+          placeName: _addressDialogAutoPlaceController.text,
+          streetName: _addressDialogAutoStreetController.text,
+          house: _addressDialogHouseController.text,
+          building: _addressDialogBuildingController.text,
+          flat: _addressDialogFlatController.text,
+          buildingExt: _addressDialogBuildingExtController.text,
+        )
+      );
     }
   }
 
@@ -545,20 +558,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
     );
     if (res != null) {
       if (res is ViolatorAddress) {
-        onSelect(context, index, 
-          res.copyWith(
-            zipCode: _addressDialogIndexController.text,
-            subjectName: _addressDialogAutoSubjectController.text,
-            regionName: _addressDialogAutoRegionController.text,
-            cityName: _addressDialogAutoCityController.text,
-            placeName: _addressDialogAutoPlaceController.text,
-            streetName: _addressDialogAutoStreetController.text,
-            house: _addressDialogHouseController.text,
-            building: _addressDialogBuildingController.text,
-            flat: _addressDialogFlatController.text,
-            buildingExt: _addressDialogBuildingExtController.text,
-          )
-        );
+        onSelect(context, index, res);
       }
     }
   }
@@ -875,6 +875,12 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
     }
   }
 
+  String _emptyConditionValidator(String value, TextEditingController controller) {
+    if (value.isEmpty && controller.text.isEmpty) {
+      return 'Введите значение';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -948,7 +954,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
                             style: ProjectTextStyles.title.apply(color: ProjectColors.blue)
                           )
                         ),
-                        _buildTextField('Индекс', 'Введите данные', _addressDialogIndexController),
+                        _buildTextField('Индекс', 'Введите данные', _addressDialogIndexController, validator: _emptyValidator),
                         Row(
                           mainAxisSize: MainAxisSize.max,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -961,7 +967,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
                                 (value)=> _onAddressDialogSubjectSearch(context, index, value), 
                                 (value)=> _onAddressDialogSelect(context, value),
                                 formatter: (address)=> '${address.subjectType ?? ''} ${address.subjectName}',
-                                validator: _emptyValidator
+                                //validator: _emptyValidator
                               ),
                             ),
                           ],
@@ -994,6 +1000,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
                                 (value)=> _onAddressDialogCitySearch(context, index, value), 
                                 (value)=> _onAddressDialogSelect(context, value),
                                 formatter: (address)=> '${address.cityType ?? ''} ${address.cityName}',
+                                validator: (value)=> _emptyConditionValidator(value, _addressDialogAutoPlaceController)
                               ),
                             ),
                           ],
@@ -1010,6 +1017,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
                                 (value)=> _onAddressDialogSettlementSearch(context, index, value), 
                                 (value)=> _onAddressDialogSelect(context, value),
                                 formatter: (address)=> '${address.placeType ?? ''} ${address.placeName}',
+                                validator:  (value)=> _emptyConditionValidator(value, _addressDialogAutoCityController)
                               ),
                             ),
                           ],
