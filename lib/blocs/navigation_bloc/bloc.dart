@@ -19,8 +19,8 @@ class NavigationBloc extends Bloc<NavigationBlocEvent, NavigationBlocState> {
     if (event is ChangeScreen) {
       if (event.screen == Screens.MapScreen)
         yield*(_openMap());
-      else if (event.screen == Screens.VKScreen) 
-        _openControl();
+      // else if (event.screen == Screens.VKScreen) 
+      //   _openControl();
       else
         yield (BottomNavigationStateChanged(event.screen));
     }

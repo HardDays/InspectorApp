@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 
 import 'pages/auth_page.dart';
 import 'pages/control_list_page.dart';
+import 'pages/control_list_page_webview.dart';
 import 'pages/instruction_list_page.dart';
 import 'pages/login_page.dart';
 import 'pages/main_page.dart';
@@ -51,8 +52,11 @@ class InspectorRouter extends RouterBase {
   Map<Type, AutoRouteFactory> get pagesMap => _pagesMap;
   final _pagesMap = <Type, AutoRouteFactory>{
     TestPage: (data) {
+      final args = data.getArgs<TestPageArguments>(
+        orElse: () => TestPageArguments(),
+      );
       return MaterialPageRoute<dynamic>(
-        builder: (context) => TestPage(),
+        builder: (context) => TestPage(key: args.key),
         settings: data,
       );
     },
@@ -119,11 +123,13 @@ class MainPageRoutes {
   static const String mapPage = '/map-page';
   static const String controlSreen = '/control-sreen';
   static const String profilePage = '/profile-page';
+  static const String controlListPageWebView = '/control-list-page-web-view';
   static const all = <String>{
     instructionListPage,
     mapPage,
     controlSreen,
     profilePage,
+    controlListPageWebView,
   };
 }
 
@@ -139,6 +145,8 @@ class MainPageRouter extends RouterBase {
       generator: ControlSreenRouter(),
     ),
     RouteDef(MainPageRoutes.profilePage, page: ProfilePage),
+    RouteDef(MainPageRoutes.controlListPageWebView,
+        page: ControlListPageWebView),
   ];
   @override
   Map<Type, AutoRouteFactory> get pagesMap => _pagesMap;
@@ -164,6 +172,12 @@ class MainPageRouter extends RouterBase {
     ProfilePage: (data) {
       return MaterialPageRoute<dynamic>(
         builder: (context) => ProfilePage(),
+        settings: data,
+      );
+    },
+    ControlListPageWebView: (data) {
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => const ControlListPageWebView(),
         settings: data,
       );
     },
@@ -193,4 +207,14 @@ class ControlSreenRouter extends RouterBase {
       );
     },
   };
+}
+
+/// ************************************************************************
+/// Arguments holder classes
+/// *************************************************************************
+
+/// TestPage arguments holder class
+class TestPageArguments {
+  final Key key;
+  TestPageArguments({this.key});
 }

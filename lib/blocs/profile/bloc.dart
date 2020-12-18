@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:connectivity/connectivity.dart';
+import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,6 +19,8 @@ import 'package:url_launcher/url_launcher.dart';
 class ProfileBloc extends Bloc<ProfileBlocEvent, ProfileBlocState> {
   ProfileBloc(ProfileBlocState initialState, this._persistanceService)
       : super(initialState);
+
+  static const appVersion = '4.3.13-SNAPSHOT';
 
   static const platform =
       const MethodChannel('com.example.inspector/mainChannel');
@@ -54,31 +58,50 @@ class ProfileBloc extends Bloc<ProfileBlocEvent, ProfileBlocState> {
       await _sendEmail();
     }
     if (event is SendDataEvent) {
-      yield (_copyFilledBlocState(state as FilledBlocState, sending: true));
-      try {
-        final requests = await _instructionRequestService.all();
-        for (final id in requests.keys) {
-          await _apiProvider.updateInstruction(id, instructionStatus: requests[id]);
-          await _instructionRequestService.remove(id);
-        }
-        final reports = await _reportsService.readyToSend();
-        for (final element in reports) {
-          await _reportsService.send(element);
-          await _instructionsService.flushReportsDate(element.instructionId);
-        }
+      var connectivityResult = await Connectivity().checkConnectivity();
+      if(connectivityResult == ConnectivityResult.none) {
         await showDialog(
-          context: event.context,
-          child: AcceptDialog(
-            message: 'Данные успешно переданы в ЕИС ОАТИ',
-          ),
-        );
-      } catch (ex) {
-        await showDialog(
-          context: event.context,
-          child: AcceptDialog(
-            message: 'При передаче данных в ЕИС ОАТИ возникла ошибка. ${ex.message}. Обратитесь в СТП',
-          ),
-        );
+            context: event.context,
+            child: AcceptDialog(
+              cancelTitle: null,
+              acceptTitle: 'Ок',
+              message:
+                  'Отсутствует интернет-соединение',
+            ),
+          );
+      } else {
+        yield (_copyFilledBlocState(state as FilledBlocState, sending: true));
+        try {
+          final requests = await _instructionRequestService.all();
+          for (final id in requests.keys) {
+            await _apiProvider.updateInstruction(id, instructionStatus: requests[id]);
+            await _instructionRequestService.remove(id);
+          }
+          final reports = await _reportsService.readyToSend();
+          for (final element in reports) {
+            await _reportsService.send(element);
+            await _instructionsService.flushReportsDate(element.instructionId);
+          }
+          await showDialog(
+            context: event.context,
+            child: AcceptDialog(
+              acceptTitle: 'Ок',
+              cancelTitle: null,
+              message:
+                  'Данные успешно переданы в ЕИС ОАТИ',
+            ),
+          );
+        } catch (ex) {
+          await showDialog(
+            context: event.context,
+            child: AcceptDialog(
+              cancelTitle: null,
+              acceptTitle: 'Ок',
+              message:
+                  'При передаче данных в ЕИС ОАТИ возникла ошибка. ${ex.message}. Обратитесь в СТП',
+            ),
+          );
+        }
       }
       yield (_copyFilledBlocState(state as FilledBlocState,
           sending: false, canBeSended: false));
@@ -107,7 +130,7 @@ class ProfileBloc extends Bloc<ProfileBlocEvent, ProfileBlocState> {
     bool usePin = await _persistanceService.getUsePinState();
     bool showFingerprintSwitch = false;
     return FilledBlocState(
-      appVersion: '4.3.13-SNAPSHOT',
+      appVersion: appVersion,
       dataSendingMode: dataSendingMode == null ? true : dataSendingMode,
       dataSendingState: hasErrorReports ? 'Ошибка' : 'Успешно',
       installDate: await _getInstallDate(),
@@ -156,8 +179,12 @@ class ProfileBloc extends Bloc<ProfileBlocEvent, ProfileBlocState> {
   }
 
   Future<void> _sendEmail() async {
+    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+    AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+    User user = await _persistanceService.getUser();
     final url = 'mailto:oati_support@mos.ru?subject=' +
-        Uri.encodeQueryComponent('Мобильное приложение ЕИС ОАТИ');
+        Uri.encodeQueryComponent('Мобильное приложение ЕИС ОАТИ') + 
+        '&body=' + Uri.encodeQueryComponent('Пользователь: ${user.code} ${user.surname} ${user.name} ${user.middleName}\nВерсия приложения: $appVersion\nУстройство: ${androidInfo.model}\n');
     if (await canLaunch(url)) {
       await launch(url);
     } else if (Platform.isAndroid) {
