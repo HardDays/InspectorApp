@@ -55,7 +55,6 @@ class Document extends StatelessWidget {
                   MaterialPageRoute(
                       builder: (context) =>
                           TotalReportPage(report: report)));
-              print(onUpdate);
               onUpdate();
             },
             child: Padding(

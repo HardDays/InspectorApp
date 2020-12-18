@@ -78,8 +78,8 @@ class Report {
 
   bool get isNew => (reportStatus == null || reportStatus?.id == ReportStatusIds.new_ || reportStatus?.id == ReportStatusIds.project);
   bool get isReady => (id == null && reportStatus?.id == ReportStatusIds.onApproval);
-  bool get isUpdatable => isNew || reportStatus?.id == ReportStatusIds.declined;
-  bool get isDeletable => reportStatus != null && isNew;
+  bool get isUpdatable => isNew || reportStatus?.id == ReportStatusIds.declined || error != null;
+  bool get isDeletable => reportStatus != null && isNew || error != null;
 
   factory Report.empty(bool violationNotPresent, int checkId, int instructionId) {
     return Report(

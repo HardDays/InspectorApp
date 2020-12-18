@@ -573,8 +573,8 @@ class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {
         final res = await _reportsService.create(report, local: local);
         yield SuccessState(res, state.userLocation, state.violationLocation);
       } on ApiException catch (ex) {
-        final status = await _dictionaryService.getReportStatuses(id: ReportStatusIds.new_);
-        await _reportsService.create(report.copyWith(reportStatus: status.first), error: '${ex.message} ${ex.details}', local: true);
+        //final status = await _dictionaryService.getReportStatuses(id: ReportStatusIds.new_);
+        await _reportsService.create(report, error: '${ex.message} ${ex.details}', local: true);
         yield ErrorState(ex, state.report, state.userLocation, state.violationLocation);
       } catch (ex) {
         yield ErrorState(UnhandledException(ex.toString()), state.report, state.userLocation, state.violationLocation);

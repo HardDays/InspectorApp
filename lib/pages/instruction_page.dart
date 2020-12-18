@@ -60,41 +60,36 @@ class InstructionPage extends StatelessWidget {
           ),
         ),
       );  
-      if (res != null) {
-        BlocProvider.of<InstructionBloc>(context).add(RefreshReportsEvent());  
-      }
+      BlocProvider.of<InstructionBloc>(context).add(RefreshReportsEvent());  
     }
   }
 
   void _onDiggReport(BuildContext context, DiggRequestCheck diggRequestCheck, Report report) async {
     final res = await Navigator.push(context, 
-      MaterialPageRoute(
-        builder: (context) => 
-          DiggReportPage(
-            diggRequestCheck: diggRequestCheck,
-            report: report
-          )
+    MaterialPageRoute(
+      builder: (context) => 
+        DiggReportPage(
+          diggRequestCheck: diggRequestCheck,
+          report: report
         )
-      );
-     if (res != null) {
-      BlocProvider.of<InstructionBloc>(context).add(RefreshReportsEvent());  
-    }
+      )
+    );
+    BlocProvider.of<InstructionBloc>(context).add(RefreshReportsEvent());  
   }
 
   void _onCreateDiggReport(BuildContext context, Instruction instruction, InstructionCheck check, DiggRequestCheck diggRequestCheck, String status) async {
     final res = await Navigator.push(context, 
-      MaterialPageRoute(
-        builder: (context) =>
-          DiggReportPage(
-            diggRequestCheck: diggRequestCheck, 
-            report: Report.empty(true, check.id, instruction.id), 
-            status: status
-          )
+    MaterialPageRoute(
+      builder: (context) =>
+        DiggReportPage(
+          diggRequestCheck: diggRequestCheck, 
+          report: Report.empty(true, check.id, instruction.id), 
+          status: status
         )
-      );
-     if (res != null) {
-      BlocProvider.of<InstructionBloc>(context).add(RefreshReportsEvent());  
-    }
+      )
+    );
+    BlocProvider.of<InstructionBloc>(context).add(RefreshReportsEvent());  
+    
   }
 
   void _onStatus(BuildContext context, int status) {
