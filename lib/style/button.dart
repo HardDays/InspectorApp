@@ -23,10 +23,10 @@ abstract class ProjectButton {
       ),
       disabledColor: disabledColor,
       disabledTextColor: disabledTextColor,
-      padding: EdgeInsets.symmetric(vertical: 10.5, horizontal: 20.0),
+      padding: EdgeInsets.symmetric(vertical: 10.5, horizontal: 10.0),
       child: Text(
         data,
-        style: style ?? ProjectTextStyles.title,
+        style: style ?? ProjectTextStyles.subTitle,
       ),
     );
   }
@@ -49,7 +49,7 @@ abstract class ProjectButton {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(10.0)),
       ),
-      padding: EdgeInsets.symmetric(vertical: 10.5, horizontal: 20.0),
+      padding: EdgeInsets.symmetric(vertical: 10.5, horizontal: 10.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
@@ -60,7 +60,7 @@ abstract class ProjectButton {
           ),
           Text(
             data,
-            style: style ?? ProjectTextStyles.title,
+            style: style ?? ProjectTextStyles.subTitle,
           ),
         ],
       ),

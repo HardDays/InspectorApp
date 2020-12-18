@@ -330,12 +330,9 @@ class InstructionPage extends StatelessWidget {
             padding: const EdgeInsets.only(right: 10, left: 20),
             child: ProjectIcons.raportIcon(color: ProjectColors.blue.withOpacity(0.35)), 
           ),
-          SizedBox(
-            height: 38,
-            child: ProjectButton.builtFlatButton('+ Добавить рапорт ', 
-              onPressed: ()=> _onCreateReport(context, check), 
-              style: ProjectTextStyles.baseBold
-            ),
+          ProjectButton.builtFlatButton('+ Добавить рапорт ', 
+            onPressed: ()=> _onCreateReport(context, check), 
+            style: ProjectTextStyles.baseBold
           ),
          _buildReload(context)
         ],

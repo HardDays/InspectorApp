@@ -100,8 +100,8 @@ class InstructionFiltersWidget extends StatelessWidget {
                     Padding(padding: const EdgeInsets.only(left: 35)),
                     Flexible(
                       child: ProjectDatePicker(
-                        title: 'Дата обследования',
-                        hintText: 'Выберите дату или период',
+                        title: 'Период обследования',
+                        hintText: 'Выберите период',
                         values: state.filters.checkDates,
                         onChanged: (dates)=> _onCheckDates(context, dates),
                       ),
