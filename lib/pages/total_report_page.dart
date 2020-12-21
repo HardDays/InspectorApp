@@ -881,6 +881,14 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
     }
   }
 
+  bool get _validKind {
+    try {
+      return widget.report.violation(widget.violationIndex).violationKind.id == 19;
+    } catch (ex) {
+      return true;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -1101,7 +1109,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
           ImagePicker(
             images: _photos,
             names: _photoNames,
-            enabled: widget.report.isUpdatable,
+            enabled: widget.report.isUpdatable && _validKind,
             onRotated: (index, image)=> _onPhotoRotate(context, index, image),
             onPicked: (file) => _onPhotoPick(context, file),
             onRemoved: (index)=> _onPhotoRemove(context, index),
@@ -1294,7 +1302,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
               ImagePicker(
                 images: _photos,
                 names: _photoNames,
-                enabled: widget.report.isUpdatable,
+                enabled: widget.report.isUpdatable && _validKind,
                 onRotated: (index, image)=> _onPhotoRotate(context, index, image),
                 onPicked: (file)=> _onPhotoPick(context, file),
                 onRemoved: (index)=> _onPhotoRemove(context, index)
@@ -1412,7 +1420,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
                   title: 'Дата регистрации',
                   hintText: 'Выберите дату',
                   singleDate: true,
-                  enabled: widget.report.isUpdatable && enabled,
+                  enabled: widget.report.isUpdatable && enabled && _validKind,
                   values: _registerDates[index] != null ? [_registerDates[index]] : null,
                   onChanged: (date) => _onRegisterDateSelect(context, index, date),
                   validator: enabled ? (value) => _nullValidator(_registerDates[index]) : null
@@ -1500,7 +1508,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
                   title: 'Дата регистрации организации',
                   hintText: 'Выберите дату',
                   singleDate: true,
-                  enabled: widget.report.isUpdatable && enabled,
+                  enabled: widget.report.isUpdatable && enabled && _validKind,
                   values: _registerDates[index] != null ? [_registerDates[index] ] : null,
                   onChanged: (date) => _onRegisterDateSelect(context, index, date),
                   validator: enabled ? (value) => _nullValidator(_registerDates[index]) : null
@@ -1612,7 +1620,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
                   title: 'Дата рождения',
                   hintText: 'Выберите дату',
                   singleDate: true,
-                  enabled: widget.report.isUpdatable && enabled,
+                  enabled: widget.report.isUpdatable && enabled && _validKind,
                   values: _birthDates[index] != null ? [_birthDates[index]] : null,
                   onChanged: (date) => _onBirthDateSelect(context, index, date),
                   validator: enabled ? (value) => _nullValidator(_birthDates[index]) : null
@@ -1668,7 +1676,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
             title: 'Дата регистрации',
             hintText: 'Выберите дату',
             singleDate: true,
-            enabled: widget.report.isUpdatable && enabled,
+            enabled: widget.report.isUpdatable && enabled && _validKind,
             values: _registerDates[index] != null ? [_registerDates[index] ] : null,
             onChanged: (date) => _onRegisterDateSelect(context, index, date),
             validator: enabled ? (value) => _nullValidator(_registerDates[index]) : null
@@ -1684,7 +1692,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
                   title: 'Дата рождения',
                   hintText: 'Выберите дату',
                   singleDate: true,
-                  enabled: widget.report.isUpdatable && enabled,
+                  enabled: widget.report.isUpdatable && enabled && _validKind,
                   values: _birthDates[index] != null ? [_birthDates[index] ] : null,
                   onChanged: (date) => _onBirthDateSelect(context, index, date),
                   validator: enabled ? (value) => _nullValidator(_birthDates[index]) : null
@@ -1742,18 +1750,18 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
         alignment: WrapAlignment.center,
         children: [
           ProjectButton.builtFlatButton('Сохранить проект',
-            onPressed: report.isNew ? () => _onSave(context, ReportStatusIds.project) : null,
+            onPressed: report.isNew && _validKind ? () => _onSave(context, ReportStatusIds.project) : null,
           ),
           ProjectButton.builtFlatButton('Сохранить',
-            onPressed: report.isNew ? ()=> _onSave(context, ReportStatusIds.new_) : null,
+            onPressed: report.isNew && _validKind ? ()=> _onSave(context, ReportStatusIds.new_) : null,
           ),
           ProjectButton.builtFlatButton('На согласование',
-            onPressed: report.isUpdatable ? ()=>_onSave(context, ReportStatusIds.onApproval) : null,
+            onPressed: report.isUpdatable && _validKind ? ()=>_onSave(context, ReportStatusIds.onApproval) : null,
           ),
           ProjectButton.builtFlatButton('Удалить', 
             color: ProjectColors.red,
             disabledColor: ProjectColors.red.withOpacity(0.3),
-            onPressed: report.isDeletable ? ()=> _onDeleteReport(context) : null
+            onPressed: report.isDeletable && _validKind ? ()=> _onDeleteReport(context) : null
           ),
         ],
       ),
@@ -1900,13 +1908,14 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
       EdgeInsets padding = const EdgeInsets.only(top: 20)
     }
   ) {
+    
     return Padding(
       padding: padding,
       child: Row(
         children: [
           ProjectCheckbox(
             value: value,
-            onChanged: widget.report.isUpdatable && enabled ? onChanged : (v){},
+            onChanged: widget.report.isUpdatable && enabled && _validKind ? onChanged : (v){},
           ),
           Flexible(
             child: Padding(
@@ -1936,7 +1945,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
         hintText: hintText, 
         controller: controller,
         validator: validator,
-        enabled: widget.report.isUpdatable && enabled, 
+        enabled: widget.report.isUpdatable && enabled && _validKind, 
       )
     );
   }
@@ -1962,7 +1971,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
         onSuggestionSelected: onSuggestionSelected,
         validator: validator,
         formatter: formatter,
-        enabled: widget.report.isUpdatable && enabled,
+        enabled: widget.report.isUpdatable && enabled && _validKind,
       ),
     );
   }
