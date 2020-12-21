@@ -139,10 +139,16 @@ class ProfilePage extends StatelessWidget {
                               .apply(color: ProjectColors.black),
                         ),
                       ),
-                      _buildSectionItem(
-                        'Документы, требующие изменений',
-                        DocumentsForEditingWidget(),
-                      ),
+                      if(state.sending)
+                        _buildSectionItem(
+                            'Документы, требующие изменений',
+                            CircularProgressIndicator(),
+                          )
+                      else
+                        _buildSectionItem(
+                          'Документы, требующие изменений',
+                          DocumentsForEditingWidget(),
+                        ),
                     ],
                   ),
                   Padding(
