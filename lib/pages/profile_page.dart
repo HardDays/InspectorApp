@@ -141,9 +141,9 @@ class ProfilePage extends StatelessWidget {
                       ),
                       if(state.sending)
                         _buildSectionItem(
-                            'Документы, требующие изменений',
-                            CircularProgressIndicator(),
-                          )
+                          'Документы, требующие изменений',
+                          const SizedBox(),
+                        )
                       else
                         _buildSectionItem(
                           'Документы, требующие изменений',

@@ -11,6 +11,7 @@ import 'package:inspector/model/department_code.dart';
 import 'package:inspector/model/district.dart';
 import 'package:inspector/model/employee.dart';
 import 'package:inspector/model/instruction_status.dart';
+import 'package:inspector/model/kladdr_address_object_type.dart';
 import 'package:inspector/model/normative_act.dart';
 import 'package:inspector/model/normative_act_article.dart';
 import 'package:inspector/model/oati_department.dart';
@@ -68,6 +69,8 @@ class ApiProvider {
     ResolutionType: '/dict/resolution-types',
     NormativeActArticle: '/dict/normative-act-articles',
     ControlObject: '/dict/dc-objects',
+    KladdrAddressObjectType: '/dict/kladr-address-object-types',
+
   };
 
   final dio = Dio(BaseOptions(baseUrl: _defaultUrl));

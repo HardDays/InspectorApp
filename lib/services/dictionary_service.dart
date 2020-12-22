@@ -5,6 +5,7 @@ import 'package:inspector/model/department_code.dart';
 import 'package:inspector/model/dictionary_metadata.dart';
 import 'package:inspector/model/district.dart';
 import 'package:inspector/model/instruction_status.dart';
+import 'package:inspector/model/kladdr_address_object_type.dart';
 import 'package:inspector/model/normative_act.dart';
 import 'package:inspector/model/normative_act_article.dart';
 import 'package:inspector/model/report_status.dart';
@@ -53,7 +54,7 @@ class DictionaryService {
     DictionaryNames.violatorInfoPrivates: ApiDictionaryService().getViolatorInfoPrivate,
     DictionaryNames.violatorDocumentTypes: ApiDictionaryService().getViolatorDocumentTypes,
     DictionaryNames.reportStatuses: ApiDictionaryService().getReportStatuses,
-
+    DictionaryNames.kladdrAddressTypes: ApiDictionaryService().getKladdrAddressTypes,
   };
 
  final Map<String, Function(Map<String, dynamic>)> _converters = {
@@ -75,6 +76,7 @@ class DictionaryService {
     DictionaryNames.violatorInfoPrivates: (json)=> ViolatorInfoPrivate.fromJson(json, stringified: true),
     DictionaryNames.violatorDocumentTypes: (json)=> ViolatorDocumentType.fromJson(json),
     DictionaryNames.reportStatuses: (json)=> ReportStatus.fromJson(json),
+    DictionaryNames.kladdrAddressTypes: (json)=> KladdrAddressObjectType.fromJson(json)
   };
 
   final _lock = Lock();
@@ -421,4 +423,17 @@ class DictionaryService {
       limit: 50
     );
   }
+
+  Future<List<KladdrAddressObjectType>> getKladdAddressTypes({String name,  String level}) async {
+    return await _getData<KladdrAddressObjectType>(DictionaryNames.kladdrAddressTypes, 
+      queries: [
+        Query({
+          'name LIKE ?': '$name%',
+          'level = ?': level,
+        }),
+      ],
+      limit: 50
+    );
+  }
+
 }

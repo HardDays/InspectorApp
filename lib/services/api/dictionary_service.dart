@@ -7,6 +7,7 @@ import 'package:inspector/model/department_code.dart';
 import 'package:inspector/model/district.dart';
 import 'package:inspector/model/employee.dart';
 import 'package:inspector/model/instruction_status.dart';
+import 'package:inspector/model/kladdr_address_object_type.dart';
 import 'package:inspector/model/normative_act.dart';
 import 'package:inspector/model/normative_act_article.dart';
 import 'package:inspector/model/oati_department.dart';
@@ -131,4 +132,7 @@ class ApiDictionaryService {
 
   Future<List<ControlObject>> getControlObjects(int from, int to) =>
       _loadDictionary<ControlObject>((d) => ControlObject.fromJson(d), from, to);
+  
+   Future<List<KladdrAddressObjectType>> getKladdrAddressTypes(int from, int to) =>
+      _loadDictionary<KladdrAddressObjectType>((d) => KladdrAddressObjectType.fromJson(d), from, to);
 }

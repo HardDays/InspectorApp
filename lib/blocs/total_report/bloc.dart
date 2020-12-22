@@ -10,6 +10,7 @@ import 'package:inspector/model/address_search.dart';
 import 'package:inspector/model/area.dart';
 import 'package:inspector/model/department_code.dart';
 import 'package:inspector/model/district.dart';
+import 'package:inspector/model/kladdr_address_object_type.dart';
 import 'package:inspector/model/normative_act.dart';
 import 'package:inspector/model/normative_act_article.dart';
 import 'package:inspector/model/object_category.dart';
@@ -48,6 +49,7 @@ class TotalReportDialogBloc extends Bloc<TotalReportDialogBlocEvent, TotalReport
   TotalReportDialogBloc(initialState) : super(initialState);
 
   final _dadataService = DadataService();
+  final _dictionaryService = DictionaryService();
 
   Future<Iterable<ViolatorAddress>> getAddressSubjects(int index, String name) async {
     if (name.isNotEmpty) {
@@ -73,17 +75,20 @@ class TotalReportDialogBloc extends Bloc<TotalReportDialogBlocEvent, TotalReport
     }
   }
 
-   Future<Iterable<ViolatorAddress>> getAddressStreets(int index, String name) async {
+  Future<Iterable<ViolatorAddress>> getAddressStreets(int index, String name) async {
     if (name.isNotEmpty) {
       return await _dadataService.suggest(name, locations: [{'area': state.address?.regionName, 'region': state.address?.subjectName, 'city': state.address?.cityName, 'settlement': state.address?.placeName}], fromBound: 'street', toBound: 'street');
     }
+  }
+
+  Future<Iterable<KladdrAddressObjectType>> getKladdrAddressType(String name, String level) async {
+    return await _dictionaryService.getKladdAddressTypes(name: name, level: level);
   }
 
   @override
   Stream<TotalReportDialogBlocState> mapEventToState(TotalReportDialogBlocEvent event) async* {
     yield TotalReportDialogBlocState(event.address);
   }
-
 }
 
 class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {

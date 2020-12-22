@@ -25,6 +25,8 @@ class DictionaryNames {
   static const violatorInfoPrivates = 'violatorInfoPrivates';
   static const violatorDocumentTypes = 'violatorDocumentTypes';
   static const reportStatuses = 'reportStatuses';
+  static const kladdrAddressTypes = 'kladdrAddressTypes';
+
 }
 
 class TableDefinitions {
@@ -74,6 +76,7 @@ class TableDefinitions {
     )''',
     DictionaryNames.violatorDocumentTypes: '''CREATE TABLE violatorDocumentTypes(id INTEGER PRIMARY KEY, name TEXT)''',
     DictionaryNames.reportStatuses: '''CREATE TABLE reportStatuses(id INTEGER PRIMARY KEY, name TEXT)''',
+    DictionaryNames.kladdrAddressTypes: '''CREATE TABLE kladdrAddressTypes(id INTEGER PRIMARY KEY, name TEXT, code TEXT, level TEXT)''',
   };
 }
 
@@ -94,7 +97,7 @@ class SqliteDictionaryService {
   Future init() async {
     if (_database == null) {
       _database = await openDatabase(
-        join(await getDatabasesPath(), 'dictionaries6.db'),
+        join(await getDatabasesPath(), 'dictionaries7.db'),
         onCreate: (db, version) async {
           for (final key in TableDefinitions.all.keys) {
             await db.execute(TableDefinitions.all[key]);
@@ -103,6 +106,7 @@ class SqliteDictionaryService {
           await db.insert(TableDefinitions.metadata, {'id': 1, 'data': json.encode({})});
         },
         onOpen: (db) async {
+          // await db.execute(TableDefinitions.all[ DictionaryNames.kladdrAddressTypes]);
           // await db.execute('drop table violationTypes');
           // await db.execute(TableDefinitions.all[ DictionaryNames.violationTypes]);
           // await db.execute(TableDefinitions.all[ DictionaryNames.violatorInfoIps]);

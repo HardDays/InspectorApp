@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 import 'dart:typed_data';
+import 'package:inspector/model/kladdr_address_object_type.dart';
 import 'package:path/path.dart' as p;
 
 import 'package:flutter/cupertino.dart';
@@ -46,7 +47,7 @@ import 'package:inspector/widgets/dictionary_dialog.dart';
 import 'package:inspector/style/image_picker.dart';
 import 'package:latlong/latlong.dart';
 
-class   TotalReportPage extends StatefulWidget {
+class TotalReportPage extends StatefulWidget {
 
   // final bool violationNotPresent;
   // final int instructionId;
@@ -82,10 +83,15 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
   final _objectCategoryController = TextEditingController();
   final _violationTypeController = TextEditingController();
   final _addressDialogIndexController = TextEditingController();
+  final _addressDialogAutoSubjectTypeController = TextEditingController();
   final _addressDialogAutoSubjectController = TextEditingController();
+  final _addressDialogAutoRegionTypeController = TextEditingController();
   final _addressDialogAutoRegionController = TextEditingController();
+  final _addressDialogAutoCityTypeController = TextEditingController();
   final _addressDialogAutoCityController = TextEditingController();
+  final _addressDialogAutoPlaceTypeController = TextEditingController();
   final _addressDialogAutoPlaceController = TextEditingController();
+  final _addressDialogAutoStreetTypeController = TextEditingController();
   final _addressDialogAutoStreetController = TextEditingController();
   final _addressDialogHouseController = TextEditingController();
   final _addressDialogBuildingController = TextEditingController();
@@ -308,6 +314,26 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
     BlocProvider.of<TotalReportDialogBloc>(context).add(TotalReportDialogBlocEvent(address));  
   }
 
+  void _onAddressDialogSubjectTypeSelect(BuildContext context, KladdrAddressObjectType address) {
+    _addressDialogAutoSubjectTypeController.text = address?.name;
+  }
+
+  void _onAddressDialogRegionTypeSelect(BuildContext context, KladdrAddressObjectType address) {
+    _addressDialogAutoRegionTypeController.text = address?.name;
+  }
+
+   void _onAddressDialogCityTypeSelect(BuildContext context, KladdrAddressObjectType address) {
+    _addressDialogAutoCityTypeController.text = address?.name;
+  }
+
+   void _onAddressDialogPlaceTypeSelect(BuildContext context, KladdrAddressObjectType address) {
+    _addressDialogAutoPlaceTypeController.text = address?.name;
+  }
+
+   void _onAddressDialogStreetTypeSelect(BuildContext context, KladdrAddressObjectType address) {
+    _addressDialogAutoStreetTypeController.text = address?.name;
+  }
+
   void _onAddressDialogClose(BuildContext context, ViolatorAddress address) {
     if (_addressDialogKey.currentState.validate()) {
       Navigator.pop(context, 
@@ -464,6 +490,26 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
       _removeViolatorControllers(index);
       BlocProvider.of<TotalReportBloc>(context).add(DeleteViolatorEvent(index));  
     }
+  }
+  
+  Future<Iterable<KladdrAddressObjectType>> _onAddressDialogSubjectTypeSearch(BuildContext context, int index, String name) async {
+    return await BlocProvider.of<TotalReportDialogBloc>(context).getKladdrAddressType(name, 'SUBJECT');
+  }
+
+  Future<Iterable<KladdrAddressObjectType>> _onAddressDialogRegionTypeSearch(BuildContext context, int index, String name) async {
+    return await BlocProvider.of<TotalReportDialogBloc>(context).getKladdrAddressType(name, 'REGION');
+  }
+
+  Future<Iterable<KladdrAddressObjectType>> _onAddressDialogCityTypeSearch(BuildContext context, int index, String name) async {
+    return await BlocProvider.of<TotalReportDialogBloc>(context).getKladdrAddressType(name, 'CITY');
+  }
+
+  Future<Iterable<KladdrAddressObjectType>> _onAddressDialogPlaceTypeSearch(BuildContext context, int index, String name) async {
+    return await BlocProvider.of<TotalReportDialogBloc>(context).getKladdrAddressType(name, 'PLACE');
+  }
+
+  Future<Iterable<KladdrAddressObjectType>> _onAddressDialogStreetTypeSearch(BuildContext context, int index, String name) async {
+    return await BlocProvider.of<TotalReportDialogBloc>(context).getKladdrAddressType(name, 'STREET');
   }
 
   Future<Iterable<ViolatorAddress>> _onAddressDialogSubjectSearch(BuildContext context, int index, String name) async {
@@ -971,6 +1017,20 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
                               child: _buildAutocomplete(
                                 'Субъект', 
                                 'Выберите значение', 
+                                _addressDialogAutoSubjectTypeController,
+                                (value)=> _onAddressDialogSubjectTypeSearch(context, index, value), 
+                                (value)=> _onAddressDialogSubjectTypeSelect(context, value),
+                                //formatter: (address)=> '${address.subjectType ?? ''} ${address.subjectName}',
+                                //validator: _emptyValidator
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 35),
+                            ),
+                            Flexible(
+                              child: _buildAutocomplete(
+                                '', 
+                                'Введите значение', 
                                 _addressDialogAutoSubjectController,
                                 (value)=> _onAddressDialogSubjectSearch(context, index, value), 
                                 (value)=> _onAddressDialogSelect(context, value),
@@ -988,6 +1048,19 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
                               child: _buildAutocomplete(
                                 'Район', 
                                 'Выберите значение', 
+                                _addressDialogAutoRegionTypeController,
+                                (value)=> _onAddressDialogRegionTypeSearch(context, index, value), 
+                                (value)=> _onAddressDialogRegionTypeSelect(context, value),
+                                //formatter: (address)=> '${address.regionType ?? ''} ${address.regionName}',
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 35),
+                            ),
+                            Flexible(
+                              child: _buildAutocomplete(
+                                '', 
+                                'Введите значение', 
                                 _addressDialogAutoRegionController,
                                 (value)=> _onAddressDialogRegionSearch(context, index, value), 
                                 (value)=> _onAddressDialogSelect(context, value),
@@ -1003,6 +1076,20 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
                             Flexible(
                               child: _buildAutocomplete(
                                 'Город', 
+                                'Выберите значение', 
+                                _addressDialogAutoCityTypeController,
+                                (value)=> _onAddressDialogCityTypeSearch(context, index, value), 
+                                (value)=> _onAddressDialogCityTypeSelect(context, value),
+                                //formatter: (address)=> '${address.cityType ?? ''} ${address.cityName}',
+                                //validator: (value)=> _emptyConditionValidator(value, _addressDialogAutoPlaceController)
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 35),
+                            ),
+                            Flexible(
+                              child: _buildAutocomplete(
+                                '', 
                                 'Выберите значение', 
                                 _addressDialogAutoCityController,
                                 (value)=> _onAddressDialogCitySearch(context, index, value), 
@@ -1021,6 +1108,20 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
                               child: _buildAutocomplete(
                                 'Населенный пункт', 
                                 'Выберите значение', 
+                                _addressDialogAutoPlaceTypeController,
+                                (value)=> _onAddressDialogPlaceTypeSearch(context, index, value), 
+                                (value)=> _onAddressDialogPlaceTypeSelect(context, value),
+                                // formatter: (address)=> '${address.placeType ?? ''} ${address.placeName}',
+                                // validator:  (value)=> _emptyConditionValidator(value, _addressDialogAutoCityController)
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 35),
+                            ),
+                            Flexible(
+                              child: _buildAutocomplete(
+                                '', 
+                                'Введите значение', 
                                 _addressDialogAutoPlaceController,
                                 (value)=> _onAddressDialogSettlementSearch(context, index, value), 
                                 (value)=> _onAddressDialogSelect(context, value),
@@ -1038,6 +1139,20 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
                               child: _buildAutocomplete(
                                 'Улица', 
                                 'Выберите значение', 
+                                _addressDialogAutoStreetTypeController,
+                                (value)=> _onAddressDialogStreetTypeSearch(context, index, value), 
+                                (value)=> _onAddressDialogStreetTypeSelect(context, value),
+                                // formatter: (address)=> '${address.streetType ?? ''} ${address.streetName}',
+                                // validator: _emptyValidator
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 35),
+                            ),
+                            Flexible(
+                              child: _buildAutocomplete(
+                                '', 
+                                'Введите значение', 
                                 _addressDialogAutoStreetController,
                                 (value)=> _onAddressDialogStreetSearch(context, index, value), 
                                 (value)=> _onAddressDialogSelect(context, value),
@@ -1908,7 +2023,6 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
       EdgeInsets padding = const EdgeInsets.only(top: 20)
     }
   ) {
-    
     return Padding(
       padding: padding,
       child: Row(
