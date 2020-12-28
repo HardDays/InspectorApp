@@ -97,7 +97,7 @@ class SqliteDictionaryService {
   Future init() async {
     if (_database == null) {
       _database = await openDatabase(
-        join(await getDatabasesPath(), 'dictionaries6.db'),
+        join(await getDatabasesPath(), 'dictionaries7.db'),
         onCreate: (db, version) async {
           for (final key in TableDefinitions.all.keys) {
             await db.execute(TableDefinitions.all[key]);
