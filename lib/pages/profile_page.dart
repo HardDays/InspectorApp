@@ -163,7 +163,7 @@ class ProfilePage extends StatelessWidget {
                           ProjectButton.builtFlatButton(
                             'Отправить данные в ЕИС ОАТИ',
                             disabled:
-                                state.dataSendingMode && !state.canBeSended,
+                                state.dataSendingMode || !state.canBeSended,
                             onPressed: () =>
                                 BlocProvider.of<ProfileBloc>(context)
                                     .add(SendDataEvent(context)),

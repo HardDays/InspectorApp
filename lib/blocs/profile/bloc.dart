@@ -53,6 +53,11 @@ class ProfileBloc extends Bloc<ProfileBlocEvent, ProfileBlocState> {
     }
     if (event is InitEvent) {
       yield (await _getFilledState(false));
+      var connectivityResult = await Connectivity().checkConnectivity();
+      bool dataSendingMode = await _persistanceService.getDataSendingState();
+      if(connectivityResult != ConnectivityResult.none && dataSendingMode) {
+        _sendData();
+      }
     }
     if (event is SendEmailEvent) {
       await _sendEmail();
@@ -72,16 +77,7 @@ class ProfileBloc extends Bloc<ProfileBlocEvent, ProfileBlocState> {
       } else {
         yield (_copyFilledBlocState(state as FilledBlocState, sending: true));
         try {
-          final requests = await _instructionRequestService.all();
-          for (final id in requests.keys) {
-            await _apiProvider.updateInstruction(id, instructionStatus: requests[id]);
-            await _instructionRequestService.remove(id);
-          }
-          final reports = await _reportsService.readyToSend();
-          for (final element in reports) {
-            await _reportsService.send(element);
-            await _instructionsService.flushReportsDate(element.instructionId);
-          }
+          await _sendData();
           await showDialog(
             context: event.context,
             child: AcceptDialog(
@@ -189,6 +185,19 @@ class ProfileBloc extends Bloc<ProfileBlocEvent, ProfileBlocState> {
       await launch(url);
     } else if (Platform.isAndroid) {
       await platform.invokeMethod('sendEmail');
+    }
+  }
+
+  Future<void> _sendData() async {
+    final requests = await _instructionRequestService.all();
+    for (final id in requests.keys) {
+      await _apiProvider.updateInstruction(id, instructionStatus: requests[id]);
+      await _instructionRequestService.remove(id);
+    }
+    final reports = await _reportsService.readyToSend();
+    for (final element in reports) {
+      await _reportsService.send(element);
+      await _instructionsService.flushReportsDate(element.instructionId);
     }
   }
 }
