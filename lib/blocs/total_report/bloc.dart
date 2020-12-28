@@ -514,7 +514,8 @@ class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {
       final local = status.id == ReportStatusIds.new_ || status.id == ReportStatusIds.project;
       final date = state.report.reportDate ?? DateTime.now();
       final lastNum = await _reportsService.lastNumber();
-      final number = state.report.reportNum ?? '$lastNum ${DateFormat('dd.MM.yyyy').format(date)}';
+      // final number = state.report.reportNum ?? '$lastNum ${DateFormat('dd.MM.yyyy').format(date)}';
+      final number = state.report.reportNum ?? '$lastNum';
       final localId = state.report.localId ?? Uuid().v1();
 
       Report report = state.report;

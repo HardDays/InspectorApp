@@ -99,7 +99,7 @@ class InstructionListBloc extends Bloc<InstructionListBlocEvent, InstructionList
         result = result.where((e) => e.instructionStatus.id == filters.instructionStatus).toList();
       }
       if (filters.instructionNum != null) {
-        result = result.where((e) => e.instructionNum.toLowerCase().startsWith(filters.instructionNum.toLowerCase())).toList();
+        result = result.where((e) => e.instructionNum.toLowerCase().contains(filters.instructionNum.toLowerCase())).toList();
       }
       if (filters.checkDates != null) {
         final dates = filters.checkDates;

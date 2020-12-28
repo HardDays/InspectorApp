@@ -19,6 +19,7 @@ class AcceptDialog extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(message,
+            textAlign: TextAlign.center,
             style: ProjectTextStyles.title.apply(color: ProjectColors.black),
           ),
           Padding(

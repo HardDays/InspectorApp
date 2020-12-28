@@ -36,7 +36,7 @@ class DiggReportBloc extends Bloc<DiggReportBlocEvent, DiggReportBlocState> {
       final photos = List.generate(photosBase64.length, (i) => Photo(data: photosBase64[i], name: event.photoNames[i]));
       final date = state.report.reportDate ?? DateTime.now();
       final lastNum = await _persistanceService.getReportNumber();
-      final number = state.report.reportNum ??  '$lastNum ${DateFormat('dd.MM.yyyy').format(date)}';
+      final number = state.report.reportNum ?? '$lastNum';
       final localId = state.report.localId ?? Uuid().v1();
 
       report = report.copyWith(
@@ -74,6 +74,7 @@ class DiggReportBloc extends Bloc<DiggReportBlocEvent, DiggReportBlocState> {
         final res = await _reportsService.create(report, local: local);
         yield SuccessState(state.status, res); 
       } on ApiException catch (ex) {
+        await _reportsService.create(report, error: '${ex.message} ${ex.details}', local: true);
         yield ErrorState(ex, state.status, state.report);
       } catch (ex) {
         yield ErrorState(UnhandledException(ex.toString()), state.status, state.report);

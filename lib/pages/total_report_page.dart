@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:math';
 import 'dart:typed_data';
 import 'package:inspector/model/kladdr_address_object_type.dart';
+import 'package:intl/intl.dart';
 import 'package:path/path.dart' as p;
 
 import 'package:flutter/cupertino.dart';
@@ -71,6 +72,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
   // todo: move to state
   bool _markEditing = false;
   bool _addressByLocation = false;
+  bool _tinao = false;
 
   final _searchController = TextEditingController();
   final _areaController = TextEditingController();
@@ -309,7 +311,12 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
     }
   }
 
-  void _onAddressDialogSelect(BuildContext context,ViolatorAddress address) {
+  void _onTinao(BuildContext context, bool value) {
+    _tinao = value;
+    BlocProvider.of<TotalReportBloc>(context).add(FlushEvent());
+  }
+
+  void _onAddressDialogSelect(BuildContext context, ViolatorAddress address) {
     _violatorAddressToControllers(address);
     BlocProvider.of<TotalReportDialogBloc>(context).add(TotalReportDialogBlocEvent(address));  
   }
@@ -610,12 +617,21 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
   }
 
   void _onSave(BuildContext context, int status) async {
-    final res = await showDialog(context: context, child: AcceptDialog(message: 'Сохранить рапорт?'));
+    final report = BlocProvider.of<TotalReportBloc>(context).state.report;
+    final date = report.reportDate ?? DateTime.now();
+    final number = report.reportNum != null ?  '№ ${report.reportNum}' : '';
+    final res = await showDialog(
+      context: context, 
+      child: AcceptDialog(
+        acceptTitle: 'Да',
+        cancelTitle: 'Нет',
+        message: status == ReportStatusIds.onApproval ? 'Вы подтверждаете передачу рапорта $number от ${DateFormat('dd.MM.yyyy').format(date)} на согласование?' : 'Сохранить рапорт?'
+      ),
+    );
     if (res != null) {
       if (_photos.isEmpty) {
         _showSnackBar(context, 'Пожалуйста, добавьте минимум одну фотографию', flush: false);
       } else {
-        final report = BlocProvider.of<TotalReportBloc>(context).state.report;
         if (report.violationNotPresent) {
           _showSnackBar(context, 'Рапорт сохраняется...', flush: false);
           BlocProvider.of<TotalReportBloc>(context).add(
@@ -737,6 +753,23 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
     if (res != null) {
       BlocProvider.of<TotalReportBloc>(context).add(RemoveReportEvent());  
     }
+  }
+
+  void _showSuccess(BuildContext context, Report report) {
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) async {
+        final title = '№${report.reportNum} от ${DateFormat('dd.MM.yyyy').format(report.reportDate)}';
+        await showDialog(
+          context: context, 
+          child: AcceptDialog(
+            cancelTitle: null,
+            acceptTitle: 'ОК',
+            message: report.reportStatus?.id == ReportStatusIds.onApproval ? 'Зарегистрирован рапорт $title' : 'Сохранен рапорт $title'
+          )
+        );
+        Navigator.pop(context);
+      }
+    );
   }
 
   void _showSnackBar(BuildContext context, String title, {bool flush = true}) {
@@ -950,8 +983,9 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
           } else if (state is AddressFromLocationState) {
             _setViolationAddress(context, state.report.violation(widget.violationIndex), state.violationLocation);
           } else if (state is SuccessState) { 
-            _showSnackBar(context, 'Рапорт успешно сформирован');
-            _back();
+            _showSuccess(context, state.report);
+            //_showSnackBar(context, 'Рапорт успешно сформирован');
+            //_back();
           } else if (state is DeletedState) { 
             _showSnackBar(context, 'Рапорт удален');
             _back();
@@ -966,6 +1000,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
                 padding: const EdgeInsets.only(left: 30, right: 30, top: 20),
                 child: Column(
                   children: [
+                    _buildError(context, state.report),
                     _buildCheckBox(
                       'Данные, указывающие на наличие события нарушения, не установлены', 
                       state.report.violationNotPresent,
@@ -1215,6 +1250,29 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
     );
   }
 
+  Widget _buildError(BuildContext context, Report report) {
+    if (report.error != null && report.error.isNotEmpty) {
+      return Container(
+        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+        margin: const EdgeInsets.only(bottom: 20),
+        width: MediaQuery.of(context).size.width,
+        child: Text('Рапорт № ${report.reportNum} от ${DateFormat('dd.MM.yyyy').format(report.reportDate)} не был загружен в ЕИС ОАТИ. Ошибка: ${report.error}',
+          style: ProjectTextStyles.baseBold.apply(
+            color: ProjectColors.red,
+          ),
+        ),
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: ProjectColors.red,
+            width: 2,
+          ),
+        ),
+      );
+    } else {
+      return const SizedBox();
+    }
+  }
+
   Widget _buildViolationNotPresent(BuildContext context, TotalReportBlocState state) {
     return Container(
       height: MediaQuery.of(context).size.height * 0.75,
@@ -1280,8 +1338,8 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
                   Flexible(
                     child: _buildCheckBox(
                       'ТиНАО', 
-                      state.report.violationNotPresent,
-                      (value)=> {}//_onViolationNotPresent(context, value),
+                      _tinao,
+                      (value)=> _onTinao(context, value)
                     ),
                   ),
                 ],

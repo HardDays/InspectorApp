@@ -18,7 +18,7 @@ class ProjectInputTitle extends StatelessWidget {
           style: ProjectTextStyles.medium.apply(color: ProjectColors.black),
         ),
         Padding(
-          padding: const EdgeInsets.only(top: 5),
+          padding: const EdgeInsets.only(top: 5, left: 1, right: 1),
           child: child
         ),
       ],

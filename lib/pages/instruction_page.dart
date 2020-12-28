@@ -39,7 +39,7 @@ class InstructionPage extends StatelessWidget {
     final res = await Navigator.push(context, 
       MaterialPageRoute(
         builder: (context) => TotalReportPage(
-          report: report,
+          report: report.copyWith(),
           violationIndex: violationIndex,
         ),
       ),
@@ -320,7 +320,6 @@ class InstructionPage extends StatelessWidget {
     }
   }
 
-
   Widget _buildReportButton(BuildContext context, InstructionCheck check, Instruction instruction) {
     final status = instruction.instructionStatus.id == InstructionStatusIds.inProgress || instruction.instructionStatus.id == InstructionStatusIds.partInProgress;
     if (status) {
@@ -535,14 +534,16 @@ class InstructionPage extends StatelessWidget {
     final reportList = List<Report>();
     final indexList = List<int>();
     for (final report in reports) {
-      if (report.violations.isNotEmpty) {
-        for (int i = 0; i < report.violations.length; i++) {
-          indexList.add(i);
+      if (report.diggRequestChecks.isEmpty) {
+        if (report.violations.isNotEmpty) {
+          for (int i = 0; i < report.violations.length; i++) {
+            indexList.add(i);
+            reportList.add(report);
+          }
+        } else {
+          indexList.add(0);
           reportList.add(report);
         }
-      } else {
-        indexList.add(0);
-        reportList.add(report);
       }
     }
     return Padding(
