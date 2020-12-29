@@ -55,7 +55,12 @@ class ReportsService {
 
   Future<Report> send(Report report) async {
     await _persistanceService.saveLastDataSendingDate(DateTime.now());
-    final res = await _apiService.createReport(report);
+    Report res;
+    if (report.id == null) {
+      res = await _apiService.createReport(report);
+    } else {
+      res = await _apiService.updateReport(report);
+    }
     await removeLocal(report);
     return res;
   }
