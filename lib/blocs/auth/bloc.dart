@@ -58,9 +58,7 @@ class AuthBloc extends Bloc<AuthBlocEvent, AuthBlocStates> {
           }
           final useFingerPrint =
               await _persistanceService.getFingerprintState();
-          if (useFingerPrint != null &&
-              !useFingerPrint &&
-              await _checkBiometric()) {
+          if (useFingerPrint && await _checkBiometric()) {
             yield AutorizedState();
           }
         } else {

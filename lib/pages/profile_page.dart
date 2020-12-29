@@ -202,34 +202,6 @@ class ProfilePage extends StatelessWidget {
                           ],
                         ),
                       ),
-                      if(state.showFingerPrintSwitch)
-                      _buildSectionItem(
-                        'Быстрый доступ по Touch ID',
-                        Row(
-                          children: [
-                            Text(
-                              'Включен',
-                              style: ProjectTextStyles.medium
-                                  .apply(color: ProjectColors.black),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(
-                                  8.1, 0.0, 10.0, 0.0),
-                              child: ProjectSwitch(
-                                checked: state.useFingerprint,
-                                onChanged: (value) =>
-                                    BlocProvider.of<ProfileBloc>(context)
-                                        .add(SetUsingFingerPrint(value)),
-                              ),
-                            ),
-                            Text(
-                              'Выключен',
-                              style: ProjectTextStyles.medium
-                                  .apply(color: ProjectColors.black),
-                            ),
-                          ],
-                        ),
-                      ),
                       _buildSectionItem(
                         'Быстрый доступ по PIN-коду',
                         Row(
@@ -247,6 +219,34 @@ class ProfilePage extends StatelessWidget {
                                 onChanged: (value) =>
                                     BlocProvider.of<ProfileBloc>(context)
                                         .add(SetUsingPinMode(value)),
+                              ),
+                            ),
+                            Text(
+                              'Включен',
+                              style: ProjectTextStyles.medium
+                                  .apply(color: ProjectColors.black),
+                            ),
+                          ],
+                        ),
+                      ),
+                      if(state.showFingerPrintSwitch)
+                      _buildSectionItem(
+                        'Быстрый доступ по Touch ID',
+                        Row(
+                          children: [
+                            Text(
+                              'Выключен',
+                              style: ProjectTextStyles.medium
+                                  .apply(color: ProjectColors.black),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(
+                                  8.1, 0.0, 10.0, 0.0),
+                              child: ProjectSwitch(
+                                checked: state.useFingerprint,
+                                onChanged: (value) =>
+                                    BlocProvider.of<ProfileBloc>(context)
+                                        .add(SetUsingFingerPrint(value)),
                               ),
                             ),
                             Text(
