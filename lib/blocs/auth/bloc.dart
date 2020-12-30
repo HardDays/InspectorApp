@@ -58,13 +58,11 @@ class AuthBloc extends Bloc<AuthBlocEvent, AuthBlocStates> {
           }
           final useFingerPrint =
               await _persistanceService.getFingerprintState();
-          if (useFingerPrint != null &&
-              !useFingerPrint &&
-              await _checkBiometric()) {
-            yield AutorizedState();
+          if (useFingerPrint && await _checkBiometric()) {
+            yield AutorizedState(false);
           }
         } else {
-           yield AutorizedState();
+           yield AutorizedState(false);
         }
       } else {
         yield ShowSetPinScreen(true);
@@ -77,7 +75,7 @@ class AuthBloc extends Bloc<AuthBlocEvent, AuthBlocStates> {
   Stream<AuthBlocStates> _onSetPinEvent(SetPinEvent event) async* {
     if (await _authService.isPinSetted()) {
       if (await _authService.isPinCorrect(event.pin)) {
-        yield AutorizedState();
+        yield AutorizedState(false);
       } else if (event.pin.length >= 4) {
         if (wrongTries < 4) {
           yield IncorrencPinState();
@@ -100,7 +98,7 @@ class AuthBloc extends Bloc<AuthBlocEvent, AuthBlocStates> {
         if (event.pin.length == 4) {
           if (event.pin == pin) {
             await _authService.setPin(event.pin);
-            yield AutorizedState();
+            yield AutorizedState(await _canCheckBiometric());
           } else {
             yield IncorrencRepeatPinState();
           }
@@ -155,5 +153,10 @@ class AuthBloc extends Bloc<AuthBlocEvent, AuthBlocStates> {
         stickyAuth: false,
         androidAuthStrings: AndroidAuthMessages(
             signInTitle: "Войти с помощью отпечатка пальца"));
+  }
+
+  Future<bool> _canCheckBiometric() async {
+    final LocalAuthentication auth = LocalAuthentication();
+    return await auth.canCheckBiometrics;
   }
 }

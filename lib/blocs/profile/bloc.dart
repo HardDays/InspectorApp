@@ -48,11 +48,17 @@ class ProfileBloc extends Bloc<ProfileBlocEvent, ProfileBlocState> {
     } else if (event is SetUsingPinMode) {
       FilledBlocState prev = state as FilledBlocState;
       await _persistanceService.saveUsePinState(event.usingPinMode);
+      await _persistanceService.saveFingerprintState(false);
       yield (_copyFilledBlocState(prev,
-          usePin: event.usingPinMode));
+          usePin: event.usingPinMode, showFingerprintSwitch: event.usingPinMode));
     }
     if (event is InitEvent) {
       yield (await _getFilledState(false));
+      var connectivityResult = await Connectivity().checkConnectivity();
+      bool dataSendingMode = await _persistanceService.getDataSendingState();
+      if(connectivityResult != ConnectivityResult.none && dataSendingMode) {
+        _sendData();
+      }
     }
     if (event is SendEmailEvent) {
       await _sendEmail();
@@ -72,16 +78,7 @@ class ProfileBloc extends Bloc<ProfileBlocEvent, ProfileBlocState> {
       } else {
         yield (_copyFilledBlocState(state as FilledBlocState, sending: true));
         try {
-          final requests = await _instructionRequestService.all();
-          for (final id in requests.keys) {
-            await _apiProvider.updateInstruction(id, instructionStatus: requests[id]);
-            await _instructionRequestService.remove(id);
-          }
-          final reports = await _reportsService.readyToSend();
-          for (final element in reports) {
-            await _reportsService.send(element);
-            await _instructionsService.flushReportsDate(element.instructionId);
-          }
+          await _sendData();
           await showDialog(
             context: event.context,
             child: AcceptDialog(
@@ -128,14 +125,14 @@ class ProfileBloc extends Bloc<ProfileBlocEvent, ProfileBlocState> {
     bool canBeSended = (await _reportsService.readyToSend()).isNotEmpty ||
         (await _instructionRequestService.all()).isNotEmpty;
     bool usePin = await _persistanceService.getUsePinState();
-    bool showFingerprintSwitch = false;
+    bool showFingerprintSwitch = usePin;
     return FilledBlocState(
       appVersion: appVersion,
       dataSendingMode: dataSendingMode == null ? true : dataSendingMode,
       dataSendingState: hasErrorReports ? 'Ошибка' : 'Успешно',
       installDate: await _getInstallDate(),
       lastDataSendingDate: lastDataSendingDate,
-      useFingerprint: useFingerPrint == null ? false : useFingerPrint,
+      useFingerprint: useFingerPrint,
       userName: name,
       sending: isSending,
       canBeSended: canBeSended,
@@ -189,6 +186,19 @@ class ProfileBloc extends Bloc<ProfileBlocEvent, ProfileBlocState> {
       await launch(url);
     } else if (Platform.isAndroid) {
       await platform.invokeMethod('sendEmail');
+    }
+  }
+
+  Future<void> _sendData() async {
+    final requests = await _instructionRequestService.all();
+    for (final id in requests.keys) {
+      await _apiProvider.updateInstruction(id, instructionStatus: requests[id]);
+      await _instructionRequestService.remove(id);
+    }
+    final reports = await _reportsService.readyToSend();
+    for (final element in reports) {
+      await _reportsService.send(element);
+      await _instructionsService.flushReportsDate(element.instructionId);
     }
   }
 }

@@ -32,10 +32,17 @@ class MainPage extends StatelessWidget {
                   content: Text('Приложение Yandex.Maps не установлено'),
                 ),
               );
+            } else if (state is OpenControlPageErrorState) {
+              Scaffold.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Работа с разделом "Ведомственный контроль" возможна только при наличии сети Internet'),
+                ),
+              );
+            } else {
+              ExtendedNavigator.named('mainPageNavigator').popUntilRoot();
+              ExtendedNavigator.named('mainPageNavigator')
+                  .replace(_pagesMap[state.currentScreen]);
             }
-            ExtendedNavigator.named('mainPageNavigator').popUntilRoot();
-            ExtendedNavigator.named('mainPageNavigator')
-                .replace(_pagesMap[state.currentScreen]);
           },
           child: ExtendedNavigator(name: 'mainPageNavigator'),
         ),

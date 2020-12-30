@@ -79,7 +79,7 @@ class ObjectDbPersistanceService extends ObjectDBService
 
   @override
   Future<bool> getFingerprintState() async {
-    return await _getKeyValue('fingerPrintState');
+    return await _getKeyValue('fingerPrintState') ?? false;
   }
 
   Future<DateTime> getInstructionsDate() async {
@@ -159,7 +159,7 @@ class ObjectDbPersistanceService extends ObjectDBService
 
   @override
   Future<void> saveFingerprintState(bool state) async {
-    await _saveKeyValue('fingerprintState', state);
+    await _saveKeyValue('fingerPrintState', state);
   }
 
   Future<void> saveInstructionSort(String value) async {

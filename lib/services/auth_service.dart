@@ -1,9 +1,11 @@
 import 'dart:io';
 
+import 'package:connectivity/connectivity.dart';
 import 'package:device_info/device_info.dart';
 import 'package:inspector/model/user.dart';
 import 'package:inspector/providers/api_provider.dart';
 import 'package:inspector/providers/exceptions/api_exception.dart';
+import 'package:inspector/providers/exceptions/unauthorized_exception.dart';
 import 'package:inspector/services/auth_exception.dart';
 import 'package:inspector/services/persistance_service.dart';
 
@@ -31,7 +33,7 @@ class AuthService {
 
   Future<bool> isAuthentificated() async {
     final token = await persistanceService.getToken();
-    if (token != null) {       
+    if (token != null) {
       //todo в другой метод может быть
       try {
         final url = await persistanceService.getUrl();
@@ -47,7 +49,7 @@ class AuthService {
       }
     }
     return (await persistanceService.getUser()) != null;
-  }  
+  }
 
   Future<bool> isPinCorrect(String pin) async {
     return (await persistanceService.getPin()) == pin;
@@ -73,23 +75,28 @@ class AuthService {
   }
 
   Future<User> authentificate(String login, String password) async {
-    try {
-      final deviceId = await _deviceId();
-      final response = await apiProvider.login(login, password, deviceId);
-      final user = User.fromJson(response['employee']);
-      final prev = await persistanceService.getPreviousUser();
-      if(prev != null && prev.id != user.id) {
-        persistanceService.clearAllData();
+    var connectivityResult = await Connectivity().checkConnectivity();
+    if (connectivityResult != ConnectivityResult.none) {
+      try {
+        final deviceId = await _deviceId();
+        final response = await apiProvider.login(login, password, deviceId);
+        final user = User.fromJson(response['employee']);
+        final prev = await persistanceService.getPreviousUser();
+        if (prev != null && prev.id != user.id) {
+          persistanceService.clearAllData();
+        }
+        persistanceService.saveUser(user);
+        persistanceService.setToken(response['token']);
+        persistanceService.setRefreshToken(response['refreshToken']);
+        apiProvider.setToken(response['token']);
+        return user;
+      } on ApiException catch (e) {
+        if (e is UnauthorizedException)
+          throw (AuthException('Неверный логин или пароль'));
+        throw AuthException(e.message);
       }
-      persistanceService.saveUser(user);
-      persistanceService.setToken(response['token']);
-      persistanceService.setRefreshToken(response['refreshToken']);
-      apiProvider.setToken(response['token']);
-      return user;
-    } on ApiException catch (e) {
-      if(e.message == "Не авторизован")
-        throw(AuthException('Неверный логин или пароль'));
-      throw AuthException(e.message);
+    } else {
+      throw AuthException('Пожалуйста, перезапустите приложение со включенным интернетом и введите пин-код заново.');
     }
   }
 }

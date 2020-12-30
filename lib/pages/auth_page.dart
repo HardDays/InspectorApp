@@ -6,6 +6,8 @@ import 'package:inspector/blocs/auth/states.dart';
 import 'package:inspector/navigation.gr.dart';
 import 'package:inspector/services/auth_service.dart';
 import 'package:inspector/services/persistance_service.dart';
+import 'package:inspector/style/accept_dialog.dart';
+import 'package:local_auth/local_auth.dart';
 import 'package:provider/provider.dart';
 
 class AuthPage extends StatelessWidget {
@@ -19,7 +21,7 @@ class AuthPage extends StatelessWidget {
       ),
       child: BlocListener<AuthBloc, AuthBlocStates>(
         child: ExtendedNavigator(name: 'authNavigator'),
-        listener: (context, state) {
+        listener: (context, state) async {
           if (state is PinCodeState && state.needRebuild)
             ExtendedNavigator.named('authNavigator')
                 .replace(AuthPageRoutes.pinCodePage);
@@ -27,6 +29,18 @@ class AuthPage extends StatelessWidget {
             ExtendedNavigator.named('authNavigator')
                 .replace(AuthPageRoutes.loginPage);
           else if (state is AutorizedState) {
+            if(state.firstSetup) {
+              final _persistenceService = Provider.of<PersistanceService>(context, listen: false);
+              final useFingerprint = await showDialog(
+                context: context,
+                child: AcceptDialog(
+                  message: 'Использовать Finger Touch/Touch ID/Face ID для входа в мобильное приложение?', 
+                  acceptTitle: 'Да', 
+                  cancelTitle: 'Нет',
+                ),
+              ) != null;
+              await _persistenceService.saveFingerprintState(useFingerprint);
+            }
             ExtendedNavigator.root.replace(Routes.mainPage);
           }
         },
