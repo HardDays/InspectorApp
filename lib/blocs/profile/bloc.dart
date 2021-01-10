@@ -179,9 +179,7 @@ class ProfileBloc extends Bloc<ProfileBlocEvent, ProfileBlocState> {
     DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
     AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
     User user = await _persistanceService.getUser();
-    final url = 'mailto:oati_support@mos.ru?subject=' +
-        Uri.encodeQueryComponent('Мобильное приложение ЕИС ОАТИ') + 
-        '&body=' + Uri.encodeQueryComponent('Пользователь: ${user.code} ${user.surname} ${user.name} ${user.middleName}\nВерсия приложения: $appVersion\nУстройство: ${androidInfo.model}\n');
+    final url = Uri.encodeFull('mailto:oati_support@mos.ru?subject=Мобильное приложение ЕИС ОАТИ&body=Пользователь: ${user.code} ${user.surname} ${user.name} ${user.middleName}\nВерсия приложения: $appVersion\nУстройство: ${androidInfo.model}\n');
     if (await canLaunch(url)) {
       await launch(url);
     } else if (Platform.isAndroid) {
