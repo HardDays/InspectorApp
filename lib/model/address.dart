@@ -127,7 +127,7 @@ class Address {
 
   String toLongString() {
     final data = [area?.toString(), district?.toString(), street?.toString(), houseNum, buildNum != null ? 'к. $buildNum' : null, constructionNum != null ? 'стр. $constructionNum' : null];
-    return data.where((element) => element != null).join(', ');
+    return data.where((element) => element != null && element.isNotEmpty).join(', ');
   }
 
   String toSearchString() {
