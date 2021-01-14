@@ -209,16 +209,18 @@ class ApiProvider {
     );
   }
 
-  Future<dynamic> updateInstruction(int id, {InstructionStatus instructionStatus}) async {
+  Future<dynamic> updateInstruction(int id, {InstructionStatus instructionStatus, String rejectReason}) async {
     return _request(
       ()=> dio.patch(_instructionsPath + '/$id',
         data: {
-          'instructionStatus': instructionStatus.toJson()
+          'instructionStatus': instructionStatus.toJson(),
+          if(rejectReason != null)
+            'rejectReason': rejectReason,
         }
       )
     );
   }
-
+  
   Future<dynamic> createReport(Report report) async {
     final json = report.toJson();
     _removeJsonNulls(json);

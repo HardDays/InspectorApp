@@ -15,6 +15,7 @@ import 'package:inspector/model/instruction_status.dart';
 import 'package:inspector/model/report.dart';
 import 'package:inspector/pages/digg_report_page.dart';
 import 'package:inspector/pages/total_report_page.dart';
+import 'package:inspector/style/accept_dialog.dart';
 import 'package:inspector/style/appbar.dart';
 import 'package:inspector/style/button.dart';
 import 'package:inspector/style/card.dart';
@@ -90,8 +91,8 @@ class InstructionPage extends StatelessWidget {
     
   }
 
-  void _onStatus(BuildContext context, int status) {
-    BlocProvider.of<InstructionBloc>(context).add(UpadteInstructionStatusEvent(status));  
+  void _onStatus(BuildContext context, int status, {String reason}) {
+    BlocProvider.of<InstructionBloc>(context).add(UpadteInstructionStatusEvent(status: status, reason: reason));  
   }
 
   void _onRefreshReport(BuildContext context) {
@@ -154,7 +155,7 @@ class InstructionPage extends StatelessWidget {
 
           final instruction = state.instruction;
           return Scaffold(
-            appBar: ProjectAppbar('Поручение № ${instruction.instructionNum} от ${DateFormat('dd.MM.yyyy').format(instruction.instructionDate)}'),
+            appBar: ProjectAppbar('Поручение № ${_buildInstructionTitle(instruction)}'),
             body: SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.only(left: 30, right: 30, top: 20),
@@ -190,6 +191,10 @@ class InstructionPage extends StatelessWidget {
         }
       )
     );
+  }
+
+  String _buildInstructionTitle(Instruction instruction) {
+    return '${instruction.instructionNum} от ${DateFormat('dd.MM.yyyy').format(instruction.instructionDate)}';
   }
 
   Widget _buildStatus(Instruction instruction) {
@@ -631,7 +636,21 @@ class InstructionPage extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(right: 20),
                 child: ProjectButton.buildOutlineButton('Отклонить поручение',
-                  onPressed: ()=> _onStatus(context, InstructionStatusIds.withdrawn)
+                  onPressed: () async {
+                    final result = await showDialog(
+                                    context: context,
+                                    child: AcceptDialog(
+                                      message:
+                                        'Вы действительно хотите отклонить поручение № ${_buildInstructionTitle(instruction)}?',
+                                      responseHint: 'Причина отклонения',
+                                      acceptTitle: 'Да',
+                                      cancelTitle: 'Нет',
+                                    ),
+                                  );
+                    if(result != null) {
+                      _onStatus(context, InstructionStatusIds.withdrawn, reason: result);
+                    }
+                  }
                 ),
              ),
              Spacer(),

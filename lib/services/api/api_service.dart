@@ -46,8 +46,8 @@ class ApiService {
     );
   }
   
-  Future <Instruction> updateInstruction(int id, {InstructionStatus instructionStatus}) async {
-    final data = await api.updateInstruction(id, instructionStatus: instructionStatus);
+  Future <Instruction> updateInstruction(int id, {InstructionStatus instructionStatus, String rejectReason}) async {
+    final data = await api.updateInstruction(id, instructionStatus: instructionStatus, rejectReason: rejectReason);
     return await _parse(
       ()=> Instruction.fromJson(data)
     );

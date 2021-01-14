@@ -17,6 +17,7 @@ class RefreshReportsEvent extends InstructionBlocEvent {
 
 class UpadteInstructionStatusEvent extends InstructionBlocEvent {
   final int status;
+  final String reason;
 
-  UpadteInstructionStatusEvent(this.status);
+  UpadteInstructionStatusEvent({this.status, this.reason});
 }

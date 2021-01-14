@@ -87,7 +87,7 @@ class InstructionsService {
     return _persistanceService.getInstructionReportDate(id);
   }
 
-  Future<Instruction> updateInstruction(int id, {InstructionStatus instructionStatus}) async {
+  Future<Instruction> updateInstruction(int id, {InstructionStatus instructionStatus, String rejectReason}) async {
     if(!(await _persistanceService.getDataSendingState())) {
       _instructionRequestService.save(id, instructionStatus);
       final instruction = (await _instructionsDbService.all(query: {'id': id})).first;
@@ -98,7 +98,7 @@ class InstructionsService {
       return newInstruction;
     } else {
       _persistanceService.saveLastDataSendingDate(DateTime.now());
-      return await _apiService.updateInstruction(id, instructionStatus: instructionStatus);
+      return await _apiService.updateInstruction(id, instructionStatus: instructionStatus, rejectReason: rejectReason);
     }
   }
 
