@@ -44,9 +44,7 @@ class InstructionPage extends StatelessWidget {
         ),
       ),
     );  
-    if (res != null) {
-      BlocProvider.of<InstructionBloc>(context).add(RefreshReportsEvent());  
-    }
+    BlocProvider.of<InstructionBloc>(context).add(RefreshReportsEvent());  
   }
 
   void _onCreateReport(BuildContext context, InstructionCheck check) async {
@@ -142,8 +140,6 @@ class InstructionPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(instruction.id);
-
     return BlocProvider(
       create: (context)=> InstructionBloc(InstructionBlocState(null, instruction, []))..add(LoadReportsEvent()),
       child: BlocBuilder<InstructionBloc, InstructionBlocState>(

@@ -62,4 +62,11 @@ class ApiService {
     );
   }
 
+  Future<Report> updateReport(Report report) async {
+    final data = await api.updateReport(report);
+    return await _parse(
+      ()=> Report.fromJson(data)
+    );
+  }
+
 }
