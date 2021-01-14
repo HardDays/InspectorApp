@@ -626,12 +626,16 @@ class InstructionPage extends StatelessWidget {
       return Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          canDecline ? Padding(
-            padding: const EdgeInsets.only(right: 20),
-            child: ProjectButton.buildOutlineButton('Отклонить',
-              onPressed: ()=> _onStatus(context, InstructionStatusIds.withdrawn)
-            ),
-          ) : Container(),
+          if(canDecline)
+            ...[
+              Padding(
+                padding: const EdgeInsets.only(right: 20),
+                child: ProjectButton.buildOutlineButton('Отклонить поручение',
+                  onPressed: ()=> _onStatus(context, InstructionStatusIds.withdrawn)
+                ),
+             ),
+             Spacer(),
+            ],
           ProjectButton.builtFlatButton(titles[instruction.instructionStatus.id] ?? 'Подтвердить исполнение',
             onPressed: functions[instruction.instructionStatus.id],
           ),
