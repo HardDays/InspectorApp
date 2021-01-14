@@ -565,7 +565,11 @@ class InstructionPage extends StatelessWidget {
               _buildParagraph(ProjectIcons.inspectorIcon(), toBeginningOfSentenceCase(instruction.instructionCreator.formattedName)),
               Column(
                 children: List.generate(instructionCheck.checkParticipants.length, 
-                  (index) => _buildParagraph(ProjectIcons.inspector2Icon(),  instructionCheck.checkParticipants[index].toString()),
+                  (index) { 
+                    final participant = instructionCheck.checkParticipants[index].toString();
+                    final title = participant + (participant[participant.length - 1] == '.' ? '' : '.');
+                    return _buildParagraph(ProjectIcons.inspector2Icon(), title); 
+                  },
                 ),
               ),
               Padding(
