@@ -138,13 +138,11 @@ class ImagePicker extends StatelessWidget {
   }
 
   Widget _buildImage(int index) {
-    return SizedBox(
+    return Image(
+      image: MemoryImage(images[index]),
       width: 210,
-      height: 140,
-      child: Image(
-        fit: BoxFit.cover,
-        image: MemoryImage(images[index])
-      ),
+      height: 210,
+      fit: BoxFit.contain,
     );
   }
 
