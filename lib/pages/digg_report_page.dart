@@ -86,9 +86,19 @@ class DiggReportPageState extends State<DiggReportPage> with SingleTickerProvide
   }
 
   void _onSave(BuildContext context, int status) async {
+    final report = BlocProvider.of<DiggReportBloc>(context).state.report;
+    final date = report.reportDate ?? DateTime.now();
+    final number = report.reportNum != null ?  '№ ${report.reportNum}' : '';
     if (_formKey.currentState.validate()) {
       if (_photos.isNotEmpty) {
-        final res = await showDialog(context: context, child: AcceptDialog(message: 'Сохранить рапорт?'));
+        final res = await showDialog(
+          context: context, 
+          child: AcceptDialog(
+            acceptTitle: 'Да',
+            cancelTitle: 'Нет',
+            message: status == ReportStatusIds.onApproval ? 'Вы подтверждаете передачу рапорта $number от ${DateFormat('dd.MM.yyyy').format(date)} на согласование?' : 'Сохранить рапорт?'
+          ),
+        );
         if (res != null) {
           BlocProvider.of<DiggReportBloc>(context).add(SaveReportEvent(widget.diggRequestCheck, status, _commentController.text, _photos, _photoNames));  
         }
