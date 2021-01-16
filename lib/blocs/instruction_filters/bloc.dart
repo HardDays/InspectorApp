@@ -22,22 +22,22 @@ class InstructionFiltersBloc extends Bloc<InstructionFiltersBlocEvent, Instructi
       final statuses = await _dictionaryService.getInstructionStatuses();
       statuses.insert(0, InstructionStatus(id: null, name: 'Все'));
       yield InstructionFiltersBlocState(statuses, state.filters);
-    } else if (event is SetCheckDatesEvent) {
+    } else if (event is SetMinDateEvent) {
       yield InstructionFiltersBlocState(
         state.statuses,
         InstructionFilters(
-          checkDates: event.dates,
-          instructionDates: state.filters.instructionDates,
+          minDate: event.date,
+          maxDate: state.filters.maxDate,
           instructionStatus: state.filters.instructionStatus,
           instructionNum: state.filters.instructionNum,
         )
       );
-    } else if (event is SetInstructionDatesEvent) {
+    } else if (event is SetMaxDateEvent) {
       yield InstructionFiltersBlocState(
         state.statuses,
         InstructionFilters(
-          checkDates: state.filters.checkDates,
-          instructionDates: event.dates,
+          minDate: state.filters.minDate,
+          maxDate: event.date,
           instructionStatus: state.filters.instructionStatus,
           instructionNum: state.filters.instructionNum,
         )
@@ -46,8 +46,8 @@ class InstructionFiltersBloc extends Bloc<InstructionFiltersBlocEvent, Instructi
       yield InstructionFiltersBlocState(
         state.statuses,
         InstructionFilters(
-          checkDates: state.filters.checkDates,
-          instructionDates: state.filters.instructionDates,
+          minDate: state.filters.minDate,
+          maxDate: state.filters.maxDate,
           instructionStatus: event.instructionStatus == 0 ? null :  event.instructionStatus,
           instructionNum: state.filters.instructionNum,
         )
@@ -56,8 +56,8 @@ class InstructionFiltersBloc extends Bloc<InstructionFiltersBlocEvent, Instructi
       yield InstructionFiltersBlocState(
         state.statuses,
         InstructionFilters(
-          checkDates: state.filters.checkDates,
-          instructionDates: state.filters.instructionDates,
+          minDate: state.filters.minDate,
+          maxDate: state.filters.maxDate,
           instructionStatus: state.filters.instructionStatus,
           instructionNum: event.instructionNum,
         ),

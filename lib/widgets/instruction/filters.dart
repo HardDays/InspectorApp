@@ -24,8 +24,8 @@ class InstructionFiltersWidget extends StatelessWidget {
   void _onFind(BuildContext context, InstructionFilters filters) {
     final newFilters = InstructionFilters(
       instructionNum: _instructionNumController.text,
-      checkDates: filters.checkDates,
-      instructionDates: filters.instructionDates,
+      minDate: filters.minDate,
+      maxDate: filters.maxDate,
       instructionStatus: filters.instructionStatus
     );
     BlocProvider.of<InstructionFiltersBloc>(context).add(SaveEvent(newFilters));  
@@ -33,22 +33,22 @@ class InstructionFiltersWidget extends StatelessWidget {
   }
 
   void _onClear(BuildContext context) {
-    BlocProvider.of<InstructionFiltersBloc>(context).add(SaveEvent(InstructionFilters(instructionDates: [DateTime.now()], checkDates: [DateTime.now()])));  
+    BlocProvider.of<InstructionFiltersBloc>(context).add(SaveEvent(InstructionFilters(minDate: DateTime(DateTime.now().year), maxDate: DateTime.now())));  
   }
 
   void _onStatus(BuildContext context, int status) {
     BlocProvider.of<InstructionFiltersBloc>(context).add(SetInstructionStatusEvent(status));  
   }
 
-  void _onCheckDates(BuildContext context, List<DateTime> dates) {
-    if (dates != null) {
-      BlocProvider.of<InstructionFiltersBloc>(context).add(SetCheckDatesEvent(dates)); 
+  void _onMinDate(BuildContext context, DateTime date) {
+    if (date != null) {
+      BlocProvider.of<InstructionFiltersBloc>(context).add(SetMinDateEvent(date)); 
     } 
   }
 
-  void _onInstructionDates(BuildContext context, List<DateTime> dates) {
-    if (dates != null) {
-      BlocProvider.of<InstructionFiltersBloc>(context).add(SetInstructionDatesEvent(dates));  
+  void _onMaxDate(BuildContext context, DateTime date) {
+    if (date != null) {
+      BlocProvider.of<InstructionFiltersBloc>(context).add(SetMinDateEvent(date));
     }
   }
 
@@ -91,19 +91,21 @@ class InstructionFiltersWidget extends StatelessWidget {
                   children: [
                     Flexible(
                       child: ProjectDatePicker(
-                        title: 'Дата поручения',
-                        hintText: 'Выберите дату или период',
-                        values: state.filters.instructionDates,
-                        onChanged: (dates)=> _onInstructionDates(context, dates),
+                        title: 'С',
+                        hintText: 'Выберите дату',
+                        singleDate: true,
+                        values: [state.filters.minDate],
+                        onChanged: (date) => _onMaxDate(context, date[0]),
                       ),
                     ),
                     Padding(padding: const EdgeInsets.only(left: 35)),
                     Flexible(
                       child: ProjectDatePicker(
-                        title: 'Период обследования',
-                        hintText: 'Выберите период',
-                        values: state.filters.checkDates,
-                        onChanged: (dates)=> _onCheckDates(context, dates),
+                        title: 'По',
+                        hintText: 'Выберите дату',
+                        singleDate: true,
+                        values: [state.filters.maxDate],
+                        onChanged: (date) => _onMinDate(context, date[0]),
                       ),
                     ),
                   ],
