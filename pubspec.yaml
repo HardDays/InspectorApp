@@ -45,11 +45,13 @@ dependencies:
   image: ^2.1.19 
   connectivity: ^2.0.2
   flutter_webview_plugin: ^0.3.11
+  json_annotation: ^3.1.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   auto_route_generator: ^0.6.7
+  json_serializable: ^3.5.1
   build_runner:
 
 flutter:
