@@ -18,6 +18,7 @@ import 'package:inspector/model/oati_department.dart';
 import 'package:inspector/model/object_category.dart';
 import 'package:inspector/model/report.dart';
 import 'package:inspector/model/report_status.dart';
+import 'package:inspector/model/report_status_info.dart';
 import 'package:inspector/model/resolution_type.dart';
 import 'package:inspector/model/special_object.dart';
 import 'package:inspector/model/street.dart';
@@ -248,4 +249,11 @@ class ApiProvider {
       )
     );
   }
+
+  Future<dynamic> getReportStatusInfo(Report report) async {
+    return _request(
+      () => dio.get('$_reportsPath/${report.id}/status'),
+    );
+  }
+
 }

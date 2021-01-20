@@ -10,7 +10,7 @@ class ReportStatusInfo {
   final ReportStatus reportStatus;
   final String rejectReason;
   final EmployeeShort respEmployee;
-  final ViolatorResolution violators;
+  final List<ViolatorResolution> violators;
 
   ReportStatusInfo({
     this.reportNum,

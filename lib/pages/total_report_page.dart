@@ -3,6 +3,8 @@ import 'dart:io';
 import 'dart:math';
 import 'dart:typed_data';
 import 'package:inspector/model/kladdr_address_object_type.dart';
+import 'package:inspector/model/report_status_info.dart';
+import 'package:inspector/widgets/instruction/resolution.dart';
 import 'package:intl/intl.dart';
 import 'package:path/path.dart' as p;
 
@@ -1486,7 +1488,14 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
         _buildTitle('Нарушители'),
         Column(
           children: List.generate(state.report.violation(widget.violationIndex)?.violators?.length ?? 1, 
-            (index) => _buildViolator(context, state.report.violation(widget.violationIndex)?.violators?.elementAt(index) ?? Violator.empty(), index),
+            (index) {
+              final violator = state.report.violation(widget.violationIndex)?.violators?.elementAt(index);
+              ViolatorResolution resolution;
+              if(violator != null && state.reportStatusInfo != null) {
+                resolution = state.reportStatusInfo.violators.firstWhere((violatorResolution) => violator.id == violatorResolution.violatorId);
+              }
+              return _buildViolator(context, violator ?? Violator.empty(), index, resolution: resolution);
+            },
           ),
         ),
         _buildAddViolator(context),
@@ -1495,7 +1504,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
     );
   }
 
-  Widget _buildViolator(BuildContext context, Violator violator, int index) {
+  Widget _buildViolator(BuildContext context, Violator violator, int index, {ViolatorResolution resolution}) {
     return Theme(
      data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
       child: ExpansionTile(
@@ -1530,7 +1539,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
                         (value)=> _onViolatorSearch(context, index, value), 
                         (value)=> _onViolatorSelect(context, index, value), 
                       ),
-                      _buildViolatorInfo(context, index, violator)
+                      _buildViolatorInfo(context, index, violator, resolution: resolution)
                     ],
                   ),
                 ),
@@ -1549,16 +1558,21 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
     );
   }
 
-  Widget _buildViolatorInfo(BuildContext context, int index, Violator violator) {
-    if (violator?.type?.id == ViolatorTypeIds.official) {
-      return _buildOfficial(context, index, violator);
-    } else if (violator?.type?.id == ViolatorTypeIds.private) {
-      return _buildPrivate(context, index, violator);
-    } else if (violator?.type?.id == ViolatorTypeIds.ip) {
-      return _buildIp(context, index, violator);
-    } else {
-      return _buildLegal(context, index, violator);
-    }
+  Widget _buildViolatorInfo(BuildContext context, int index, Violator violator, {ViolatorResolution resolution}) {
+    return Column(
+      children: [
+        if (violator?.type?.id == ViolatorTypeIds.official) 
+          _buildOfficial(context, index, violator)
+        else if (violator?.type?.id == ViolatorTypeIds.private) 
+          _buildPrivate(context, index, violator)
+        else if (violator?.type?.id == ViolatorTypeIds.ip) 
+          _buildIp(context, index, violator)
+        else
+          _buildLegal(context, index, violator),
+        if(resolution != null)
+          ResolutionWidget(resolution: resolution),
+      ],
+    );
   }
 
   Widget _buildLegal(BuildContext context, int index, Violator violator) {

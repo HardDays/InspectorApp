@@ -16,10 +16,11 @@ ReportStatusInfo _$ReportStatusInfoFromJson(Map<String, dynamic> json) {
     respEmployee: json['respEmployee'] == null
         ? null
         : EmployeeShort.fromJson(json['respEmployee'] as Map<String, dynamic>),
-    violators: json['violators'] == null
-        ? null
-        : ViolatorResolution.fromJson(
-            json['violators'] as Map<String, dynamic>),
+    violators: (json['violators'] as List)
+        ?.map((e) => e == null
+            ? null
+            : ViolatorResolution.fromJson(e as Map<String, dynamic>))
+        ?.toList(),
   );
 }
 

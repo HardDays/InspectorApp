@@ -1,4 +1,5 @@
 import 'package:inspector/model/report.dart';
+import 'package:inspector/model/report_status_info.dart';
 import 'package:inspector/providers/exceptions/api_exception.dart';
 import 'package:inspector/services/api/api_service.dart';
 import 'package:inspector/services/mixins/data_sending_configuration_mixin.dart';
@@ -73,4 +74,8 @@ class ReportsService {
    //return [];
     return await _reportsDbService.errors();
   }
+
+  Future<ReportStatusInfo> getReportStatusInfo(Report report) async 
+    => await _apiService.getReportStatusInfo(report);
+  
 }

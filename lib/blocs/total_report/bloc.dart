@@ -215,9 +215,9 @@ class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {
       try {
         final loaded = await _dictionaryService.isLoaded();        
         if (!loaded) {
-          yield LoadDictState(state.report, state.userLocation, state.violationLocation);
+          yield LoadDictState(state.report, state.userLocation, state.violationLocation, reportStatusInfo: state.reportStatusInfo);
           await Future.delayed(Duration(seconds: 2));
-          yield TotalReportBlocState(state.report, state.userLocation, state.violationLocation);
+          yield TotalReportBlocState(state.report, state.userLocation, state.violationLocation, reportStatusInfo: state.reportStatusInfo);
         } else {
           add(InitEvent(event.violationIndex, event.report));
         } 
@@ -227,12 +227,18 @@ class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {
     } else if (event is InitEvent) {
       violationIndex = event.violationIndex;
       final position = await Geolocator.getLastKnownPosition();
+      if(await _persistanceService.getDataSendingState()) {
+        if(!state.report.isNew) {
+          final reportStatusInfo = await _reportsService.getReportStatusInfo(state.report);
+          yield(state.copyWith(reportStatusInfo: reportStatusInfo));
+        }
+      }
       if (position != null && position.latitude != 0 && position.longitude != 0) {
-        yield UserLocationLoadedState(event.report, LatLng(position.latitude, position.longitude), state.violationLocation);
+        yield UserLocationLoadedState(event.report, LatLng(position.latitude, position.longitude), state.violationLocation, reportStatusInfo: state.reportStatusInfo);
       }
       final address = state.report.violation(violationIndex)?.violationAddress;
       if (address?.latitude != null && address?.longitude != null) {
-        yield ViolationLocationLoadedState(event.report, state.userLocation, LatLng(address.latitude, address.longitude));
+        yield ViolationLocationLoadedState(event.report, state.userLocation, LatLng(address.latitude, address.longitude), reportStatusInfo: state.reportStatusInfo);
       }
     } else if (event is SetViolationNotPresentEvent) {
       yield state.copyWith(
@@ -293,7 +299,7 @@ class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {
             );
             final violations = state.report.violations;
             violations[violationIndex] = violation;
-            yield AddressFromLocationState(state.report.copyWith(violations: violations), state.userLocation, LatLng(state.userLocation.latitude, state.userLocation.longitude));
+            yield AddressFromLocationState(state.report.copyWith(violations: violations), state.userLocation, LatLng(state.userLocation.latitude, state.userLocation.longitude), reportStatusInfo: state.reportStatusInfo);
           }
         }
       } else if (event is SetViolationAreaEvent) {
@@ -376,7 +382,7 @@ class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {
         final resLocation = await _geoService.geocode(event.address.toSearchString());
         await Future.delayed(const Duration(milliseconds: 300));
         if (resLocation != null) {
-          yield AddressFromLocationState(state.report, null, LatLng(resLocation.lat, resLocation.lng));
+          yield AddressFromLocationState(state.report, null, LatLng(resLocation.lat, resLocation.lng), reportStatusInfo: state.reportStatusInfo);
         }
       }
     } else if (event is ChangeViolatorEvent) { 
@@ -577,21 +583,21 @@ class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {
       }
       try {
         final res = await _reportsService.create(report, local: local);
-        yield SuccessState(res, state.userLocation, state.violationLocation);
+        yield SuccessState(res, state.userLocation, state.violationLocation, reportStatusInfo: state.reportStatusInfo);
       } on ApiException catch (ex) {
         //final status = await _dictionaryService.getReportStatuses(id: ReportStatusIds.new_);
         await _reportsService.create(report, error: '${ex.message} ${ex.details}', local: true);
-        yield ErrorState(ex, state.report, state.userLocation, state.violationLocation);
+        yield ErrorState(ex, state.report, state.userLocation, state.violationLocation, reportStatusInfo: state.reportStatusInfo);
       } catch (ex) {
-        yield ErrorState(UnhandledException(ex.toString()), state.report, state.userLocation, state.violationLocation);
+        yield ErrorState(UnhandledException(ex.toString()), state.report, state.userLocation, state.violationLocation, reportStatusInfo: state.reportStatusInfo);
       }
     } else if (event is RemoveReportEvent) {
       await _reportsService.removeLocal(state.report);
-      yield DeletedState(state.report, state.userLocation, state.violationLocation); 
+         DeletedState(state.report, state.userLocation, state.violationLocation, reportStatusInfo: state.reportStatusInfo); 
     } else if (event is SetViolationLocationEvent) {
-      yield TotalReportBlocState(state.report, state.userLocation, event.location);
+      yield TotalReportBlocState(state.report, state.userLocation, event.location, reportStatusInfo: state.reportStatusInfo);
     } else if (event is FlushEvent) {
-      yield TotalReportBlocState(state.report, state.userLocation, state.violationLocation);
+      yield TotalReportBlocState(state.report, state.userLocation, state.violationLocation, reportStatusInfo: state.reportStatusInfo);
     }
   } 
 }

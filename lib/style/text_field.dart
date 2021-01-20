@@ -40,6 +40,8 @@ class ProjectTextField extends StatelessWidget {
       minLines: minLines,
       enabled: enabled,
       decoration: InputDecoration(
+        filled: !enabled,
+        fillColor: enabled ? null : ProjectColors.grey,
         hintText: hintText,
         contentPadding: const EdgeInsets.only(left: 10, top: 20, right: 10),
         hintStyle: ProjectTextStyles.base.apply(color: ProjectColors.darkBlue),
