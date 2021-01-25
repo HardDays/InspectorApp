@@ -124,7 +124,7 @@ class ViolatorInfoPrivate extends ViolatorInfo{
 
   @override
   String toString() {
-    final data = [name, inn != null ? 'ИНН $inn' : null];
+    final data = [inn != null ? 'ИНН $inn' : null, name, docSeries != null && docNumber != null ? '($docSeries $docNumber)' : null];
     return data.where((e)=> e !=null).join(' ');
   }
 
