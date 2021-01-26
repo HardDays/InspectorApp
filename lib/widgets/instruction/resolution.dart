@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:inspector/model/report_status_info.dart';
 import 'package:inspector/style/date_picker.dart';
 import 'package:inspector/style/text_field.dart';
+import 'package:inspector/style/title.dart';
 
 class ResolutionWidget extends StatefulWidget {
   ResolutionWidget({
@@ -34,6 +35,7 @@ class _ResolutionWidgetState extends State<ResolutionWidget> {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        ProjectTitle('Резолюция'),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 10),
           child: Row(
