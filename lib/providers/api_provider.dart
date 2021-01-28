@@ -69,7 +69,7 @@ class ApiProvider {
     ViolatorInfoIp: '/dict/violator-info-ip',
     ResolutionType: '/dict/resolution-types',
     NormativeActArticle: '/dict/normative-act-articles',
-    ControlObject: '/dict/dc-objects',
+    ControlObject: '/dc-objects',
     KladdrAddressObjectType: '/dict/kladr-address-object-types',
 
   };

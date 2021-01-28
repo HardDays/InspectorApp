@@ -192,12 +192,12 @@ class ControlListPageState extends State<ControlListPage> {
                   child: Row(
                     children: [
                       ControlStatusWidget(
-                          object.kind, object.id.toString()),
+                          object.type.name, object.id.toString()),
                       Flexible(
                         child: Padding(
                           padding: const EdgeInsets.only(left: 10, right: 10),
                           child: Text(
-                            object.address,
+                            object.address ?? '',
                             style: ProjectTextStyles.base
                                 .apply(color: ProjectColors.black),
                           ),
@@ -207,7 +207,7 @@ class ControlListPageState extends State<ControlListPage> {
                   ),
                 ),
                 Text(
-                  object.area,
+                  object.area ?? '',
                   style: ProjectTextStyles.base
                       .apply(color: ProjectColors.darkBlue),
                 ),
@@ -216,7 +216,7 @@ class ControlListPageState extends State<ControlListPage> {
             Padding(
               padding: const EdgeInsets.only(top: 18),
               child: Text(
-                'БАЛАНСОДЕРЖАТЕЛЬ',
+                object.balanceOwner ?? 'Балансодержатель',
                 style: ProjectTextStyles.base.apply(color: ProjectColors.black),
               ),
             ),
@@ -226,10 +226,11 @@ class ControlListPageState extends State<ControlListPage> {
                   children: [
                     _buildIcon(
                         ProjectIcons.cameraIcon(), object.cameraCount.toString()),
-                    _buildIcon(ProjectIcons.alertIcon(), object.violationsCount.toString()),
-                    _buildIcon(
+                    _buildIcon(ProjectIcons.alertIcon(), object.violationsCount ?? '0'),
+                    if(object.lastSurveyDate != null)// && object.lastSurveyDateDelta != null)
+                      _buildIcon(
                         ProjectIcons.calendarIcon(),
-                        '${object.lastSurveyDate} + ${object.lastSurveyDateDelta > 0 ? '(' + object.lastSurveyDateDelta.toString() + ')' : ''}',),
+                        '${object.lastSurveyDate.toString()}',),// + ${object.lastSurveyDateDelta > 0 ? '(' + object.lastSurveyDateDelta.toString() + ')' : ''}',),
                   ],
                 )),
           ],
@@ -291,14 +292,14 @@ class ControlListPageState extends State<ControlListPage> {
     );
   }
 
-  Widget _buildIcon(Widget icon, String title) {
+  Widget _buildIcon(Widget icon, Object title) {
     return Row(
       children: [
         icon,
         Padding(
           padding: const EdgeInsets.only(left: 7, right: 15),
           child: Text(
-            title,
+            title.toString(),
             style: ProjectTextStyles.base.apply(color: ProjectColors.black),
           ),
         ),

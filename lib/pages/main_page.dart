@@ -12,7 +12,7 @@ class MainPage extends StatelessWidget {
   final _pagesMap = {
     Screens.AssignmentsScreen: MainPageRoutes.instructionListPage,
     Screens.MapScreen: MainPageRoutes.mapPage,
-    Screens.VKScreen: MainPageRoutes.controlListPageWebView,
+    Screens.VKScreen: MainPageRoutes.controlSreen,
     Screens.ProfileScreen: MainPageRoutes.profilePage,
   };
 

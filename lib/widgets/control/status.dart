@@ -28,7 +28,7 @@ class ControlStatusWidget extends StatelessWidget {
           decoration: BoxDecoration(
             color: colors[status],
           ),
-          child: Text(status,
+          child: Text(status ?? '',
             style: ProjectTextStyles.smallBold.apply(color: ProjectColors.white)
           ),
         ),
