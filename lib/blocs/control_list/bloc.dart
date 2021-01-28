@@ -29,7 +29,7 @@ class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
     if (event is LoadControlListEvent) {
       try {
         final objects = await _apiDictionaryService.getControlObjects(0, 500);
-        print('');
+        yield(LoadedState(objects));
       } on ApiException catch (e) {
         print(e.message);
         print(e.details);

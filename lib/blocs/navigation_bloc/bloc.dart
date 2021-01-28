@@ -20,14 +20,14 @@ class NavigationBloc extends Bloc<NavigationBlocEvent, NavigationBlocState> {
     if (event is ChangeScreen) {
       if (event.screen == Screens.MapScreen)
         yield* (_openMap());
-      else if (event.screen == Screens.VKScreen) {
-        var connectivityResult = await Connectivity().checkConnectivity();
-        if (connectivityResult == ConnectivityResult.none) {
-          yield (OpenControlPageErrorState(state.currentScreen));
-        } else {
-          yield (BottomNavigationStateChanged(event.screen));
-        }
-      } //_openControl();
+      // else if (event.screen == Screens.VKScreen) {
+      //   var connectivityResult = await Connectivity().checkConnectivity();
+      //   if (connectivityResult == ConnectivityResult.none) {
+      //     yield (OpenControlPageErrorState(state.currentScreen));
+      //   } else {
+      //     yield (BottomNavigationStateChanged(event.screen));
+      //   }
+      // } //_openControl();
       else
         yield (BottomNavigationStateChanged(event.screen));
     }
