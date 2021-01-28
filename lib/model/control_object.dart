@@ -1,83 +1,50 @@
 import 'package:inspector/model/object_category.dart';
+import 'package:inspector/model/violation_status.dart';
+import 'package:json_annotation/json_annotation.dart';
 
+part 'control_object.g.dart';
+
+@JsonSerializable()
 class ControlObject {
   final int id;
-  final ObjectCategory type;
-  final String area;
-  final String ownerArea;
-  final String district;
-  final String customer;
-  final String contractor;
+  final int externalId;
+  final ObjectType type;
   final String kind;
+  final String name;
+  final String area;
+  final String district;
   final String address;
-  final int cameraCount;
-  final int lastSurveyDateDelta;
-  final String lastSurveyDate;
-  final String violationsCount;
-  final String rowColor;
   final String balanceOwner;
+  final Contractor contractor;
+  final int cameraCount;
+  final String violationsCount;
+  final DateTime lastSurveyDate;
+  final String rowColor;
   final List<MapGeometricObject> geometry;
+  final List<ViolationShortSearchResult> violations;
 
   ControlObject({
     this.id,
+    this.externalId,
     this.type,
-    this.area,
-    this.ownerArea,
-    this.district,
-    this.customer,
-    this.contractor,
     this.kind,
+    this.name,
+    this.area,
+    this.district,
     this.address,
-    this.cameraCount,
-    this.lastSurveyDateDelta,
-    this.lastSurveyDate,
-    this.violationsCount,
-    this.rowColor,
     this.balanceOwner,
+    this.contractor,
+    this.cameraCount,
+    this.violationsCount,
+    this.lastSurveyDate,
+    this.rowColor,
     this.geometry,
+    this.violations,
   });
 
-  factory ControlObject.fromJson(Map<String, dynamic> json) {
-    return ControlObject(
-      type: ObjectCategory.fromJson(json['type']),
-      id: json['id'],
-      area: json['area'],
-      ownerArea: json['ownerArea'],
-      district: json['district'],
-      customer: json['customer'],
-      contractor: json['contractor'],
-      kind: json['kind'],
-      address: json['address'],
-      cameraCount: json['cameraCount'],
-      lastSurveyDateDelta: json['lastSurveyDateDelta'],
-      lastSurveyDate: json['lastSurveyDate'],
-      violationsCount: json['violationsCount'],
-      rowColor: json['rowColor'],
-      balanceOwner: json['balanceOwner'],
-      geometry:
-          json['geometry'].map((e) => MapGeometricObject.fromJson(e)).toList(),
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'type': type.toJson(),
-      'area': area,
-      'ownerArea': ownerArea,
-      'district': district,
-      'customer': customer,
-      'contractor': contractor,
-      'kind': kind,
-      'address': address,
-      'cameraCount': cameraCount,
-      'lastSurveyDateDelta': lastSurveyDateDelta,
-      'violationsCount': violationsCount,
-      'rowColor': rowColor,
-      'balanceOwner': balanceOwner,
-      'geometry': geometry.map((e) => e.toJson()).toList(),
-    };
-  }
+  factory ControlObject.fromJson(Map<String, dynamic> json) =>
+      _$ControlObjectFromJson(json);
+  Map<String, dynamic> toJson() => _$ControlObjectToJson(this);
 }
 
 enum MapGeometricObjectType {
@@ -86,6 +53,7 @@ enum MapGeometricObjectType {
   polygon,
 }
 
+@JsonSerializable()
 class Point {
   final int x;
   final int y;
@@ -95,27 +63,11 @@ class Point {
     this.y,
   });
 
-  factory Point.fromJson(Map<String, dynamic> json) {
-    return Point(x: json['x'], y: json['y']);
-  }
-
-  Map<String, dynamic> toJson() {
-    return {'x': x, 'y': y};
-  }
+  factory Point.fromJson(Map<String, dynamic> json) => _$PointFromJson(json);
+  Map<String, dynamic> toJson() => _$PointToJson(this);
 }
 
-const _mapGeometricObjectTypeMap = {
-  MapGeometricObjectType.point: 'point',
-  MapGeometricObjectType.polyline: 'polyline',
-  MapGeometricObjectType.polygon: 'polygon',
-};
-
-const _mapGeometricObjectEnumMap = {
-  'point': MapGeometricObjectType.point,
-  'polyline': MapGeometricObjectType.polyline,
-  'polygon': MapGeometricObjectType.polygon,
-};
-
+@JsonSerializable()
 class MapGeometricObject {
   final MapGeometricObjectType type;
   final String color;
@@ -129,21 +81,143 @@ class MapGeometricObject {
     this.points,
   });
 
-  factory MapGeometricObject.fromJson(Map<String, dynamic> json) {
-    return MapGeometricObject(
-      type: _mapGeometricObjectEnumMap[json['type']],
-      color: json['color'],
-      label: json['label'],
-      points: json['points'].map((e) => Point.fromJson(e)).toList(),
-    );
-  }
+  factory MapGeometricObject.fromJson(Map<String, dynamic> json) =>
+      _$MapGeometricObjectFromJson(json);
+  Map<String, dynamic> toJson() => _$MapGeometricObjectToJson(this);
+}
 
-  Map<String, dynamic> toJson() {
-    return {
-      'type': _mapGeometricObjectTypeMap[type],
-      'color': color,
-      'label': label,
-      'points': points.map((e) => e.toJson()).toList(),
-    };
-  }
+@JsonSerializable()
+class ObjectType {
+  final int id;
+  final String name;
+  final String code;
+
+  ObjectType({
+    this.id,
+    this.name,
+    this.code,
+  });
+
+  factory ObjectType.fromJson(Map<String, dynamic> json) =>
+      _$ObjectTypeFromJson(json);
+  Map<String, dynamic> toJson() => _$ObjectTypeToJson(this);
+}
+
+@JsonSerializable()
+class Contractor {
+  final int id;
+  final String name;
+  final String inn;
+
+  Contractor({
+    this.id,
+    this.name,
+    this.inn,
+  });
+
+  factory Contractor.fromJson(Map<String, dynamic> json) =>
+      _$ContractorFromJson(json);
+  Map<String, dynamic> toJson() => _$ContractorToJson(this);
+}
+
+@JsonSerializable()
+class ViolationShortSearchResult {
+  final int id;
+  final String violationNum;
+  final ViolationStatus violationStatus;
+  final String detectionDate;
+  final Source source;
+  final ObjectElement objectElement;
+  final ViolationName eknViolationName;
+  final ViolationName otherViolationName;
+  final String resolveDate;
+  final String controlDate;
+  final List<DCPhoto> photos;
+
+  ViolationShortSearchResult({
+    this.id,
+    this.violationNum,
+    this.violationStatus,
+    this.detectionDate,
+    this.source,
+    this.objectElement,
+    this.eknViolationName,
+    this.otherViolationName,
+    this.resolveDate,
+    this.controlDate,
+    this.photos,
+  });
+
+  factory ViolationShortSearchResult.fromJson(Map<String, dynamic> json) =>
+      _$ViolationShortSearchResultFromJson(json);
+  Map<String, dynamic> toJson() => _$ViolationShortSearchResultToJson(this);
+}
+
+@JsonSerializable()
+class Source {
+  final int id;
+  final String name;
+
+  Source({
+    this.id,
+    this.name,
+  });
+
+  factory Source.fromJson(Map<String, dynamic> json) => _$SourceFromJson(json);
+  Map<String, dynamic> toJson() => _$SourceToJson(this);
+}
+
+@JsonSerializable()
+class ObjectElement {
+  final int id;
+  final String name;
+  final ObjectType objectType;
+
+  ObjectElement({
+    this.id,
+    this.name,
+    this.objectType,
+  });
+
+  factory ObjectElement.fromJson(Map<String, dynamic> json) =>
+      _$ObjectElementFromJson(json);
+  Map<String, dynamic> toJson() => _$ObjectElementToJson(this);
+}
+
+@JsonSerializable()
+class ViolationName {
+  final int id;
+  final String name;
+
+  ViolationName({
+    this.id,
+    this.name,
+  });
+
+  factory ViolationName.fromJson(Map<String, dynamic> json) =>
+      _$ViolationNameFromJson(json);
+  Map<String, dynamic> toJson() => _$ViolationNameToJson(this);
+}
+
+@JsonSerializable()
+class DCPhoto {
+  final int id;
+  final String name;
+  final String data;
+  final String loadDate;
+  final int geometryX;
+  final int geometryY;
+
+  DCPhoto({
+    this.id,
+    this.name,
+    this.data,
+    this.loadDate,
+    this.geometryX,
+    this.geometryY,
+  });
+
+  factory DCPhoto.fromJson(Map<String, dynamic> json) =>
+      _$DCPhotoFromJson(json);
+  Map<String, dynamic> toJson() => _$DCPhotoToJson(this);
 }
