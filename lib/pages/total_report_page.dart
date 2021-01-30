@@ -977,7 +977,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
       child: BlocBuilder<TotalReportBloc, TotalReportBlocState>(
         builder: (context, state) {
           if (state is LoadDictState) {
-            _loadDict(context);
+            //_loadDict(context);
           } else if (state is UserLocationLoadedState) {
             _centerMapToLocation(context, state.userLocation);
           } else if (state is ViolationLocationLoadedState) {
