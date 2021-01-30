@@ -2,5 +2,6 @@ enum Screens {
   AssignmentsScreen,
   VKScreen,
   MapScreen,
-  ProfileScreen
+  ProfileScreen,
+  VKWebScreen,
 }

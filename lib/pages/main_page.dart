@@ -7,21 +7,26 @@ import 'package:inspector/blocs/navigation_bloc/screens.dart';
 import 'package:inspector/blocs/navigation_bloc/states.dart';
 import 'package:inspector/navigation.gr.dart';
 import 'package:inspector/pages/dictionary_loading_page.dart';
+import 'package:inspector/services/persistance_service.dart';
 import 'package:inspector/widgets/bottom_navigation_bar.dart';
+import 'package:provider/provider.dart';
 
 class MainPage extends StatelessWidget {
   final _pagesMap = {
     Screens.AssignmentsScreen: MainPageRoutes.instructionListPage,
     Screens.MapScreen: MainPageRoutes.mapPage,
     Screens.VKScreen: MainPageRoutes.controlSreen,
+    Screens.VKWebScreen: MainPageRoutes.controlListPageWebView,
     Screens.ProfileScreen: MainPageRoutes.profilePage,
   };
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider<NavigationBloc>(
-      create: (BuildContext context) =>
-          NavigationBloc(InitialNavigationBlocState()),
+      create: (BuildContext context) => NavigationBloc(
+        InitialNavigationBlocState(),
+        Provider.of<PersistanceService>(context, listen: false),
+      ),
       child: Scaffold(
         body: BlocListener<NavigationBloc, NavigationBlocState>(
           // им надо чтобы оно возвращало в рут при нажатии на таб внизу
@@ -36,7 +41,8 @@ class MainPage extends StatelessWidget {
             } else if (state is OpenControlPageErrorState) {
               Scaffold.of(context).showSnackBar(
                 SnackBar(
-                  content: Text('Работа с разделом "Ведомственный контроль" возможна только при наличии сети Internet'),
+                  content: Text(
+                      'Работа с разделом "Ведомственный контроль" возможна только при наличии сети Internet'),
                 ),
               );
             } else {
@@ -45,7 +51,8 @@ class MainPage extends StatelessWidget {
                   .replace(_pagesMap[state.currentScreen]);
             }
           },
-          child: DictionaryLoadingPage(child: ExtendedNavigator(name: 'mainPageNavigator')),
+          child: DictionaryLoadingPage(
+              child: ExtendedNavigator(name: 'mainPageNavigator')),
         ),
         bottomNavigationBar: BlocBuilder<NavigationBloc, NavigationBlocState>(
           buildWhen: (prev, next) => prev.currentScreen != next.currentScreen,

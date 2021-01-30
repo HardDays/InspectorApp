@@ -15,6 +15,7 @@ class FilledBlocState extends ProfileBlocState {
   final bool canBeSended;
   final bool showFingerPrintSwitch;
   final bool usePin;
+  final bool useWebVersionOfVK;
 
   FilledBlocState({
     this.userName,
@@ -28,5 +29,6 @@ class FilledBlocState extends ProfileBlocState {
     this.canBeSended,
     this.showFingerPrintSwitch, 
     this.usePin,
+    this.useWebVersionOfVK,
   });
 }

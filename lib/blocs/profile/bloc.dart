@@ -51,6 +51,11 @@ class ProfileBloc extends Bloc<ProfileBlocEvent, ProfileBlocState> {
       await _persistanceService.saveFingerprintState(false);
       yield (_copyFilledBlocState(prev,
           usePin: event.usingPinMode, showFingerprintSwitch: event.usingPinMode));
+    } else if (event is SetUseWebVersionOfVK) {
+       FilledBlocState prev = state as FilledBlocState;
+      await _persistanceService.setUseWebVersionOfVk(event.useWebVersionOfVK);
+      yield (_copyFilledBlocState(prev,
+          useWebVersionOfVK: event.useWebVersionOfVK));
     }
     if (event is InitEvent) {
       yield (await _getFilledState(false));
@@ -126,6 +131,7 @@ class ProfileBloc extends Bloc<ProfileBlocEvent, ProfileBlocState> {
         (await _instructionRequestService.all()).isNotEmpty;
     bool usePin = await _persistanceService.getUsePinState();
     bool showFingerprintSwitch = usePin;
+    bool useWebVersionOfVK = await _persistanceService.useWebVersionOfVK();
     return FilledBlocState(
       appVersion: appVersion,
       dataSendingMode: dataSendingMode == null ? true : dataSendingMode,
@@ -138,6 +144,7 @@ class ProfileBloc extends Bloc<ProfileBlocEvent, ProfileBlocState> {
       canBeSended: canBeSended,
       usePin: usePin,
       showFingerPrintSwitch: showFingerprintSwitch,
+      useWebVersionOfVK: useWebVersionOfVK,
     );
   }
 
@@ -158,6 +165,7 @@ class ProfileBloc extends Bloc<ProfileBlocEvent, ProfileBlocState> {
     bool canBeSended,
     bool showFingerprintSwitch,
     bool usePin,
+    bool useWebVersionOfVK,
   }) {
     return FilledBlocState(
       appVersion: _whatIsNotNull(appVersion, prev.appVersion),
@@ -172,6 +180,7 @@ class ProfileBloc extends Bloc<ProfileBlocEvent, ProfileBlocState> {
       canBeSended: _whatIsNotNull(canBeSended, prev.canBeSended),
       usePin: _whatIsNotNull(usePin, prev.usePin),
       showFingerPrintSwitch: _whatIsNotNull(showFingerprintSwitch, prev.showFingerPrintSwitch),
+      useWebVersionOfVK: useWebVersionOfVK ?? prev.showFingerPrintSwitch,
     );
   }
 

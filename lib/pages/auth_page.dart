@@ -40,6 +40,15 @@ class AuthPage extends StatelessWidget {
                 ),
               ) != null;
               await _persistenceService.saveFingerprintState(useFingerprint);
+              final useWebVersionOfVK = await showDialog(
+                context: context,
+                child: AcceptDialog(
+                  message: 'Использовать Web-версию раздела "Ведомственный контроль"?', 
+                  acceptTitle: 'Да', 
+                  cancelTitle: 'Нет',
+                ),
+              ) != null;
+              await _persistenceService.setUseWebVersionOfVk(useWebVersionOfVK);
             }
             ExtendedNavigator.root.replace(Routes.mainPage);
           }

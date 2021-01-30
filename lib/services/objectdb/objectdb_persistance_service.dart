@@ -240,6 +240,16 @@ class ObjectDbPersistanceService extends ObjectDBService
     await _saveKeyValue('usePin', state);
   }
 
+  @override
+  Future<bool> useWebVersionOfVK() async {
+    return (await _getKeyValue('useWebVersionOfVK')) ?? true;
+  }
+
+  @override
+  Future<void> setUseWebVersionOfVk(bool state) async {
+    await _saveKeyValue('useWebVersionOfVK', state);
+  }
+
    Future setReportNumber(int number) async {
     return await _saveKeyValue('lastReportNumber', number);
   }

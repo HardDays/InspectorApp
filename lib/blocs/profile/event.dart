@@ -20,6 +20,12 @@ class SetUsingPinMode extends ProfileBlocEvent {
   SetUsingPinMode(this.usingPinMode);
 }
 
+class SetUseWebVersionOfVK extends ProfileBlocEvent {
+  final bool useWebVersionOfVK;
+
+  SetUseWebVersionOfVK(this.useWebVersionOfVK);
+}
+
 
 class SendDataEvent extends ProfileBlocEvent {
   final BuildContext context;
