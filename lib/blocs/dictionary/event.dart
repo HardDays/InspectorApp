@@ -14,3 +14,5 @@ class UpdateEvent extends DictionaryBlocEvent {
 class LoadedEvent extends DictionaryBlocEvent {
 
 }
+
+class CancelEvent extends DictionaryBlocEvent {}

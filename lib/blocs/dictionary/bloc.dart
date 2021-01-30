@@ -33,6 +33,9 @@ class DictionaryBloc extends Bloc<DictionaryBlocEvent, DictionaryBlocState> {
       yield LoadingState(event.name, event.count);
     } else if (event is LoadedEvent) {
       yield LoadedState();
+    } else if (event is CancelEvent) {
+      await operation?.cancel();
+      yield LoadedState();
     }
   } 
 

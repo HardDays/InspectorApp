@@ -6,6 +6,7 @@ import 'package:inspector/blocs/navigation_bloc/events.dart';
 import 'package:inspector/blocs/navigation_bloc/screens.dart';
 import 'package:inspector/blocs/navigation_bloc/states.dart';
 import 'package:inspector/navigation.gr.dart';
+import 'package:inspector/pages/dictionary_loading_page.dart';
 import 'package:inspector/widgets/bottom_navigation_bar.dart';
 
 class MainPage extends StatelessWidget {
@@ -44,7 +45,7 @@ class MainPage extends StatelessWidget {
                   .replace(_pagesMap[state.currentScreen]);
             }
           },
-          child: ExtendedNavigator(name: 'mainPageNavigator'),
+          child: DictionaryLoadingPage(child: ExtendedNavigator(name: 'mainPageNavigator')),
         ),
         bottomNavigationBar: BlocBuilder<NavigationBloc, NavigationBlocState>(
           buildWhen: (prev, next) => prev.currentScreen != next.currentScreen,

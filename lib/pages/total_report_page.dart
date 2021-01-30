@@ -649,9 +649,8 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
           final curViolators = report.violation(widget.violationIndex)?.violators ?? [];
           for (int i = 0; i < curViolators.length; i++) {
             final violator = curViolators[i];
-            final violatorPerson = violator.violatorPerson;
+            //final violatorPerson = violator.violatorPerson;
             if (!violator.violatorNotFound) {
-              if (violatorPerson?.id == null) {
                 validViolators = validViolators && _violatorFormKeys[i].currentState.validate();
                 if (violator?.type?.id == ViolatorTypeIds.legal) {
                   final person = (violator?.violatorPerson as ViolatorInfoLegal);
@@ -725,9 +724,6 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
               } else {
                 resViolators.add(violator);
               }
-            } else {
-              resViolators.add(violator);
-            }
           }
           if (_formKey.currentState.validate() && validViolators) {
             _showSnackBar(context, 'Рапорт сохраняется...', flush: false);
@@ -977,7 +973,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
       child: BlocBuilder<TotalReportBloc, TotalReportBlocState>(
         builder: (context, state) {
           if (state is LoadDictState) {
-            _loadDict(context);
+            //_loadDict(context);
           } else if (state is UserLocationLoadedState) {
             _centerMapToLocation(context, state.userLocation);
           } else if (state is ViolationLocationLoadedState) {
@@ -1577,7 +1573,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
 
   Widget _buildLegal(BuildContext context, int index, Violator violator) {
     final person = violator?.violatorPerson as ViolatorInfoLegal;
-    final enabled = person?.id == null;
+    final enabled = true;//person?.id == null;
     final textValidator = enabled ? _emptyValidator : null;
     return Column(
       children: [
@@ -1664,7 +1660,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
 
   Widget _buildOfficial(BuildContext context, int index, Violator violator) {
     final person = violator?.violatorPerson as ViolatorInfoOfficial;
-    final enabled = person?.id == null;
+    final enabled = true; //person?.id == null;
     final textValidator = enabled ? _emptyValidator : null;
     return Column(
       children: [
@@ -1751,7 +1747,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
   }
 
   Widget _buildPrivate(BuildContext context, int index, Violator violator) {
-    final enabled = violator?.violatorPerson?.id == null;
+    final enabled = true; //violator?.violatorPerson?.id == null;
     final person = violator.violatorPerson as ViolatorInfoPrivate;
     final textValidator = enabled ? _emptyValidator : null;
     return Column(
@@ -1833,7 +1829,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
 
   Widget _buildIp(BuildContext context, int index, Violator violator) {
     final person = violator.violatorPerson as ViolatorInfoIp;
-    final enabled = person?.id == null;
+    final enabled = true; //person?.id == null;
     final textValidator = enabled ? _emptyValidator : null;
     return Column(
       children: [
