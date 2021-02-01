@@ -11,13 +11,14 @@ import 'package:inspector/model/user.dart';
 import 'package:inspector/providers/api_provider.dart';
 import 'package:inspector/services/instruction_request_service.dart';
 import 'package:inspector/services/instructions_service.dart';
+import 'package:inspector/services/network_status_service/data_sending_mode_service.dart';
 import 'package:inspector/services/persistance_service.dart';
 import 'package:inspector/services/reports_service.dart';
 import 'package:inspector/style/accept_dialog.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ProfileBloc extends Bloc<ProfileBlocEvent, ProfileBlocState> {
-  ProfileBloc(ProfileBlocState initialState, this._persistanceService)
+  ProfileBloc(ProfileBlocState initialState, this._persistanceService, this._dataSendingModeStatusService)
       : super(initialState);
 
   static const appVersion = '4.3.13-SNAPSHOT';
@@ -32,6 +33,8 @@ class ProfileBloc extends Bloc<ProfileBlocEvent, ProfileBlocState> {
       InstructionRequestService();
   final ApiProvider _apiProvider = ApiProvider();
 
+  final DataSendingModeStatusService _dataSendingModeStatusService;
+
   final _instructionsService = InstructionsService();
 
   @override
@@ -45,6 +48,7 @@ class ProfileBloc extends Bloc<ProfileBlocEvent, ProfileBlocState> {
       await _persistanceService.saveDataSendingState(event.dataSendingMode);
       yield (_copyFilledBlocState(prev,
           dataSendingMode: event.dataSendingMode));
+      _dataSendingModeStatusService.add(event.dataSendingMode);
     } else if (event is SetUsingPinMode) {
       FilledBlocState prev = state as FilledBlocState;
       await _persistanceService.saveUsePinState(event.usingPinMode);
@@ -132,6 +136,7 @@ class ProfileBloc extends Bloc<ProfileBlocEvent, ProfileBlocState> {
     bool usePin = await _persistanceService.getUsePinState();
     bool showFingerprintSwitch = usePin;
     bool useWebVersionOfVK = await _persistanceService.useWebVersionOfVK();
+    _dataSendingModeStatusService.add(dataSendingMode);
     return FilledBlocState(
       appVersion: appVersion,
       dataSendingMode: dataSendingMode == null ? true : dataSendingMode,
