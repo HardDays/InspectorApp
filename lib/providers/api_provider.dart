@@ -42,6 +42,7 @@ class ApiProvider {
   static const _refreshPath = '/auth/refresh';
   static const _instructionsPath = '/instructions';
   static const _reportsPath = '/reports';
+  static const _departmentControlPath = '/dc-objects';
 
   static const Map<Type, String> _dictionaryMap = {
     SpecialObject: '/dict/special-objects',
@@ -114,7 +115,7 @@ class ApiProvider {
     } 
   }
 
-  void _removeJsonNulls(Map<String, dynamic> json) {
+  Map<String, dynamic> _removeJsonNulls(Map<String, dynamic> json) {
     json.removeWhere((key, value) => key == null || value == null);
     for (final value in json.values) {
       if (value is Map) {
@@ -127,6 +128,7 @@ class ApiProvider {
         }
       }
     }
+    return json;
   }
 
   void setToken(String token) {
@@ -187,12 +189,13 @@ class ApiProvider {
     );
   }
 
-  Future<dynamic> getDictionary<T>(int from, int to) async {
+  Future<dynamic> getDictionary<T>(int from, int to, {String sort}) async {
     return _request(
       () => dio.get(_dictionaryMap[T], 
         queryParameters: {
           'from': from,
           'to': to,
+          'sort': sort,
         },
       ),
     );
@@ -255,5 +258,112 @@ class ApiProvider {
       () => dio.get('$_reportsPath/${report.id}/status'),
     );
   }
+
+  Future<dynamic> getControlObjectById(int dcObjectId) {
+    return _request(
+      () => dio.get('$_departmentControlPath/$dcObjectId'),
+    );
+  }
+
+  Future<dynamic> getControlObjects({
+    List<int> dcObjectTypesIds, 
+    String dcObjectKind,
+    int externalId,
+    String objectName,
+    List<int> areaIds,
+    List<int> districtIds,
+    List<int> addressIds,
+    bool onlyNearObjects,
+    double userPositionX,
+    double userPositionY,
+    int searchRadius,
+    String balanceOwner,
+    int daysFromLastSurvey,
+    DateTime lastSurveyDateFrom,
+    DateTime lastSurveyDateTo,
+    bool camerasExist,
+    bool ignoreViolations,
+    bool forCurrentUser,
+    List<int> objectElementIds,
+    List<int> violationNameIds,
+    int sourceId,
+    String violationNum,
+    List<int> violationStatusIds,
+    DateTime detectionDateFrom,
+    DateTime detectionDateTo,
+    DateTime controlDateFrom,
+    DateTime controlDateTo,
+    int from,
+    int to,
+    List<String> sort,
+  }) async => 
+    _request(() => dio.get('$_departmentControlPath', queryParameters: _removeJsonNulls({
+      'dcObjectTypesIds': dcObjectTypesIds,
+      'dcObjectKind': dcObjectKind,
+      'externalId': externalId,
+      'objectName': objectName,
+      'areaIds': areaIds,
+      'districtIds': districtIds,
+      'addressIds': addressIds,
+      'onlyNearObjects': onlyNearObjects,
+      'userPositionX': userPositionX,
+      'userPositionY': userPositionY,
+      'searchRadius': searchRadius,
+      'balanceOwner': balanceOwner,
+      'daysFromLastSurvey': daysFromLastSurvey,
+      'lastSurveyDateFrom': lastSurveyDateFrom,
+      'lastSurveyDateTo': lastSurveyDateTo,
+      'camerasExist': camerasExist,
+      'ignoreViolations': ignoreViolations,
+      'forCurrentUser': forCurrentUser,
+      'objectElementIds': objectElementIds,
+      'violationNameIds': violationNameIds,
+      'sourceId': sourceId,
+      'violationNum': violationNum,
+      'violationStatusIds': violationStatusIds,
+      'detectionDateFrom': detectionDateFrom,
+      'detectionDateTo': detectionDateTo,
+      'controlDateFrom': controlDateFrom,
+      'controlDateTo': controlDateTo,
+      'from': from,
+      'to': to,
+      'sort': sort,
+    })),
+  );
+
+  Future<dynamic> getControlSearchResults(int dcObjectId, {
+    bool forCurrentUser,
+    DateTime surveyDateFrom,
+    DateTime surveyDateTo,
+    bool violationExists,
+    String violationNum,
+    List<int> dcViolationStatusIds,
+    int dcViolationTypeId,
+    int dcViolationKindId,
+    int sourceId,
+    int from,
+    int to,
+    List<String> sort, 
+  }) async {
+    return _request(() => dio.get('/dc-objects/$dcObjectId/control-results', queryParameters: _removeJsonNulls({
+      'forCurrentUser': forCurrentUser,
+      'surveyDateFrom': surveyDateFrom,
+      'surveyDateTo': surveyDateTo,
+      'violationExists': violationExists,
+      'violationNum': violationNum,
+      'dcViolationStatusIds': dcViolationStatusIds,
+      'dcViolationTypeId': dcViolationTypeId,
+      'dcViolationKindId': dcViolationKindId,
+      'sourceId': sourceId,
+      'from': from,
+      'sort': sort,
+    })));
+  }
+
+  Future<dynamic> getControlSearchResultsByIds(int dcObjectId, int dcControlResultId) {
+    return _request(() => dio.get('/dc-objects/$dcObjectId/control-results/$dcControlResultId'));
+  }
+
+
 
 }

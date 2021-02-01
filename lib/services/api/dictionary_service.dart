@@ -41,8 +41,8 @@ class ApiDictionaryService {
 
   ApiDictionaryService._internal();
 
-  Future<List<T>> _loadDictionary<T>(Converter<T> converter, int from, int to) async {
-    final data = await api.getDictionary<T>(from, to);
+  Future<List<T>> _loadDictionary<T>(Converter<T> converter, int from, int to, {String sort}) async {
+    final data = await api.getDictionary<T>(from, to, sort: sort);
     try {
       return List<T>.from(
         data['data']
@@ -130,7 +130,7 @@ class ApiDictionaryService {
   Future<List<Street>> getStreets(int from, int to) =>
       _loadDictionary<Street>((d) => Street.fromJson(d), from, to);
 
-  Future<List<ControlObject>> getControlObjects(int from, int to) =>
+  Future<List<ControlObject>> getControlObjects(int from, int to, {String sort}) =>
       _loadDictionary<ControlObject>((d) => ControlObject.fromJson(d), from, to);
   
    Future<List<KladdrAddressObjectType>> getKladdrAddressTypes(int from, int to) =>
