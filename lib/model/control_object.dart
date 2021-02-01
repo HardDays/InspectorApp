@@ -1,4 +1,6 @@
+import 'package:inspector/model/address.dart';
 import 'package:inspector/model/object_category.dart';
+import 'package:inspector/model/violation_kind.dart';
 import 'package:inspector/model/violation_status.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -220,4 +222,191 @@ class DCPhoto {
   factory DCPhoto.fromJson(Map<String, dynamic> json) =>
       _$DCPhotoFromJson(json);
   Map<String, dynamic> toJson() => _$DCPhotoToJson(this);
+}
+
+@JsonSerializable()
+class ControlResultSearchResult {
+  ControlResultSearchResult({
+    this.id,
+    this.surveyDate,
+    this.geometryX,
+    this.geometryY,
+    this.violationExists,
+    this.violation,
+    this.creationSentToCafap,
+    this.closureSentToCafap,
+  });
+
+  final int id;
+  final DateTime surveyDate;
+  final double geometryX;
+  final double geometryY;
+  final bool violationExists;
+  final ViolationSearchResult violation;
+  final bool creationSentToCafap;
+  final bool closureSentToCafap;
+
+  factory ControlResultSearchResult.fromJson(Map<String, dynamic> json) =>
+      _$ControlResultSearchResultFromJson(json);
+  Map<String, dynamic> toJson() => _$ControlResultSearchResultToJson(this);
+}
+
+@JsonSerializable()
+class ViolationSearchResult {
+  ViolationSearchResult({
+    this.id,
+    this.detectionDate,
+    this.eknViolationClassification,
+    this.otherViolationClassification,
+    this.btiAddress,
+    this.address,
+    this.btiRefAddress,
+    this.refAddressTinao,
+    this.objectElement,
+    this.description,
+    this.violator,
+    this.critical,
+    this.resolveDate,
+    this.controlDate,
+    this.additionalFeatures,
+    this.photos,
+    this.violationNum,
+    this.violationStatus,
+    this.source,
+    this.violationKind,
+    this.cafapAssigmentId,
+    this.cafapPrescriptionId,
+    this.cafapPrescriptionNum,
+    this.cafapViolationConfirmed,
+    this.performMarks,
+    this.extensionPeriods,
+    this.creationSentToCafap,
+    this.closureSentToCafap,
+  });
+
+  final int id;
+  final DateTime detectionDate;
+  final ViolationClassification eknViolationClassification;
+  final ViolationClassification otherViolationClassification;
+  final Address btiAddress;
+  final String address;
+  final Address btiRefAddress;
+  final bool refAddressTinao;
+  final ObjectElement objectElement;
+  final String description;
+  final Contractor violator;
+  final bool critical;
+  final DateTime resolveDate;
+  final DateTime controlDate;
+  final List<ViolationAdditionalFeature> additionalFeatures;
+  final List<DCPhoto> photos;
+  final String violationNum;
+  final ViolationStatus violationStatus;
+  final Source source;
+  final ViolationKind violationKind;
+  final String cafapAssigmentId;
+  final String cafapPrescriptionId;
+  final int cafapPrescriptionNum;
+  final bool cafapViolationConfirmed;
+  final List<PerformMark> performMarks;
+  final List<ViolationExtensionPeriodSearchResult> extensionPeriods;
+  final bool creationSentToCafap;
+  final bool closureSentToCafap;
+
+  factory ViolationSearchResult.fromJson(Map<String, dynamic> json) =>
+      _$ViolationSearchResultFromJson(json);
+  Map<String, dynamic> toJson() => _$ViolationSearchResultToJson(this);
+}
+
+@JsonSerializable()
+class ViolationClassification {
+  ViolationClassification({
+    this.id,
+    this.violationName,
+  });
+
+  final int id;
+  final ViolationName violationName;
+
+  factory ViolationClassification.fromJson(Map<String, dynamic> json) =>
+      _$ViolationClassificationFromJson(json);
+  Map<String, dynamic> toJson() => _$ViolationClassificationToJson(this);
+}
+
+@JsonSerializable()
+class ViolationAdditionalFeature {
+  ViolationAdditionalFeature({
+    this.id,
+    this.name,
+  });
+
+  final int id;
+  final String name;
+
+  factory ViolationAdditionalFeature.fromJson(Map<String, dynamic> json) =>
+      _$ViolationAdditionalFeatureFromJson(json);
+  Map<String, dynamic> toJson() => _$ViolationAdditionalFeatureToJson(this);
+}
+
+@JsonSerializable()
+class PerformMark {
+  PerformMark({
+    this.id,
+    this.resolveDate,
+    this.organization,
+    this.creator,
+    this.comments,
+    this.photos,
+  });
+
+  final int id;
+  final DateTime resolveDate;
+  final String organization;
+  final String creator;
+  final String comments;
+  final List<DCPhoto> photos;
+
+  factory PerformMark.fromJson(Map<String, dynamic> json) =>
+      _$PerformMarkFromJson(json);
+  Map<String, dynamic> toJson() => _$PerformMarkToJson(this);
+}
+
+@JsonSerializable()
+class ViolationExtensionPeriodSearchResult {
+  ViolationExtensionPeriodSearchResult({
+    this.resolveDate,
+    this.extensionReason,
+    this.comments,
+    this.id,
+    this.decisionPersonFio,
+    this.decisionPersonOccupation,
+    this.sentToCafap,
+  });
+
+  final DateTime resolveDate;
+  final ViolationExtensionReason extensionReason;
+  final String comments;
+  final int id;
+  final String decisionPersonFio;
+  final String decisionPersonOccupation;
+  final bool sentToCafap;
+
+  factory ViolationExtensionPeriodSearchResult.fromJson(Map<String, dynamic> json) =>
+      _$ViolationExtensionPeriodSearchResultFromJson(json);
+  Map<String, dynamic> toJson() => _$ViolationExtensionPeriodSearchResultToJson(this);
+}
+
+@JsonSerializable()
+class ViolationExtensionReason {
+  ViolationExtensionReason({
+    this.id,
+    this.name,
+  });
+  
+  final int id;
+  final String name;
+
+  factory ViolationExtensionReason.fromJson(Map<String, dynamic> json) =>
+      _$ViolationExtensionReasonFromJson(json);
+  Map<String, dynamic> toJson() => _$ViolationExtensionReasonToJson(this);
 }
