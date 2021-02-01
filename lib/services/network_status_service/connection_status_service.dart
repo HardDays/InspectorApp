@@ -1,6 +1,5 @@
 import 'package:connectivity/connectivity.dart';
 import 'package:inspector/services/network_status_service/network_status.dart';
-import 'package:inspector/services/network_status_service/network_status_service.dart';
 
 class ConnectionStatusService {
   

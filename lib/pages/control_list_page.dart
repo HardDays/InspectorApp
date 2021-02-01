@@ -15,7 +15,6 @@ import 'package:inspector/style/text_style.dart';
 import 'package:inspector/widgets/control/status.dart';
 import 'package:inspector/widgets/control/violation.dart';
 import 'package:inspector/style/filter_appbar.dart';
-import 'package:intl/intl.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong/latlong.dart';
 
@@ -29,9 +28,11 @@ class ControlListPage extends StatefulWidget {
 class ControlListPageState extends State<ControlListPage> {
   bool mapContent = false;
 
-  void _onControl() {
+  void _onControl(ControlObject object) {
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => ControlObjectPage()));
+      context,
+      MaterialPageRoute(builder: (context) => ControlObjectPage(object)),
+    );
   }
 
   void _onMap(bool value) {
@@ -44,15 +45,33 @@ class ControlListPageState extends State<ControlListPage> {
   Widget build(BuildContext context) {
     return BlocBuilder<ControlListBloc, ControlListBlocState>(
       builder: (context, state) {
-        Widget body = Center(child: CircularProgressIndicator(),);
+        Widget body = Center(
+          child: CircularProgressIndicator(),
+        );
         if (state is LoadedState) {
           body = _buildLoadedBody(context, state);
+        }
+        if (state is CantWorkInThisModeState) {
+          body = _cantWorkInThisMode();
         }
         return Scaffold(
           appBar: FilterAppbar('Ведомственный контроль', '', '', ''),
           body: body,
         );
       },
+    );
+  }
+
+  Widget _cantWorkInThisMode() {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(50.0),
+        child: Text(
+          'На данный момент работа в разделе "Ведомственный контроль" в ручном режиме передачи данных или режиме offline не поддерживается',
+          textAlign: TextAlign.center,
+          style: ProjectTextStyles.mediumBold,
+        ),
+      ),
     );
   }
 
@@ -152,7 +171,9 @@ class ControlListPageState extends State<ControlListPage> {
                   ],
                 )
               : ListView(
-                  children: state.objects.map((e) => _buildControl(context, e)).toList(),
+                  children: state.objects
+                      .map((e) => _buildControl(context, e))
+                      .toList(),
                 ),
         ),
       ],
@@ -179,7 +200,7 @@ class ControlListPageState extends State<ControlListPage> {
 
   Widget _buildInfo(ControlObject object) {
     return InkWell(
-      onTap: _onControl,
+      onTap: () => _onControl(object),
       child: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
@@ -221,18 +242,22 @@ class ControlListPageState extends State<ControlListPage> {
               ),
             ),
             Padding(
-                padding: const EdgeInsets.only(top: 18),
-                child: Row(
-                  children: [
+              padding: const EdgeInsets.only(top: 18),
+              child: Row(
+                children: [
+                  _buildIcon(
+                      ProjectIcons.cameraIcon(), object.cameraCount.toString()),
+                  _buildIcon(
+                      ProjectIcons.alertIcon(), object.violationsCount ?? '0'),
+                  if (object.lastSurveyDate !=
+                      null) // && object.lastSurveyDateDelta != null)
                     _buildIcon(
-                        ProjectIcons.cameraIcon(), object.cameraCount.toString()),
-                    _buildIcon(ProjectIcons.alertIcon(), object.violationsCount ?? '0'),
-                    if(object.lastSurveyDate != null)// && object.lastSurveyDateDelta != null)
-                      _buildIcon(
-                        ProjectIcons.calendarIcon(),
-                        '${object.lastSurveyDate.toString()}',),// + ${object.lastSurveyDateDelta > 0 ? '(' + object.lastSurveyDateDelta.toString() + ')' : ''}',),
-                  ],
-                )),
+                      ProjectIcons.calendarIcon(),
+                      '${object.lastSurveyDate.toString()}',
+                    ), // + ${object.lastSurveyDateDelta > 0 ? '(' + object.lastSurveyDateDelta.toString() + ')' : ''}',),
+                ],
+              ),
+            ),
           ],
         ),
       ),
@@ -284,9 +309,9 @@ class ControlListPageState extends State<ControlListPage> {
                 ],
                 child: _buildInfo(object)),
           ),
-          // Column(
-          //   children: object.violations.map((e) => ControlViolationWidget(violation: e,)).toList(),
-          // )
+          Column(
+            children: object.violations.map((e) => ControlViolationWidget(violation: e,)).toList(),
+          )
         ],
       ),
     );

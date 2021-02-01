@@ -21,13 +21,7 @@ import 'package:provider/provider.dart';
 class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<ProfileBloc>(
-      create: (BuildContext context) => ProfileBloc(
-        EmptyBlocState(),
-        Provider.of<PersistanceService>(context, listen: false),
-      )..add(InitEvent()),
-      child:
-          BlocBuilder<ProfileBloc, ProfileBlocState>(builder: (context, state) {
+    return BlocBuilder<ProfileBloc, ProfileBlocState>(builder: (context, state) {
         if (state is FilledBlocState)
           return Scaffold(
             appBar: AppBar(
@@ -322,7 +316,7 @@ class ProfilePage extends StatelessWidget {
             child: CircularProgressIndicator(),
           ),
         );
-      }),
+      },
     );
   }
 

@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:inspector/model/control_object.dart';
 import 'package:inspector/model/violation.dart';
 import 'package:inspector/pages/control_violation_page.dart';
 import 'package:inspector/style/colors.dart';
@@ -9,7 +10,7 @@ import 'package:intl/intl.dart';
 
 class ControlViolationWidget extends StatefulWidget {
 
-  final Violation violation;
+  final ViolationShortSearchResult violation;
 
   const ControlViolationWidget({Key key, @required this.violation}) : super(key: key);
 
@@ -86,16 +87,16 @@ class ControlViolationWidgetState extends State<ControlViolationWidget> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text('${widget.violation.violationNum} от ${widget.violation.violationDate} ',
+                                Text('${widget.violation.violationNum} от ${widget.violation.detectionDate} ',
                                   style: ProjectTextStyles.baseBold.apply(color: ProjectColors.blue),
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(top: 10, bottom: 10),
-                                  child: Text(widget.violation.objectCategory.name,
+                                  child: Text(widget.violation.objectElement.objectType.name,
                                     style: ProjectTextStyles.base.apply(color: ProjectColors.black),
                                   ),
                                 ),
-                                Text(widget.violation.violationType.name,
+                                Text(widget.violation.eknViolationName.name,
                                   style: ProjectTextStyles.base.apply(color: ProjectColors.black),
                                 ),
                               ],

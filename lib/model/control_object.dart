@@ -1,5 +1,4 @@
 import 'package:inspector/model/address.dart';
-import 'package:inspector/model/object_category.dart';
 import 'package:inspector/model/violation_kind.dart';
 import 'package:inspector/model/violation_status.dart';
 import 'package:json_annotation/json_annotation.dart';
