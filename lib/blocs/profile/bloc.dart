@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:inspector/blocs/notification_bloc/bloc.dart';
+import 'package:inspector/blocs/notification_bloc/events.dart';
 import 'package:inspector/blocs/profile/event.dart';
 import 'package:inspector/blocs/profile/state.dart';
 import 'package:inspector/model/user.dart';
@@ -52,10 +53,13 @@ class ProfileBloc extends Bloc<ProfileBlocEvent, ProfileBlocState> {
       yield (_copyFilledBlocState(prev, useFingerPrint: event.useFingerPrint));
     } else if (event is SetDataSendingMode) {
       FilledBlocState prev = state as FilledBlocState;
-      await _persistanceService.saveDataSendingState(event.dataSendingMode);
-      yield (_copyFilledBlocState(prev,
-          dataSendingMode: event.dataSendingMode));
-      _dataSendingModeStatusService.add(event.dataSendingMode);
+      //await _persistanceService.saveDataSendingState(event.dataSendingMode);
+      // yield (_copyFilledBlocState(
+      //   prev,
+      //   dataSendingMode: event.dataSendingMode,
+      // ));
+      //_dataSendingModeStatusService.add(event.dataSendingMode);
+      _notificationBloc.add(SnackBarNotificationEvent('Автоматический режим отправки данных недоступен.'));
     } else if (event is SetUsingPinMode) {
       FilledBlocState prev = state as FilledBlocState;
       await _persistanceService.saveUsePinState(event.usingPinMode);
@@ -137,7 +141,8 @@ class ProfileBloc extends Bloc<ProfileBlocEvent, ProfileBlocState> {
     DateTime lastDataSendingDate =
         await _persistanceService.getLastDataSendingDate();
     bool useFingerPrint = await _persistanceService.getFingerprintState();
-    bool dataSendingMode = await _persistanceService.getDataSendingState();
+    bool dataSendingMode =
+        false; //await _persistanceService.getDataSendingState();
     bool hasErrorReports = (await _reportsService.reportErrors()).isNotEmpty;
     bool canBeSended = (await _reportsService.readyToSend()).isNotEmpty ||
         (await _instructionRequestService.all()).isNotEmpty;
