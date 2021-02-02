@@ -2,6 +2,7 @@ import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:inspector/blocs/control_list/bloc.dart';
+import 'package:inspector/blocs/notification_bloc/bloc.dart';
 import 'package:inspector/blocs/profile/bloc.dart';
 import 'package:inspector/blocs/profile/state.dart';
 import 'package:inspector/providers/api_provider.dart';
@@ -69,6 +70,9 @@ class InjectorWidget extends StatelessWidget {
               Provider.of<DepartmentControlService>(context, listen: false),
               Provider.of<NetworkStatusService>(context, listen: false),
             ),
+          ),
+          BlocProvider(
+            create: (_) => NotificationBloc(),
           ),
         ],
         child: child,
