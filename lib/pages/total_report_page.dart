@@ -1581,15 +1581,15 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
           mainAxisSize: MainAxisSize.max,
           children: [
             Flexible(
-              child: _buildTextField('ИНН', 'Введите данные', _innControllers[index], enabled: enabled, validator: textValidator),
+              child: _buildTextField('ИНН', 'Введите данные', _innControllers[index], enabled: enabled, validator: textValidator, inputType: TextInputType.number,),
             ),
             Padding(padding: const EdgeInsets.only(left: 20)),
             Flexible(
-              child: _buildTextField('ОГРН', 'Введите данные', _ogrnControllers[index], enabled: enabled, validator: textValidator),
+              child: _buildTextField('ОГРН', 'Введите данные', _ogrnControllers[index], enabled: enabled, validator: textValidator, inputType: TextInputType.number,),
             ),
             Padding(padding: const EdgeInsets.only(left: 20)),
             Flexible(
-              child: _buildTextField('КПП', 'Введите данные', _kppControllers[index], enabled: enabled, validator: textValidator),
+              child: _buildTextField('КПП', 'Введите данные', _kppControllers[index], enabled: enabled, validator: textValidator, inputType: TextInputType.number,),
             ),
           ],
         ),
@@ -1638,7 +1638,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
             ),
             Padding(padding: const EdgeInsets.only(left: 35)),
             Flexible(
-              child: _buildTextField('Телефон', 'Введите данные', _phoneControllers[index], enabled: enabled, validator: textValidator),
+              child: _buildTextField('Телефон', 'Введите данные', _phoneControllers[index], enabled: enabled, inputType: TextInputType.phone,),
             ),
           ],
         ),
@@ -1669,15 +1669,15 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Flexible(
-              child: _buildTextField('ИНН организации', 'Введите данные', _innControllers[index], enabled: enabled, validator: textValidator),
+              child: _buildTextField('ИНН организации', 'Введите данные', _innControllers[index], enabled: enabled, validator: textValidator, inputType: TextInputType.number,),
             ),
             Padding(padding: const EdgeInsets.only(left: 20)),
             Flexible(
-              child: _buildTextField('ОГРН организации', 'Введите данные', _ogrnControllers[index], enabled: enabled, validator: textValidator),
+              child: _buildTextField('ОГРН организации', 'Введите данные', _ogrnControllers[index], enabled: enabled, validator: textValidator, inputType: TextInputType.number,),
             ),
             Padding(padding: const EdgeInsets.only(left: 20)),
             Flexible(
-              child: _buildTextField('КПП организации', 'Введите данные', _kppControllers[index], enabled: enabled, validator: textValidator,)
+              child: _buildTextField('КПП организации', 'Введите данные', _kppControllers[index], enabled: enabled, validator: textValidator, inputType: TextInputType.number,)
             ),
           ],
         ),
@@ -1726,7 +1726,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
             ),
             Padding(padding: const EdgeInsets.only(left: 35)),
             Flexible(
-              child: _buildTextField('Телефон', 'Введите данные', _phoneControllers[index], enabled: enabled, validator: textValidator),
+              child: _buildTextField('Телефон', 'Введите данные', _phoneControllers[index], enabled: enabled, inputType: TextInputType.phone,),
             ),
           ],
         ),
@@ -1785,7 +1785,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Flexible(
-              child: _buildTextField('ИНН', 'Введите данные', _innControllers[index], enabled: enabled, validator: textValidator),
+              child: _buildTextField('ИНН', 'Введите данные', _innControllers[index], enabled: enabled, validator: textValidator, inputType: TextInputType.number,),
             ),
             Padding(padding: const EdgeInsets.only(left: 20)),
             Flexible(
@@ -1822,7 +1822,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
             child: _buildTextField('Адрес регистрации', 'Введите данные', _registrationAddressControllers[index], enabled: enabled, validator: textValidator),
           ),
         ),
-        _buildTextField('Телефон', 'Введите данные', _phoneControllers[index], enabled: enabled, validator: textValidator),
+        _buildTextField('Телефон', 'Введите данные', _phoneControllers[index], enabled: enabled, inputType: TextInputType.phone,),
       ],
     );  
   }
@@ -1841,11 +1841,11 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Flexible(
-              child: _buildTextField('ИНН', 'Введите данные', _innControllers[index], enabled: enabled, validator: textValidator),
+              child: _buildTextField('ИНН', 'Введите данные', _innControllers[index], enabled: enabled, validator: textValidator, inputType: TextInputType.number,),
             ),
             Padding(padding: const EdgeInsets.only(left: 20)),
             Flexible(
-              child: _buildTextField('ОГРНИП', 'Введите данные', _ogrnControllers[index], enabled: enabled, validator: textValidator),
+              child: _buildTextField('ОГРНИП', 'Введите данные', _ogrnControllers[index], enabled: enabled, validator: textValidator, inputType: TextInputType.number,),
             ),
             Padding(padding: const EdgeInsets.only(left: 20)),
             Flexible(
@@ -1894,7 +1894,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
             child: _buildTextField('Адрес регистрации', 'Введите данные', _registrationAddressControllers[index], enabled: enabled, validator: textValidator),
           ),
         ),
-        _buildTextField('Телефон', 'Введите данные', _phoneControllers[index], enabled: enabled, validator: textValidator),
+        _buildTextField('Телефон', 'Введите данные', _phoneControllers[index], enabled: enabled, inputType: TextInputType.phone,),
       ],
     );
   }
@@ -2117,7 +2117,8 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
     TextEditingController controller, {
       Function(String) validator,
       EdgeInsets padding = const EdgeInsets.only(top: 20),
-      bool enabled = true
+      bool enabled = true,
+      TextInputType inputType,
     }
   ) {
     return Padding(
@@ -2128,6 +2129,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
         controller: controller,
         validator: validator,
         enabled: widget.report.isUpdatable && enabled && _validKind, 
+        inputType: inputType,
       )
     );
   }

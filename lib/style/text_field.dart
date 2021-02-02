@@ -14,6 +14,7 @@ class ProjectTextField extends StatelessWidget {
   final String initialValue;
   final TextEditingController controller;
   final Function(String) validator;
+  final TextInputType inputType;
 
   ProjectTextField({
     this.controller, 
@@ -23,7 +24,8 @@ class ProjectTextField extends StatelessWidget {
     this.maxLines, 
     this.hintText,
     this.validator,
-    this.enabled = true
+    this.enabled = true,
+    this.inputType,
   });
 
   Widget _buildField() {
@@ -39,6 +41,7 @@ class ProjectTextField extends StatelessWidget {
       maxLines: maxLines,
       minLines: minLines,
       enabled: enabled,
+      keyboardType: inputType,
       decoration: InputDecoration(
         filled: !enabled,
         fillColor: enabled ? null : ProjectColors.grey,
