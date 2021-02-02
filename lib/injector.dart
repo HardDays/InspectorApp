@@ -56,11 +56,15 @@ class InjectorWidget extends StatelessWidget {
       ],
       child: MultiBlocProvider(
         providers: [
+          BlocProvider(
+            create: (_) => NotificationBloc(),
+          ),
           BlocProvider<ProfileBloc>(
             create: (BuildContext context) => ProfileBloc(
               EmptyBlocState(),
               Provider.of<PersistanceService>(context, listen: false),
               Provider.of<DataSendingModeStatusService>(context, listen: false),
+              BlocProvider.of<NotificationBloc>(context),
             )..add(InitEvent()),
           ),
           BlocProvider(
@@ -70,9 +74,6 @@ class InjectorWidget extends StatelessWidget {
               Provider.of<DepartmentControlService>(context, listen: false),
               Provider.of<NetworkStatusService>(context, listen: false),
             ),
-          ),
-          BlocProvider(
-            create: (_) => NotificationBloc(),
           ),
         ],
         child: child,

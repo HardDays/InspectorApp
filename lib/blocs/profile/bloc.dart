@@ -5,6 +5,7 @@ import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:inspector/blocs/notification_bloc/bloc.dart';
 import 'package:inspector/blocs/profile/event.dart';
 import 'package:inspector/blocs/profile/state.dart';
 import 'package:inspector/model/user.dart';
@@ -18,8 +19,12 @@ import 'package:inspector/style/accept_dialog.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ProfileBloc extends Bloc<ProfileBlocEvent, ProfileBlocState> {
-  ProfileBloc(ProfileBlocState initialState, this._persistanceService, this._dataSendingModeStatusService)
-      : super(initialState);
+  ProfileBloc(
+    ProfileBlocState initialState,
+    this._persistanceService,
+    this._dataSendingModeStatusService,
+    this._notificationBloc,
+  ) : super(initialState);
 
   static const appVersion = '4.3.13-SNAPSHOT';
 
@@ -37,6 +42,8 @@ class ProfileBloc extends Bloc<ProfileBlocEvent, ProfileBlocState> {
 
   final _instructionsService = InstructionsService();
 
+  final NotificationBloc _notificationBloc;
+
   @override
   Stream<ProfileBlocState> mapEventToState(ProfileBlocEvent event) async* {
     if (event is SetUsingFingerPrint) {
@@ -53,10 +60,13 @@ class ProfileBloc extends Bloc<ProfileBlocEvent, ProfileBlocState> {
       FilledBlocState prev = state as FilledBlocState;
       await _persistanceService.saveUsePinState(event.usingPinMode);
       await _persistanceService.saveFingerprintState(false);
-      yield (_copyFilledBlocState(prev,
-          usePin: event.usingPinMode, showFingerprintSwitch: event.usingPinMode));
+      yield (_copyFilledBlocState(
+        prev,
+        usePin: event.usingPinMode,
+        showFingerprintSwitch: event.usingPinMode,
+      ));
     } else if (event is SetUseWebVersionOfVK) {
-       FilledBlocState prev = state as FilledBlocState;
+      FilledBlocState prev = state as FilledBlocState;
       await _persistanceService.setUseWebVersionOfVk(event.useWebVersionOfVK);
       yield (_copyFilledBlocState(prev,
           useWebVersionOfVK: event.useWebVersionOfVK));
@@ -65,7 +75,7 @@ class ProfileBloc extends Bloc<ProfileBlocEvent, ProfileBlocState> {
       yield (await _getFilledState(false));
       var connectivityResult = await Connectivity().checkConnectivity();
       bool dataSendingMode = await _persistanceService.getDataSendingState();
-      if(connectivityResult != ConnectivityResult.none && dataSendingMode) {
+      if (connectivityResult != ConnectivityResult.none && dataSendingMode) {
         _sendData();
       }
     }
@@ -74,16 +84,15 @@ class ProfileBloc extends Bloc<ProfileBlocEvent, ProfileBlocState> {
     }
     if (event is SendDataEvent) {
       var connectivityResult = await Connectivity().checkConnectivity();
-      if(connectivityResult == ConnectivityResult.none) {
+      if (connectivityResult == ConnectivityResult.none) {
         await showDialog(
-            context: event.context,
-            child: AcceptDialog(
-              cancelTitle: null,
-              acceptTitle: 'Ок',
-              message:
-                  'Отсутствует интернет-соединение',
-            ),
-          );
+          context: event.context,
+          child: AcceptDialog(
+            cancelTitle: null,
+            acceptTitle: 'Ок',
+            message: 'Отсутствует интернет-соединение',
+          ),
+        );
       } else {
         yield (_copyFilledBlocState(state as FilledBlocState, sending: true));
         try {
@@ -93,8 +102,7 @@ class ProfileBloc extends Bloc<ProfileBlocEvent, ProfileBlocState> {
             child: AcceptDialog(
               acceptTitle: 'Ок',
               cancelTitle: null,
-              message:
-                  'Данные успешно переданы в ЕИС ОАТИ',
+              message: 'Данные успешно переданы в ЕИС ОАТИ',
             ),
           );
         } catch (ex) {
@@ -184,7 +192,8 @@ class ProfileBloc extends Bloc<ProfileBlocEvent, ProfileBlocState> {
       sending: _whatIsNotNull(sending, prev.sending),
       canBeSended: _whatIsNotNull(canBeSended, prev.canBeSended),
       usePin: _whatIsNotNull(usePin, prev.usePin),
-      showFingerPrintSwitch: _whatIsNotNull(showFingerprintSwitch, prev.showFingerPrintSwitch),
+      showFingerPrintSwitch:
+          _whatIsNotNull(showFingerprintSwitch, prev.showFingerPrintSwitch),
       useWebVersionOfVK: useWebVersionOfVK ?? prev.showFingerPrintSwitch,
     );
   }
@@ -193,7 +202,8 @@ class ProfileBloc extends Bloc<ProfileBlocEvent, ProfileBlocState> {
     DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
     AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
     User user = await _persistanceService.getUser();
-    final url = Uri.encodeFull('mailto:oati_support@mos.ru?subject=Мобильное приложение ЕИС ОАТИ&body=Пользователь: ${user.code} ${user.surname} ${user.name} ${user.middleName}\nВерсия приложения: $appVersion\nУстройство: ${androidInfo.model}\n');
+    final url = Uri.encodeFull(
+        'mailto:oati_support@mos.ru?subject=Мобильное приложение ЕИС ОАТИ&body=Пользователь: ${user.code} ${user.surname} ${user.name} ${user.middleName}\nВерсия приложения: $appVersion\nУстройство: ${androidInfo.model}\n');
     if (await canLaunch(url)) {
       await launch(url);
     } else if (Platform.isAndroid) {

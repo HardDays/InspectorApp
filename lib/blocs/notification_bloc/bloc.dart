@@ -8,7 +8,7 @@ class NotificationBloc
     extends Bloc<NotificationBlocEvent, NotificationBlocState> {
   NotificationBloc() : super(EmptyNotificationState()) {
     _dispatchersMap = {
-      NotificationBlocEvent: (event) =>
+      SnackBarNotificationEvent: (event) =>
           _dispatchSnackBarNotificationEvent(event),
     };
   }
