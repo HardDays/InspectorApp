@@ -58,21 +58,31 @@ class ViolatorInfoOfficial extends ViolatorInfo {
 
   
   ViolatorInfoOfficial copyWith({
-    ViolatorAddress orgLegalAddress,
-    ViolatorAddress orgPostalAddress
+      String phone,
+      int orgId,
+      String orgName,
+      String orgInn,
+      String orgOgrn,
+      String orgKpp,
+      DateTime orgRegDate,
+      String orgPhone,
+      String orgLegalAddressString,
+      String orgPostalAddressString,
+      ViolatorAddress orgLegalAddress,
+      ViolatorAddress orgPostalAddress,
   }) {
     return ViolatorInfoOfficial(
       id: id,
-      phone: phone,
-      orgId: orgId,
-      orgName: orgName,
-      orgInn: orgInn,
-      orgOgrn: orgOgrn,
-      orgKpp: orgKpp,
-      orgRegDate: orgRegDate,
-      orgPhone: orgPhone,
-      orgLegalAddressString: orgLegalAddressString,
-      orgPostalAddressString: orgPostalAddressString,
+      phone: phone ?? this.phone,
+      orgId: orgId ?? this.orgId,
+      orgName: orgName ?? this.orgName,
+      orgInn: orgInn ?? this.orgInn,
+      orgOgrn: orgOgrn ?? this.orgOgrn,
+      orgKpp: orgKpp ?? this.orgKpp,
+      orgRegDate: orgRegDate ?? this.orgRegDate,
+      orgPhone: orgPhone ?? this.orgPhone,
+      orgLegalAddressString: orgLegalAddressString ?? this.orgLegalAddressString,
+      orgPostalAddressString: orgPostalAddressString ?? this.orgPostalAddressString,
       orgLegalAddress: orgLegalAddress ?? this.orgLegalAddress,
       orgPostalAddress: orgPostalAddress ?? this.orgPostalAddress
     );

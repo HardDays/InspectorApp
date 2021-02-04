@@ -655,7 +655,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
                 if (violator?.type?.id == ViolatorTypeIds.legal) {
                   final person = (violator?.violatorPerson as ViolatorInfoLegal);
                   final newViolator = violator.copyWith(
-                    violatorPerson: ViolatorInfoLegal(
+                    violatorPerson: person.copyWith(
                       name: _violatorControllers[i].text,
                       phone: _phoneControllers[i].text,
                       inn: _innControllers[i].text,
@@ -670,7 +670,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
                 } else if (violator?.type?.id == ViolatorTypeIds.official) {
                   final person = (violator?.violatorPerson as ViolatorInfoOfficial);
                   final newViolator = violator.copyWith(
-                    violatorPerson: ViolatorInfoOfficial(
+                    violatorPerson: person.copyWith(
                       orgName: _violatorControllers[i].text,
                       phone: _phoneControllers[i].text,
                       orgInn: _innControllers[i].text,
@@ -685,7 +685,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
                 } else if (violator?.type?.id == ViolatorTypeIds.ip) {
                   final person = (violator?.violatorPerson as ViolatorInfoIp);
                   final newViolator = violator.copyWith(
-                    violatorPerson: ViolatorInfoIp(
+                    violatorPerson: person.copyWith(
                       name: _violatorControllers[i].text,
                       firstName: _firstNameControllers[i].text,
                       lastName: _lastNameControllers[i].text,
@@ -704,7 +704,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
                 } else if (violator?.type?.id == ViolatorTypeIds.private) {
                   final person = (violator?.violatorPerson as ViolatorInfoPrivate);
                   final newViolator = violator.copyWith(
-                    violatorPerson: ViolatorInfoPrivate(
+                    violatorPerson: person.copyWith(
                       firstName: _firstNameControllers[i].text,
                       lastName: _lastNameControllers[i].text,
                       patronym: _patronymControllers[i].text,
