@@ -34,17 +34,19 @@ class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
 
   ControlListBloc(
     this._instructionsService,
-    this._persistanceService, 
-    this._departmentControlService, 
+    this._persistanceService,
+    this._departmentControlService,
     NetworkStatusService networkStatusService,
   ) : super(LoadingState()) {
-    add(LoadControlListEvent());
-    _networkStatusStreamSubscription = networkStatusService.listenNetworkStatus.listen((value) {
+    add(ControlListBlocEvent.loadControlListEvent());
+    _networkStatusStreamSubscription =
+        networkStatusService.listenNetworkStatus.listen((value) {
       _networkStatus = value;
-      if(value.connectionStatus == ConnectionStatus.offline || value.dataSendingMode == DataSendingMode.manual) {
-        add(CantWorkInThisModeEvent());
+      if (value.connectionStatus == ConnectionStatus.offline ||
+          value.dataSendingMode == DataSendingMode.manual) {
+        add(ControlListBlocEvent.cantWorkInThisModeEvent());
       } else {
-        add(LoadControlListEvent());
+        add(ControlListBlocEvent.loadControlListEvent());
       }
     });
   }
@@ -52,29 +54,35 @@ class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
   @override
   Stream<ControlListBlocState> mapEventToState(
       ControlListBlocEvent event) async* {
-    if (event is LoadControlListEvent) {
-      try {
-        final objects = await _apiDictionaryService.getControlObjects(0, 500,
-            sort: 'violationCount');
-        yield (LoadedState(
-          objects: objects,
+    yield* (event.map(
+      cantWorkInThisModeEvent: (event) async* {
+        try {
+          final objects = await _apiDictionaryService.getControlObjects(
+            0,
+            500,
+            sort: 'violationCount',
+          );
+          yield (LoadedState(
+            objects: objects,
+            filtersState: _filterState,
+            mapState: _mapState,
+            sortState: _sortState,
+            showMap: showMap,
+          ));
+        } on ApiException catch (e) {
+          print(e.message);
+          print(e.details);
+        }
+      },
+      loadControlListEvent: (event) async* {
+        yield (CantWorkInThisModeState(
           filtersState: _filterState,
           mapState: _mapState,
           sortState: _sortState,
           showMap: showMap,
         ));
-      } on ApiException catch (e) {
-        print(e.message);
-        print(e.details);
-      }
-    } else if(event is CantWorkInThisModeEvent) {
-      yield (CantWorkInThisModeState(
-          filtersState: _filterState,
-          mapState: _mapState,
-          sortState: _sortState,
-          showMap: showMap,
-        ));
-    }
+      },
+    ));
   }
 
   @override
@@ -82,5 +90,4 @@ class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
     await super.close();
     _networkStatusStreamSubscription.cancel();
   }
-
 }

@@ -1,5 +1,9 @@
-abstract class ControlListBlocEvent {}
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-class LoadControlListEvent extends ControlListBlocEvent {}
+part 'event.freezed.dart';
 
-class CantWorkInThisModeEvent extends ControlListBlocEvent {}
+@freezed
+abstract class ControlListBlocEvent with _$ControlListBlocEvent {
+  const factory ControlListBlocEvent.loadControlListEvent() = _LoadControlListEvent;
+  const factory ControlListBlocEvent.cantWorkInThisModeEvent() = _CantWorkInThisModeEvent;
+}
