@@ -14,13 +14,13 @@ class _$ControlListBlocEventTearOff {
   const _$ControlListBlocEventTearOff();
 
 // ignore: unused_element
-  _LoadControlListEvent loadControlListEvent() {
-    return const _LoadControlListEvent();
+  LoadControlListEvent loadControlListEvent() {
+    return const LoadControlListEvent();
   }
 
 // ignore: unused_element
-  _CantWorkInThisModeEvent cantWorkInThisModeEvent() {
-    return const _CantWorkInThisModeEvent();
+  CantWorkInThisModeEvent cantWorkInThisModeEvent() {
+    return const CantWorkInThisModeEvent();
   }
 }
 
@@ -43,13 +43,13 @@ mixin _$ControlListBlocEvent {
   });
   @optionalTypeArgs
   TResult map<TResult extends Object>({
-    @required TResult loadControlListEvent(_LoadControlListEvent value),
-    @required TResult cantWorkInThisModeEvent(_CantWorkInThisModeEvent value),
+    @required TResult loadControlListEvent(LoadControlListEvent value),
+    @required TResult cantWorkInThisModeEvent(CantWorkInThisModeEvent value),
   });
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object>({
-    TResult loadControlListEvent(_LoadControlListEvent value),
-    TResult cantWorkInThisModeEvent(_CantWorkInThisModeEvent value),
+    TResult loadControlListEvent(LoadControlListEvent value),
+    TResult cantWorkInThisModeEvent(CantWorkInThisModeEvent value),
     @required TResult orElse(),
   });
 }
@@ -72,27 +72,27 @@ class _$ControlListBlocEventCopyWithImpl<$Res>
 }
 
 /// @nodoc
-abstract class _$LoadControlListEventCopyWith<$Res> {
-  factory _$LoadControlListEventCopyWith(_LoadControlListEvent value,
-          $Res Function(_LoadControlListEvent) then) =
-      __$LoadControlListEventCopyWithImpl<$Res>;
+abstract class $LoadControlListEventCopyWith<$Res> {
+  factory $LoadControlListEventCopyWith(LoadControlListEvent value,
+          $Res Function(LoadControlListEvent) then) =
+      _$LoadControlListEventCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$LoadControlListEventCopyWithImpl<$Res>
+class _$LoadControlListEventCopyWithImpl<$Res>
     extends _$ControlListBlocEventCopyWithImpl<$Res>
-    implements _$LoadControlListEventCopyWith<$Res> {
-  __$LoadControlListEventCopyWithImpl(
-      _LoadControlListEvent _value, $Res Function(_LoadControlListEvent) _then)
-      : super(_value, (v) => _then(v as _LoadControlListEvent));
+    implements $LoadControlListEventCopyWith<$Res> {
+  _$LoadControlListEventCopyWithImpl(
+      LoadControlListEvent _value, $Res Function(LoadControlListEvent) _then)
+      : super(_value, (v) => _then(v as LoadControlListEvent));
 
   @override
-  _LoadControlListEvent get _value => super._value as _LoadControlListEvent;
+  LoadControlListEvent get _value => super._value as LoadControlListEvent;
 }
 
 /// @nodoc
-class _$_LoadControlListEvent implements _LoadControlListEvent {
-  const _$_LoadControlListEvent();
+class _$LoadControlListEvent implements LoadControlListEvent {
+  const _$LoadControlListEvent();
 
   @override
   String toString() {
@@ -101,7 +101,7 @@ class _$_LoadControlListEvent implements _LoadControlListEvent {
 
   @override
   bool operator ==(dynamic other) {
-    return identical(this, other) || (other is _LoadControlListEvent);
+    return identical(this, other) || (other is LoadControlListEvent);
   }
 
   @override
@@ -135,8 +135,8 @@ class _$_LoadControlListEvent implements _LoadControlListEvent {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object>({
-    @required TResult loadControlListEvent(_LoadControlListEvent value),
-    @required TResult cantWorkInThisModeEvent(_CantWorkInThisModeEvent value),
+    @required TResult loadControlListEvent(LoadControlListEvent value),
+    @required TResult cantWorkInThisModeEvent(CantWorkInThisModeEvent value),
   }) {
     assert(loadControlListEvent != null);
     assert(cantWorkInThisModeEvent != null);
@@ -146,8 +146,8 @@ class _$_LoadControlListEvent implements _LoadControlListEvent {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object>({
-    TResult loadControlListEvent(_LoadControlListEvent value),
-    TResult cantWorkInThisModeEvent(_CantWorkInThisModeEvent value),
+    TResult loadControlListEvent(LoadControlListEvent value),
+    TResult cantWorkInThisModeEvent(CantWorkInThisModeEvent value),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -158,33 +158,32 @@ class _$_LoadControlListEvent implements _LoadControlListEvent {
   }
 }
 
-abstract class _LoadControlListEvent implements ControlListBlocEvent {
-  const factory _LoadControlListEvent() = _$_LoadControlListEvent;
+abstract class LoadControlListEvent implements ControlListBlocEvent {
+  const factory LoadControlListEvent() = _$LoadControlListEvent;
 }
 
 /// @nodoc
-abstract class _$CantWorkInThisModeEventCopyWith<$Res> {
-  factory _$CantWorkInThisModeEventCopyWith(_CantWorkInThisModeEvent value,
-          $Res Function(_CantWorkInThisModeEvent) then) =
-      __$CantWorkInThisModeEventCopyWithImpl<$Res>;
+abstract class $CantWorkInThisModeEventCopyWith<$Res> {
+  factory $CantWorkInThisModeEventCopyWith(CantWorkInThisModeEvent value,
+          $Res Function(CantWorkInThisModeEvent) then) =
+      _$CantWorkInThisModeEventCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$CantWorkInThisModeEventCopyWithImpl<$Res>
+class _$CantWorkInThisModeEventCopyWithImpl<$Res>
     extends _$ControlListBlocEventCopyWithImpl<$Res>
-    implements _$CantWorkInThisModeEventCopyWith<$Res> {
-  __$CantWorkInThisModeEventCopyWithImpl(_CantWorkInThisModeEvent _value,
-      $Res Function(_CantWorkInThisModeEvent) _then)
-      : super(_value, (v) => _then(v as _CantWorkInThisModeEvent));
+    implements $CantWorkInThisModeEventCopyWith<$Res> {
+  _$CantWorkInThisModeEventCopyWithImpl(CantWorkInThisModeEvent _value,
+      $Res Function(CantWorkInThisModeEvent) _then)
+      : super(_value, (v) => _then(v as CantWorkInThisModeEvent));
 
   @override
-  _CantWorkInThisModeEvent get _value =>
-      super._value as _CantWorkInThisModeEvent;
+  CantWorkInThisModeEvent get _value => super._value as CantWorkInThisModeEvent;
 }
 
 /// @nodoc
-class _$_CantWorkInThisModeEvent implements _CantWorkInThisModeEvent {
-  const _$_CantWorkInThisModeEvent();
+class _$CantWorkInThisModeEvent implements CantWorkInThisModeEvent {
+  const _$CantWorkInThisModeEvent();
 
   @override
   String toString() {
@@ -193,7 +192,7 @@ class _$_CantWorkInThisModeEvent implements _CantWorkInThisModeEvent {
 
   @override
   bool operator ==(dynamic other) {
-    return identical(this, other) || (other is _CantWorkInThisModeEvent);
+    return identical(this, other) || (other is CantWorkInThisModeEvent);
   }
 
   @override
@@ -227,8 +226,8 @@ class _$_CantWorkInThisModeEvent implements _CantWorkInThisModeEvent {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object>({
-    @required TResult loadControlListEvent(_LoadControlListEvent value),
-    @required TResult cantWorkInThisModeEvent(_CantWorkInThisModeEvent value),
+    @required TResult loadControlListEvent(LoadControlListEvent value),
+    @required TResult cantWorkInThisModeEvent(CantWorkInThisModeEvent value),
   }) {
     assert(loadControlListEvent != null);
     assert(cantWorkInThisModeEvent != null);
@@ -238,8 +237,8 @@ class _$_CantWorkInThisModeEvent implements _CantWorkInThisModeEvent {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object>({
-    TResult loadControlListEvent(_LoadControlListEvent value),
-    TResult cantWorkInThisModeEvent(_CantWorkInThisModeEvent value),
+    TResult loadControlListEvent(LoadControlListEvent value),
+    TResult cantWorkInThisModeEvent(CantWorkInThisModeEvent value),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -250,6 +249,6 @@ class _$_CantWorkInThisModeEvent implements _CantWorkInThisModeEvent {
   }
 }
 
-abstract class _CantWorkInThisModeEvent implements ControlListBlocEvent {
-  const factory _CantWorkInThisModeEvent() = _$_CantWorkInThisModeEvent;
+abstract class CantWorkInThisModeEvent implements ControlListBlocEvent {
+  const factory CantWorkInThisModeEvent() = _$CantWorkInThisModeEvent;
 }
