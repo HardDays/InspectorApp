@@ -6,4 +6,6 @@ part 'event.freezed.dart';
 abstract class ControlListBlocEvent with _$ControlListBlocEvent {
   const factory ControlListBlocEvent.loadControlListEvent() = LoadControlListEvent;
   const factory ControlListBlocEvent.cantWorkInThisModeEvent() = CantWorkInThisModeEvent;
+  const factory ControlListBlocEvent.refreshControlListEvent() = RefreshControlListEvent;
+  const factory ControlListBlocEvent.loadNextPageControlListEvent() = LoadNextPageControlListEvent;
 }

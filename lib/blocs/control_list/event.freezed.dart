@@ -22,6 +22,16 @@ class _$ControlListBlocEventTearOff {
   CantWorkInThisModeEvent cantWorkInThisModeEvent() {
     return const CantWorkInThisModeEvent();
   }
+
+// ignore: unused_element
+  RefreshControlListEvent refreshControlListEvent() {
+    return const RefreshControlListEvent();
+  }
+
+// ignore: unused_element
+  LoadNextPageControlListEvent loadNextPageControlListEvent() {
+    return const LoadNextPageControlListEvent();
+  }
 }
 
 /// @nodoc
@@ -34,22 +44,32 @@ mixin _$ControlListBlocEvent {
   TResult when<TResult extends Object>({
     @required TResult loadControlListEvent(),
     @required TResult cantWorkInThisModeEvent(),
+    @required TResult refreshControlListEvent(),
+    @required TResult loadNextPageControlListEvent(),
   });
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object>({
     TResult loadControlListEvent(),
     TResult cantWorkInThisModeEvent(),
+    TResult refreshControlListEvent(),
+    TResult loadNextPageControlListEvent(),
     @required TResult orElse(),
   });
   @optionalTypeArgs
   TResult map<TResult extends Object>({
     @required TResult loadControlListEvent(LoadControlListEvent value),
     @required TResult cantWorkInThisModeEvent(CantWorkInThisModeEvent value),
+    @required TResult refreshControlListEvent(RefreshControlListEvent value),
+    @required
+        TResult loadNextPageControlListEvent(
+            LoadNextPageControlListEvent value),
   });
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object>({
     TResult loadControlListEvent(LoadControlListEvent value),
     TResult cantWorkInThisModeEvent(CantWorkInThisModeEvent value),
+    TResult refreshControlListEvent(RefreshControlListEvent value),
+    TResult loadNextPageControlListEvent(LoadNextPageControlListEvent value),
     @required TResult orElse(),
   });
 }
@@ -112,9 +132,13 @@ class _$LoadControlListEvent implements LoadControlListEvent {
   TResult when<TResult extends Object>({
     @required TResult loadControlListEvent(),
     @required TResult cantWorkInThisModeEvent(),
+    @required TResult refreshControlListEvent(),
+    @required TResult loadNextPageControlListEvent(),
   }) {
     assert(loadControlListEvent != null);
     assert(cantWorkInThisModeEvent != null);
+    assert(refreshControlListEvent != null);
+    assert(loadNextPageControlListEvent != null);
     return loadControlListEvent();
   }
 
@@ -123,6 +147,8 @@ class _$LoadControlListEvent implements LoadControlListEvent {
   TResult maybeWhen<TResult extends Object>({
     TResult loadControlListEvent(),
     TResult cantWorkInThisModeEvent(),
+    TResult refreshControlListEvent(),
+    TResult loadNextPageControlListEvent(),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -137,9 +163,15 @@ class _$LoadControlListEvent implements LoadControlListEvent {
   TResult map<TResult extends Object>({
     @required TResult loadControlListEvent(LoadControlListEvent value),
     @required TResult cantWorkInThisModeEvent(CantWorkInThisModeEvent value),
+    @required TResult refreshControlListEvent(RefreshControlListEvent value),
+    @required
+        TResult loadNextPageControlListEvent(
+            LoadNextPageControlListEvent value),
   }) {
     assert(loadControlListEvent != null);
     assert(cantWorkInThisModeEvent != null);
+    assert(refreshControlListEvent != null);
+    assert(loadNextPageControlListEvent != null);
     return loadControlListEvent(this);
   }
 
@@ -148,6 +180,8 @@ class _$LoadControlListEvent implements LoadControlListEvent {
   TResult maybeMap<TResult extends Object>({
     TResult loadControlListEvent(LoadControlListEvent value),
     TResult cantWorkInThisModeEvent(CantWorkInThisModeEvent value),
+    TResult refreshControlListEvent(RefreshControlListEvent value),
+    TResult loadNextPageControlListEvent(LoadNextPageControlListEvent value),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -203,9 +237,13 @@ class _$CantWorkInThisModeEvent implements CantWorkInThisModeEvent {
   TResult when<TResult extends Object>({
     @required TResult loadControlListEvent(),
     @required TResult cantWorkInThisModeEvent(),
+    @required TResult refreshControlListEvent(),
+    @required TResult loadNextPageControlListEvent(),
   }) {
     assert(loadControlListEvent != null);
     assert(cantWorkInThisModeEvent != null);
+    assert(refreshControlListEvent != null);
+    assert(loadNextPageControlListEvent != null);
     return cantWorkInThisModeEvent();
   }
 
@@ -214,6 +252,8 @@ class _$CantWorkInThisModeEvent implements CantWorkInThisModeEvent {
   TResult maybeWhen<TResult extends Object>({
     TResult loadControlListEvent(),
     TResult cantWorkInThisModeEvent(),
+    TResult refreshControlListEvent(),
+    TResult loadNextPageControlListEvent(),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -228,9 +268,15 @@ class _$CantWorkInThisModeEvent implements CantWorkInThisModeEvent {
   TResult map<TResult extends Object>({
     @required TResult loadControlListEvent(LoadControlListEvent value),
     @required TResult cantWorkInThisModeEvent(CantWorkInThisModeEvent value),
+    @required TResult refreshControlListEvent(RefreshControlListEvent value),
+    @required
+        TResult loadNextPageControlListEvent(
+            LoadNextPageControlListEvent value),
   }) {
     assert(loadControlListEvent != null);
     assert(cantWorkInThisModeEvent != null);
+    assert(refreshControlListEvent != null);
+    assert(loadNextPageControlListEvent != null);
     return cantWorkInThisModeEvent(this);
   }
 
@@ -239,6 +285,8 @@ class _$CantWorkInThisModeEvent implements CantWorkInThisModeEvent {
   TResult maybeMap<TResult extends Object>({
     TResult loadControlListEvent(LoadControlListEvent value),
     TResult cantWorkInThisModeEvent(CantWorkInThisModeEvent value),
+    TResult refreshControlListEvent(RefreshControlListEvent value),
+    TResult loadNextPageControlListEvent(LoadNextPageControlListEvent value),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -251,4 +299,217 @@ class _$CantWorkInThisModeEvent implements CantWorkInThisModeEvent {
 
 abstract class CantWorkInThisModeEvent implements ControlListBlocEvent {
   const factory CantWorkInThisModeEvent() = _$CantWorkInThisModeEvent;
+}
+
+/// @nodoc
+abstract class $RefreshControlListEventCopyWith<$Res> {
+  factory $RefreshControlListEventCopyWith(RefreshControlListEvent value,
+          $Res Function(RefreshControlListEvent) then) =
+      _$RefreshControlListEventCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class _$RefreshControlListEventCopyWithImpl<$Res>
+    extends _$ControlListBlocEventCopyWithImpl<$Res>
+    implements $RefreshControlListEventCopyWith<$Res> {
+  _$RefreshControlListEventCopyWithImpl(RefreshControlListEvent _value,
+      $Res Function(RefreshControlListEvent) _then)
+      : super(_value, (v) => _then(v as RefreshControlListEvent));
+
+  @override
+  RefreshControlListEvent get _value => super._value as RefreshControlListEvent;
+}
+
+/// @nodoc
+class _$RefreshControlListEvent implements RefreshControlListEvent {
+  const _$RefreshControlListEvent();
+
+  @override
+  String toString() {
+    return 'ControlListBlocEvent.refreshControlListEvent()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) || (other is RefreshControlListEvent);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object>({
+    @required TResult loadControlListEvent(),
+    @required TResult cantWorkInThisModeEvent(),
+    @required TResult refreshControlListEvent(),
+    @required TResult loadNextPageControlListEvent(),
+  }) {
+    assert(loadControlListEvent != null);
+    assert(cantWorkInThisModeEvent != null);
+    assert(refreshControlListEvent != null);
+    assert(loadNextPageControlListEvent != null);
+    return refreshControlListEvent();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object>({
+    TResult loadControlListEvent(),
+    TResult cantWorkInThisModeEvent(),
+    TResult refreshControlListEvent(),
+    TResult loadNextPageControlListEvent(),
+    @required TResult orElse(),
+  }) {
+    assert(orElse != null);
+    if (refreshControlListEvent != null) {
+      return refreshControlListEvent();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object>({
+    @required TResult loadControlListEvent(LoadControlListEvent value),
+    @required TResult cantWorkInThisModeEvent(CantWorkInThisModeEvent value),
+    @required TResult refreshControlListEvent(RefreshControlListEvent value),
+    @required
+        TResult loadNextPageControlListEvent(
+            LoadNextPageControlListEvent value),
+  }) {
+    assert(loadControlListEvent != null);
+    assert(cantWorkInThisModeEvent != null);
+    assert(refreshControlListEvent != null);
+    assert(loadNextPageControlListEvent != null);
+    return refreshControlListEvent(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object>({
+    TResult loadControlListEvent(LoadControlListEvent value),
+    TResult cantWorkInThisModeEvent(CantWorkInThisModeEvent value),
+    TResult refreshControlListEvent(RefreshControlListEvent value),
+    TResult loadNextPageControlListEvent(LoadNextPageControlListEvent value),
+    @required TResult orElse(),
+  }) {
+    assert(orElse != null);
+    if (refreshControlListEvent != null) {
+      return refreshControlListEvent(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class RefreshControlListEvent implements ControlListBlocEvent {
+  const factory RefreshControlListEvent() = _$RefreshControlListEvent;
+}
+
+/// @nodoc
+abstract class $LoadNextPageControlListEventCopyWith<$Res> {
+  factory $LoadNextPageControlListEventCopyWith(
+          LoadNextPageControlListEvent value,
+          $Res Function(LoadNextPageControlListEvent) then) =
+      _$LoadNextPageControlListEventCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class _$LoadNextPageControlListEventCopyWithImpl<$Res>
+    extends _$ControlListBlocEventCopyWithImpl<$Res>
+    implements $LoadNextPageControlListEventCopyWith<$Res> {
+  _$LoadNextPageControlListEventCopyWithImpl(
+      LoadNextPageControlListEvent _value,
+      $Res Function(LoadNextPageControlListEvent) _then)
+      : super(_value, (v) => _then(v as LoadNextPageControlListEvent));
+
+  @override
+  LoadNextPageControlListEvent get _value =>
+      super._value as LoadNextPageControlListEvent;
+}
+
+/// @nodoc
+class _$LoadNextPageControlListEvent implements LoadNextPageControlListEvent {
+  const _$LoadNextPageControlListEvent();
+
+  @override
+  String toString() {
+    return 'ControlListBlocEvent.loadNextPageControlListEvent()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) || (other is LoadNextPageControlListEvent);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object>({
+    @required TResult loadControlListEvent(),
+    @required TResult cantWorkInThisModeEvent(),
+    @required TResult refreshControlListEvent(),
+    @required TResult loadNextPageControlListEvent(),
+  }) {
+    assert(loadControlListEvent != null);
+    assert(cantWorkInThisModeEvent != null);
+    assert(refreshControlListEvent != null);
+    assert(loadNextPageControlListEvent != null);
+    return loadNextPageControlListEvent();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object>({
+    TResult loadControlListEvent(),
+    TResult cantWorkInThisModeEvent(),
+    TResult refreshControlListEvent(),
+    TResult loadNextPageControlListEvent(),
+    @required TResult orElse(),
+  }) {
+    assert(orElse != null);
+    if (loadNextPageControlListEvent != null) {
+      return loadNextPageControlListEvent();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object>({
+    @required TResult loadControlListEvent(LoadControlListEvent value),
+    @required TResult cantWorkInThisModeEvent(CantWorkInThisModeEvent value),
+    @required TResult refreshControlListEvent(RefreshControlListEvent value),
+    @required
+        TResult loadNextPageControlListEvent(
+            LoadNextPageControlListEvent value),
+  }) {
+    assert(loadControlListEvent != null);
+    assert(cantWorkInThisModeEvent != null);
+    assert(refreshControlListEvent != null);
+    assert(loadNextPageControlListEvent != null);
+    return loadNextPageControlListEvent(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object>({
+    TResult loadControlListEvent(LoadControlListEvent value),
+    TResult cantWorkInThisModeEvent(CantWorkInThisModeEvent value),
+    TResult refreshControlListEvent(RefreshControlListEvent value),
+    TResult loadNextPageControlListEvent(LoadNextPageControlListEvent value),
+    @required TResult orElse(),
+  }) {
+    assert(orElse != null);
+    if (loadNextPageControlListEvent != null) {
+      return loadNextPageControlListEvent(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class LoadNextPageControlListEvent implements ControlListBlocEvent {
+  const factory LoadNextPageControlListEvent() = _$LoadNextPageControlListEvent;
 }

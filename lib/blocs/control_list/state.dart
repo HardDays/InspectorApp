@@ -83,6 +83,37 @@ class LoadedState extends ControlListBlocState
   final List<ControlObject> objects;
 }
 
+class LoadedAllState extends LoadedState {
+  LoadedAllState({
+    this.objects,
+    ControlObjectsFilterState filtersState,
+    ControlObjectsSortState sortState,
+    ControlObjectsMapState mapState,
+    bool showMap,
+  }) : super(
+          filtersState: filtersState,
+          sortState: sortState,
+          mapState: mapState,
+          showMap: showMap,
+        );
+
+  final List<ControlObject> objects;
+}
+
+class LoadedEmptyState extends ControlListBlocState {
+  LoadedEmptyState({
+    ControlObjectsFilterState filtersState,
+    ControlObjectsSortState sortState,
+    ControlObjectsMapState mapState,
+    bool showMap,
+  }) : super(
+          filtersState: filtersState,
+          sortState: sortState,
+          mapState: mapState,
+          showMap: showMap,
+        );
+}
+
 mixin StateWithControlObjectsList {
   int get objectsCount => objects.length;
   List<ControlObject> get objects;
