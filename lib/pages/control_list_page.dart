@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:inspector/blocs/control_list/bloc.dart';
+import 'package:inspector/blocs/control_list/event.dart';
 import 'package:inspector/blocs/control_list/state.dart';
 import 'package:inspector/model/control_object.dart';
 import 'package:inspector/pages/control_object_page.dart';
@@ -16,6 +17,7 @@ import 'package:inspector/widgets/control/status.dart';
 import 'package:inspector/widgets/control/violation.dart';
 import 'package:inspector/style/filter_appbar.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:intl/intl.dart';
 import 'package:latlong/latlong.dart';
 
 class ControlListPage extends StatefulWidget {
@@ -54,8 +56,29 @@ class ControlListPageState extends State<ControlListPage> {
         if (state is CantWorkInThisModeState) {
           body = _cantWorkInThisMode();
         }
+        if (state is LoadedEmptyState) {
+          body = Center(
+            child: Padding(
+              padding: const EdgeInsets.all(50.0),
+              child: Text(
+                'Поблизости не найдено объектов ведомственного контроля. Попробуйте отключить поиск по местоположению.',
+                textAlign: TextAlign.center,
+                style: ProjectTextStyles.mediumBold,
+              ),
+            ),
+          );
+        }
         return Scaffold(
-          appBar: FilterAppbar('Ведомственный контроль', '', '', ''),
+          appBar: FilterAppbar(
+            'Ведомственный контроль',
+            '',
+            '',
+            '',
+            onUpdate: () {
+              BlocProvider.of<ControlListBloc>(context)
+                  .add(ControlListBlocEvent.refreshControlListEvent());
+            },
+          ),
           body: body,
         );
       },
@@ -170,11 +193,7 @@ class ControlListPageState extends State<ControlListPage> {
                     ),
                   ],
                 )
-              : ListView(
-                  children: state.objects
-                      .map((e) => _buildControl(context, e))
-                      .toList(),
-                ),
+              : _buildList(state, context),
         ),
       ],
     );
@@ -196,6 +215,36 @@ class ControlListPageState extends State<ControlListPage> {
         ],
       ),
     );
+  }
+
+  Widget _buildList(LoadedState state, BuildContext context) {
+    if(state is LoadedAllState) {
+      return ListView(
+          children: state.objects
+              .map((e) => _buildControl(context, e))
+              .toList(),
+          );
+    } else {
+      return NotificationListener<ScrollNotification>(
+        onNotification: (ScrollNotification scrollInfo) {
+          if (scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent) {
+            BlocProvider.of<ControlListBloc>(context).add(ControlListBlocEvent.loadNextPageControlListEvent());
+          }
+          return true;
+        },
+        child: ListView(
+          children: [
+            ...state.objects
+              .map((e) => _buildControl(context, e))
+              .toList(),
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Center(child: CircularProgressIndicator()),
+            ),
+          ],
+        ),
+      );
+    }
   }
 
   Widget _buildInfo(ControlObject object) {
@@ -237,7 +286,7 @@ class ControlListPageState extends State<ControlListPage> {
             Padding(
               padding: const EdgeInsets.only(top: 18),
               child: Text(
-                object.balanceOwner ?? 'Балансодержатель',
+                object.balanceOwner ?? '',
                 style: ProjectTextStyles.base.apply(color: ProjectColors.black),
               ),
             ),
@@ -249,18 +298,42 @@ class ControlListPageState extends State<ControlListPage> {
                       ProjectIcons.cameraIcon(), object.cameraCount.toString()),
                   _buildIcon(
                       ProjectIcons.alertIcon(), object.violationsCount ?? '0'),
-                  if (object.lastSurveyDate !=
-                      null) // && object.lastSurveyDateDelta != null)
-                    _buildIcon(
-                      ProjectIcons.calendarIcon(),
-                      '${object.lastSurveyDate.toString()}',
-                    ), // + ${object.lastSurveyDateDelta > 0 ? '(' + object.lastSurveyDateDelta.toString() + ')' : ''}',),
+                  if (object.lastSurveyDate != null)
+                    _buildDate(object.lastSurveyDate),
                 ],
               ),
             ),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildDate(DateTime date) {
+    String daysText = '';
+    int days = DateTime.now().difference(date).inDays;
+    switch(days){
+      case 0:
+        daysText = '';
+        break;
+      case 1:
+        daysText = '1 день';
+        break;
+      case 2:
+      case 3:
+      case 4:
+        daysText = '2 дня';
+        break;
+      default:
+        daysText = '$days дней';
+    }
+    return Row(
+      children: [
+        _buildIcon(
+          ProjectIcons.calendarIcon(),
+          '${DateFormat("dd.MM.yyyy").format(date)} ($daysText)',
+        ), 
+      ],
     );
   }
 
@@ -310,7 +383,11 @@ class ControlListPageState extends State<ControlListPage> {
                 child: _buildInfo(object)),
           ),
           Column(
-            children: object.violations.map((e) => ControlViolationWidget(violation: e,)).toList(),
+            children: object.violations
+                .map((e) => ControlViolationWidget(
+                      violation: e,
+                    ))
+                .toList(),
           )
         ],
       ),
