@@ -1,7 +1,4 @@
-import 'dart:math';
-
 import 'package:bloc/bloc.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:inspector/blocs/total_report/events.dart';
 import 'package:inspector/blocs/total_report/states.dart';
@@ -15,7 +12,6 @@ import 'package:inspector/model/normative_act.dart';
 import 'package:inspector/model/normative_act_article.dart';
 import 'package:inspector/model/object_category.dart';
 import 'package:inspector/model/report.dart';
-import 'package:inspector/model/report_status.dart';
 import 'package:inspector/model/street.dart';
 import 'package:inspector/model/violation.dart';
 import 'package:inspector/model/violation_type.dart';
@@ -32,12 +28,10 @@ import 'package:inspector/model/violator_type.dart';
 import 'package:inspector/providers/exceptions/api_exception.dart';
 import 'package:inspector/providers/exceptions/unhadled_exception.dart';
 import 'package:inspector/services/api/datata_service.dart';
-import 'package:inspector/services/api/here_service.dart';
 import 'package:inspector/services/dictionary_service.dart';
 import 'package:inspector/services/geo_service.dart';
 import 'package:inspector/services/objectdb/objectdb_persistance_service.dart';
 import 'package:inspector/services/reports_service.dart';
-import 'package:intl/intl.dart';
 
 import 'package:latlong/latlong.dart';
 
@@ -55,30 +49,35 @@ class TotalReportDialogBloc extends Bloc<TotalReportDialogBlocEvent, TotalReport
     if (name.isNotEmpty) {
       return await _dadataService.suggest(name, fromBound: 'region', toBound: 'region');
     }
+    return null;
   }
 
   Future<Iterable<ViolatorAddress>> getAddressRegions(int index, String name) async {
     if (name.isNotEmpty) {
       return await _dadataService.suggest(name, locations: [{'region': state.address?.subjectName}], fromBound: 'area', toBound: 'area');
     }
+    return null;
   }
 
   Future<Iterable<ViolatorAddress>> getAddressCities(int index, String name) async {
    if (name.isNotEmpty) {
       return await _dadataService.suggest(name, locations: [{'region': state.address?.subjectName}], fromBound: 'city', toBound: 'city');
     }
+    return null;
   }
 
   Future<Iterable<ViolatorAddress>> getAddressSettlements(int index, String name) async {
     if (name.isNotEmpty) {
       return await _dadataService.suggest(name, locations: [{'area': state.address?.regionName, 'region': state.address?.subjectName}], fromBound: 'settlement', toBound: 'settlement');
     }
+    return null;
   }
 
   Future<Iterable<ViolatorAddress>> getAddressStreets(int index, String name) async {
     if (name.isNotEmpty) {
       return await _dadataService.suggest(name, locations: [{'area': state.address?.regionName, 'region': state.address?.subjectName, 'city': state.address?.cityName, 'settlement': state.address?.placeName}], fromBound: 'street', toBound: 'street');
     }
+    return null;
   }
 
   Future<Iterable<KladdrAddressObjectType>> getKladdrAddressType(String name, String level) async {
@@ -134,6 +133,7 @@ class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {
     if (address?.street?.id != null) {
       return await _dictionaryService.getAddresses(houseNum: houseNum, streetId: address?.street?.id);
     }
+    return null;
   }
 
   Future<Iterable<ObjectCategory>> getObjectCategories(String name) async {
@@ -153,6 +153,7 @@ class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {
     if (act?.normativeActId != null) {
       return await _dictionaryService.getNormativeActArticles(name: name, normativeActId: act.normativeActId);
     }
+    return null;
   }
 
   Future<Iterable<ViolationType>> getViolationTypes(String name) async {
@@ -184,6 +185,7 @@ class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {
     if (districts.isNotEmpty) {
       return districts.first;
     }
+    return null;
   }
 
   Future<Area> getArea(int id) async {
@@ -191,6 +193,7 @@ class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {
     if (areas.isNotEmpty) {
       return areas.first;
     }
+    return null;
   }
 
 
@@ -207,6 +210,7 @@ class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {
         return await _dictionaryService.getViolatorInfoIps(name: name);
       }
     }
+    return null;
   }
 
   @override

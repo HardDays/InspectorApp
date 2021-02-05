@@ -5,20 +5,33 @@ import 'package:inspector/blocs/instruction_filters/bloc.dart';
 import 'package:inspector/blocs/instruction_filters/states.dart';
 import 'package:inspector/blocs/instruction_filters/events.dart';
 import 'package:inspector/model/instruction.dart';
-import 'package:inspector/model/instruction_status.dart';
 import 'package:inspector/style/button.dart';
 import 'package:inspector/style/date_picker.dart';
 import 'package:inspector/style/select.dart';
 import 'package:inspector/style/text_field.dart';
 
-class InstructionFiltersWidget extends StatelessWidget {
+class InstructionFiltersWidget extends StatefulWidget {
 
   final InstructionFilters filters;
 
+
+  InstructionFiltersWidget(this.filters);
+
+  @override
+  _InstructionFiltersWidgetState createState() => _InstructionFiltersWidgetState();
+}
+
+class _InstructionFiltersWidgetState extends State<InstructionFiltersWidget> {
   TextEditingController _instructionNumController;
 
-  InstructionFiltersWidget(this.filters) {
-    _instructionNumController = TextEditingController(text: filters.instructionNum);
+  void initState() {
+    super.initState();
+    _instructionNumController = TextEditingController(text: widget.filters.instructionNum);
+  }
+
+  void dispose() {
+    super.dispose();
+    _instructionNumController.dispose();
   }
 
   void _onFind(BuildContext context, InstructionFilters filters) {
@@ -55,7 +68,7 @@ class InstructionFiltersWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context)=> InstructionFiltersBloc(InstructionFiltersBlocState([], filters))..add(LoadEvent()),
+      create: (context)=> InstructionFiltersBloc(InstructionFiltersBlocState([], widget.filters))..add(LoadEvent()),
       child: BlocBuilder<InstructionFiltersBloc, InstructionFiltersBlocState>(
         builder: (context, state) {
           return Column(
@@ -132,5 +145,4 @@ class InstructionFiltersWidget extends StatelessWidget {
       )
     );
   }
-
 }

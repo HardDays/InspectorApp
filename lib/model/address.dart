@@ -1,6 +1,5 @@
 import 'dart:convert' as c;
 
-import 'package:flutter/material.dart';
 import 'package:inspector/model/area.dart';
 import 'package:inspector/model/district.dart';
 import 'package:inspector/model/street.dart';

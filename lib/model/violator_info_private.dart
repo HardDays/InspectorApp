@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:inspector/model/violator_address.dart';
 import 'package:inspector/model/violator_doc_type.dart';
 import 'dart:convert' as c;

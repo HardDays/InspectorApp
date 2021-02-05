@@ -1,5 +1,4 @@
 
-import 'package:inspector/model/instruction.dart';
 import 'package:inspector/providers/exceptions/parse_exception.dart';
 import 'package:inspector/services/objectdb/objectdb_service.dart';
 
@@ -28,7 +27,6 @@ class ObjectDbCollectionService<T> extends ObjectDBService {
     await init();
     try {
       final data = await db.find(query);
-      final t = 0;
       return List<T>.from(data.map((e) => _fromJson(e)));
     } catch (ex) {
       throw ParseException();

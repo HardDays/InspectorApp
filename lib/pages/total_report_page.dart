@@ -30,7 +30,6 @@ import 'package:inspector/model/violation_type.dart';
 import 'package:inspector/model/violator.dart';
 import 'package:inspector/model/violator_address.dart';
 import 'package:inspector/model/violator_doc_type.dart';
-import 'package:inspector/model/violator_info.dart';
 import 'package:inspector/model/violator_info_ip.dart';
 import 'package:inspector/model/violator_info_legal.dart';
 import 'package:inspector/model/violator_info_official.dart';
@@ -46,7 +45,6 @@ import 'package:inspector/style/date_picker.dart';
 import 'package:inspector/style/text_field.dart';
 import 'package:inspector/style/text_style.dart';
 import 'package:inspector/style/title.dart';
-import 'package:inspector/widgets/dictionary_dialog.dart';
 import 'package:inspector/style/image_picker.dart';
 import 'package:latlong/latlong.dart';
 
@@ -907,18 +905,18 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
     }
   }
 
-  void _loadDict(BuildContext context) async {
-    WidgetsBinding.instance.addPostFrameCallback(
-      (_) async {
-        await showDialog(
-          context: context,
-          barrierDismissible: false,
-          child: DictionaryDialog()
-        );
-        BlocProvider.of<TotalReportBloc>(context).add(InitEvent(widget.violationIndex, widget.report));  
-      }
-    );
-  }
+  // void _loadDict(BuildContext context) async {
+  //   WidgetsBinding.instance.addPostFrameCallback(
+  //     (_) async {
+  //       await showDialog(
+  //         context: context,
+  //         barrierDismissible: false,
+  //         child: DictionaryDialog()
+  //       );
+  //       BlocProvider.of<TotalReportBloc>(context).add(InitEvent(widget.violationIndex, widget.report));  
+  //     }
+  //   );
+  // }
 
   void _setViolationAddress(BuildContext context, Violation violation, LatLng location) async {
     _areaController.text = violation.violationAddress?.area?.toString() ?? '';
@@ -944,18 +942,21 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
     if (value == null) {
       return 'Введите значение';
     }
+    return null;
   }
 
   String _emptyValidator(String value) {
     if (value.isEmpty) {
       return 'Введите значение';
     }
+    return null;
   }
 
   String _emptyConditionValidator(String value, TextEditingController controller) {
     if (value.isEmpty && controller.text.isEmpty) {
       return 'Введите значение';
     }
+    return null;
   }
 
   bool get _validKind {

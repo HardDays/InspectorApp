@@ -5,7 +5,6 @@ import 'package:inspector/blocs/documents_for_editing/events.dart';
 import 'package:inspector/blocs/documents_for_editing/states.dart';
 import 'package:inspector/model/report.dart';
 import 'package:inspector/pages/total_report_page.dart';
-import 'package:inspector/style/button.dart';
 import 'package:inspector/style/colors.dart';
 import 'package:inspector/style/text_style.dart';
 import 'package:intl/intl.dart';

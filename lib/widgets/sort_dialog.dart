@@ -19,6 +19,7 @@ class SortDialogState extends State<SortDialog> {
 
   @override
   void initState() {
+    super.initState();
     value = widget.value;
   }
   

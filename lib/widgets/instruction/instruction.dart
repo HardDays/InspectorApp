@@ -1,9 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:inspector/model/instruction.dart';
-import 'package:inspector/model/instruction_check.dart';
 import 'package:inspector/model/instruction_status.dart';
-import 'package:inspector/pages/instruction_page.dart';
 import 'package:inspector/style/card.dart';
 import 'package:inspector/style/colors.dart';
 import 'package:inspector/style/divider.dart';

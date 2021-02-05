@@ -19,14 +19,11 @@ import 'pages/map_page.dart';
 import 'pages/pin_code_page.dart';
 import 'pages/profile_page.dart';
 import 'pages/splash_screen_page.dart';
-import 'pages/test_page.dart';
 
 class Routes {
-  static const String testPage = '/test-page';
   static const String authPage = '/';
   static const String mainPage = '/main-page';
   static const all = <String>{
-    testPage,
     authPage,
     mainPage,
   };
@@ -36,7 +33,6 @@ class InspectorRouter extends RouterBase {
   @override
   List<RouteDef> get routes => _routes;
   final _routes = <RouteDef>[
-    RouteDef(Routes.testPage, page: TestPage),
     RouteDef(
       Routes.authPage,
       page: AuthPage,
@@ -51,15 +47,6 @@ class InspectorRouter extends RouterBase {
   @override
   Map<Type, AutoRouteFactory> get pagesMap => _pagesMap;
   final _pagesMap = <Type, AutoRouteFactory>{
-    TestPage: (data) {
-      final args = data.getArgs<TestPageArguments>(
-        orElse: () => TestPageArguments(),
-      );
-      return MaterialPageRoute<dynamic>(
-        builder: (context) => TestPage(key: args.key),
-        settings: data,
-      );
-    },
     AuthPage: (data) {
       return MaterialPageRoute<dynamic>(
         builder: (context) => AuthPage(),
@@ -207,14 +194,4 @@ class ControlSreenRouter extends RouterBase {
       );
     },
   };
-}
-
-/// ************************************************************************
-/// Arguments holder classes
-/// *************************************************************************
-
-/// TestPage arguments holder class
-class TestPageArguments {
-  final Key key;
-  TestPageArguments({this.key});
 }

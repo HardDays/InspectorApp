@@ -1,7 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:inspector/blocs/documents_for_editing/events.dart';
 import 'package:inspector/blocs/documents_for_editing/states.dart';
-import 'package:inspector/model/report.dart';
 import 'package:inspector/services/reports_service.dart';
 
 class DocumentsBloc extends Bloc<DocumentsBlocEvent, DocumentsBlocState> {

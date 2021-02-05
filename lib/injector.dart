@@ -9,7 +9,6 @@ import 'package:inspector/providers/api_provider.dart';
 import 'package:inspector/services/auth_service.dart';
 import 'package:inspector/services/department_control/api/department_control_api_client.dart';
 import 'package:inspector/services/department_control/department_control_service.dart';
-import 'package:inspector/services/instructions_service.dart';
 import 'package:inspector/services/location/geolocator_location_service.dart';
 import 'package:inspector/services/location/location_service.dart';
 import 'package:inspector/services/network_status_service/connection_status_service.dart';
@@ -74,8 +73,6 @@ class InjectorWidget extends StatelessWidget {
           ),
           BlocProvider(
             create: (context) => ControlListBloc(
-              InstructionsService(),
-              Provider.of<PersistanceService>(context, listen: false),
               Provider.of<DepartmentControlService>(context, listen: false),
               Provider.of<NetworkStatusService>(context, listen: false),
               Provider.of<LocationService>(context, listen: false),

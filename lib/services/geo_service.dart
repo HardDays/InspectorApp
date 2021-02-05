@@ -14,6 +14,7 @@ class GeoService {
     if (res.isNotEmpty) {
       return res.first;
     }
+    return null;
   }
 
   Future<AddressSearch> reverseGeocode(double lat, double lng) async {
@@ -21,5 +22,6 @@ class GeoService {
     if (res.isNotEmpty) {
       return res.first;
     }
+    return null;
   }
 }

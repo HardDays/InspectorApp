@@ -14,8 +14,6 @@ class ControlViolationPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width * 0.27;
-
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -128,11 +126,7 @@ class ControlViolationPage extends StatelessWidget {
     );
   }
 
-  Widget _buildMark() {
-    // 
-  }
-
-  Widget _buildTitle(String title, {Widget icon}) {
+  Widget _buildTitle(String title) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

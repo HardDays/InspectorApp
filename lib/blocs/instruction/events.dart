@@ -1,5 +1,3 @@
-import 'package:inspector/model/instruction.dart';
-
 abstract class InstructionBlocEvent {}
 
 class FlushEvent extends InstructionBlocEvent {

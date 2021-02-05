@@ -2,11 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:inspector/model/control_object.dart';
-import 'package:inspector/model/violation.dart';
 import 'package:inspector/pages/control_violation_page.dart';
 import 'package:inspector/style/colors.dart';
 import 'package:inspector/style/text_style.dart';
-import 'package:intl/intl.dart';
 
 class ControlViolationWidget extends StatefulWidget {
 

@@ -1,5 +1,3 @@
-import 'package:flutter/foundation.dart';
-
 class Photo {
   final int id;
   final String name;

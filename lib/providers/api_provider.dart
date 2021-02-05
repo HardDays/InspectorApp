@@ -1,4 +1,3 @@
-import 'dart:convert' as c;
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -18,7 +17,6 @@ import 'package:inspector/model/oati_department.dart';
 import 'package:inspector/model/object_category.dart';
 import 'package:inspector/model/report.dart';
 import 'package:inspector/model/report_status.dart';
-import 'package:inspector/model/report_status_info.dart';
 import 'package:inspector/model/resolution_type.dart';
 import 'package:inspector/model/special_object.dart';
 import 'package:inspector/model/street.dart';
@@ -228,7 +226,7 @@ class ApiProvider {
   Future<dynamic> createReport(Report report) async {
     final json = report.toJson();
     _removeJsonNulls(json);
-     var t = c.json.encode(json);
+    // var t = c.json.encode(json);
     //  print(report.reportNum);
     //  print(report.violations.first.violationDate);
      //print(t);
@@ -242,7 +240,7 @@ class ApiProvider {
   Future<dynamic> updateReport(Report report) async {
     final json = report.toJson();
     _removeJsonNulls(json);
-     var t = c.json.encode(json);
+     //var t = c.json.encode(json);
     //  print(report.reportNum);
     //  print(report.violations.first.violationDate);
      //print(t);

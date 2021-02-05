@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:bloc/bloc.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/services.dart';
@@ -45,9 +43,9 @@ class NavigationBloc extends Bloc<NavigationBlocEvent, NavigationBlocState> {
     }
   }
 
-  Future<void> _openControl() async {
-    if (await canLaunch('https://212.46.14.26:9929/oati-insp-mobile/')) {
-      await launch('https://212.46.14.26:9929/oati-insp-mobile/');
-    }
-  }
+  // Future<void> _openControl() async {
+  //   if (await canLaunch('https://212.46.14.26:9929/oati-insp-mobile/')) {
+  //     await launch('https://212.46.14.26:9929/oati-insp-mobile/');
+  //   }
+  // }
 }

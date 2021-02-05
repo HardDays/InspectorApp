@@ -52,7 +52,7 @@ class ProfileBloc extends Bloc<ProfileBlocEvent, ProfileBlocState> {
       FilledBlocState prev = state as FilledBlocState;
       yield (_copyFilledBlocState(prev, useFingerPrint: event.useFingerPrint));
     } else if (event is SetDataSendingMode) {
-      FilledBlocState prev = state as FilledBlocState;
+      //FilledBlocState prev = state as FilledBlocState;
       //await _persistanceService.saveDataSendingState(event.dataSendingMode);
       // yield (_copyFilledBlocState(
       //   prev,

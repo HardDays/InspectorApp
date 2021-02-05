@@ -7,7 +7,6 @@ import 'package:inspector/navigation.gr.dart';
 import 'package:inspector/services/auth_service.dart';
 import 'package:inspector/services/persistance_service.dart';
 import 'package:inspector/style/accept_dialog.dart';
-import 'package:local_auth/local_auth.dart';
 import 'package:provider/provider.dart';
 
 class AuthPage extends StatelessWidget {

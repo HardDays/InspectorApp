@@ -7,7 +7,6 @@ import 'package:inspector/model/district.dart';
 import 'package:inspector/model/normative_act.dart';
 import 'package:inspector/model/normative_act_article.dart';
 import 'package:inspector/model/object_category.dart';
-import 'package:inspector/model/photo.dart';
 import 'package:inspector/model/report.dart';
 import 'package:inspector/model/street.dart';
 import 'package:inspector/model/violation_type.dart';

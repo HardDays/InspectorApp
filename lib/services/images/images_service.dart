@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:typed_data';
 import 'dart:io';
 import 'package:inspector/model/photo.dart';
 import 'package:inspector/model/report.dart';
@@ -38,7 +37,7 @@ class ImagesService {
   static String _reportPath(report) {
     if (report.id != null) {
       return 'reports/global/${report.id}';
-    } else if (report.reportNum != null) {
+    } else {
       return 'reports/local/${report.reportNum}';
     }
   }

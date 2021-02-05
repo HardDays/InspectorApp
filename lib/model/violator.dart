@@ -1,6 +1,4 @@
-import 'package:flutter/foundation.dart';
 import 'package:inspector/model/department_code.dart';
-import 'package:inspector/model/violation_type.dart';
 import 'package:inspector/model/violator_info.dart';
 import 'package:inspector/model/violator_info_ip.dart';
 import 'package:inspector/model/violator_info_legal.dart';

@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:inspector/style/colors.dart';
-import 'package:inspector/style/divider.dart';
-import 'package:inspector/style/text_style.dart';
 
 class ProjectTopDialog extends StatelessWidget { 
 

@@ -124,6 +124,7 @@ class Report {
     if (violations != null && index != null && index < violations.length) {
       return violations[index];
     }
+    return null;
   }
 
   factory Report.fromJson(Map<String, dynamic> json, {bool stringified = false}) {

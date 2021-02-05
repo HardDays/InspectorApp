@@ -3,7 +3,6 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:inspector/style/colors.dart';
 import 'package:inspector/style/input_title.dart';
 import 'package:inspector/style/text_style.dart';
-import 'package:inspector/style/title.dart';
 
 typedef  Future<Iterable<dynamic>> AutocompleteCallback(String value);
 

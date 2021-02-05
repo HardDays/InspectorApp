@@ -7,7 +7,6 @@ import 'package:inspector/blocs/profile/event.dart';
 import 'package:inspector/blocs/profile/state.dart';
 import 'package:inspector/navigation.gr.dart';
 import 'package:inspector/services/auth_service.dart';
-import 'package:inspector/services/persistance_service.dart';
 import 'package:inspector/style/accept_dialog.dart';
 import 'package:inspector/style/button.dart';
 import 'package:inspector/style/colors.dart';

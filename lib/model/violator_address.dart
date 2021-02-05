@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'dart:convert' as c;
 
 class ViolatorAddress {
@@ -137,6 +136,8 @@ class ViolatorAddress {
       } else {
         return ViolatorAddress.fromJson(json);
       }
+    } else {
+      return null;
     }
   }
   

@@ -159,6 +159,7 @@ class DiggReportPageState extends State<DiggReportPage> with SingleTickerProvide
     if (value.isEmpty) {
       return 'Введите значение';
     }
+    return null;
   }
 
   @override

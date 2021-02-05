@@ -7,28 +7,18 @@ import 'package:inspector/blocs/control_list/map_state.dart';
 import 'package:inspector/blocs/control_list/sort_state.dart';
 import 'package:inspector/blocs/control_list/state.dart';
 import 'package:inspector/model/control_object.dart';
-import 'package:inspector/model/user.dart';
 import 'package:inspector/providers/exceptions/api_exception.dart';
-import 'package:inspector/services/api/dictionary_service.dart';
 import 'package:inspector/services/department_control/department_control_service.dart';
-import 'package:inspector/services/dictionary_service.dart';
-import 'package:inspector/services/instructions_service.dart';
 import 'package:inspector/services/location/location.dart';
 import 'package:inspector/services/location/location_service.dart';
 import 'package:inspector/services/network_status_service/network_status.dart';
 import 'package:inspector/services/network_status_service/network_status_service.dart';
-import 'package:inspector/services/persistance_service.dart';
 
 class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
   static const pageCapacity = 10;
 
-  final InstructionsService _instructionsService;
-  final PersistanceService _persistanceService;
   final LocationService _locationService;
-  final DictionaryService _dictionaryService = DictionaryService();
-  final ApiDictionaryService _apiDictionaryService = ApiDictionaryService();
   StreamSubscription<NetworkStatus> _networkStatusStreamSubscription;
-  User _user;
 
   final DepartmentControlService _departmentControlService;
 
@@ -43,8 +33,6 @@ class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
   bool _isLoading = false;
 
   ControlListBloc(
-    this._instructionsService,
-    this._persistanceService,
     this._departmentControlService,
     NetworkStatusService networkStatusService,
     this._locationService,

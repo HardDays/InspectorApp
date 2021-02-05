@@ -5,7 +5,6 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:inspector/blocs/instruction/bloc.dart';
 import 'package:inspector/blocs/instruction/events.dart';
 import 'package:inspector/blocs/instruction/states.dart';
-import 'package:inspector/blocs/instruction_list/bloc.dart';
 import 'package:inspector/model/address.dart';
 import 'package:inspector/model/check_status.dart';
 import 'package:inspector/model/digg_request_check.dart';
@@ -37,7 +36,7 @@ class InstructionPage extends StatelessWidget {
   InstructionPage(this.instruction);
 
   void _onReport(BuildContext context, int violationIndex, Report report, InstructionCheck check) async {
-    final res = await Navigator.push(context, 
+    await Navigator.push(context, 
       MaterialPageRoute(
         builder: (context) => TotalReportPage(
           report: report.copyWith(),
@@ -51,7 +50,7 @@ class InstructionPage extends StatelessWidget {
   void _onCreateReport(BuildContext context, InstructionCheck check) async {
      bool violationNotPresent = await _showViolationDialog(context);
      if (violationNotPresent != null) {
-      final res = await Navigator.push(context, 
+      await Navigator.push(context, 
         MaterialPageRoute(
           builder: (context) => TotalReportPage(
             report: Report.empty(violationNotPresent, check.id, instruction.id),
@@ -64,7 +63,7 @@ class InstructionPage extends StatelessWidget {
   }
 
   void _onDiggReport(BuildContext context, DiggRequestCheck diggRequestCheck, Report report) async {
-    final res = await Navigator.push(context, 
+    await Navigator.push(context, 
     MaterialPageRoute(
       builder: (context) => 
         DiggReportPage(
@@ -77,7 +76,7 @@ class InstructionPage extends StatelessWidget {
   }
 
   void _onCreateDiggReport(BuildContext context, Instruction instruction, InstructionCheck check, DiggRequestCheck diggRequestCheck, String status) async {
-    final res = await Navigator.push(context, 
+    await Navigator.push(context, 
     MaterialPageRoute(
       builder: (context) =>
         DiggReportPage(

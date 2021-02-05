@@ -1,8 +1,6 @@
 import 'dart:convert' as c;
-import 'dart:math';
 
 import 'package:bloc/bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:inspector/blocs/digg_report/events.dart';
 import 'package:inspector/blocs/digg_report/states.dart';
 import 'package:inspector/model/digg_request_check.dart';
