@@ -46,7 +46,7 @@ class DepartmentControlApiClient {
     int to,
     List<String> sort,
   }) async =>
-      ((await apiProvider.getControlObjects(
+      apiProvider.getControlObjects(
         dcObjectTypesIds: dcObjectTypesIds,
         dcObjectKind: dcObjectKind,
         externalId: externalId,
@@ -77,8 +77,8 @@ class DepartmentControlApiClient {
         from: from,
         to: to,
         sort: sort,
-      ))['data']
-          .map((e) => ControlObject.fromJson(e))).toList();
+      ).then((response) => response['data']
+          .map((e) => ControlObject.fromJson(e)).cast<ControlObject>().toList());
 
   Future<List<ControlResultSearchResult>> getControlSearchResults(
     int dcObjectId, {
@@ -95,7 +95,7 @@ class DepartmentControlApiClient {
     int to,
     List<String> sort,
   }) async =>
-      ((await apiProvider.getControlSearchResults(
+      apiProvider.getControlSearchResults(
         dcObjectId,
         forCurrentUser: forCurrentUser,
         surveyDateFrom: surveyDateFrom,
@@ -108,8 +108,8 @@ class DepartmentControlApiClient {
         sourceId: sourceId,
         from: from,
         sort: sort,
-      ))['data']
-          .map((e) => ControlObject.fromJson(e))).toList();
+      ).then((response) => response['data']
+          .map((e) => ControlObject.fromJson(e)).cast<ControlObject>().toList());
 
   Future<ControlResultSearchResult> getControlSearchResultByIds(
     int dcObjectId,

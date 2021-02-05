@@ -1,5 +1,8 @@
+import 'package:inspector/blocs/control_list/filter_state.dart';
+import 'package:inspector/blocs/control_list/sort_state.dart';
 import 'package:inspector/model/control_object.dart';
 import 'package:inspector/services/department_control/api/department_control_api_client.dart';
+import 'package:inspector/services/location/location.dart';
 import 'package:inspector/services/network_status_service/network_status.dart';
 
 class DepartmentControlService {
@@ -25,5 +28,28 @@ class DepartmentControlService {
     }
   }
 
+  Future<List<ControlObject>> find(
+    Location location,
+    NetworkStatus networkStatus,
+    ControlObjectsFilterState filtersState,
+    ControlObjectsSortState sortState,
+    int from,
+    int to,
+  ) => location.when(
+    (longitude, latitude) => _apiClient.getControlObjects(
+        userPositionX: longitude,
+        userPositionY: latitude,
+        searchRadius: 500,
+        onlyNearObjects: true,
+        from: from,
+        to: to,
+        daysFromLastSurvey: 7,
+    ),
+    noLocationProvided: () => _apiClient.getControlObjects(
+      from: from,
+      to: to,
+      daysFromLastSurvey: 7,
+    ),
+  );
   
 }
