@@ -73,24 +73,24 @@ class LoginPage extends StatelessWidget {
                 ),
                 button,
                 Spacer(),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 20),
-                  child: TextField(
-                  style: TextStyle(
-                    color: ProjectColors.darkBlue,
-                    ).merge(ProjectTextStyles.base),
-                    decoration: InputDecoration(
-                      hintText: 'Адрес сервера',
-                      hintStyle: TextStyle(
-                        color: ProjectColors.mediumBlue,
-                      ).merge(ProjectTextStyles.base),
-                      border: UnderlineInputBorder(
-                        borderSide: BorderSide(color: ProjectColors.mediumBlue),
-                      ),
-                    ),
-                    onChanged: (login) => BlocProvider.of<AuthBloc>(context).add(SetUrlEvent(login)),
-                  ),
-                ),
+                // Padding(
+                //   padding: const EdgeInsets.only(bottom: 20),
+                //   child: TextField(
+                //   style: TextStyle(
+                //     color: ProjectColors.darkBlue,
+                //     ).merge(ProjectTextStyles.base),
+                //     decoration: InputDecoration(
+                //       hintText: 'Адрес сервера',
+                //       hintStyle: TextStyle(
+                //         color: ProjectColors.mediumBlue,
+                //       ).merge(ProjectTextStyles.base),
+                //       border: UnderlineInputBorder(
+                //         borderSide: BorderSide(color: ProjectColors.mediumBlue),
+                //       ),
+                //     ),
+                //     onChanged: (login) => BlocProvider.of<AuthBloc>(context).add(SetUrlEvent(login)),
+                //   ),
+                // ),
                 Info(),
               ],
             ),
