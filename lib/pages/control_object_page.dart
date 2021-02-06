@@ -4,8 +4,8 @@ import 'package:inspector/model/control_object.dart';
 import 'package:inspector/style/colors.dart';
 import 'package:inspector/style/icons.dart';
 import 'package:inspector/style/text_style.dart';
-import 'package:inspector/widgets/control/status.dart';
-import 'package:inspector/widgets/control/violation.dart';
+import 'package:inspector/widgets/control/control_object/status.dart';
+import 'package:inspector/widgets/control/control_object/violation.dart';
 import 'package:inspector/style/section.dart';
 
 class ControlObjectPage extends StatelessWidget {

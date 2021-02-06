@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:inspector/style/colors.dart';
 import 'package:inspector/style/section.dart';
 import 'package:inspector/style/text_style.dart';
-import 'package:inspector/widgets/control/status.dart';
+import 'package:inspector/widgets/control/control_object/status.dart';
 
 class ControlViolationPage extends StatelessWidget {
 
