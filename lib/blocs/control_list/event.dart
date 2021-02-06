@@ -8,4 +8,6 @@ abstract class ControlListBlocEvent with _$ControlListBlocEvent {
   const factory ControlListBlocEvent.cantWorkInThisModeEvent() = CantWorkInThisModeEvent;
   const factory ControlListBlocEvent.refreshControlListEvent() = RefreshControlListEvent;
   const factory ControlListBlocEvent.loadNextPageControlListEvent() = LoadNextPageControlListEvent;
+
+  const factory ControlListBlocEvent.changeShowMapEvent(bool showMap) = ChangeShowMapEvent;
 }

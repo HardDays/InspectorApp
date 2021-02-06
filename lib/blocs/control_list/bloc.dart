@@ -22,10 +22,6 @@ class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
 
   final DepartmentControlService _departmentControlService;
 
-  ControlObjectsFilterState _filterState = ControlObjectsFilterState();
-  ControlObjectsMapState _mapState = ControlObjectsMapState();
-  ControlObjectsSortState _sortState = ControlObjectsSortState();
-  bool showMap = false;
   NetworkStatus _networkStatus;
 
   List<ControlObject> _objects;
@@ -36,13 +32,20 @@ class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
     this._departmentControlService,
     NetworkStatusService networkStatusService,
     this._locationService,
-  ) : super(LoadingState()) {
+  ) : super(
+          ControlListBlocState(
+            filtersState: ControlObjectsFilterState(),
+            listState: ControlObjectsListState.loadingListState(),
+            mapState: ControlObjectsMapState(),
+            showMap: false,
+            sortState: ControlObjectsSortState.byLastSurveyDate,
+          ),
+        ) {
     add(ControlListBlocEvent.loadControlListEvent());
     _networkStatusStreamSubscription =
         networkStatusService.listenNetworkStatus.listen((value) {
       _networkStatus = value;
       if (value.connectionStatus == ConnectionStatus.offline) {
-        //value.dataSendingMode == DataSendingMode.manual) {
         add(ControlListBlocEvent.cantWorkInThisModeEvent());
       } else {
         add(ControlListBlocEvent.loadControlListEvent());
@@ -54,44 +57,54 @@ class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
   Stream<ControlListBlocState> mapEventToState(
       ControlListBlocEvent event) async* {
     yield* (event.map(
-      loadControlListEvent: _onLoadControlListEvent,
-      cantWorkInThisModeEvent: _onCantWorkInThisModeEvent,
-      loadNextPageControlListEvent: _onLoadNextPageEvent,
-      refreshControlListEvent: (event) async* {
-        yield* (_onLoadControlListEvent(null));
-      },
-    ));
+        loadControlListEvent: _onLoadControlListEvent,
+        cantWorkInThisModeEvent: _onCantWorkInThisModeEvent,
+        loadNextPageControlListEvent: _onLoadNextPageEvent,
+        refreshControlListEvent: (event) async* {
+          yield (state.copyWith(
+              listState: state.listState.maybeMap(
+            emptyListLoadedState: (emptyListLoadedState) =>
+                emptyListLoadedState.copyWith(refresh: true),
+            loadedAllListState: (loadedAllListState) =>
+                loadedAllListState.copyWith(refresh: true),
+            loadedListState: (loadedListState) =>
+                loadedListState.copyWith(refresh: true),
+            orElse: () => state.listState,
+          )));
+          print('Refreshing');
+          add(LoadControlListEvent());
+        },
+        changeShowMapEvent: (event) async* {
+          yield (state.copyWith(showMap: event.showMap));
+        }));
   }
 
   Stream<ControlListBlocState> _onLoadControlListEvent(
       LoadControlListEvent event) async* {
     try {
+      print('Loading');
       if (!_isLoading) {
         _isLoading = true;
-        yield (LoadingState(
-          filtersState: _filterState,
-          mapState: _mapState,
-          sortState: _sortState,
-          showMap: showMap,
-        ));
         _location = await _locationService.actualLocation;
-        _objects = await _departmentControlService.find(_location,
-            _networkStatus, _filterState, _sortState, 0, pageCapacity);
+        _objects = await _departmentControlService.find(
+            _location,
+            _networkStatus,
+            state.filtersState,
+            state.sortState,
+            0,
+            pageCapacity);
         if (_objects.length > 0) {
-          yield (LoadedState(
-            objects: _objects,
-            filtersState: _filterState,
-            mapState: _mapState,
-            sortState: _sortState,
-            showMap: showMap,
+          yield (state.copyWith(
+            listState: ControlObjectsListState.loadedListState(
+                objects: _objects, refresh: false),
           ));
+          print('Loaded');
         } else {
-          yield (LoadedEmptyState(
-            filtersState: _filterState,
-            mapState: _mapState,
-            sortState: _sortState,
-            showMap: showMap,
+          yield (state.copyWith(
+            listState:
+                ControlObjectsListState.emptyListLoadedState(refresh: false),
           ));
+          print('Loaded');
         }
         _isLoading = false;
       }
@@ -103,12 +116,16 @@ class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
 
   Stream<ControlListBlocState> _onCantWorkInThisModeEvent(
       CantWorkInThisModeEvent event) async* {
-    yield (CantWorkInThisModeState(
-      filtersState: _filterState,
-      mapState: _mapState,
-      sortState: _sortState,
-      showMap: showMap,
-    ));
+    if (!(state.listState is LoadedListState ||
+        state.listState is LoadedAllListState)) {
+      yield (ControlListBlocState.cantWorkInThisModeState(
+        filtersState: state.filtersState,
+        listState: state.listState,
+        mapState: state.mapState,
+        showMap: state.showMap,
+        sortState: state.sortState,
+      ));
+    }
   }
 
   Stream<ControlListBlocState> _onLoadNextPageEvent(
@@ -118,26 +135,20 @@ class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
       final _newObjects = await _departmentControlService.find(
           _location,
           _networkStatus,
-          _filterState,
-          _sortState,
+          state.filtersState,
+          state.sortState,
           _objects.length,
           _objects.length + pageCapacity);
       if (_newObjects.length == 0) {
-        yield (LoadedAllState(
-          objects: _objects,
-          filtersState: _filterState,
-          mapState: _mapState,
-          sortState: _sortState,
-          showMap: showMap,
+        yield (state.copyWith(
+          listState: ControlObjectsListState.loadedAllListState(
+              objects: _objects, refresh: false),
         ));
       } else {
         _objects += _newObjects;
-        yield (LoadedState(
-          objects: _objects,
-          filtersState: _filterState,
-          mapState: _mapState,
-          sortState: _sortState,
-          showMap: showMap,
+        yield (state.copyWith(
+          listState: ControlObjectsListState.loadedListState(
+              objects: _objects, refresh: false),
         ));
       }
       _isLoading = false;

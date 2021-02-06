@@ -1,120 +1,51 @@
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:inspector/blocs/control_list/filter_state.dart';
 import 'package:inspector/blocs/control_list/map_state.dart';
 import 'package:inspector/blocs/control_list/sort_state.dart';
 import 'package:inspector/model/control_object.dart';
 
-abstract class ControlListBlocState {
-  ControlListBlocState({
-    this.filtersState,
-    this.sortState,
-    this.mapState,
-    this.showMap,
-  });
+part 'state.freezed.dart';
 
-  final ControlObjectsFilterState filtersState;
-  final ControlObjectsSortState sortState;
-  final ControlObjectsMapState mapState;
-  final bool showMap;
-}
-
-class CantWorkInThisModeState extends ControlListBlocState {
-  CantWorkInThisModeState({
+@freezed
+abstract class ControlListBlocState with _$ControlListBlocState {
+  const factory ControlListBlocState.cantWorkInThisModeState({
+    ControlObjectsListState listState,
     ControlObjectsFilterState filtersState,
     ControlObjectsSortState sortState,
     ControlObjectsMapState mapState,
     bool showMap,
-  }) : super(
-          filtersState: filtersState,
-          sortState: sortState,
-          mapState: mapState,
-          showMap: showMap,
-        );
-}
+  }) = CantWorkInThisModeState;
 
-class LoadingState extends ControlListBlocState {
-  LoadingState({
+  const factory ControlListBlocState({
+    ControlObjectsListState listState,
     ControlObjectsFilterState filtersState,
     ControlObjectsSortState sortState,
     ControlObjectsMapState mapState,
     bool showMap,
-  }) : super(
-          filtersState: filtersState,
-          sortState: sortState,
-          mapState: mapState,
-          showMap: showMap,
-        );
+  }) = _ControlListBlocState;
 }
 
-class RefreshState extends ControlListBlocState
-    with StateWithControlObjectsList {
-  RefreshState({
-    this.objects,
-    this.loadingFuture,
-    ControlObjectsFilterState filtersState,
-    ControlObjectsSortState sortState,
-    ControlObjectsMapState mapState,
-    bool showMap,
-  }) : super(
-          filtersState: filtersState,
-          sortState: sortState,
-          mapState: mapState,
-          showMap: showMap,
-        );
+@freezed
+abstract class ControlObjectsListState implements _$ControlObjectsListState {
 
-  final List<ControlObject> objects;
-  final Future loadingFuture;
-}
+  const ControlObjectsListState._();
 
-class LoadedState extends ControlListBlocState
-    with StateWithControlObjectsList {
-  LoadedState({
-    this.objects,
-    ControlObjectsFilterState filtersState,
-    ControlObjectsSortState sortState,
-    ControlObjectsMapState mapState,
-    bool showMap,
-  }) : super(
-          filtersState: filtersState,
-          sortState: sortState,
-          mapState: mapState,
-          showMap: showMap,
-        );
+  const factory ControlObjectsListState.emptyListLoadedState({
+    bool refresh,
+  }) = EmptyListLoadedState;
 
-  final List<ControlObject> objects;
-}
+  const factory ControlObjectsListState.loadingListState() = LoadingListState;
 
-class LoadedAllState extends LoadedState {
-  LoadedAllState({
-    this.objects,
-    ControlObjectsFilterState filtersState,
-    ControlObjectsSortState sortState,
-    ControlObjectsMapState mapState,
-    bool showMap,
-  }) : super(
-          filtersState: filtersState,
-          sortState: sortState,
-          mapState: mapState,
-          showMap: showMap,
-        );
+  const factory ControlObjectsListState.loadedListState({
+    List<ControlObject> objects,
+    bool refresh,
+  }) = LoadedListState;
 
-  final List<ControlObject> objects;
-}
+  const factory ControlObjectsListState.loadedAllListState({
+    List<ControlObject> objects,
+    bool refresh,
+  }) = LoadedAllListState;
 
-class LoadedEmptyState extends ControlListBlocState {
-  LoadedEmptyState({
-    ControlObjectsFilterState filtersState,
-    ControlObjectsSortState sortState,
-    ControlObjectsMapState mapState,
-    bool showMap,
-  }) : super(
-          filtersState: filtersState,
-          sortState: sortState,
-          mapState: mapState,
-          showMap: showMap,
-        );
-}
+  bool get refresh => false;
 
-mixin StateWithControlObjectsList {
-  int get objectsCount => objects.length;
-  List<ControlObject> get objects;
 }
