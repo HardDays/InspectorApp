@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:inspector/environment_config.dart';
 import 'package:inspector/model/address.dart';
 import 'package:inspector/model/area.dart';
 import 'package:inspector/model/check_status.dart';
@@ -35,7 +36,7 @@ import 'package:inspector/providers/exceptions/unauthorized_exception.dart';
 import 'package:inspector/providers/exceptions/unhadled_exception.dart';
 
 class ApiProvider {
-  static const _defaultUrl = 'http://212.46.14.26:9930/oati-integration';
+  static const _defaultUrl = '${EnvironmentConfig.API_URL}/oati-integration';
   static const _loginPath = '/auth/login';
   static const _refreshPath = '/auth/refresh';
   static const _instructionsPath = '/instructions';

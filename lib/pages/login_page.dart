@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:inspector/blocs/auth/bloc.dart';
 import 'package:inspector/blocs/auth/events.dart';
 import 'package:inspector/blocs/auth/states.dart';
+import 'package:inspector/environment_config.dart';
 import 'package:inspector/style/button.dart';
 import 'package:inspector/style/colors.dart';
 import 'package:inspector/style/text_style.dart';
@@ -73,24 +74,25 @@ class LoginPage extends StatelessWidget {
                 ),
                 button,
                 Spacer(),
-                // Padding(
-                //   padding: const EdgeInsets.only(bottom: 20),
-                //   child: TextField(
-                //   style: TextStyle(
-                //     color: ProjectColors.darkBlue,
-                //     ).merge(ProjectTextStyles.base),
-                //     decoration: InputDecoration(
-                //       hintText: 'Адрес сервера',
-                //       hintStyle: TextStyle(
-                //         color: ProjectColors.mediumBlue,
-                //       ).merge(ProjectTextStyles.base),
-                //       border: UnderlineInputBorder(
-                //         borderSide: BorderSide(color: ProjectColors.mediumBlue),
-                //       ),
-                //     ),
-                //     onChanged: (login) => BlocProvider.of<AuthBloc>(context).add(SetUrlEvent(login)),
-                //   ),
-                // ),
+                if(EnvironmentConfig.ENV != 'prod')
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 20),
+                    child: TextField(
+                    style: TextStyle(
+                      color: ProjectColors.darkBlue,
+                      ).merge(ProjectTextStyles.base),
+                      decoration: InputDecoration(
+                        hintText: 'Адрес сервера',
+                        hintStyle: TextStyle(
+                          color: ProjectColors.mediumBlue,
+                        ).merge(ProjectTextStyles.base),
+                        border: UnderlineInputBorder(
+                          borderSide: BorderSide(color: ProjectColors.mediumBlue),
+                        ),
+                      ),
+                      onChanged: (login) => BlocProvider.of<AuthBloc>(context).add(SetUrlEvent(login)),
+                    ),
+                  ),
                 Info(),
               ],
             ),
