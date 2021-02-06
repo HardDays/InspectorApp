@@ -72,6 +72,8 @@ class ControlObjectWidget extends StatelessWidget {
                       ProjectIcons.alertIcon(), controlObject.violationsCount ?? '0'),
                   if (controlObject.lastSurveyDate != null)
                     _buildDate(controlObject.lastSurveyDate),
+                  if (controlObject.geometry == null) 
+                    ProjectIcons.mapCloseIcon(),
                 ],
               ),
             ),

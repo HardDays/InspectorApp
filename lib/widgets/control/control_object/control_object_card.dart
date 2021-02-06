@@ -68,7 +68,10 @@ class ControlObjectCard extends StatelessWidget {
                   open,
                 ),
               ],
-              child: ControlObjectWidget(controlObject: controlObject),
+              child: ControlObjectWidget(
+                controlObject: controlObject,
+                onTap: open,
+              ),
             ),
           ),
           Column(
@@ -85,7 +88,8 @@ class ControlObjectCard extends StatelessWidget {
     );
   }
 
-  Widget _buildAction(Widget icon, String text, void Function(ControlObject) onTap) {
+  Widget _buildAction(
+      Widget icon, String text, void Function(ControlObject) onTap) {
     return InkWell(
       onTap: () => onTap(controlObject),
       child: Container(
