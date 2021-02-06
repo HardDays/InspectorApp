@@ -1,0 +1,38 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Local test",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "debug",
+            "args": [
+                "--dart-define=DEFINEENV=test",
+                "--dart-define=DEFINEAPI_URL=http://212.46.14.26:9930"
+            ]
+        },
+        {
+            "name": "Test",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release",
+            "args": [
+                "--dart-define=DEFINEENV=test",
+                "--dart-define=DEFINEAPI_URL=http://212.46.14.26:9930"
+            ]
+        },
+        {
+            "name": "Prod",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release",
+            "args": [
+                "--dart-define=DEFINEENV=prod",
+                "--dart-define=DEFINEAPI_URL=https://eis-oati.mos.ru"
+            ]
+        }
+    ]
+}
