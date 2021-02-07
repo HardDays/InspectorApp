@@ -4,9 +4,8 @@ import 'package:inspector/model/control_object.dart';
 import 'package:inspector/style/colors.dart';
 import 'package:inspector/style/icons.dart';
 import 'package:inspector/style/text_style.dart';
-import 'package:inspector/widgets/control/control_object/status.dart';
+import 'package:inspector/widgets/control/control_object/control_object_info.dart';
 import 'package:inspector/widgets/control/control_object/violation.dart';
-import 'package:inspector/style/section.dart';
 
 class ControlObjectPage extends StatelessWidget {
   ControlObjectPage(this._controlObject);
@@ -36,31 +35,15 @@ class ControlObjectPage extends StatelessWidget {
           padding: const EdgeInsets.only(left: 30, right: 30, top: 20),
           child: Column(
             children: [
-              _buildObjectInfoSection(),
-              if(_controlObject.violations.isNotEmpty) 
+              ControlObjectInfo(
+                controlObject: _controlObject,
+              ),
+              if (_controlObject.violations.isNotEmpty)
                 _buildViolationsSection(),
             ],
           ),
         ),
       ),
-    );
-  }
-
-  Column _buildObjectInfoSection() {
-    return Column(
-      children: [
-        ProjectSection('Объект',
-            child: ControlStatusWidget(_controlObject.type.name,
-                _controlObject.externalId.toString())),
-        _buildDivider(),
-        ProjectSection('Адрес', description: _controlObject.address),
-        _buildDivider(),
-        ProjectSection('Вид объекта',
-            description: _controlObject.kind),
-        _buildDivider(),
-        ProjectSection('Балансодержатель',
-            description: _controlObject.balanceOwner),
-      ],
     );
   }
 
@@ -76,13 +59,6 @@ class ControlObjectPage extends StatelessWidget {
           ),
         )
       ],
-    );
-  }
-
-  Widget _buildDivider() {
-    return Divider(
-      height: 1,
-      color: ProjectColors.lightBlue,
     );
   }
 
