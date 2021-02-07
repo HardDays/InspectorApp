@@ -37,8 +37,8 @@ class DepartmentControlService {
     int to,
   ) => location.when(
     (longitude, latitude) => _apiClient.getControlObjects(
-        userPositionX: longitude,
-        userPositionY: latitude,
+        userPositionX: latitude,
+        userPositionY: longitude,
         searchRadius: 500,
         onlyNearObjects: true,
         from: from,
