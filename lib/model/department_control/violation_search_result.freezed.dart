@@ -163,6 +163,7 @@ abstract class $ViolationSearchResultCopyWith<$Res> {
   $ViolationClassificationCopyWith<$Res> get eknViolationClassification;
   $ViolationClassificationCopyWith<$Res> get otherViolationClassification;
   $ObjectElementCopyWith<$Res> get objectElement;
+  $ContractorCopyWith<$Res> get violator;
   $SourceCopyWith<$Res> get source;
 }
 
@@ -311,6 +312,16 @@ class _$ViolationSearchResultCopyWithImpl<$Res>
   }
 
   @override
+  $ContractorCopyWith<$Res> get violator {
+    if (_value.violator == null) {
+      return null;
+    }
+    return $ContractorCopyWith<$Res>(_value.violator, (value) {
+      return _then(_value.copyWith(violator: value));
+    });
+  }
+
+  @override
   $SourceCopyWith<$Res> get source {
     if (_value.source == null) {
       return null;
@@ -364,6 +375,8 @@ abstract class _$ViolationSearchResultCopyWith<$Res>
   $ViolationClassificationCopyWith<$Res> get otherViolationClassification;
   @override
   $ObjectElementCopyWith<$Res> get objectElement;
+  @override
+  $ContractorCopyWith<$Res> get violator;
   @override
   $SourceCopyWith<$Res> get source;
 }

@@ -94,10 +94,17 @@ class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
             0,
             pageCapacity);
         if (_objects.length > 0) {
-          yield (state.copyWith(
-            listState: ControlObjectsListState.loadedListState(
-                objects: _objects, refresh: false),
-          ));
+          if (_objects.length < pageCapacity) {
+            yield (state.copyWith(
+              listState: ControlObjectsListState.loadedAllListState(
+                  objects: _objects, refresh: false),
+            ));
+          } else {
+            yield (state.copyWith(
+              listState: ControlObjectsListState.loadedListState(
+                  objects: _objects, refresh: false),
+            ));
+          }
           print('Loaded');
         } else {
           yield (state.copyWith(
@@ -139,7 +146,7 @@ class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
           state.sortState,
           _objects.length,
           _objects.length + pageCapacity);
-      if (_newObjects.length == 0) {
+      if (_newObjects.length == 0 || _newObjects.length < pageCapacity) {
         yield (state.copyWith(
           listState: ControlObjectsListState.loadedAllListState(
               objects: _objects, refresh: false),
