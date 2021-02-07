@@ -1,18 +1,16 @@
-import 'package:json_annotation/json_annotation.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'violation_name.g.dart';
+part 'violation_name.freezed.dart';
 
-@JsonSerializable()
-class ViolationName {
-  final int id;
-  final String name;
-
-  ViolationName({
-    this.id,
-    this.name,
-  });
+@freezed
+abstract class ViolationName with _$ViolationName {
+  const factory ViolationName({
+    int id,
+    String name,
+  }) = _ViolationName;
 
   factory ViolationName.fromJson(Map<String, dynamic> json) =>
       _$ViolationNameFromJson(json);
-  Map<String, dynamic> toJson() => _$ViolationNameToJson(this);
+
 }

@@ -1,18 +1,16 @@
-import 'package:json_annotation/json_annotation.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'violation_extension_reason.g.dart';
+part 'violation_extension_reason.freezed.dart';
 
-@JsonSerializable()
-class ViolationExtensionReason {
-  ViolationExtensionReason({
-    this.id,
-    this.name,
-  });
+@freezed
+abstract class ViolationExtensionReason with _$ViolationExtensionReason {
+  const factory ViolationExtensionReason({
+    int id,
+    String name,
+  }) = _ViolationExtensionReason;
   
-  final int id;
-  final String name;
 
   factory ViolationExtensionReason.fromJson(Map<String, dynamic> json) =>
       _$ViolationExtensionReasonFromJson(json);
-  Map<String, dynamic> toJson() => _$ViolationExtensionReasonToJson(this);
 }

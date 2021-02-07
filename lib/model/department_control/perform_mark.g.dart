@@ -6,8 +6,8 @@ part of 'perform_mark.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-PerformMark _$PerformMarkFromJson(Map<String, dynamic> json) {
-  return PerformMark(
+_$_PerformMark _$_$_PerformMarkFromJson(Map<String, dynamic> json) {
+  return _$_PerformMark(
     id: json['id'] as int,
     resolveDate: json['resolveDate'] == null
         ? null
@@ -22,7 +22,7 @@ PerformMark _$PerformMarkFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$PerformMarkToJson(PerformMark instance) =>
+Map<String, dynamic> _$_$_PerformMarkToJson(_$_PerformMark instance) =>
     <String, dynamic>{
       'id': instance.id,
       'resolveDate': instance.resolveDate?.toIso8601String(),

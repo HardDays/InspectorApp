@@ -6,8 +6,9 @@ part of 'map_geometric_object.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-MapGeometricObject _$MapGeometricObjectFromJson(Map<String, dynamic> json) {
-  return MapGeometricObject(
+_$_MapGeometricObject _$_$_MapGeometricObjectFromJson(
+    Map<String, dynamic> json) {
+  return _$_MapGeometricObject(
     type: _$enumDecodeNullable(_$MapGeometricObjectTypeEnumMap, json['type']),
     color: json['color'] as String,
     label: json['label'] as String,
@@ -18,7 +19,8 @@ MapGeometricObject _$MapGeometricObjectFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$MapGeometricObjectToJson(MapGeometricObject instance) =>
+Map<String, dynamic> _$_$_MapGeometricObjectToJson(
+        _$_MapGeometricObject instance) =>
     <String, dynamic>{
       'type': _$MapGeometricObjectTypeEnumMap[instance.type],
       'color': instance.color,

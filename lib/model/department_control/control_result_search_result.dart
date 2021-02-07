@@ -1,32 +1,24 @@
 
 import 'package:inspector/model/department_control/violation_search_result.dart';
-import 'package:json_annotation/json_annotation.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'control_result_search_result.g.dart';
+part 'control_result_search_result.freezed.dart';
 
-@JsonSerializable()
-class ControlResultSearchResult {
-  ControlResultSearchResult({
-    this.id,
-    this.surveyDate,
-    this.geometryX,
-    this.geometryY,
-    this.violationExists,
-    this.violation,
-    this.creationSentToCafap,
-    this.closureSentToCafap,
-  });
-
-  final int id;
-  final DateTime surveyDate;
-  final double geometryX;
-  final double geometryY;
-  final bool violationExists;
-  final ViolationSearchResult violation;
-  final bool creationSentToCafap;
-  final bool closureSentToCafap;
+@freezed
+abstract class ControlResultSearchResult with _$ControlResultSearchResult {
+  const factory ControlResultSearchResult({
+    int id,
+    DateTime surveyDate,
+    double geometryX,
+    double geometryY,
+    bool violationExists,
+    ViolationSearchResult violation,
+    bool creationSentToCafap,
+    bool closureSentToCafap,
+  }) = _ControlResultSearchResult;
 
   factory ControlResultSearchResult.fromJson(Map<String, dynamic> json) =>
       _$ControlResultSearchResultFromJson(json);
-  Map<String, dynamic> toJson() => _$ControlResultSearchResultToJson(this);
+
 }

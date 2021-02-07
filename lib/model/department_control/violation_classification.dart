@@ -1,19 +1,17 @@
 import 'package:inspector/model/department_control/violation_name.dart';
-import 'package:json_annotation/json_annotation.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'violation_classification.g.dart';
+part 'violation_classification.freezed.dart';
 
-@JsonSerializable()
-class ViolationClassification {
-  ViolationClassification({
-    this.id,
-    this.violationName,
-  });
-
-  final int id;
-  final ViolationName violationName;
+@freezed
+abstract class ViolationClassification with _$ViolationClassification {
+  const factory ViolationClassification({
+    int id,
+    ViolationName violationName,
+  }) = _ViolationClassification;
 
   factory ViolationClassification.fromJson(Map<String, dynamic> json) =>
       _$ViolationClassificationFromJson(json);
-  Map<String, dynamic> toJson() => _$ViolationClassificationToJson(this);
+
 }

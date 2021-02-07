@@ -1,26 +1,21 @@
-import 'package:json_annotation/json_annotation.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'dcphoto.g.dart';
+part 'dcphoto.freezed.dart';
 
-@JsonSerializable()
-class DCPhoto {
-  final int id;
-  final String name;
-  final String data;
-  final String loadDate;
-  final int geometryX;
-  final int geometryY;
+@freezed
+abstract class DCPhoto with _$DCPhoto {
 
-  DCPhoto({
-    this.id,
-    this.name,
-    this.data,
-    this.loadDate,
-    this.geometryX,
-    this.geometryY,
-  });
+  const factory DCPhoto({
+    int id,
+    String name,
+    String data,
+    String loadDate,
+    int geometryX,
+    int geometryY,
+  }) = _DCPhoto;
 
   factory DCPhoto.fromJson(Map<String, dynamic> json) =>
       _$DCPhotoFromJson(json);
-  Map<String, dynamic> toJson() => _$DCPhotoToJson(this);
+
 }

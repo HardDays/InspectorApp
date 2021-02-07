@@ -6,9 +6,9 @@ part of 'violation_short_search_result.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-ViolationShortSearchResult _$ViolationShortSearchResultFromJson(
+_$_ViolationShortSearchResult _$_$_ViolationShortSearchResultFromJson(
     Map<String, dynamic> json) {
-  return ViolationShortSearchResult(
+  return _$_ViolationShortSearchResult(
     id: json['id'] as int,
     violationNum: json['violationNum'] as String,
     violationStatus: json['violationStatus'] == null
@@ -39,8 +39,8 @@ ViolationShortSearchResult _$ViolationShortSearchResultFromJson(
   );
 }
 
-Map<String, dynamic> _$ViolationShortSearchResultToJson(
-        ViolationShortSearchResult instance) =>
+Map<String, dynamic> _$_$_ViolationShortSearchResultToJson(
+        _$_ViolationShortSearchResult instance) =>
     <String, dynamic>{
       'id': instance.id,
       'violationNum': instance.violationNum,

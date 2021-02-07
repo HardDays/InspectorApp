@@ -6,8 +6,8 @@ part of 'object_element.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-ObjectElement _$ObjectElementFromJson(Map<String, dynamic> json) {
-  return ObjectElement(
+_$_ObjectElement _$_$_ObjectElementFromJson(Map<String, dynamic> json) {
+  return _$_ObjectElement(
     id: json['id'] as int,
     name: json['name'] as String,
     objectType: json['objectType'] == null
@@ -16,7 +16,7 @@ ObjectElement _$ObjectElementFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$ObjectElementToJson(ObjectElement instance) =>
+Map<String, dynamic> _$_$_ObjectElementToJson(_$_ObjectElement instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,

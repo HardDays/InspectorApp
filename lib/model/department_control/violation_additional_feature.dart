@@ -1,18 +1,16 @@
-import 'package:json_annotation/json_annotation.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'violation_additional_feature.g.dart';
+part 'violation_additional_feature.freezed.dart';
 
-@JsonSerializable()
-class ViolationAdditionalFeature {
-  ViolationAdditionalFeature({
-    this.id,
-    this.name,
-  });
-
-  final int id;
-  final String name;
+@freezed
+abstract class ViolationAdditionalFeature with _$ViolationAdditionalFeature {
+  const factory ViolationAdditionalFeature({
+    int id,
+    String name,
+  }) = _ViolationAdditionalFeature;
 
   factory ViolationAdditionalFeature.fromJson(Map<String, dynamic> json) =>
       _$ViolationAdditionalFeatureFromJson(json);
-  Map<String, dynamic> toJson() => _$ViolationAdditionalFeatureToJson(this);
+
 }

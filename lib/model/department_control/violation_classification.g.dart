@@ -6,9 +6,9 @@ part of 'violation_classification.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-ViolationClassification _$ViolationClassificationFromJson(
+_$_ViolationClassification _$_$_ViolationClassificationFromJson(
     Map<String, dynamic> json) {
-  return ViolationClassification(
+  return _$_ViolationClassification(
     id: json['id'] as int,
     violationName: json['violationName'] == null
         ? null
@@ -16,8 +16,8 @@ ViolationClassification _$ViolationClassificationFromJson(
   );
 }
 
-Map<String, dynamic> _$ViolationClassificationToJson(
-        ViolationClassification instance) =>
+Map<String, dynamic> _$_$_ViolationClassificationToJson(
+        _$_ViolationClassification instance) =>
     <String, dynamic>{
       'id': instance.id,
       'violationName': instance.violationName,

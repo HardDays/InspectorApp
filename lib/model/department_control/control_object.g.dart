@@ -6,8 +6,8 @@ part of 'control_object.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-ControlObject _$ControlObjectFromJson(Map<String, dynamic> json) {
-  return ControlObject(
+_$_ControlObject _$_$_ControlObjectFromJson(Map<String, dynamic> json) {
+  return _$_ControlObject(
     id: json['id'] as int,
     externalId: json['externalId'] as int,
     type: json['type'] == null
@@ -41,7 +41,7 @@ ControlObject _$ControlObjectFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$ControlObjectToJson(ControlObject instance) =>
+Map<String, dynamic> _$_$_ControlObjectToJson(_$_ControlObject instance) =>
     <String, dynamic>{
       'id': instance.id,
       'externalId': instance.externalId,

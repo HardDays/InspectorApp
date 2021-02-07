@@ -6,8 +6,8 @@ part of 'dcphoto.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-DCPhoto _$DCPhotoFromJson(Map<String, dynamic> json) {
-  return DCPhoto(
+_$_DCPhoto _$_$_DCPhotoFromJson(Map<String, dynamic> json) {
+  return _$_DCPhoto(
     id: json['id'] as int,
     name: json['name'] as String,
     data: json['data'] as String,
@@ -17,7 +17,8 @@ DCPhoto _$DCPhotoFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$DCPhotoToJson(DCPhoto instance) => <String, dynamic>{
+Map<String, dynamic> _$_$_DCPhotoToJson(_$_DCPhoto instance) =>
+    <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
       'data': instance.data,

@@ -6,9 +6,9 @@ part of 'violation_search_result.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-ViolationSearchResult _$ViolationSearchResultFromJson(
+_$_ViolationSearchResult _$_$_ViolationSearchResultFromJson(
     Map<String, dynamic> json) {
-  return ViolationSearchResult(
+  return _$_ViolationSearchResult(
     id: json['id'] as int,
     detectionDate: json['detectionDate'] == null
         ? null
@@ -82,8 +82,8 @@ ViolationSearchResult _$ViolationSearchResultFromJson(
   );
 }
 
-Map<String, dynamic> _$ViolationSearchResultToJson(
-        ViolationSearchResult instance) =>
+Map<String, dynamic> _$_$_ViolationSearchResultToJson(
+        _$_ViolationSearchResult instance) =>
     <String, dynamic>{
       'id': instance.id,
       'detectionDate': instance.detectionDate?.toIso8601String(),

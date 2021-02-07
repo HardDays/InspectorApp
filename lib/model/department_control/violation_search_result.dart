@@ -9,73 +9,44 @@ import 'package:inspector/model/department_control/violation_classification.dart
 import 'package:inspector/model/department_control/violation_extension_period_search_result.dart';
 import 'package:inspector/model/violation_kind.dart';
 import 'package:inspector/model/violation_status.dart';
-import 'package:json_annotation/json_annotation.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'violation_search_result.g.dart';
+part 'violation_search_result.freezed.dart';
 
-@JsonSerializable()
-class ViolationSearchResult {
-  ViolationSearchResult({
-    this.id,
-    this.detectionDate,
-    this.eknViolationClassification,
-    this.otherViolationClassification,
-    this.btiAddress,
-    this.address,
-    this.btiRefAddress,
-    this.refAddressTinao,
-    this.objectElement,
-    this.description,
-    this.violator,
-    this.critical,
-    this.resolveDate,
-    this.controlDate,
-    this.additionalFeatures,
-    this.photos,
-    this.violationNum,
-    this.violationStatus,
-    this.source,
-    this.violationKind,
-    this.cafapAssigmentId,
-    this.cafapPrescriptionId,
-    this.cafapPrescriptionNum,
-    this.cafapViolationConfirmed,
-    this.performMarks,
-    this.extensionPeriods,
-    this.creationSentToCafap,
-    this.closureSentToCafap,
-  });
-
-  final int id;
-  final DateTime detectionDate;
-  final ViolationClassification eknViolationClassification;
-  final ViolationClassification otherViolationClassification;
-  final Address btiAddress;
-  final String address;
-  final Address btiRefAddress;
-  final bool refAddressTinao;
-  final ObjectElement objectElement;
-  final String description;
-  final Contractor violator;
-  final bool critical;
-  final DateTime resolveDate;
-  final DateTime controlDate;
-  final List<ViolationAdditionalFeature> additionalFeatures;
-  final List<DCPhoto> photos;
-  final String violationNum;
-  final ViolationStatus violationStatus;
-  final Source source;
-  final ViolationKind violationKind;
-  final String cafapAssigmentId;
-  final String cafapPrescriptionId;
-  final int cafapPrescriptionNum;
-  final bool cafapViolationConfirmed;
-  final List<PerformMark> performMarks;
-  final List<ViolationExtensionPeriodSearchResult> extensionPeriods;
-  final bool creationSentToCafap;
-  final bool closureSentToCafap;
+@freezed
+abstract class ViolationSearchResult with _$ViolationSearchResult {
+  const factory ViolationSearchResult({
+    int id,
+    DateTime detectionDate,
+    ViolationClassification eknViolationClassification,
+    ViolationClassification otherViolationClassification,
+    Address btiAddress,
+    String address,
+    Address btiRefAddress,
+    bool refAddressTinao,
+    ObjectElement objectElement,
+    String description,
+    Contractor violator,
+    bool critical,
+    DateTime resolveDate,
+    DateTime controlDate,
+    List<ViolationAdditionalFeature> additionalFeatures,
+    List<DCPhoto> photos,
+    String violationNum,
+    ViolationStatus violationStatus,
+    Source source,
+    ViolationKind violationKind,
+    String cafapAssigmentId,
+    String cafapPrescriptionId,
+    int cafapPrescriptionNum,
+    bool cafapViolationConfirmed,
+    List<PerformMark> performMarks,
+    List<ViolationExtensionPeriodSearchResult> extensionPeriods,
+    bool creationSentToCafap,
+    bool closureSentToCafap,
+  }) = _ViolationSearchResult;
 
   factory ViolationSearchResult.fromJson(Map<String, dynamic> json) =>
       _$ViolationSearchResultFromJson(json);
-  Map<String, dynamic> toJson() => _$ViolationSearchResultToJson(this);
 }

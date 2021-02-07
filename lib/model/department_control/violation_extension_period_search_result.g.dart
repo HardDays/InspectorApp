@@ -6,9 +6,10 @@ part of 'violation_extension_period_search_result.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-ViolationExtensionPeriodSearchResult
-    _$ViolationExtensionPeriodSearchResultFromJson(Map<String, dynamic> json) {
-  return ViolationExtensionPeriodSearchResult(
+_$_ViolationExtensionPeriodSearchResult
+    _$_$_ViolationExtensionPeriodSearchResultFromJson(
+        Map<String, dynamic> json) {
+  return _$_ViolationExtensionPeriodSearchResult(
     resolveDate: json['resolveDate'] == null
         ? null
         : DateTime.parse(json['resolveDate'] as String),
@@ -24,8 +25,8 @@ ViolationExtensionPeriodSearchResult
   );
 }
 
-Map<String, dynamic> _$ViolationExtensionPeriodSearchResultToJson(
-        ViolationExtensionPeriodSearchResult instance) =>
+Map<String, dynamic> _$_$_ViolationExtensionPeriodSearchResultToJson(
+        _$_ViolationExtensionPeriodSearchResult instance) =>
     <String, dynamic>{
       'resolveDate': instance.resolveDate?.toIso8601String(),
       'extensionReason': instance.extensionReason,

@@ -6,9 +6,9 @@ part of 'control_result_search_result.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-ControlResultSearchResult _$ControlResultSearchResultFromJson(
+_$_ControlResultSearchResult _$_$_ControlResultSearchResultFromJson(
     Map<String, dynamic> json) {
-  return ControlResultSearchResult(
+  return _$_ControlResultSearchResult(
     id: json['id'] as int,
     surveyDate: json['surveyDate'] == null
         ? null
@@ -25,8 +25,8 @@ ControlResultSearchResult _$ControlResultSearchResultFromJson(
   );
 }
 
-Map<String, dynamic> _$ControlResultSearchResultToJson(
-        ControlResultSearchResult instance) =>
+Map<String, dynamic> _$_$_ControlResultSearchResultToJson(
+        _$_ControlResultSearchResult instance) =>
     <String, dynamic>{
       'id': instance.id,
       'surveyDate': instance.surveyDate?.toIso8601String(),

@@ -1,20 +1,17 @@
-import 'package:json_annotation/json_annotation.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'object_type.g.dart';
+part 'object_type.freezed.dart';
 
-@JsonSerializable()
-class ObjectType {
-  final int id;
-  final String name;
-  final String code;
+@freezed
+abstract class ObjectType with _$ObjectType {
 
-  ObjectType({
-    this.id,
-    this.name,
-    this.code,
-  });
+  const factory ObjectType({
+    int id,
+    String name,
+    String code,
+  }) = _ObjectType;
 
   factory ObjectType.fromJson(Map<String, dynamic> json) =>
       _$ObjectTypeFromJson(json);
-  Map<String, dynamic> toJson() => _$ObjectTypeToJson(this);
 }

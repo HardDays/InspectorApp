@@ -1,20 +1,17 @@
-import 'package:json_annotation/json_annotation.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'contactor.g.dart';
+part 'contactor.freezed.dart';
 
-@JsonSerializable()
-class Contractor {
-  final int id;
-  final String name;
-  final String inn;
+@freezed
+abstract class Contractor with _$Contractor {
 
-  Contractor({
-    this.id,
-    this.name,
-    this.inn,
-  });
+  const factory Contractor({
+    int id,
+    String name,
+    String inn,
+  }) = _Contractor;
 
   factory Contractor.fromJson(Map<String, dynamic> json) =>
       _$ContractorFromJson(json);
-  Map<String, dynamic> toJson() => _$ContractorToJson(this);
 }
