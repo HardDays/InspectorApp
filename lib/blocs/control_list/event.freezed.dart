@@ -34,6 +34,13 @@ class _$ControlListBlocEventTearOff {
   }
 
 // ignore: unused_element
+  OpenInMapEvent openInMapEvent(ControlObject object) {
+    return OpenInMapEvent(
+      object,
+    );
+  }
+
+// ignore: unused_element
   ChangeShowMapEvent changeShowMapEvent(bool showMap) {
     return ChangeShowMapEvent(
       showMap,
@@ -53,6 +60,7 @@ mixin _$ControlListBlocEvent {
     @required TResult cantWorkInThisModeEvent(),
     @required TResult refreshControlListEvent(),
     @required TResult loadNextPageControlListEvent(),
+    @required TResult openInMapEvent(ControlObject object),
     @required TResult changeShowMapEvent(bool showMap),
   });
   @optionalTypeArgs
@@ -61,6 +69,7 @@ mixin _$ControlListBlocEvent {
     TResult cantWorkInThisModeEvent(),
     TResult refreshControlListEvent(),
     TResult loadNextPageControlListEvent(),
+    TResult openInMapEvent(ControlObject object),
     TResult changeShowMapEvent(bool showMap),
     @required TResult orElse(),
   });
@@ -72,6 +81,7 @@ mixin _$ControlListBlocEvent {
     @required
         TResult loadNextPageControlListEvent(
             LoadNextPageControlListEvent value),
+    @required TResult openInMapEvent(OpenInMapEvent value),
     @required TResult changeShowMapEvent(ChangeShowMapEvent value),
   });
   @optionalTypeArgs
@@ -80,6 +90,7 @@ mixin _$ControlListBlocEvent {
     TResult cantWorkInThisModeEvent(CantWorkInThisModeEvent value),
     TResult refreshControlListEvent(RefreshControlListEvent value),
     TResult loadNextPageControlListEvent(LoadNextPageControlListEvent value),
+    TResult openInMapEvent(OpenInMapEvent value),
     TResult changeShowMapEvent(ChangeShowMapEvent value),
     @required TResult orElse(),
   });
@@ -145,12 +156,14 @@ class _$LoadControlListEvent implements LoadControlListEvent {
     @required TResult cantWorkInThisModeEvent(),
     @required TResult refreshControlListEvent(),
     @required TResult loadNextPageControlListEvent(),
+    @required TResult openInMapEvent(ControlObject object),
     @required TResult changeShowMapEvent(bool showMap),
   }) {
     assert(loadControlListEvent != null);
     assert(cantWorkInThisModeEvent != null);
     assert(refreshControlListEvent != null);
     assert(loadNextPageControlListEvent != null);
+    assert(openInMapEvent != null);
     assert(changeShowMapEvent != null);
     return loadControlListEvent();
   }
@@ -162,6 +175,7 @@ class _$LoadControlListEvent implements LoadControlListEvent {
     TResult cantWorkInThisModeEvent(),
     TResult refreshControlListEvent(),
     TResult loadNextPageControlListEvent(),
+    TResult openInMapEvent(ControlObject object),
     TResult changeShowMapEvent(bool showMap),
     @required TResult orElse(),
   }) {
@@ -181,12 +195,14 @@ class _$LoadControlListEvent implements LoadControlListEvent {
     @required
         TResult loadNextPageControlListEvent(
             LoadNextPageControlListEvent value),
+    @required TResult openInMapEvent(OpenInMapEvent value),
     @required TResult changeShowMapEvent(ChangeShowMapEvent value),
   }) {
     assert(loadControlListEvent != null);
     assert(cantWorkInThisModeEvent != null);
     assert(refreshControlListEvent != null);
     assert(loadNextPageControlListEvent != null);
+    assert(openInMapEvent != null);
     assert(changeShowMapEvent != null);
     return loadControlListEvent(this);
   }
@@ -198,6 +214,7 @@ class _$LoadControlListEvent implements LoadControlListEvent {
     TResult cantWorkInThisModeEvent(CantWorkInThisModeEvent value),
     TResult refreshControlListEvent(RefreshControlListEvent value),
     TResult loadNextPageControlListEvent(LoadNextPageControlListEvent value),
+    TResult openInMapEvent(OpenInMapEvent value),
     TResult changeShowMapEvent(ChangeShowMapEvent value),
     @required TResult orElse(),
   }) {
@@ -256,12 +273,14 @@ class _$CantWorkInThisModeEvent implements CantWorkInThisModeEvent {
     @required TResult cantWorkInThisModeEvent(),
     @required TResult refreshControlListEvent(),
     @required TResult loadNextPageControlListEvent(),
+    @required TResult openInMapEvent(ControlObject object),
     @required TResult changeShowMapEvent(bool showMap),
   }) {
     assert(loadControlListEvent != null);
     assert(cantWorkInThisModeEvent != null);
     assert(refreshControlListEvent != null);
     assert(loadNextPageControlListEvent != null);
+    assert(openInMapEvent != null);
     assert(changeShowMapEvent != null);
     return cantWorkInThisModeEvent();
   }
@@ -273,6 +292,7 @@ class _$CantWorkInThisModeEvent implements CantWorkInThisModeEvent {
     TResult cantWorkInThisModeEvent(),
     TResult refreshControlListEvent(),
     TResult loadNextPageControlListEvent(),
+    TResult openInMapEvent(ControlObject object),
     TResult changeShowMapEvent(bool showMap),
     @required TResult orElse(),
   }) {
@@ -292,12 +312,14 @@ class _$CantWorkInThisModeEvent implements CantWorkInThisModeEvent {
     @required
         TResult loadNextPageControlListEvent(
             LoadNextPageControlListEvent value),
+    @required TResult openInMapEvent(OpenInMapEvent value),
     @required TResult changeShowMapEvent(ChangeShowMapEvent value),
   }) {
     assert(loadControlListEvent != null);
     assert(cantWorkInThisModeEvent != null);
     assert(refreshControlListEvent != null);
     assert(loadNextPageControlListEvent != null);
+    assert(openInMapEvent != null);
     assert(changeShowMapEvent != null);
     return cantWorkInThisModeEvent(this);
   }
@@ -309,6 +331,7 @@ class _$CantWorkInThisModeEvent implements CantWorkInThisModeEvent {
     TResult cantWorkInThisModeEvent(CantWorkInThisModeEvent value),
     TResult refreshControlListEvent(RefreshControlListEvent value),
     TResult loadNextPageControlListEvent(LoadNextPageControlListEvent value),
+    TResult openInMapEvent(OpenInMapEvent value),
     TResult changeShowMapEvent(ChangeShowMapEvent value),
     @required TResult orElse(),
   }) {
@@ -367,12 +390,14 @@ class _$RefreshControlListEvent implements RefreshControlListEvent {
     @required TResult cantWorkInThisModeEvent(),
     @required TResult refreshControlListEvent(),
     @required TResult loadNextPageControlListEvent(),
+    @required TResult openInMapEvent(ControlObject object),
     @required TResult changeShowMapEvent(bool showMap),
   }) {
     assert(loadControlListEvent != null);
     assert(cantWorkInThisModeEvent != null);
     assert(refreshControlListEvent != null);
     assert(loadNextPageControlListEvent != null);
+    assert(openInMapEvent != null);
     assert(changeShowMapEvent != null);
     return refreshControlListEvent();
   }
@@ -384,6 +409,7 @@ class _$RefreshControlListEvent implements RefreshControlListEvent {
     TResult cantWorkInThisModeEvent(),
     TResult refreshControlListEvent(),
     TResult loadNextPageControlListEvent(),
+    TResult openInMapEvent(ControlObject object),
     TResult changeShowMapEvent(bool showMap),
     @required TResult orElse(),
   }) {
@@ -403,12 +429,14 @@ class _$RefreshControlListEvent implements RefreshControlListEvent {
     @required
         TResult loadNextPageControlListEvent(
             LoadNextPageControlListEvent value),
+    @required TResult openInMapEvent(OpenInMapEvent value),
     @required TResult changeShowMapEvent(ChangeShowMapEvent value),
   }) {
     assert(loadControlListEvent != null);
     assert(cantWorkInThisModeEvent != null);
     assert(refreshControlListEvent != null);
     assert(loadNextPageControlListEvent != null);
+    assert(openInMapEvent != null);
     assert(changeShowMapEvent != null);
     return refreshControlListEvent(this);
   }
@@ -420,6 +448,7 @@ class _$RefreshControlListEvent implements RefreshControlListEvent {
     TResult cantWorkInThisModeEvent(CantWorkInThisModeEvent value),
     TResult refreshControlListEvent(RefreshControlListEvent value),
     TResult loadNextPageControlListEvent(LoadNextPageControlListEvent value),
+    TResult openInMapEvent(OpenInMapEvent value),
     TResult changeShowMapEvent(ChangeShowMapEvent value),
     @required TResult orElse(),
   }) {
@@ -481,12 +510,14 @@ class _$LoadNextPageControlListEvent implements LoadNextPageControlListEvent {
     @required TResult cantWorkInThisModeEvent(),
     @required TResult refreshControlListEvent(),
     @required TResult loadNextPageControlListEvent(),
+    @required TResult openInMapEvent(ControlObject object),
     @required TResult changeShowMapEvent(bool showMap),
   }) {
     assert(loadControlListEvent != null);
     assert(cantWorkInThisModeEvent != null);
     assert(refreshControlListEvent != null);
     assert(loadNextPageControlListEvent != null);
+    assert(openInMapEvent != null);
     assert(changeShowMapEvent != null);
     return loadNextPageControlListEvent();
   }
@@ -498,6 +529,7 @@ class _$LoadNextPageControlListEvent implements LoadNextPageControlListEvent {
     TResult cantWorkInThisModeEvent(),
     TResult refreshControlListEvent(),
     TResult loadNextPageControlListEvent(),
+    TResult openInMapEvent(ControlObject object),
     TResult changeShowMapEvent(bool showMap),
     @required TResult orElse(),
   }) {
@@ -517,12 +549,14 @@ class _$LoadNextPageControlListEvent implements LoadNextPageControlListEvent {
     @required
         TResult loadNextPageControlListEvent(
             LoadNextPageControlListEvent value),
+    @required TResult openInMapEvent(OpenInMapEvent value),
     @required TResult changeShowMapEvent(ChangeShowMapEvent value),
   }) {
     assert(loadControlListEvent != null);
     assert(cantWorkInThisModeEvent != null);
     assert(refreshControlListEvent != null);
     assert(loadNextPageControlListEvent != null);
+    assert(openInMapEvent != null);
     assert(changeShowMapEvent != null);
     return loadNextPageControlListEvent(this);
   }
@@ -534,6 +568,7 @@ class _$LoadNextPageControlListEvent implements LoadNextPageControlListEvent {
     TResult cantWorkInThisModeEvent(CantWorkInThisModeEvent value),
     TResult refreshControlListEvent(RefreshControlListEvent value),
     TResult loadNextPageControlListEvent(LoadNextPageControlListEvent value),
+    TResult openInMapEvent(OpenInMapEvent value),
     TResult changeShowMapEvent(ChangeShowMapEvent value),
     @required TResult orElse(),
   }) {
@@ -547,6 +582,161 @@ class _$LoadNextPageControlListEvent implements LoadNextPageControlListEvent {
 
 abstract class LoadNextPageControlListEvent implements ControlListBlocEvent {
   const factory LoadNextPageControlListEvent() = _$LoadNextPageControlListEvent;
+}
+
+/// @nodoc
+abstract class $OpenInMapEventCopyWith<$Res> {
+  factory $OpenInMapEventCopyWith(
+          OpenInMapEvent value, $Res Function(OpenInMapEvent) then) =
+      _$OpenInMapEventCopyWithImpl<$Res>;
+  $Res call({ControlObject object});
+
+  $ControlObjectCopyWith<$Res> get object;
+}
+
+/// @nodoc
+class _$OpenInMapEventCopyWithImpl<$Res>
+    extends _$ControlListBlocEventCopyWithImpl<$Res>
+    implements $OpenInMapEventCopyWith<$Res> {
+  _$OpenInMapEventCopyWithImpl(
+      OpenInMapEvent _value, $Res Function(OpenInMapEvent) _then)
+      : super(_value, (v) => _then(v as OpenInMapEvent));
+
+  @override
+  OpenInMapEvent get _value => super._value as OpenInMapEvent;
+
+  @override
+  $Res call({
+    Object object = freezed,
+  }) {
+    return _then(OpenInMapEvent(
+      object == freezed ? _value.object : object as ControlObject,
+    ));
+  }
+
+  @override
+  $ControlObjectCopyWith<$Res> get object {
+    if (_value.object == null) {
+      return null;
+    }
+    return $ControlObjectCopyWith<$Res>(_value.object, (value) {
+      return _then(_value.copyWith(object: value));
+    });
+  }
+}
+
+/// @nodoc
+class _$OpenInMapEvent implements OpenInMapEvent {
+  const _$OpenInMapEvent(this.object) : assert(object != null);
+
+  @override
+  final ControlObject object;
+
+  @override
+  String toString() {
+    return 'ControlListBlocEvent.openInMapEvent(object: $object)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is OpenInMapEvent &&
+            (identical(other.object, object) ||
+                const DeepCollectionEquality().equals(other.object, object)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^ const DeepCollectionEquality().hash(object);
+
+  @JsonKey(ignore: true)
+  @override
+  $OpenInMapEventCopyWith<OpenInMapEvent> get copyWith =>
+      _$OpenInMapEventCopyWithImpl<OpenInMapEvent>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object>({
+    @required TResult loadControlListEvent(),
+    @required TResult cantWorkInThisModeEvent(),
+    @required TResult refreshControlListEvent(),
+    @required TResult loadNextPageControlListEvent(),
+    @required TResult openInMapEvent(ControlObject object),
+    @required TResult changeShowMapEvent(bool showMap),
+  }) {
+    assert(loadControlListEvent != null);
+    assert(cantWorkInThisModeEvent != null);
+    assert(refreshControlListEvent != null);
+    assert(loadNextPageControlListEvent != null);
+    assert(openInMapEvent != null);
+    assert(changeShowMapEvent != null);
+    return openInMapEvent(object);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object>({
+    TResult loadControlListEvent(),
+    TResult cantWorkInThisModeEvent(),
+    TResult refreshControlListEvent(),
+    TResult loadNextPageControlListEvent(),
+    TResult openInMapEvent(ControlObject object),
+    TResult changeShowMapEvent(bool showMap),
+    @required TResult orElse(),
+  }) {
+    assert(orElse != null);
+    if (openInMapEvent != null) {
+      return openInMapEvent(object);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object>({
+    @required TResult loadControlListEvent(LoadControlListEvent value),
+    @required TResult cantWorkInThisModeEvent(CantWorkInThisModeEvent value),
+    @required TResult refreshControlListEvent(RefreshControlListEvent value),
+    @required
+        TResult loadNextPageControlListEvent(
+            LoadNextPageControlListEvent value),
+    @required TResult openInMapEvent(OpenInMapEvent value),
+    @required TResult changeShowMapEvent(ChangeShowMapEvent value),
+  }) {
+    assert(loadControlListEvent != null);
+    assert(cantWorkInThisModeEvent != null);
+    assert(refreshControlListEvent != null);
+    assert(loadNextPageControlListEvent != null);
+    assert(openInMapEvent != null);
+    assert(changeShowMapEvent != null);
+    return openInMapEvent(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object>({
+    TResult loadControlListEvent(LoadControlListEvent value),
+    TResult cantWorkInThisModeEvent(CantWorkInThisModeEvent value),
+    TResult refreshControlListEvent(RefreshControlListEvent value),
+    TResult loadNextPageControlListEvent(LoadNextPageControlListEvent value),
+    TResult openInMapEvent(OpenInMapEvent value),
+    TResult changeShowMapEvent(ChangeShowMapEvent value),
+    @required TResult orElse(),
+  }) {
+    assert(orElse != null);
+    if (openInMapEvent != null) {
+      return openInMapEvent(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class OpenInMapEvent implements ControlListBlocEvent {
+  const factory OpenInMapEvent(ControlObject object) = _$OpenInMapEvent;
+
+  ControlObject get object;
+  @JsonKey(ignore: true)
+  $OpenInMapEventCopyWith<OpenInMapEvent> get copyWith;
 }
 
 /// @nodoc
@@ -614,12 +804,14 @@ class _$ChangeShowMapEvent implements ChangeShowMapEvent {
     @required TResult cantWorkInThisModeEvent(),
     @required TResult refreshControlListEvent(),
     @required TResult loadNextPageControlListEvent(),
+    @required TResult openInMapEvent(ControlObject object),
     @required TResult changeShowMapEvent(bool showMap),
   }) {
     assert(loadControlListEvent != null);
     assert(cantWorkInThisModeEvent != null);
     assert(refreshControlListEvent != null);
     assert(loadNextPageControlListEvent != null);
+    assert(openInMapEvent != null);
     assert(changeShowMapEvent != null);
     return changeShowMapEvent(showMap);
   }
@@ -631,6 +823,7 @@ class _$ChangeShowMapEvent implements ChangeShowMapEvent {
     TResult cantWorkInThisModeEvent(),
     TResult refreshControlListEvent(),
     TResult loadNextPageControlListEvent(),
+    TResult openInMapEvent(ControlObject object),
     TResult changeShowMapEvent(bool showMap),
     @required TResult orElse(),
   }) {
@@ -650,12 +843,14 @@ class _$ChangeShowMapEvent implements ChangeShowMapEvent {
     @required
         TResult loadNextPageControlListEvent(
             LoadNextPageControlListEvent value),
+    @required TResult openInMapEvent(OpenInMapEvent value),
     @required TResult changeShowMapEvent(ChangeShowMapEvent value),
   }) {
     assert(loadControlListEvent != null);
     assert(cantWorkInThisModeEvent != null);
     assert(refreshControlListEvent != null);
     assert(loadNextPageControlListEvent != null);
+    assert(openInMapEvent != null);
     assert(changeShowMapEvent != null);
     return changeShowMapEvent(this);
   }
@@ -667,6 +862,7 @@ class _$ChangeShowMapEvent implements ChangeShowMapEvent {
     TResult cantWorkInThisModeEvent(CantWorkInThisModeEvent value),
     TResult refreshControlListEvent(RefreshControlListEvent value),
     TResult loadNextPageControlListEvent(LoadNextPageControlListEvent value),
+    TResult openInMapEvent(OpenInMapEvent value),
     TResult changeShowMapEvent(ChangeShowMapEvent value),
     @required TResult orElse(),
   }) {

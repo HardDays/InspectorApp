@@ -6,6 +6,8 @@ import 'package:inspector/blocs/control_list/filter_state.dart';
 import 'package:inspector/blocs/control_list/map_state.dart';
 import 'package:inspector/blocs/control_list/sort_state.dart';
 import 'package:inspector/blocs/control_list/state.dart';
+import 'package:inspector/blocs/notification_bloc/bloc.dart';
+import 'package:inspector/blocs/notification_bloc/events.dart';
 import 'package:inspector/model/department_control/control_object.dart';
 import 'package:inspector/providers/exceptions/api_exception.dart';
 import 'package:inspector/services/department_control/department_control_service.dart';
@@ -21,6 +23,7 @@ class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
   StreamSubscription<NetworkStatus> _networkStatusStreamSubscription;
 
   final DepartmentControlService _departmentControlService;
+  final NotificationBloc _notificationBloc;
 
   NetworkStatus _networkStatus;
 
@@ -32,6 +35,7 @@ class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
     this._departmentControlService,
     NetworkStatusService networkStatusService,
     this._locationService,
+    this._notificationBloc,
   ) : super(
           ControlListBlocState(
             filtersState: ControlObjectsFilterState(),
@@ -76,6 +80,13 @@ class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
         },
         changeShowMapEvent: (event) async* {
           yield (state.copyWith(showMap: event.showMap));
+        },
+        openInMapEvent: (OpenInMapEvent event) async* {
+          if (event.object.geometry == null) {
+            _notificationBloc.add(SnackBarNotificationEvent('Просмотр этого объекта на карте недоступен'));
+          } else {
+            _notificationBloc.add(SnackBarNotificationEvent('Данный функционал пока не реализован'));
+          }
         }));
   }
 

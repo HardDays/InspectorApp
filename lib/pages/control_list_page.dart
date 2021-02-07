@@ -189,7 +189,9 @@ class _ControlListPageState extends State<ControlListPage> {
       (ControlObject object) {};
 
   void Function(ControlObject) _onShowInMap(BuildContext context) =>
-      (ControlObject object) {};
+      (ControlObject object) {
+        BlocProvider.of<ControlListBloc>(context).add(ControlListBlocEvent.openInMapEvent(object));
+      };
 
   void Function(bool) _onMapChanged(BuildContext context) => (bool value) {
         BlocProvider.of<ControlListBloc>(context)
