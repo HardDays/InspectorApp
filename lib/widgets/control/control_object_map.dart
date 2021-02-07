@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:inspector/model/control_object.dart';
+import 'package:inspector/model/department_control/control_object.dart';
 import 'package:inspector/style/button.dart';
 import 'package:inspector/style/colors.dart';
 import 'package:inspector/widgets/control/control_object/control_object_widget.dart';

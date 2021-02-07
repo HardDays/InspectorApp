@@ -6,7 +6,7 @@ import 'package:inspector/model/address.dart';
 import 'package:inspector/model/area.dart';
 import 'package:inspector/model/check_status.dart';
 import 'package:inspector/model/check_type.dart';
-import 'package:inspector/model/control_object.dart';
+import 'package:inspector/model/department_control/control_object.dart';
 import 'package:inspector/model/department_code.dart';
 import 'package:inspector/model/district.dart';
 import 'package:inspector/model/employee.dart';

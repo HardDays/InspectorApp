@@ -6,7 +6,7 @@ import 'package:inspector/blocs/control_list/filter_state.dart';
 import 'package:inspector/blocs/control_list/map_state.dart';
 import 'package:inspector/blocs/control_list/sort_state.dart';
 import 'package:inspector/blocs/control_list/state.dart';
-import 'package:inspector/model/control_object.dart';
+import 'package:inspector/model/department_control/control_object.dart';
 import 'package:inspector/providers/exceptions/api_exception.dart';
 import 'package:inspector/services/department_control/department_control_service.dart';
 import 'package:inspector/services/location/location.dart';

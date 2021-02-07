@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:inspector/model/control_object.dart';
+import 'package:inspector/model/department_control/control_object.dart';
 import 'package:inspector/widgets/control/control_object/control_object_card.dart';
 
 class ControlObjectsPaginatedList extends StatefulWidget {

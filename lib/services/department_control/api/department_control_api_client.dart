@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
-import 'package:inspector/model/control_object.dart';
+import 'package:inspector/model/department_control/control_object.dart';
+import 'package:inspector/model/department_control/control_result_search_result.dart';
 import 'package:inspector/providers/api_provider.dart';
 
 class DepartmentControlApiClient {

@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:inspector/blocs/control_list/bloc.dart';
 import 'package:inspector/blocs/control_list/event.dart';
 import 'package:inspector/blocs/control_list/state.dart';
-import 'package:inspector/model/control_object.dart';
+import 'package:inspector/model/department_control/control_object.dart';
 import 'package:inspector/pages/control_object_page.dart';
 import 'package:inspector/style/colors.dart';
 import 'package:inspector/style/icons.dart';
