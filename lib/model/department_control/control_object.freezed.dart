@@ -112,7 +112,6 @@ abstract class $ControlObjectCopyWith<$Res> {
       List<ViolationShortSearchResult> violations});
 
   $ObjectTypeCopyWith<$Res> get type;
-  $ContractorCopyWith<$Res> get contractor;
 }
 
 /// @nodoc
@@ -184,16 +183,6 @@ class _$ControlObjectCopyWithImpl<$Res>
       return _then(_value.copyWith(type: value));
     });
   }
-
-  @override
-  $ContractorCopyWith<$Res> get contractor {
-    if (_value.contractor == null) {
-      return null;
-    }
-    return $ContractorCopyWith<$Res>(_value.contractor, (value) {
-      return _then(_value.copyWith(contractor: value));
-    });
-  }
 }
 
 /// @nodoc
@@ -223,8 +212,6 @@ abstract class _$ControlObjectCopyWith<$Res>
 
   @override
   $ObjectTypeCopyWith<$Res> get type;
-  @override
-  $ContractorCopyWith<$Res> get contractor;
 }
 
 /// @nodoc

@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'contactor.dart';
+part of 'contractor.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator

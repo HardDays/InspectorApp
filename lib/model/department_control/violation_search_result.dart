@@ -1,5 +1,5 @@
 import 'package:inspector/model/address.dart';
-import 'package:inspector/model/department_control/contactor.dart';
+import 'package:inspector/model/department_control/contractor.dart';
 import 'package:inspector/model/department_control/dcphoto.dart';
 import 'package:inspector/model/department_control/object_element.dart';
 import 'package:inspector/model/department_control/perform_mark.dart';

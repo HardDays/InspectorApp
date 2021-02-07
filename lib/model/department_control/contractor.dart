@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'contactor.g.dart';
-part 'contactor.freezed.dart';
+part 'contractor.g.dart';
+part 'contractor.freezed.dart';
 
 @freezed
 abstract class Contractor with _$Contractor {

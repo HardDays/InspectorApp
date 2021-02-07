@@ -19,9 +19,7 @@ _$_ControlObject _$_$_ControlObjectFromJson(Map<String, dynamic> json) {
     district: json['district'] as String,
     address: json['address'] as String,
     balanceOwner: json['balanceOwner'] as String,
-    contractor: json['contractor'] == null
-        ? null
-        : Contractor.fromJson(json['contractor'] as Map<String, dynamic>),
+    contractor: json['contractor'],
     cameraCount: json['cameraCount'] as int,
     violationsCount: json['violationsCount'] as String,
     lastSurveyDate: json['lastSurveyDate'] == null

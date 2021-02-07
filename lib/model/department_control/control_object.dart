@@ -1,4 +1,4 @@
-import 'package:inspector/model/department_control/contactor.dart';
+import 'package:inspector/model/department_control/contractor.dart';
 import 'package:inspector/model/department_control/map_geometric_object.dart';
 import 'package:inspector/model/department_control/object_type.dart';
 import 'package:inspector/model/department_control/violation_short_search_result.dart';

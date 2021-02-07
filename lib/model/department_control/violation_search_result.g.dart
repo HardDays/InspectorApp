@@ -33,9 +33,7 @@ _$_ViolationSearchResult _$_$_ViolationSearchResultFromJson(
         ? null
         : ObjectElement.fromJson(json['objectElement'] as Map<String, dynamic>),
     description: json['description'] as String,
-    violator: json['violator'] == null
-        ? null
-        : Contractor.fromJson(json['violator'] as Map<String, dynamic>),
+    violator: json['violator'],
     critical: json['critical'] as bool,
     resolveDate: json['resolveDate'] == null
         ? null
