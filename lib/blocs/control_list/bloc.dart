@@ -17,7 +17,7 @@ import 'package:inspector/services/network_status_service/network_status.dart';
 import 'package:inspector/services/network_status_service/network_status_service.dart';
 
 class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
-  static const pageCapacity = 10;
+  static const pageCapacity = 50;
 
   final LocationService _locationService;
   StreamSubscription<NetworkStatus> _networkStatusStreamSubscription;
@@ -102,7 +102,7 @@ class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
         _isLoading = true;
         _location = await _locationService.actualLocation;
         _objects = await _departmentControlService.find(
-            _location,
+            Location(latitude: 55.74, longitude: 37.63),
             _networkStatus,
             state.filtersState,
             state.sortState,

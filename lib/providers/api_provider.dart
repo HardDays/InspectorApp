@@ -6,6 +6,11 @@ import 'package:inspector/model/address.dart';
 import 'package:inspector/model/area.dart';
 import 'package:inspector/model/check_status.dart';
 import 'package:inspector/model/check_type.dart';
+import 'package:inspector/model/dc_object_element.dart';
+import 'package:inspector/model/dc_object_kind.dart';
+import 'package:inspector/model/dc_object_type.dart';
+import 'package:inspector/model/dc_violation_name.dart';
+import 'package:inspector/model/dc_violation_status.dart';
 import 'package:inspector/model/department_control/control_object.dart';
 import 'package:inspector/model/department_code.dart';
 import 'package:inspector/model/district.dart';
@@ -69,8 +74,13 @@ class ApiProvider {
     ViolatorInfoIp: '/dict/violator-info-ip',
     ResolutionType: '/dict/resolution-types',
     NormativeActArticle: '/dict/normative-act-articles',
-    ControlObject: '/dc-objects',
+    // ControlObject: '/dc-objects',
     KladdrAddressObjectType: '/dict/kladr-address-object-types',
+    DCObjectElement: '/dict/dc-object-elements',
+    DCObjectKind: '/dict/dc-object-kinds',
+    DCViolationName: '/dict/dc-violation-names',
+    DCViolationStatus: '/dict/dc-violation-statuses',
+    DCObjectType: '/dict/dc-object-types',
 
   };
 
@@ -89,12 +99,14 @@ class ApiProvider {
       final result = (await request()).data;
       return result;
     } on DioError catch (ex) {
+      print(ex);
       if (ex.type == DioErrorType.RESPONSE) {
         if (ex.response.statusCode == 401)  {
           throw UnauthorizedException(
             ex.response.data?.toString()
           );
         } else {  
+          print(ex.response.request.uri);
           throw ServerException(
             ex.response.statusCode,
             ex.response.data?.toString(),

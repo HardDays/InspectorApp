@@ -2,22 +2,19 @@ import 'dart:convert' as c;
 
 import 'package:flutter/foundation.dart';
 
-class DepartmentCode {
+class DCViolationName {
   final int id;
   final String name;
-  final String code;
   
-  DepartmentCode({
+  DCViolationName({
     @required this.id,
     @required this.name,
-    @required this.code,
   });
 
-  factory DepartmentCode.fromJson(Map<String, dynamic> json) {
-    return DepartmentCode(
+  factory DCViolationName.fromJson(Map<String, dynamic> json) {
+    return DCViolationName(
       id: json['id'], 
       name: json['name'], 
-      code: json['code']
     );
   }
   
@@ -25,7 +22,6 @@ class DepartmentCode {
     return {
       'id': id,
       'name': name,
-      'code': code
     };
   }
 
@@ -35,6 +31,6 @@ class DepartmentCode {
 
   @override
   String toString() {
-    return '$code $name';
+    return '$name';
   }
 }
