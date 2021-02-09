@@ -18,7 +18,7 @@ class ControlFiltersWidget extends StatelessWidget {
 
 
   Future<Iterable<DCObjectType>> _onDCObjectTypeSearch(BuildContext context, String name) async  {
-    return await BlocProvider.of<ControlFiltersBloc>(context).dcObjectTypes(name);
+    return null; //await BlocProvider.of<ControlFiltersBloc>(context).dcObjectTypes(name);
   }
 
   void _onDCObjectTypeSelect(DCObjectType type) {

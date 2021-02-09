@@ -24,9 +24,9 @@ class ControlFiltersBloc extends Bloc<ControlFiltersBlocEvent, ControlFiltersBlo
     // );
   }
 
-  Future<List<DCObjectType>> dcObjectTypes(String name) async {
-    return await _dictionarySevice.getDCObjectTypes(name: name);
-  }
+  // Future<List<DCObjectType>> dcObjectTypes(String name) async {
+  //   return await _dictionarySevice.getDCObjectTypes(name: name);
+  // }
 
   @override
   Stream<ControlFiltersBlocState> mapEventToState(ControlFiltersBlocEvent event) async* {
