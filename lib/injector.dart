@@ -9,6 +9,7 @@ import 'package:inspector/providers/api_provider.dart';
 import 'package:inspector/services/auth_service.dart';
 import 'package:inspector/services/department_control/api/department_control_api_client.dart';
 import 'package:inspector/services/department_control/department_control_service.dart';
+import 'package:inspector/services/dictionary_service.dart';
 import 'package:inspector/services/location/geolocator_location_service.dart';
 import 'package:inspector/services/location/location_service.dart';
 import 'package:inspector/services/network_status_service/connection_status_service.dart';
@@ -34,6 +35,7 @@ class InjectorWidget extends StatelessWidget {
             create: (_) => ObjectDbPersistanceService()),
         Provider(create: (_) => Connectivity()),
         Provider(create: (_) => ApiProvider()),
+        Provider(create: (_) => DictionaryService()),
         Provider(
             create: (context) => DepartmentControlApiClient(
                 apiProvider: Provider.of<ApiProvider>(context, listen: false))),
