@@ -4,17 +4,17 @@ import 'package:inspector/style/colors.dart';
 import 'package:inspector/style/input_title.dart';
 import 'package:inspector/style/text_style.dart';
 
-typedef  Future<Iterable<dynamic>> AutocompleteCallback(String value);
+typedef  Future<Iterable<T>> AutocompleteCallback<T>(String value);
 
-class ProjectAutocomplete extends StatelessWidget { 
+class ProjectAutocomplete<T> extends StatelessWidget { 
   final bool enabled;
   final String title;
   final String hintText;
   final TextEditingController controller;
-  final AutocompleteCallback suggestionsCallback;
-  final Function(dynamic) onSuggestionSelected;
-  final Function(dynamic) formatter;
-  final Function(String) validator;
+  final AutocompleteCallback<T> suggestionsCallback;
+  final void Function(T) onSuggestionSelected;
+  final String Function(T) formatter;
+  final String Function(String) validator;
 
   ProjectAutocomplete(this.title, {
     this.controller,
