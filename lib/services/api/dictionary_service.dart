@@ -2,13 +2,14 @@ import 'package:inspector/model/address.dart';
 import 'package:inspector/model/area.dart';
 import 'package:inspector/model/check_status.dart';
 import 'package:inspector/model/check_type.dart';
-import 'package:inspector/model/dc_object_element.dart';
 import 'package:inspector/model/dc_object_kind.dart';
-import 'package:inspector/model/dc_object_type.dart';
-import 'package:inspector/model/dc_violation_name.dart';
 import 'package:inspector/model/dc_violation_status.dart';
-import 'package:inspector/model/department_control/control_object.dart';
 import 'package:inspector/model/department_code.dart';
+import 'package:inspector/model/department_control/contractor.dart';
+import 'package:inspector/model/department_control/object_element.dart';
+import 'package:inspector/model/department_control/object_type.dart';
+import 'package:inspector/model/department_control/violation_additional_feature.dart';
+import 'package:inspector/model/department_control/violation_name.dart';
 import 'package:inspector/model/district.dart';
 import 'package:inspector/model/employee.dart';
 import 'package:inspector/model/instruction_status.dart';
@@ -144,15 +145,21 @@ class ApiDictionaryService {
   Future<List<DCObjectKind>> getDCObjectKinds(int from, int to) =>
       _loadDictionary<DCObjectKind>((d) => DCObjectKind.fromJson(d), from, to);
   
-  Future<List<DCObjectElement>> getDCObjectElements(int from, int to) =>
-      _loadDictionary<DCObjectElement>((d) => DCObjectElement.fromJson(d), from, to);
+  Future<List<ObjectElement>> getDCObjectElements(int from, int to) =>
+      _loadDictionary<ObjectElement>((d) => ObjectElement.fromSqliteJson(d), from, to);
 
-  Future<List<DCObjectType>> getDCObjectTypes(int from, int to) =>
-      _loadDictionary<DCObjectType>((d) => DCObjectType.fromJson(d), from, to);
+  Future<List<ObjectType>> getDCObjectTypes(int from, int to) =>
+      _loadDictionary<ObjectType>((d) => ObjectType.fromJson(d), from, to);
 
-  Future<List<DCViolationName>> getDCViolationNames(int from, int to) =>
-      _loadDictionary<DCViolationName>((d) => DCViolationName.fromJson(d), from, to);
+  Future<List<ViolationName>> getDCViolationNames(int from, int to) =>
+      _loadDictionary<ViolationName>((d) => ViolationName.fromJson(d), from, to);
   
   Future<List<DCViolationStatus>> getDCViolationStatuses(int from, int to) =>
       _loadDictionary<DCViolationStatus>((d) => DCViolationStatus.fromJson(d), from, to);
+
+  Future<List<Contractor>> getContractors(int from, int to) =>
+      _loadDictionary<Contractor>((d) => Contractor.fromJson(d), from, to);
+  
+  Future<List<ViolationAdditionalFeature>> getViolationAdditionalFeatures(int from, int to) =>
+      _loadDictionary<ViolationAdditionalFeature>((d) => ViolationAdditionalFeature.fromJson(d), from, to);
 }

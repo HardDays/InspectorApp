@@ -11,8 +11,13 @@ import 'package:inspector/model/dc_object_kind.dart';
 import 'package:inspector/model/dc_object_type.dart';
 import 'package:inspector/model/dc_violation_name.dart';
 import 'package:inspector/model/dc_violation_status.dart';
+import 'package:inspector/model/department_control/contractor.dart';
 import 'package:inspector/model/department_control/control_object.dart';
 import 'package:inspector/model/department_code.dart';
+import 'package:inspector/model/department_control/object_element.dart';
+import 'package:inspector/model/department_control/object_type.dart';
+import 'package:inspector/model/department_control/violation_additional_feature.dart';
+import 'package:inspector/model/department_control/violation_name.dart' as dc;
 import 'package:inspector/model/district.dart';
 import 'package:inspector/model/employee.dart';
 import 'package:inspector/model/instruction_status.dart';
@@ -76,12 +81,14 @@ class ApiProvider {
     NormativeActArticle: '/dict/normative-act-articles',
     // ControlObject: '/dc-objects',
     KladdrAddressObjectType: '/dict/kladr-address-object-types',
-    DCObjectElement: '/dict/dc-object-elements',
+    ObjectElement: '/dict/dc-object-elements',
     DCObjectKind: '/dict/dc-object-kinds',
     DCViolationName: '/dict/dc-violation-names',
     DCViolationStatus: '/dict/dc-violation-statuses',
-    DCObjectType: '/dict/dc-object-types',
-
+    ObjectType: '/dict/dc-object-types',
+    Contractor: '/dict/dc-contractors',
+    dc.ViolationName: '/dict/dc-violation-names',
+    ViolationAdditionalFeature: '/dict/dc-violation-additional-features',
   };
 
   final dio = Dio(BaseOptions(baseUrl: _defaultUrl));

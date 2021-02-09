@@ -7,6 +7,11 @@ import 'package:inspector/model/dc_object_type.dart';
 import 'package:inspector/model/dc_violation_name.dart';
 import 'package:inspector/model/dc_violation_status.dart';
 import 'package:inspector/model/department_code.dart';
+import 'package:inspector/model/department_control/contractor.dart';
+import 'package:inspector/model/department_control/object_element.dart';
+import 'package:inspector/model/department_control/object_type.dart';
+import 'package:inspector/model/department_control/violation_additional_feature.dart';
+import 'package:inspector/model/department_control/violation_name.dart';
 import 'package:inspector/model/dictionary_metadata.dart';
 import 'package:inspector/model/district.dart';
 import 'package:inspector/model/instruction_status.dart';
@@ -65,6 +70,8 @@ class DictionaryService {
     DictionaryNames.dcObjectTypes: ApiDictionaryService().getDCObjectTypes,
     DictionaryNames.dcViolationNames: ApiDictionaryService().getDCViolationNames,
     DictionaryNames.dcViolationStatuses: ApiDictionaryService().getDCViolationStatuses,
+    DictionaryNames.dcContractors: ApiDictionaryService().getContractors,
+    DictionaryNames.dcViolationAdditionalFeatures: ApiDictionaryService().getViolationAdditionalFeatures,
   };
 
  final Map<String, Function(Map<String, dynamic>)> _converters = {
@@ -87,11 +94,13 @@ class DictionaryService {
     DictionaryNames.violatorDocumentTypes: (json)=> ViolatorDocumentType.fromJson(json),
     DictionaryNames.reportStatuses: (json)=> ReportStatus.fromJson(json),
     DictionaryNames.kladdrAddressTypes: (json)=> KladdrAddressObjectType.fromJson(json),
-    DictionaryNames.dcObjectElements: (json)=> DCObjectElement.fromJson(json),
+    DictionaryNames.dcObjectElements: (json)=> ObjectElement.fromJson(json),
     DictionaryNames.dcObjectKinds: (json)=> DCObjectKind.fromJson(json),
-    DictionaryNames.dcObjectTypes: (json)=> DCObjectType.fromJson(json),
-    DictionaryNames.dcViolationNames: (json)=> DCViolationName.fromJson(json),
+    DictionaryNames.dcObjectTypes: (json)=> ObjectType.fromJson(json),
+    DictionaryNames.dcViolationNames: (json)=> ViolationName.fromJson(json),
     DictionaryNames.dcViolationStatuses: (json)=> DCViolationStatus.fromJson(json),
+    DictionaryNames.dcContractors: (json)=> Contractor.fromJson(json),
+    DictionaryNames.dcViolationAdditionalFeatures: (json)=> ViolationAdditionalFeature.fromJson(json),
   };
 
   final _lock = Lock();
@@ -451,8 +460,8 @@ class DictionaryService {
     );
   }
 
-  Future<List<DCObjectType>> getDCObjectTypes({String name}) async {
-    return await _getData<DCObjectType>(DictionaryNames.dcObjectTypes, 
+  Future<List<ObjectType>> getDCObjectTypes({String name}) async {
+    return await _getData<ObjectType>(DictionaryNames.dcObjectTypes, 
       queries: [
         Query({
           'name LIKE ?': '$name%',
@@ -473,8 +482,30 @@ class DictionaryService {
     );
   }
 
-   Future<List<DCObjectElement>> getDCObjectElements({String name}) async {
-    return await _getData<DCObjectElement>(DictionaryNames.dcObjectElements, 
+   Future<List<ObjectElement>> getDCObjectElements({String name}) async {
+    return await _getData<ObjectElement>(DictionaryNames.dcObjectElements, 
+      queries: [
+        Query({
+          'name LIKE ?': '$name%',
+        }),
+      ],
+      limit: 50
+    );
+  }
+
+   Future<List<Contractor>> getContractors({String name}) async {
+    return await _getData<Contractor>(DictionaryNames.dcContractors, 
+      queries: [
+        Query({
+          'name LIKE ?': '$name%',
+        }),
+      ],
+      limit: 50
+    );
+  }
+
+   Future<List<ViolationAdditionalFeature>> getViolationAdditionalFeatures({String name}) async {
+    return await _getData<ViolationAdditionalFeature>(DictionaryNames.dcViolationAdditionalFeatures, 
       queries: [
         Query({
           'name LIKE ?': '$name%',
