@@ -109,8 +109,8 @@ class __$ViolationNameCopyWithImpl<$Res>
 @JsonSerializable()
 
 /// @nodoc
-class _$_ViolationName implements _ViolationName {
-  const _$_ViolationName({this.id, this.name});
+class _$_ViolationName extends _ViolationName {
+  const _$_ViolationName({this.id, this.name}) : super._();
 
   factory _$_ViolationName.fromJson(Map<String, dynamic> json) =>
       _$_$_ViolationNameFromJson(json);
@@ -152,7 +152,8 @@ class _$_ViolationName implements _ViolationName {
   }
 }
 
-abstract class _ViolationName implements ViolationName {
+abstract class _ViolationName extends ViolationName {
+  const _ViolationName._() : super._();
   const factory _ViolationName({int id, String name}) = _$_ViolationName;
 
   factory _ViolationName.fromJson(Map<String, dynamic> json) =

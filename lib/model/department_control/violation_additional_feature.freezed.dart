@@ -112,8 +112,8 @@ class __$ViolationAdditionalFeatureCopyWithImpl<$Res>
 @JsonSerializable()
 
 /// @nodoc
-class _$_ViolationAdditionalFeature implements _ViolationAdditionalFeature {
-  const _$_ViolationAdditionalFeature({this.id, this.name});
+class _$_ViolationAdditionalFeature extends _ViolationAdditionalFeature {
+  const _$_ViolationAdditionalFeature({this.id, this.name}) : super._();
 
   factory _$_ViolationAdditionalFeature.fromJson(Map<String, dynamic> json) =>
       _$_$_ViolationAdditionalFeatureFromJson(json);
@@ -156,8 +156,8 @@ class _$_ViolationAdditionalFeature implements _ViolationAdditionalFeature {
   }
 }
 
-abstract class _ViolationAdditionalFeature
-    implements ViolationAdditionalFeature {
+abstract class _ViolationAdditionalFeature extends ViolationAdditionalFeature {
+  const _ViolationAdditionalFeature._() : super._();
   const factory _ViolationAdditionalFeature({int id, String name}) =
       _$_ViolationAdditionalFeature;
 

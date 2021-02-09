@@ -112,8 +112,8 @@ class __$ContractorCopyWithImpl<$Res> extends _$ContractorCopyWithImpl<$Res>
 @JsonSerializable()
 
 /// @nodoc
-class _$_Contractor implements _Contractor {
-  const _$_Contractor({this.id, this.name, this.inn});
+class _$_Contractor extends _Contractor {
+  const _$_Contractor({this.id, this.name, this.inn}) : super._();
 
   factory _$_Contractor.fromJson(Map<String, dynamic> json) =>
       _$_$_ContractorFromJson(json);
@@ -160,7 +160,8 @@ class _$_Contractor implements _Contractor {
   }
 }
 
-abstract class _Contractor implements Contractor {
+abstract class _Contractor extends Contractor {
+  const _Contractor._() : super._();
   const factory _Contractor({int id, String name, String inn}) = _$_Contractor;
 
   factory _Contractor.fromJson(Map<String, dynamic> json) =

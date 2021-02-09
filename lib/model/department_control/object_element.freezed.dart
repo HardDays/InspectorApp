@@ -132,8 +132,8 @@ class __$ObjectElementCopyWithImpl<$Res>
 @JsonSerializable()
 
 /// @nodoc
-class _$_ObjectElement implements _ObjectElement {
-  const _$_ObjectElement({this.id, this.name, this.objectType});
+class _$_ObjectElement extends _ObjectElement {
+  const _$_ObjectElement({this.id, this.name, this.objectType}) : super._();
 
   factory _$_ObjectElement.fromJson(Map<String, dynamic> json) =>
       _$_$_ObjectElementFromJson(json);
@@ -181,7 +181,8 @@ class _$_ObjectElement implements _ObjectElement {
   }
 }
 
-abstract class _ObjectElement implements ObjectElement {
+abstract class _ObjectElement extends ObjectElement {
+  const _ObjectElement._() : super._();
   const factory _ObjectElement({int id, String name, ObjectType objectType}) =
       _$_ObjectElement;
 

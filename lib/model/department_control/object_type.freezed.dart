@@ -112,8 +112,8 @@ class __$ObjectTypeCopyWithImpl<$Res> extends _$ObjectTypeCopyWithImpl<$Res>
 @JsonSerializable()
 
 /// @nodoc
-class _$_ObjectType implements _ObjectType {
-  const _$_ObjectType({this.id, this.name, this.code});
+class _$_ObjectType extends _ObjectType {
+  const _$_ObjectType({this.id, this.name, this.code}) : super._();
 
   factory _$_ObjectType.fromJson(Map<String, dynamic> json) =>
       _$_$_ObjectTypeFromJson(json);
@@ -160,7 +160,8 @@ class _$_ObjectType implements _ObjectType {
   }
 }
 
-abstract class _ObjectType implements ObjectType {
+abstract class _ObjectType extends ObjectType {
+  const _ObjectType._() : super._();
   const factory _ObjectType({int id, String name, String code}) = _$_ObjectType;
 
   factory _ObjectType.fromJson(Map<String, dynamic> json) =
