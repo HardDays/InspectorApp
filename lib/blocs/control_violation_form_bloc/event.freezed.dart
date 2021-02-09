@@ -21,6 +21,14 @@ class _$ControlViolationFormEventTearOff {
   }
 
 // ignore: unused_element
+  SetUseGeoLocationForAddressEvent setUseGeoLocationForAddressEvent(
+      bool value) {
+    return SetUseGeoLocationForAddressEvent(
+      value,
+    );
+  }
+
+// ignore: unused_element
   SetAddressEvent setAddressEvent(Address address) {
     return SetAddressEvent(
       address,
@@ -85,6 +93,28 @@ class _$ControlViolationFormEventTearOff {
       contractor,
     );
   }
+
+// ignore: unused_element
+  AddPhotoEvent addPhotoEvent(Uint8List photo) {
+    return AddPhotoEvent(
+      photo,
+    );
+  }
+
+// ignore: unused_element
+  RemovePhotoEvent removePhotoEvent(int index) {
+    return RemovePhotoEvent(
+      index,
+    );
+  }
+
+// ignore: unused_element
+  RotatePhotoEvent rotatePhotoEvent(int index, Uint8List photo) {
+    return RotatePhotoEvent(
+      index,
+      photo,
+    );
+  }
 }
 
 /// @nodoc
@@ -96,6 +126,7 @@ mixin _$ControlViolationFormEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object>({
     @required TResult setCriticalEvent(bool value),
+    @required TResult setUseGeoLocationForAddressEvent(bool value),
     @required TResult setAddressEvent(Address address),
     @required TResult setTargetLandmark(String targetLandmark),
     @required TResult setObjectElementString(String objectElement),
@@ -109,10 +140,14 @@ mixin _$ControlViolationFormEvent {
             ViolationAdditionalFeature violationAdditionalFeature),
     @required TResult setContractorStringEvent(String contractor),
     @required TResult setContractorEvent(Contractor contractor),
+    @required TResult addPhotoEvent(Uint8List photo),
+    @required TResult removePhotoEvent(int index),
+    @required TResult rotatePhotoEvent(int index, Uint8List photo),
   });
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object>({
     TResult setCriticalEvent(bool value),
+    TResult setUseGeoLocationForAddressEvent(bool value),
     TResult setAddressEvent(Address address),
     TResult setTargetLandmark(String targetLandmark),
     TResult setObjectElementString(String objectElement),
@@ -124,11 +159,17 @@ mixin _$ControlViolationFormEvent {
         ViolationAdditionalFeature violationAdditionalFeature),
     TResult setContractorStringEvent(String contractor),
     TResult setContractorEvent(Contractor contractor),
+    TResult addPhotoEvent(Uint8List photo),
+    TResult removePhotoEvent(int index),
+    TResult rotatePhotoEvent(int index, Uint8List photo),
     @required TResult orElse(),
   });
   @optionalTypeArgs
   TResult map<TResult extends Object>({
     @required TResult setCriticalEvent(SetCriticalEvent value),
+    @required
+        TResult setUseGeoLocationForAddressEvent(
+            SetUseGeoLocationForAddressEvent value),
     @required TResult setAddressEvent(SetAddressEvent value),
     @required TResult setTargetLandmark(SetTargetLandmark value),
     @required TResult setObjectElementString(SetObjectElementString value),
@@ -142,10 +183,15 @@ mixin _$ControlViolationFormEvent {
             SetViolationAdditionalFeatureEvent value),
     @required TResult setContractorStringEvent(SetContractorStringEvent value),
     @required TResult setContractorEvent(SetContractorEvent value),
+    @required TResult addPhotoEvent(AddPhotoEvent value),
+    @required TResult removePhotoEvent(RemovePhotoEvent value),
+    @required TResult rotatePhotoEvent(RotatePhotoEvent value),
   });
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object>({
     TResult setCriticalEvent(SetCriticalEvent value),
+    TResult setUseGeoLocationForAddressEvent(
+        SetUseGeoLocationForAddressEvent value),
     TResult setAddressEvent(SetAddressEvent value),
     TResult setTargetLandmark(SetTargetLandmark value),
     TResult setObjectElementString(SetObjectElementString value),
@@ -157,6 +203,9 @@ mixin _$ControlViolationFormEvent {
         SetViolationAdditionalFeatureEvent value),
     TResult setContractorStringEvent(SetContractorStringEvent value),
     TResult setContractorEvent(SetContractorEvent value),
+    TResult addPhotoEvent(AddPhotoEvent value),
+    TResult removePhotoEvent(RemovePhotoEvent value),
+    TResult rotatePhotoEvent(RotatePhotoEvent value),
     @required TResult orElse(),
   });
 }
@@ -240,6 +289,7 @@ class _$SetCriticalEvent implements SetCriticalEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object>({
     @required TResult setCriticalEvent(bool value),
+    @required TResult setUseGeoLocationForAddressEvent(bool value),
     @required TResult setAddressEvent(Address address),
     @required TResult setTargetLandmark(String targetLandmark),
     @required TResult setObjectElementString(String objectElement),
@@ -253,8 +303,12 @@ class _$SetCriticalEvent implements SetCriticalEvent {
             ViolationAdditionalFeature violationAdditionalFeature),
     @required TResult setContractorStringEvent(String contractor),
     @required TResult setContractorEvent(Contractor contractor),
+    @required TResult addPhotoEvent(Uint8List photo),
+    @required TResult removePhotoEvent(int index),
+    @required TResult rotatePhotoEvent(int index, Uint8List photo),
   }) {
     assert(setCriticalEvent != null);
+    assert(setUseGeoLocationForAddressEvent != null);
     assert(setAddressEvent != null);
     assert(setTargetLandmark != null);
     assert(setObjectElementString != null);
@@ -264,6 +318,9 @@ class _$SetCriticalEvent implements SetCriticalEvent {
     assert(setViolationAdditionalFeatureEvent != null);
     assert(setContractorStringEvent != null);
     assert(setContractorEvent != null);
+    assert(addPhotoEvent != null);
+    assert(removePhotoEvent != null);
+    assert(rotatePhotoEvent != null);
     return setCriticalEvent(value);
   }
 
@@ -271,6 +328,7 @@ class _$SetCriticalEvent implements SetCriticalEvent {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object>({
     TResult setCriticalEvent(bool value),
+    TResult setUseGeoLocationForAddressEvent(bool value),
     TResult setAddressEvent(Address address),
     TResult setTargetLandmark(String targetLandmark),
     TResult setObjectElementString(String objectElement),
@@ -282,6 +340,9 @@ class _$SetCriticalEvent implements SetCriticalEvent {
         ViolationAdditionalFeature violationAdditionalFeature),
     TResult setContractorStringEvent(String contractor),
     TResult setContractorEvent(Contractor contractor),
+    TResult addPhotoEvent(Uint8List photo),
+    TResult removePhotoEvent(int index),
+    TResult rotatePhotoEvent(int index, Uint8List photo),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -295,6 +356,9 @@ class _$SetCriticalEvent implements SetCriticalEvent {
   @optionalTypeArgs
   TResult map<TResult extends Object>({
     @required TResult setCriticalEvent(SetCriticalEvent value),
+    @required
+        TResult setUseGeoLocationForAddressEvent(
+            SetUseGeoLocationForAddressEvent value),
     @required TResult setAddressEvent(SetAddressEvent value),
     @required TResult setTargetLandmark(SetTargetLandmark value),
     @required TResult setObjectElementString(SetObjectElementString value),
@@ -308,8 +372,12 @@ class _$SetCriticalEvent implements SetCriticalEvent {
             SetViolationAdditionalFeatureEvent value),
     @required TResult setContractorStringEvent(SetContractorStringEvent value),
     @required TResult setContractorEvent(SetContractorEvent value),
+    @required TResult addPhotoEvent(AddPhotoEvent value),
+    @required TResult removePhotoEvent(RemovePhotoEvent value),
+    @required TResult rotatePhotoEvent(RotatePhotoEvent value),
   }) {
     assert(setCriticalEvent != null);
+    assert(setUseGeoLocationForAddressEvent != null);
     assert(setAddressEvent != null);
     assert(setTargetLandmark != null);
     assert(setObjectElementString != null);
@@ -319,6 +387,9 @@ class _$SetCriticalEvent implements SetCriticalEvent {
     assert(setViolationAdditionalFeatureEvent != null);
     assert(setContractorStringEvent != null);
     assert(setContractorEvent != null);
+    assert(addPhotoEvent != null);
+    assert(removePhotoEvent != null);
+    assert(rotatePhotoEvent != null);
     return setCriticalEvent(this);
   }
 
@@ -326,6 +397,8 @@ class _$SetCriticalEvent implements SetCriticalEvent {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object>({
     TResult setCriticalEvent(SetCriticalEvent value),
+    TResult setUseGeoLocationForAddressEvent(
+        SetUseGeoLocationForAddressEvent value),
     TResult setAddressEvent(SetAddressEvent value),
     TResult setTargetLandmark(SetTargetLandmark value),
     TResult setObjectElementString(SetObjectElementString value),
@@ -337,6 +410,9 @@ class _$SetCriticalEvent implements SetCriticalEvent {
         SetViolationAdditionalFeatureEvent value),
     TResult setContractorStringEvent(SetContractorStringEvent value),
     TResult setContractorEvent(SetContractorEvent value),
+    TResult addPhotoEvent(AddPhotoEvent value),
+    TResult removePhotoEvent(RemovePhotoEvent value),
+    TResult rotatePhotoEvent(RotatePhotoEvent value),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -353,6 +429,218 @@ abstract class SetCriticalEvent implements ControlViolationFormEvent {
   bool get value;
   @JsonKey(ignore: true)
   $SetCriticalEventCopyWith<SetCriticalEvent> get copyWith;
+}
+
+/// @nodoc
+abstract class $SetUseGeoLocationForAddressEventCopyWith<$Res> {
+  factory $SetUseGeoLocationForAddressEventCopyWith(
+          SetUseGeoLocationForAddressEvent value,
+          $Res Function(SetUseGeoLocationForAddressEvent) then) =
+      _$SetUseGeoLocationForAddressEventCopyWithImpl<$Res>;
+  $Res call({bool value});
+}
+
+/// @nodoc
+class _$SetUseGeoLocationForAddressEventCopyWithImpl<$Res>
+    extends _$ControlViolationFormEventCopyWithImpl<$Res>
+    implements $SetUseGeoLocationForAddressEventCopyWith<$Res> {
+  _$SetUseGeoLocationForAddressEventCopyWithImpl(
+      SetUseGeoLocationForAddressEvent _value,
+      $Res Function(SetUseGeoLocationForAddressEvent) _then)
+      : super(_value, (v) => _then(v as SetUseGeoLocationForAddressEvent));
+
+  @override
+  SetUseGeoLocationForAddressEvent get _value =>
+      super._value as SetUseGeoLocationForAddressEvent;
+
+  @override
+  $Res call({
+    Object value = freezed,
+  }) {
+    return _then(SetUseGeoLocationForAddressEvent(
+      value == freezed ? _value.value : value as bool,
+    ));
+  }
+}
+
+/// @nodoc
+class _$SetUseGeoLocationForAddressEvent
+    implements SetUseGeoLocationForAddressEvent {
+  const _$SetUseGeoLocationForAddressEvent(this.value) : assert(value != null);
+
+  @override
+  final bool value;
+
+  @override
+  String toString() {
+    return 'ControlViolationFormEvent.setUseGeoLocationForAddressEvent(value: $value)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is SetUseGeoLocationForAddressEvent &&
+            (identical(other.value, value) ||
+                const DeepCollectionEquality().equals(other.value, value)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^ const DeepCollectionEquality().hash(value);
+
+  @JsonKey(ignore: true)
+  @override
+  $SetUseGeoLocationForAddressEventCopyWith<SetUseGeoLocationForAddressEvent>
+      get copyWith => _$SetUseGeoLocationForAddressEventCopyWithImpl<
+          SetUseGeoLocationForAddressEvent>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object>({
+    @required TResult setCriticalEvent(bool value),
+    @required TResult setUseGeoLocationForAddressEvent(bool value),
+    @required TResult setAddressEvent(Address address),
+    @required TResult setTargetLandmark(String targetLandmark),
+    @required TResult setObjectElementString(String objectElement),
+    @required TResult setObjectElement(ObjectElement objectElement),
+    @required TResult setDescriptionEvent(String description),
+    @required
+        TResult setViolationAdditionalFeatureStringEvent(
+            String violationAdditionalFeature),
+    @required
+        TResult setViolationAdditionalFeatureEvent(
+            ViolationAdditionalFeature violationAdditionalFeature),
+    @required TResult setContractorStringEvent(String contractor),
+    @required TResult setContractorEvent(Contractor contractor),
+    @required TResult addPhotoEvent(Uint8List photo),
+    @required TResult removePhotoEvent(int index),
+    @required TResult rotatePhotoEvent(int index, Uint8List photo),
+  }) {
+    assert(setCriticalEvent != null);
+    assert(setUseGeoLocationForAddressEvent != null);
+    assert(setAddressEvent != null);
+    assert(setTargetLandmark != null);
+    assert(setObjectElementString != null);
+    assert(setObjectElement != null);
+    assert(setDescriptionEvent != null);
+    assert(setViolationAdditionalFeatureStringEvent != null);
+    assert(setViolationAdditionalFeatureEvent != null);
+    assert(setContractorStringEvent != null);
+    assert(setContractorEvent != null);
+    assert(addPhotoEvent != null);
+    assert(removePhotoEvent != null);
+    assert(rotatePhotoEvent != null);
+    return setUseGeoLocationForAddressEvent(value);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object>({
+    TResult setCriticalEvent(bool value),
+    TResult setUseGeoLocationForAddressEvent(bool value),
+    TResult setAddressEvent(Address address),
+    TResult setTargetLandmark(String targetLandmark),
+    TResult setObjectElementString(String objectElement),
+    TResult setObjectElement(ObjectElement objectElement),
+    TResult setDescriptionEvent(String description),
+    TResult setViolationAdditionalFeatureStringEvent(
+        String violationAdditionalFeature),
+    TResult setViolationAdditionalFeatureEvent(
+        ViolationAdditionalFeature violationAdditionalFeature),
+    TResult setContractorStringEvent(String contractor),
+    TResult setContractorEvent(Contractor contractor),
+    TResult addPhotoEvent(Uint8List photo),
+    TResult removePhotoEvent(int index),
+    TResult rotatePhotoEvent(int index, Uint8List photo),
+    @required TResult orElse(),
+  }) {
+    assert(orElse != null);
+    if (setUseGeoLocationForAddressEvent != null) {
+      return setUseGeoLocationForAddressEvent(value);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object>({
+    @required TResult setCriticalEvent(SetCriticalEvent value),
+    @required
+        TResult setUseGeoLocationForAddressEvent(
+            SetUseGeoLocationForAddressEvent value),
+    @required TResult setAddressEvent(SetAddressEvent value),
+    @required TResult setTargetLandmark(SetTargetLandmark value),
+    @required TResult setObjectElementString(SetObjectElementString value),
+    @required TResult setObjectElement(SetObjectElement value),
+    @required TResult setDescriptionEvent(SetDescriptionEvent value),
+    @required
+        TResult setViolationAdditionalFeatureStringEvent(
+            SetViolationAdditionalFeatureStringEvent value),
+    @required
+        TResult setViolationAdditionalFeatureEvent(
+            SetViolationAdditionalFeatureEvent value),
+    @required TResult setContractorStringEvent(SetContractorStringEvent value),
+    @required TResult setContractorEvent(SetContractorEvent value),
+    @required TResult addPhotoEvent(AddPhotoEvent value),
+    @required TResult removePhotoEvent(RemovePhotoEvent value),
+    @required TResult rotatePhotoEvent(RotatePhotoEvent value),
+  }) {
+    assert(setCriticalEvent != null);
+    assert(setUseGeoLocationForAddressEvent != null);
+    assert(setAddressEvent != null);
+    assert(setTargetLandmark != null);
+    assert(setObjectElementString != null);
+    assert(setObjectElement != null);
+    assert(setDescriptionEvent != null);
+    assert(setViolationAdditionalFeatureStringEvent != null);
+    assert(setViolationAdditionalFeatureEvent != null);
+    assert(setContractorStringEvent != null);
+    assert(setContractorEvent != null);
+    assert(addPhotoEvent != null);
+    assert(removePhotoEvent != null);
+    assert(rotatePhotoEvent != null);
+    return setUseGeoLocationForAddressEvent(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object>({
+    TResult setCriticalEvent(SetCriticalEvent value),
+    TResult setUseGeoLocationForAddressEvent(
+        SetUseGeoLocationForAddressEvent value),
+    TResult setAddressEvent(SetAddressEvent value),
+    TResult setTargetLandmark(SetTargetLandmark value),
+    TResult setObjectElementString(SetObjectElementString value),
+    TResult setObjectElement(SetObjectElement value),
+    TResult setDescriptionEvent(SetDescriptionEvent value),
+    TResult setViolationAdditionalFeatureStringEvent(
+        SetViolationAdditionalFeatureStringEvent value),
+    TResult setViolationAdditionalFeatureEvent(
+        SetViolationAdditionalFeatureEvent value),
+    TResult setContractorStringEvent(SetContractorStringEvent value),
+    TResult setContractorEvent(SetContractorEvent value),
+    TResult addPhotoEvent(AddPhotoEvent value),
+    TResult removePhotoEvent(RemovePhotoEvent value),
+    TResult rotatePhotoEvent(RotatePhotoEvent value),
+    @required TResult orElse(),
+  }) {
+    assert(orElse != null);
+    if (setUseGeoLocationForAddressEvent != null) {
+      return setUseGeoLocationForAddressEvent(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class SetUseGeoLocationForAddressEvent
+    implements ControlViolationFormEvent {
+  const factory SetUseGeoLocationForAddressEvent(bool value) =
+      _$SetUseGeoLocationForAddressEvent;
+
+  bool get value;
+  @JsonKey(ignore: true)
+  $SetUseGeoLocationForAddressEventCopyWith<SetUseGeoLocationForAddressEvent>
+      get copyWith;
 }
 
 /// @nodoc
@@ -417,6 +705,7 @@ class _$SetAddressEvent implements SetAddressEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object>({
     @required TResult setCriticalEvent(bool value),
+    @required TResult setUseGeoLocationForAddressEvent(bool value),
     @required TResult setAddressEvent(Address address),
     @required TResult setTargetLandmark(String targetLandmark),
     @required TResult setObjectElementString(String objectElement),
@@ -430,8 +719,12 @@ class _$SetAddressEvent implements SetAddressEvent {
             ViolationAdditionalFeature violationAdditionalFeature),
     @required TResult setContractorStringEvent(String contractor),
     @required TResult setContractorEvent(Contractor contractor),
+    @required TResult addPhotoEvent(Uint8List photo),
+    @required TResult removePhotoEvent(int index),
+    @required TResult rotatePhotoEvent(int index, Uint8List photo),
   }) {
     assert(setCriticalEvent != null);
+    assert(setUseGeoLocationForAddressEvent != null);
     assert(setAddressEvent != null);
     assert(setTargetLandmark != null);
     assert(setObjectElementString != null);
@@ -441,6 +734,9 @@ class _$SetAddressEvent implements SetAddressEvent {
     assert(setViolationAdditionalFeatureEvent != null);
     assert(setContractorStringEvent != null);
     assert(setContractorEvent != null);
+    assert(addPhotoEvent != null);
+    assert(removePhotoEvent != null);
+    assert(rotatePhotoEvent != null);
     return setAddressEvent(address);
   }
 
@@ -448,6 +744,7 @@ class _$SetAddressEvent implements SetAddressEvent {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object>({
     TResult setCriticalEvent(bool value),
+    TResult setUseGeoLocationForAddressEvent(bool value),
     TResult setAddressEvent(Address address),
     TResult setTargetLandmark(String targetLandmark),
     TResult setObjectElementString(String objectElement),
@@ -459,6 +756,9 @@ class _$SetAddressEvent implements SetAddressEvent {
         ViolationAdditionalFeature violationAdditionalFeature),
     TResult setContractorStringEvent(String contractor),
     TResult setContractorEvent(Contractor contractor),
+    TResult addPhotoEvent(Uint8List photo),
+    TResult removePhotoEvent(int index),
+    TResult rotatePhotoEvent(int index, Uint8List photo),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -472,6 +772,9 @@ class _$SetAddressEvent implements SetAddressEvent {
   @optionalTypeArgs
   TResult map<TResult extends Object>({
     @required TResult setCriticalEvent(SetCriticalEvent value),
+    @required
+        TResult setUseGeoLocationForAddressEvent(
+            SetUseGeoLocationForAddressEvent value),
     @required TResult setAddressEvent(SetAddressEvent value),
     @required TResult setTargetLandmark(SetTargetLandmark value),
     @required TResult setObjectElementString(SetObjectElementString value),
@@ -485,8 +788,12 @@ class _$SetAddressEvent implements SetAddressEvent {
             SetViolationAdditionalFeatureEvent value),
     @required TResult setContractorStringEvent(SetContractorStringEvent value),
     @required TResult setContractorEvent(SetContractorEvent value),
+    @required TResult addPhotoEvent(AddPhotoEvent value),
+    @required TResult removePhotoEvent(RemovePhotoEvent value),
+    @required TResult rotatePhotoEvent(RotatePhotoEvent value),
   }) {
     assert(setCriticalEvent != null);
+    assert(setUseGeoLocationForAddressEvent != null);
     assert(setAddressEvent != null);
     assert(setTargetLandmark != null);
     assert(setObjectElementString != null);
@@ -496,6 +803,9 @@ class _$SetAddressEvent implements SetAddressEvent {
     assert(setViolationAdditionalFeatureEvent != null);
     assert(setContractorStringEvent != null);
     assert(setContractorEvent != null);
+    assert(addPhotoEvent != null);
+    assert(removePhotoEvent != null);
+    assert(rotatePhotoEvent != null);
     return setAddressEvent(this);
   }
 
@@ -503,6 +813,8 @@ class _$SetAddressEvent implements SetAddressEvent {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object>({
     TResult setCriticalEvent(SetCriticalEvent value),
+    TResult setUseGeoLocationForAddressEvent(
+        SetUseGeoLocationForAddressEvent value),
     TResult setAddressEvent(SetAddressEvent value),
     TResult setTargetLandmark(SetTargetLandmark value),
     TResult setObjectElementString(SetObjectElementString value),
@@ -514,6 +826,9 @@ class _$SetAddressEvent implements SetAddressEvent {
         SetViolationAdditionalFeatureEvent value),
     TResult setContractorStringEvent(SetContractorStringEvent value),
     TResult setContractorEvent(SetContractorEvent value),
+    TResult addPhotoEvent(AddPhotoEvent value),
+    TResult removePhotoEvent(RemovePhotoEvent value),
+    TResult rotatePhotoEvent(RotatePhotoEvent value),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -599,6 +914,7 @@ class _$SetTargetLandmark implements SetTargetLandmark {
   @optionalTypeArgs
   TResult when<TResult extends Object>({
     @required TResult setCriticalEvent(bool value),
+    @required TResult setUseGeoLocationForAddressEvent(bool value),
     @required TResult setAddressEvent(Address address),
     @required TResult setTargetLandmark(String targetLandmark),
     @required TResult setObjectElementString(String objectElement),
@@ -612,8 +928,12 @@ class _$SetTargetLandmark implements SetTargetLandmark {
             ViolationAdditionalFeature violationAdditionalFeature),
     @required TResult setContractorStringEvent(String contractor),
     @required TResult setContractorEvent(Contractor contractor),
+    @required TResult addPhotoEvent(Uint8List photo),
+    @required TResult removePhotoEvent(int index),
+    @required TResult rotatePhotoEvent(int index, Uint8List photo),
   }) {
     assert(setCriticalEvent != null);
+    assert(setUseGeoLocationForAddressEvent != null);
     assert(setAddressEvent != null);
     assert(setTargetLandmark != null);
     assert(setObjectElementString != null);
@@ -623,6 +943,9 @@ class _$SetTargetLandmark implements SetTargetLandmark {
     assert(setViolationAdditionalFeatureEvent != null);
     assert(setContractorStringEvent != null);
     assert(setContractorEvent != null);
+    assert(addPhotoEvent != null);
+    assert(removePhotoEvent != null);
+    assert(rotatePhotoEvent != null);
     return setTargetLandmark(targetLandmark);
   }
 
@@ -630,6 +953,7 @@ class _$SetTargetLandmark implements SetTargetLandmark {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object>({
     TResult setCriticalEvent(bool value),
+    TResult setUseGeoLocationForAddressEvent(bool value),
     TResult setAddressEvent(Address address),
     TResult setTargetLandmark(String targetLandmark),
     TResult setObjectElementString(String objectElement),
@@ -641,6 +965,9 @@ class _$SetTargetLandmark implements SetTargetLandmark {
         ViolationAdditionalFeature violationAdditionalFeature),
     TResult setContractorStringEvent(String contractor),
     TResult setContractorEvent(Contractor contractor),
+    TResult addPhotoEvent(Uint8List photo),
+    TResult removePhotoEvent(int index),
+    TResult rotatePhotoEvent(int index, Uint8List photo),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -654,6 +981,9 @@ class _$SetTargetLandmark implements SetTargetLandmark {
   @optionalTypeArgs
   TResult map<TResult extends Object>({
     @required TResult setCriticalEvent(SetCriticalEvent value),
+    @required
+        TResult setUseGeoLocationForAddressEvent(
+            SetUseGeoLocationForAddressEvent value),
     @required TResult setAddressEvent(SetAddressEvent value),
     @required TResult setTargetLandmark(SetTargetLandmark value),
     @required TResult setObjectElementString(SetObjectElementString value),
@@ -667,8 +997,12 @@ class _$SetTargetLandmark implements SetTargetLandmark {
             SetViolationAdditionalFeatureEvent value),
     @required TResult setContractorStringEvent(SetContractorStringEvent value),
     @required TResult setContractorEvent(SetContractorEvent value),
+    @required TResult addPhotoEvent(AddPhotoEvent value),
+    @required TResult removePhotoEvent(RemovePhotoEvent value),
+    @required TResult rotatePhotoEvent(RotatePhotoEvent value),
   }) {
     assert(setCriticalEvent != null);
+    assert(setUseGeoLocationForAddressEvent != null);
     assert(setAddressEvent != null);
     assert(setTargetLandmark != null);
     assert(setObjectElementString != null);
@@ -678,6 +1012,9 @@ class _$SetTargetLandmark implements SetTargetLandmark {
     assert(setViolationAdditionalFeatureEvent != null);
     assert(setContractorStringEvent != null);
     assert(setContractorEvent != null);
+    assert(addPhotoEvent != null);
+    assert(removePhotoEvent != null);
+    assert(rotatePhotoEvent != null);
     return setTargetLandmark(this);
   }
 
@@ -685,6 +1022,8 @@ class _$SetTargetLandmark implements SetTargetLandmark {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object>({
     TResult setCriticalEvent(SetCriticalEvent value),
+    TResult setUseGeoLocationForAddressEvent(
+        SetUseGeoLocationForAddressEvent value),
     TResult setAddressEvent(SetAddressEvent value),
     TResult setTargetLandmark(SetTargetLandmark value),
     TResult setObjectElementString(SetObjectElementString value),
@@ -696,6 +1035,9 @@ class _$SetTargetLandmark implements SetTargetLandmark {
         SetViolationAdditionalFeatureEvent value),
     TResult setContractorStringEvent(SetContractorStringEvent value),
     TResult setContractorEvent(SetContractorEvent value),
+    TResult addPhotoEvent(AddPhotoEvent value),
+    TResult removePhotoEvent(RemovePhotoEvent value),
+    TResult rotatePhotoEvent(RotatePhotoEvent value),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -779,6 +1121,7 @@ class _$SetObjectElementString implements SetObjectElementString {
   @optionalTypeArgs
   TResult when<TResult extends Object>({
     @required TResult setCriticalEvent(bool value),
+    @required TResult setUseGeoLocationForAddressEvent(bool value),
     @required TResult setAddressEvent(Address address),
     @required TResult setTargetLandmark(String targetLandmark),
     @required TResult setObjectElementString(String objectElement),
@@ -792,8 +1135,12 @@ class _$SetObjectElementString implements SetObjectElementString {
             ViolationAdditionalFeature violationAdditionalFeature),
     @required TResult setContractorStringEvent(String contractor),
     @required TResult setContractorEvent(Contractor contractor),
+    @required TResult addPhotoEvent(Uint8List photo),
+    @required TResult removePhotoEvent(int index),
+    @required TResult rotatePhotoEvent(int index, Uint8List photo),
   }) {
     assert(setCriticalEvent != null);
+    assert(setUseGeoLocationForAddressEvent != null);
     assert(setAddressEvent != null);
     assert(setTargetLandmark != null);
     assert(setObjectElementString != null);
@@ -803,6 +1150,9 @@ class _$SetObjectElementString implements SetObjectElementString {
     assert(setViolationAdditionalFeatureEvent != null);
     assert(setContractorStringEvent != null);
     assert(setContractorEvent != null);
+    assert(addPhotoEvent != null);
+    assert(removePhotoEvent != null);
+    assert(rotatePhotoEvent != null);
     return setObjectElementString(objectElement);
   }
 
@@ -810,6 +1160,7 @@ class _$SetObjectElementString implements SetObjectElementString {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object>({
     TResult setCriticalEvent(bool value),
+    TResult setUseGeoLocationForAddressEvent(bool value),
     TResult setAddressEvent(Address address),
     TResult setTargetLandmark(String targetLandmark),
     TResult setObjectElementString(String objectElement),
@@ -821,6 +1172,9 @@ class _$SetObjectElementString implements SetObjectElementString {
         ViolationAdditionalFeature violationAdditionalFeature),
     TResult setContractorStringEvent(String contractor),
     TResult setContractorEvent(Contractor contractor),
+    TResult addPhotoEvent(Uint8List photo),
+    TResult removePhotoEvent(int index),
+    TResult rotatePhotoEvent(int index, Uint8List photo),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -834,6 +1188,9 @@ class _$SetObjectElementString implements SetObjectElementString {
   @optionalTypeArgs
   TResult map<TResult extends Object>({
     @required TResult setCriticalEvent(SetCriticalEvent value),
+    @required
+        TResult setUseGeoLocationForAddressEvent(
+            SetUseGeoLocationForAddressEvent value),
     @required TResult setAddressEvent(SetAddressEvent value),
     @required TResult setTargetLandmark(SetTargetLandmark value),
     @required TResult setObjectElementString(SetObjectElementString value),
@@ -847,8 +1204,12 @@ class _$SetObjectElementString implements SetObjectElementString {
             SetViolationAdditionalFeatureEvent value),
     @required TResult setContractorStringEvent(SetContractorStringEvent value),
     @required TResult setContractorEvent(SetContractorEvent value),
+    @required TResult addPhotoEvent(AddPhotoEvent value),
+    @required TResult removePhotoEvent(RemovePhotoEvent value),
+    @required TResult rotatePhotoEvent(RotatePhotoEvent value),
   }) {
     assert(setCriticalEvent != null);
+    assert(setUseGeoLocationForAddressEvent != null);
     assert(setAddressEvent != null);
     assert(setTargetLandmark != null);
     assert(setObjectElementString != null);
@@ -858,6 +1219,9 @@ class _$SetObjectElementString implements SetObjectElementString {
     assert(setViolationAdditionalFeatureEvent != null);
     assert(setContractorStringEvent != null);
     assert(setContractorEvent != null);
+    assert(addPhotoEvent != null);
+    assert(removePhotoEvent != null);
+    assert(rotatePhotoEvent != null);
     return setObjectElementString(this);
   }
 
@@ -865,6 +1229,8 @@ class _$SetObjectElementString implements SetObjectElementString {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object>({
     TResult setCriticalEvent(SetCriticalEvent value),
+    TResult setUseGeoLocationForAddressEvent(
+        SetUseGeoLocationForAddressEvent value),
     TResult setAddressEvent(SetAddressEvent value),
     TResult setTargetLandmark(SetTargetLandmark value),
     TResult setObjectElementString(SetObjectElementString value),
@@ -876,6 +1242,9 @@ class _$SetObjectElementString implements SetObjectElementString {
         SetViolationAdditionalFeatureEvent value),
     TResult setContractorStringEvent(SetContractorStringEvent value),
     TResult setContractorEvent(SetContractorEvent value),
+    TResult addPhotoEvent(AddPhotoEvent value),
+    TResult removePhotoEvent(RemovePhotoEvent value),
+    TResult rotatePhotoEvent(RotatePhotoEvent value),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -972,6 +1341,7 @@ class _$SetObjectElement implements SetObjectElement {
   @optionalTypeArgs
   TResult when<TResult extends Object>({
     @required TResult setCriticalEvent(bool value),
+    @required TResult setUseGeoLocationForAddressEvent(bool value),
     @required TResult setAddressEvent(Address address),
     @required TResult setTargetLandmark(String targetLandmark),
     @required TResult setObjectElementString(String objectElement),
@@ -985,8 +1355,12 @@ class _$SetObjectElement implements SetObjectElement {
             ViolationAdditionalFeature violationAdditionalFeature),
     @required TResult setContractorStringEvent(String contractor),
     @required TResult setContractorEvent(Contractor contractor),
+    @required TResult addPhotoEvent(Uint8List photo),
+    @required TResult removePhotoEvent(int index),
+    @required TResult rotatePhotoEvent(int index, Uint8List photo),
   }) {
     assert(setCriticalEvent != null);
+    assert(setUseGeoLocationForAddressEvent != null);
     assert(setAddressEvent != null);
     assert(setTargetLandmark != null);
     assert(setObjectElementString != null);
@@ -996,6 +1370,9 @@ class _$SetObjectElement implements SetObjectElement {
     assert(setViolationAdditionalFeatureEvent != null);
     assert(setContractorStringEvent != null);
     assert(setContractorEvent != null);
+    assert(addPhotoEvent != null);
+    assert(removePhotoEvent != null);
+    assert(rotatePhotoEvent != null);
     return setObjectElement(objectElement);
   }
 
@@ -1003,6 +1380,7 @@ class _$SetObjectElement implements SetObjectElement {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object>({
     TResult setCriticalEvent(bool value),
+    TResult setUseGeoLocationForAddressEvent(bool value),
     TResult setAddressEvent(Address address),
     TResult setTargetLandmark(String targetLandmark),
     TResult setObjectElementString(String objectElement),
@@ -1014,6 +1392,9 @@ class _$SetObjectElement implements SetObjectElement {
         ViolationAdditionalFeature violationAdditionalFeature),
     TResult setContractorStringEvent(String contractor),
     TResult setContractorEvent(Contractor contractor),
+    TResult addPhotoEvent(Uint8List photo),
+    TResult removePhotoEvent(int index),
+    TResult rotatePhotoEvent(int index, Uint8List photo),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -1027,6 +1408,9 @@ class _$SetObjectElement implements SetObjectElement {
   @optionalTypeArgs
   TResult map<TResult extends Object>({
     @required TResult setCriticalEvent(SetCriticalEvent value),
+    @required
+        TResult setUseGeoLocationForAddressEvent(
+            SetUseGeoLocationForAddressEvent value),
     @required TResult setAddressEvent(SetAddressEvent value),
     @required TResult setTargetLandmark(SetTargetLandmark value),
     @required TResult setObjectElementString(SetObjectElementString value),
@@ -1040,8 +1424,12 @@ class _$SetObjectElement implements SetObjectElement {
             SetViolationAdditionalFeatureEvent value),
     @required TResult setContractorStringEvent(SetContractorStringEvent value),
     @required TResult setContractorEvent(SetContractorEvent value),
+    @required TResult addPhotoEvent(AddPhotoEvent value),
+    @required TResult removePhotoEvent(RemovePhotoEvent value),
+    @required TResult rotatePhotoEvent(RotatePhotoEvent value),
   }) {
     assert(setCriticalEvent != null);
+    assert(setUseGeoLocationForAddressEvent != null);
     assert(setAddressEvent != null);
     assert(setTargetLandmark != null);
     assert(setObjectElementString != null);
@@ -1051,6 +1439,9 @@ class _$SetObjectElement implements SetObjectElement {
     assert(setViolationAdditionalFeatureEvent != null);
     assert(setContractorStringEvent != null);
     assert(setContractorEvent != null);
+    assert(addPhotoEvent != null);
+    assert(removePhotoEvent != null);
+    assert(rotatePhotoEvent != null);
     return setObjectElement(this);
   }
 
@@ -1058,6 +1449,8 @@ class _$SetObjectElement implements SetObjectElement {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object>({
     TResult setCriticalEvent(SetCriticalEvent value),
+    TResult setUseGeoLocationForAddressEvent(
+        SetUseGeoLocationForAddressEvent value),
     TResult setAddressEvent(SetAddressEvent value),
     TResult setTargetLandmark(SetTargetLandmark value),
     TResult setObjectElementString(SetObjectElementString value),
@@ -1069,6 +1462,9 @@ class _$SetObjectElement implements SetObjectElement {
         SetViolationAdditionalFeatureEvent value),
     TResult setContractorStringEvent(SetContractorStringEvent value),
     TResult setContractorEvent(SetContractorEvent value),
+    TResult addPhotoEvent(AddPhotoEvent value),
+    TResult removePhotoEvent(RemovePhotoEvent value),
+    TResult rotatePhotoEvent(RotatePhotoEvent value),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -1151,6 +1547,7 @@ class _$SetDescriptionEvent implements SetDescriptionEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object>({
     @required TResult setCriticalEvent(bool value),
+    @required TResult setUseGeoLocationForAddressEvent(bool value),
     @required TResult setAddressEvent(Address address),
     @required TResult setTargetLandmark(String targetLandmark),
     @required TResult setObjectElementString(String objectElement),
@@ -1164,8 +1561,12 @@ class _$SetDescriptionEvent implements SetDescriptionEvent {
             ViolationAdditionalFeature violationAdditionalFeature),
     @required TResult setContractorStringEvent(String contractor),
     @required TResult setContractorEvent(Contractor contractor),
+    @required TResult addPhotoEvent(Uint8List photo),
+    @required TResult removePhotoEvent(int index),
+    @required TResult rotatePhotoEvent(int index, Uint8List photo),
   }) {
     assert(setCriticalEvent != null);
+    assert(setUseGeoLocationForAddressEvent != null);
     assert(setAddressEvent != null);
     assert(setTargetLandmark != null);
     assert(setObjectElementString != null);
@@ -1175,6 +1576,9 @@ class _$SetDescriptionEvent implements SetDescriptionEvent {
     assert(setViolationAdditionalFeatureEvent != null);
     assert(setContractorStringEvent != null);
     assert(setContractorEvent != null);
+    assert(addPhotoEvent != null);
+    assert(removePhotoEvent != null);
+    assert(rotatePhotoEvent != null);
     return setDescriptionEvent(description);
   }
 
@@ -1182,6 +1586,7 @@ class _$SetDescriptionEvent implements SetDescriptionEvent {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object>({
     TResult setCriticalEvent(bool value),
+    TResult setUseGeoLocationForAddressEvent(bool value),
     TResult setAddressEvent(Address address),
     TResult setTargetLandmark(String targetLandmark),
     TResult setObjectElementString(String objectElement),
@@ -1193,6 +1598,9 @@ class _$SetDescriptionEvent implements SetDescriptionEvent {
         ViolationAdditionalFeature violationAdditionalFeature),
     TResult setContractorStringEvent(String contractor),
     TResult setContractorEvent(Contractor contractor),
+    TResult addPhotoEvent(Uint8List photo),
+    TResult removePhotoEvent(int index),
+    TResult rotatePhotoEvent(int index, Uint8List photo),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -1206,6 +1614,9 @@ class _$SetDescriptionEvent implements SetDescriptionEvent {
   @optionalTypeArgs
   TResult map<TResult extends Object>({
     @required TResult setCriticalEvent(SetCriticalEvent value),
+    @required
+        TResult setUseGeoLocationForAddressEvent(
+            SetUseGeoLocationForAddressEvent value),
     @required TResult setAddressEvent(SetAddressEvent value),
     @required TResult setTargetLandmark(SetTargetLandmark value),
     @required TResult setObjectElementString(SetObjectElementString value),
@@ -1219,8 +1630,12 @@ class _$SetDescriptionEvent implements SetDescriptionEvent {
             SetViolationAdditionalFeatureEvent value),
     @required TResult setContractorStringEvent(SetContractorStringEvent value),
     @required TResult setContractorEvent(SetContractorEvent value),
+    @required TResult addPhotoEvent(AddPhotoEvent value),
+    @required TResult removePhotoEvent(RemovePhotoEvent value),
+    @required TResult rotatePhotoEvent(RotatePhotoEvent value),
   }) {
     assert(setCriticalEvent != null);
+    assert(setUseGeoLocationForAddressEvent != null);
     assert(setAddressEvent != null);
     assert(setTargetLandmark != null);
     assert(setObjectElementString != null);
@@ -1230,6 +1645,9 @@ class _$SetDescriptionEvent implements SetDescriptionEvent {
     assert(setViolationAdditionalFeatureEvent != null);
     assert(setContractorStringEvent != null);
     assert(setContractorEvent != null);
+    assert(addPhotoEvent != null);
+    assert(removePhotoEvent != null);
+    assert(rotatePhotoEvent != null);
     return setDescriptionEvent(this);
   }
 
@@ -1237,6 +1655,8 @@ class _$SetDescriptionEvent implements SetDescriptionEvent {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object>({
     TResult setCriticalEvent(SetCriticalEvent value),
+    TResult setUseGeoLocationForAddressEvent(
+        SetUseGeoLocationForAddressEvent value),
     TResult setAddressEvent(SetAddressEvent value),
     TResult setTargetLandmark(SetTargetLandmark value),
     TResult setObjectElementString(SetObjectElementString value),
@@ -1248,6 +1668,9 @@ class _$SetDescriptionEvent implements SetDescriptionEvent {
         SetViolationAdditionalFeatureEvent value),
     TResult setContractorStringEvent(SetContractorStringEvent value),
     TResult setContractorEvent(SetContractorEvent value),
+    TResult addPhotoEvent(AddPhotoEvent value),
+    TResult removePhotoEvent(RemovePhotoEvent value),
+    TResult rotatePhotoEvent(RotatePhotoEvent value),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -1343,6 +1766,7 @@ class _$SetViolationAdditionalFeatureStringEvent
   @optionalTypeArgs
   TResult when<TResult extends Object>({
     @required TResult setCriticalEvent(bool value),
+    @required TResult setUseGeoLocationForAddressEvent(bool value),
     @required TResult setAddressEvent(Address address),
     @required TResult setTargetLandmark(String targetLandmark),
     @required TResult setObjectElementString(String objectElement),
@@ -1356,8 +1780,12 @@ class _$SetViolationAdditionalFeatureStringEvent
             ViolationAdditionalFeature violationAdditionalFeature),
     @required TResult setContractorStringEvent(String contractor),
     @required TResult setContractorEvent(Contractor contractor),
+    @required TResult addPhotoEvent(Uint8List photo),
+    @required TResult removePhotoEvent(int index),
+    @required TResult rotatePhotoEvent(int index, Uint8List photo),
   }) {
     assert(setCriticalEvent != null);
+    assert(setUseGeoLocationForAddressEvent != null);
     assert(setAddressEvent != null);
     assert(setTargetLandmark != null);
     assert(setObjectElementString != null);
@@ -1367,6 +1795,9 @@ class _$SetViolationAdditionalFeatureStringEvent
     assert(setViolationAdditionalFeatureEvent != null);
     assert(setContractorStringEvent != null);
     assert(setContractorEvent != null);
+    assert(addPhotoEvent != null);
+    assert(removePhotoEvent != null);
+    assert(rotatePhotoEvent != null);
     return setViolationAdditionalFeatureStringEvent(violationAdditionalFeature);
   }
 
@@ -1374,6 +1805,7 @@ class _$SetViolationAdditionalFeatureStringEvent
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object>({
     TResult setCriticalEvent(bool value),
+    TResult setUseGeoLocationForAddressEvent(bool value),
     TResult setAddressEvent(Address address),
     TResult setTargetLandmark(String targetLandmark),
     TResult setObjectElementString(String objectElement),
@@ -1385,6 +1817,9 @@ class _$SetViolationAdditionalFeatureStringEvent
         ViolationAdditionalFeature violationAdditionalFeature),
     TResult setContractorStringEvent(String contractor),
     TResult setContractorEvent(Contractor contractor),
+    TResult addPhotoEvent(Uint8List photo),
+    TResult removePhotoEvent(int index),
+    TResult rotatePhotoEvent(int index, Uint8List photo),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -1399,6 +1834,9 @@ class _$SetViolationAdditionalFeatureStringEvent
   @optionalTypeArgs
   TResult map<TResult extends Object>({
     @required TResult setCriticalEvent(SetCriticalEvent value),
+    @required
+        TResult setUseGeoLocationForAddressEvent(
+            SetUseGeoLocationForAddressEvent value),
     @required TResult setAddressEvent(SetAddressEvent value),
     @required TResult setTargetLandmark(SetTargetLandmark value),
     @required TResult setObjectElementString(SetObjectElementString value),
@@ -1412,8 +1850,12 @@ class _$SetViolationAdditionalFeatureStringEvent
             SetViolationAdditionalFeatureEvent value),
     @required TResult setContractorStringEvent(SetContractorStringEvent value),
     @required TResult setContractorEvent(SetContractorEvent value),
+    @required TResult addPhotoEvent(AddPhotoEvent value),
+    @required TResult removePhotoEvent(RemovePhotoEvent value),
+    @required TResult rotatePhotoEvent(RotatePhotoEvent value),
   }) {
     assert(setCriticalEvent != null);
+    assert(setUseGeoLocationForAddressEvent != null);
     assert(setAddressEvent != null);
     assert(setTargetLandmark != null);
     assert(setObjectElementString != null);
@@ -1423,6 +1865,9 @@ class _$SetViolationAdditionalFeatureStringEvent
     assert(setViolationAdditionalFeatureEvent != null);
     assert(setContractorStringEvent != null);
     assert(setContractorEvent != null);
+    assert(addPhotoEvent != null);
+    assert(removePhotoEvent != null);
+    assert(rotatePhotoEvent != null);
     return setViolationAdditionalFeatureStringEvent(this);
   }
 
@@ -1430,6 +1875,8 @@ class _$SetViolationAdditionalFeatureStringEvent
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object>({
     TResult setCriticalEvent(SetCriticalEvent value),
+    TResult setUseGeoLocationForAddressEvent(
+        SetUseGeoLocationForAddressEvent value),
     TResult setAddressEvent(SetAddressEvent value),
     TResult setTargetLandmark(SetTargetLandmark value),
     TResult setObjectElementString(SetObjectElementString value),
@@ -1441,6 +1888,9 @@ class _$SetViolationAdditionalFeatureStringEvent
         SetViolationAdditionalFeatureEvent value),
     TResult setContractorStringEvent(SetContractorStringEvent value),
     TResult setContractorEvent(SetContractorEvent value),
+    TResult addPhotoEvent(AddPhotoEvent value),
+    TResult removePhotoEvent(RemovePhotoEvent value),
+    TResult rotatePhotoEvent(RotatePhotoEvent value),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -1551,6 +2001,7 @@ class _$SetViolationAdditionalFeatureEvent
   @optionalTypeArgs
   TResult when<TResult extends Object>({
     @required TResult setCriticalEvent(bool value),
+    @required TResult setUseGeoLocationForAddressEvent(bool value),
     @required TResult setAddressEvent(Address address),
     @required TResult setTargetLandmark(String targetLandmark),
     @required TResult setObjectElementString(String objectElement),
@@ -1564,8 +2015,12 @@ class _$SetViolationAdditionalFeatureEvent
             ViolationAdditionalFeature violationAdditionalFeature),
     @required TResult setContractorStringEvent(String contractor),
     @required TResult setContractorEvent(Contractor contractor),
+    @required TResult addPhotoEvent(Uint8List photo),
+    @required TResult removePhotoEvent(int index),
+    @required TResult rotatePhotoEvent(int index, Uint8List photo),
   }) {
     assert(setCriticalEvent != null);
+    assert(setUseGeoLocationForAddressEvent != null);
     assert(setAddressEvent != null);
     assert(setTargetLandmark != null);
     assert(setObjectElementString != null);
@@ -1575,6 +2030,9 @@ class _$SetViolationAdditionalFeatureEvent
     assert(setViolationAdditionalFeatureEvent != null);
     assert(setContractorStringEvent != null);
     assert(setContractorEvent != null);
+    assert(addPhotoEvent != null);
+    assert(removePhotoEvent != null);
+    assert(rotatePhotoEvent != null);
     return setViolationAdditionalFeatureEvent(violationAdditionalFeature);
   }
 
@@ -1582,6 +2040,7 @@ class _$SetViolationAdditionalFeatureEvent
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object>({
     TResult setCriticalEvent(bool value),
+    TResult setUseGeoLocationForAddressEvent(bool value),
     TResult setAddressEvent(Address address),
     TResult setTargetLandmark(String targetLandmark),
     TResult setObjectElementString(String objectElement),
@@ -1593,6 +2052,9 @@ class _$SetViolationAdditionalFeatureEvent
         ViolationAdditionalFeature violationAdditionalFeature),
     TResult setContractorStringEvent(String contractor),
     TResult setContractorEvent(Contractor contractor),
+    TResult addPhotoEvent(Uint8List photo),
+    TResult removePhotoEvent(int index),
+    TResult rotatePhotoEvent(int index, Uint8List photo),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -1606,6 +2068,9 @@ class _$SetViolationAdditionalFeatureEvent
   @optionalTypeArgs
   TResult map<TResult extends Object>({
     @required TResult setCriticalEvent(SetCriticalEvent value),
+    @required
+        TResult setUseGeoLocationForAddressEvent(
+            SetUseGeoLocationForAddressEvent value),
     @required TResult setAddressEvent(SetAddressEvent value),
     @required TResult setTargetLandmark(SetTargetLandmark value),
     @required TResult setObjectElementString(SetObjectElementString value),
@@ -1619,8 +2084,12 @@ class _$SetViolationAdditionalFeatureEvent
             SetViolationAdditionalFeatureEvent value),
     @required TResult setContractorStringEvent(SetContractorStringEvent value),
     @required TResult setContractorEvent(SetContractorEvent value),
+    @required TResult addPhotoEvent(AddPhotoEvent value),
+    @required TResult removePhotoEvent(RemovePhotoEvent value),
+    @required TResult rotatePhotoEvent(RotatePhotoEvent value),
   }) {
     assert(setCriticalEvent != null);
+    assert(setUseGeoLocationForAddressEvent != null);
     assert(setAddressEvent != null);
     assert(setTargetLandmark != null);
     assert(setObjectElementString != null);
@@ -1630,6 +2099,9 @@ class _$SetViolationAdditionalFeatureEvent
     assert(setViolationAdditionalFeatureEvent != null);
     assert(setContractorStringEvent != null);
     assert(setContractorEvent != null);
+    assert(addPhotoEvent != null);
+    assert(removePhotoEvent != null);
+    assert(rotatePhotoEvent != null);
     return setViolationAdditionalFeatureEvent(this);
   }
 
@@ -1637,6 +2109,8 @@ class _$SetViolationAdditionalFeatureEvent
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object>({
     TResult setCriticalEvent(SetCriticalEvent value),
+    TResult setUseGeoLocationForAddressEvent(
+        SetUseGeoLocationForAddressEvent value),
     TResult setAddressEvent(SetAddressEvent value),
     TResult setTargetLandmark(SetTargetLandmark value),
     TResult setObjectElementString(SetObjectElementString value),
@@ -1648,6 +2122,9 @@ class _$SetViolationAdditionalFeatureEvent
         SetViolationAdditionalFeatureEvent value),
     TResult setContractorStringEvent(SetContractorStringEvent value),
     TResult setContractorEvent(SetContractorEvent value),
+    TResult addPhotoEvent(AddPhotoEvent value),
+    TResult removePhotoEvent(RemovePhotoEvent value),
+    TResult rotatePhotoEvent(RotatePhotoEvent value),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -1736,6 +2213,7 @@ class _$SetContractorStringEvent implements SetContractorStringEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object>({
     @required TResult setCriticalEvent(bool value),
+    @required TResult setUseGeoLocationForAddressEvent(bool value),
     @required TResult setAddressEvent(Address address),
     @required TResult setTargetLandmark(String targetLandmark),
     @required TResult setObjectElementString(String objectElement),
@@ -1749,8 +2227,12 @@ class _$SetContractorStringEvent implements SetContractorStringEvent {
             ViolationAdditionalFeature violationAdditionalFeature),
     @required TResult setContractorStringEvent(String contractor),
     @required TResult setContractorEvent(Contractor contractor),
+    @required TResult addPhotoEvent(Uint8List photo),
+    @required TResult removePhotoEvent(int index),
+    @required TResult rotatePhotoEvent(int index, Uint8List photo),
   }) {
     assert(setCriticalEvent != null);
+    assert(setUseGeoLocationForAddressEvent != null);
     assert(setAddressEvent != null);
     assert(setTargetLandmark != null);
     assert(setObjectElementString != null);
@@ -1760,6 +2242,9 @@ class _$SetContractorStringEvent implements SetContractorStringEvent {
     assert(setViolationAdditionalFeatureEvent != null);
     assert(setContractorStringEvent != null);
     assert(setContractorEvent != null);
+    assert(addPhotoEvent != null);
+    assert(removePhotoEvent != null);
+    assert(rotatePhotoEvent != null);
     return setContractorStringEvent(contractor);
   }
 
@@ -1767,6 +2252,7 @@ class _$SetContractorStringEvent implements SetContractorStringEvent {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object>({
     TResult setCriticalEvent(bool value),
+    TResult setUseGeoLocationForAddressEvent(bool value),
     TResult setAddressEvent(Address address),
     TResult setTargetLandmark(String targetLandmark),
     TResult setObjectElementString(String objectElement),
@@ -1778,6 +2264,9 @@ class _$SetContractorStringEvent implements SetContractorStringEvent {
         ViolationAdditionalFeature violationAdditionalFeature),
     TResult setContractorStringEvent(String contractor),
     TResult setContractorEvent(Contractor contractor),
+    TResult addPhotoEvent(Uint8List photo),
+    TResult removePhotoEvent(int index),
+    TResult rotatePhotoEvent(int index, Uint8List photo),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -1791,6 +2280,9 @@ class _$SetContractorStringEvent implements SetContractorStringEvent {
   @optionalTypeArgs
   TResult map<TResult extends Object>({
     @required TResult setCriticalEvent(SetCriticalEvent value),
+    @required
+        TResult setUseGeoLocationForAddressEvent(
+            SetUseGeoLocationForAddressEvent value),
     @required TResult setAddressEvent(SetAddressEvent value),
     @required TResult setTargetLandmark(SetTargetLandmark value),
     @required TResult setObjectElementString(SetObjectElementString value),
@@ -1804,8 +2296,12 @@ class _$SetContractorStringEvent implements SetContractorStringEvent {
             SetViolationAdditionalFeatureEvent value),
     @required TResult setContractorStringEvent(SetContractorStringEvent value),
     @required TResult setContractorEvent(SetContractorEvent value),
+    @required TResult addPhotoEvent(AddPhotoEvent value),
+    @required TResult removePhotoEvent(RemovePhotoEvent value),
+    @required TResult rotatePhotoEvent(RotatePhotoEvent value),
   }) {
     assert(setCriticalEvent != null);
+    assert(setUseGeoLocationForAddressEvent != null);
     assert(setAddressEvent != null);
     assert(setTargetLandmark != null);
     assert(setObjectElementString != null);
@@ -1815,6 +2311,9 @@ class _$SetContractorStringEvent implements SetContractorStringEvent {
     assert(setViolationAdditionalFeatureEvent != null);
     assert(setContractorStringEvent != null);
     assert(setContractorEvent != null);
+    assert(addPhotoEvent != null);
+    assert(removePhotoEvent != null);
+    assert(rotatePhotoEvent != null);
     return setContractorStringEvent(this);
   }
 
@@ -1822,6 +2321,8 @@ class _$SetContractorStringEvent implements SetContractorStringEvent {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object>({
     TResult setCriticalEvent(SetCriticalEvent value),
+    TResult setUseGeoLocationForAddressEvent(
+        SetUseGeoLocationForAddressEvent value),
     TResult setAddressEvent(SetAddressEvent value),
     TResult setTargetLandmark(SetTargetLandmark value),
     TResult setObjectElementString(SetObjectElementString value),
@@ -1833,6 +2334,9 @@ class _$SetContractorStringEvent implements SetContractorStringEvent {
         SetViolationAdditionalFeatureEvent value),
     TResult setContractorStringEvent(SetContractorStringEvent value),
     TResult setContractorEvent(SetContractorEvent value),
+    TResult addPhotoEvent(AddPhotoEvent value),
+    TResult removePhotoEvent(RemovePhotoEvent value),
+    TResult rotatePhotoEvent(RotatePhotoEvent value),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -1927,6 +2431,7 @@ class _$SetContractorEvent implements SetContractorEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object>({
     @required TResult setCriticalEvent(bool value),
+    @required TResult setUseGeoLocationForAddressEvent(bool value),
     @required TResult setAddressEvent(Address address),
     @required TResult setTargetLandmark(String targetLandmark),
     @required TResult setObjectElementString(String objectElement),
@@ -1940,8 +2445,12 @@ class _$SetContractorEvent implements SetContractorEvent {
             ViolationAdditionalFeature violationAdditionalFeature),
     @required TResult setContractorStringEvent(String contractor),
     @required TResult setContractorEvent(Contractor contractor),
+    @required TResult addPhotoEvent(Uint8List photo),
+    @required TResult removePhotoEvent(int index),
+    @required TResult rotatePhotoEvent(int index, Uint8List photo),
   }) {
     assert(setCriticalEvent != null);
+    assert(setUseGeoLocationForAddressEvent != null);
     assert(setAddressEvent != null);
     assert(setTargetLandmark != null);
     assert(setObjectElementString != null);
@@ -1951,6 +2460,9 @@ class _$SetContractorEvent implements SetContractorEvent {
     assert(setViolationAdditionalFeatureEvent != null);
     assert(setContractorStringEvent != null);
     assert(setContractorEvent != null);
+    assert(addPhotoEvent != null);
+    assert(removePhotoEvent != null);
+    assert(rotatePhotoEvent != null);
     return setContractorEvent(contractor);
   }
 
@@ -1958,6 +2470,7 @@ class _$SetContractorEvent implements SetContractorEvent {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object>({
     TResult setCriticalEvent(bool value),
+    TResult setUseGeoLocationForAddressEvent(bool value),
     TResult setAddressEvent(Address address),
     TResult setTargetLandmark(String targetLandmark),
     TResult setObjectElementString(String objectElement),
@@ -1969,6 +2482,9 @@ class _$SetContractorEvent implements SetContractorEvent {
         ViolationAdditionalFeature violationAdditionalFeature),
     TResult setContractorStringEvent(String contractor),
     TResult setContractorEvent(Contractor contractor),
+    TResult addPhotoEvent(Uint8List photo),
+    TResult removePhotoEvent(int index),
+    TResult rotatePhotoEvent(int index, Uint8List photo),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -1982,6 +2498,9 @@ class _$SetContractorEvent implements SetContractorEvent {
   @optionalTypeArgs
   TResult map<TResult extends Object>({
     @required TResult setCriticalEvent(SetCriticalEvent value),
+    @required
+        TResult setUseGeoLocationForAddressEvent(
+            SetUseGeoLocationForAddressEvent value),
     @required TResult setAddressEvent(SetAddressEvent value),
     @required TResult setTargetLandmark(SetTargetLandmark value),
     @required TResult setObjectElementString(SetObjectElementString value),
@@ -1995,8 +2514,12 @@ class _$SetContractorEvent implements SetContractorEvent {
             SetViolationAdditionalFeatureEvent value),
     @required TResult setContractorStringEvent(SetContractorStringEvent value),
     @required TResult setContractorEvent(SetContractorEvent value),
+    @required TResult addPhotoEvent(AddPhotoEvent value),
+    @required TResult removePhotoEvent(RemovePhotoEvent value),
+    @required TResult rotatePhotoEvent(RotatePhotoEvent value),
   }) {
     assert(setCriticalEvent != null);
+    assert(setUseGeoLocationForAddressEvent != null);
     assert(setAddressEvent != null);
     assert(setTargetLandmark != null);
     assert(setObjectElementString != null);
@@ -2006,6 +2529,9 @@ class _$SetContractorEvent implements SetContractorEvent {
     assert(setViolationAdditionalFeatureEvent != null);
     assert(setContractorStringEvent != null);
     assert(setContractorEvent != null);
+    assert(addPhotoEvent != null);
+    assert(removePhotoEvent != null);
+    assert(rotatePhotoEvent != null);
     return setContractorEvent(this);
   }
 
@@ -2013,6 +2539,8 @@ class _$SetContractorEvent implements SetContractorEvent {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object>({
     TResult setCriticalEvent(SetCriticalEvent value),
+    TResult setUseGeoLocationForAddressEvent(
+        SetUseGeoLocationForAddressEvent value),
     TResult setAddressEvent(SetAddressEvent value),
     TResult setTargetLandmark(SetTargetLandmark value),
     TResult setObjectElementString(SetObjectElementString value),
@@ -2024,6 +2552,9 @@ class _$SetContractorEvent implements SetContractorEvent {
         SetViolationAdditionalFeatureEvent value),
     TResult setContractorStringEvent(SetContractorStringEvent value),
     TResult setContractorEvent(SetContractorEvent value),
+    TResult addPhotoEvent(AddPhotoEvent value),
+    TResult removePhotoEvent(RemovePhotoEvent value),
+    TResult rotatePhotoEvent(RotatePhotoEvent value),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -2041,4 +2572,628 @@ abstract class SetContractorEvent implements ControlViolationFormEvent {
   Contractor get contractor;
   @JsonKey(ignore: true)
   $SetContractorEventCopyWith<SetContractorEvent> get copyWith;
+}
+
+/// @nodoc
+abstract class $AddPhotoEventCopyWith<$Res> {
+  factory $AddPhotoEventCopyWith(
+          AddPhotoEvent value, $Res Function(AddPhotoEvent) then) =
+      _$AddPhotoEventCopyWithImpl<$Res>;
+  $Res call({Uint8List photo});
+}
+
+/// @nodoc
+class _$AddPhotoEventCopyWithImpl<$Res>
+    extends _$ControlViolationFormEventCopyWithImpl<$Res>
+    implements $AddPhotoEventCopyWith<$Res> {
+  _$AddPhotoEventCopyWithImpl(
+      AddPhotoEvent _value, $Res Function(AddPhotoEvent) _then)
+      : super(_value, (v) => _then(v as AddPhotoEvent));
+
+  @override
+  AddPhotoEvent get _value => super._value as AddPhotoEvent;
+
+  @override
+  $Res call({
+    Object photo = freezed,
+  }) {
+    return _then(AddPhotoEvent(
+      photo == freezed ? _value.photo : photo as Uint8List,
+    ));
+  }
+}
+
+/// @nodoc
+class _$AddPhotoEvent implements AddPhotoEvent {
+  const _$AddPhotoEvent(this.photo) : assert(photo != null);
+
+  @override
+  final Uint8List photo;
+
+  @override
+  String toString() {
+    return 'ControlViolationFormEvent.addPhotoEvent(photo: $photo)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is AddPhotoEvent &&
+            (identical(other.photo, photo) ||
+                const DeepCollectionEquality().equals(other.photo, photo)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^ const DeepCollectionEquality().hash(photo);
+
+  @JsonKey(ignore: true)
+  @override
+  $AddPhotoEventCopyWith<AddPhotoEvent> get copyWith =>
+      _$AddPhotoEventCopyWithImpl<AddPhotoEvent>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object>({
+    @required TResult setCriticalEvent(bool value),
+    @required TResult setUseGeoLocationForAddressEvent(bool value),
+    @required TResult setAddressEvent(Address address),
+    @required TResult setTargetLandmark(String targetLandmark),
+    @required TResult setObjectElementString(String objectElement),
+    @required TResult setObjectElement(ObjectElement objectElement),
+    @required TResult setDescriptionEvent(String description),
+    @required
+        TResult setViolationAdditionalFeatureStringEvent(
+            String violationAdditionalFeature),
+    @required
+        TResult setViolationAdditionalFeatureEvent(
+            ViolationAdditionalFeature violationAdditionalFeature),
+    @required TResult setContractorStringEvent(String contractor),
+    @required TResult setContractorEvent(Contractor contractor),
+    @required TResult addPhotoEvent(Uint8List photo),
+    @required TResult removePhotoEvent(int index),
+    @required TResult rotatePhotoEvent(int index, Uint8List photo),
+  }) {
+    assert(setCriticalEvent != null);
+    assert(setUseGeoLocationForAddressEvent != null);
+    assert(setAddressEvent != null);
+    assert(setTargetLandmark != null);
+    assert(setObjectElementString != null);
+    assert(setObjectElement != null);
+    assert(setDescriptionEvent != null);
+    assert(setViolationAdditionalFeatureStringEvent != null);
+    assert(setViolationAdditionalFeatureEvent != null);
+    assert(setContractorStringEvent != null);
+    assert(setContractorEvent != null);
+    assert(addPhotoEvent != null);
+    assert(removePhotoEvent != null);
+    assert(rotatePhotoEvent != null);
+    return addPhotoEvent(photo);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object>({
+    TResult setCriticalEvent(bool value),
+    TResult setUseGeoLocationForAddressEvent(bool value),
+    TResult setAddressEvent(Address address),
+    TResult setTargetLandmark(String targetLandmark),
+    TResult setObjectElementString(String objectElement),
+    TResult setObjectElement(ObjectElement objectElement),
+    TResult setDescriptionEvent(String description),
+    TResult setViolationAdditionalFeatureStringEvent(
+        String violationAdditionalFeature),
+    TResult setViolationAdditionalFeatureEvent(
+        ViolationAdditionalFeature violationAdditionalFeature),
+    TResult setContractorStringEvent(String contractor),
+    TResult setContractorEvent(Contractor contractor),
+    TResult addPhotoEvent(Uint8List photo),
+    TResult removePhotoEvent(int index),
+    TResult rotatePhotoEvent(int index, Uint8List photo),
+    @required TResult orElse(),
+  }) {
+    assert(orElse != null);
+    if (addPhotoEvent != null) {
+      return addPhotoEvent(photo);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object>({
+    @required TResult setCriticalEvent(SetCriticalEvent value),
+    @required
+        TResult setUseGeoLocationForAddressEvent(
+            SetUseGeoLocationForAddressEvent value),
+    @required TResult setAddressEvent(SetAddressEvent value),
+    @required TResult setTargetLandmark(SetTargetLandmark value),
+    @required TResult setObjectElementString(SetObjectElementString value),
+    @required TResult setObjectElement(SetObjectElement value),
+    @required TResult setDescriptionEvent(SetDescriptionEvent value),
+    @required
+        TResult setViolationAdditionalFeatureStringEvent(
+            SetViolationAdditionalFeatureStringEvent value),
+    @required
+        TResult setViolationAdditionalFeatureEvent(
+            SetViolationAdditionalFeatureEvent value),
+    @required TResult setContractorStringEvent(SetContractorStringEvent value),
+    @required TResult setContractorEvent(SetContractorEvent value),
+    @required TResult addPhotoEvent(AddPhotoEvent value),
+    @required TResult removePhotoEvent(RemovePhotoEvent value),
+    @required TResult rotatePhotoEvent(RotatePhotoEvent value),
+  }) {
+    assert(setCriticalEvent != null);
+    assert(setUseGeoLocationForAddressEvent != null);
+    assert(setAddressEvent != null);
+    assert(setTargetLandmark != null);
+    assert(setObjectElementString != null);
+    assert(setObjectElement != null);
+    assert(setDescriptionEvent != null);
+    assert(setViolationAdditionalFeatureStringEvent != null);
+    assert(setViolationAdditionalFeatureEvent != null);
+    assert(setContractorStringEvent != null);
+    assert(setContractorEvent != null);
+    assert(addPhotoEvent != null);
+    assert(removePhotoEvent != null);
+    assert(rotatePhotoEvent != null);
+    return addPhotoEvent(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object>({
+    TResult setCriticalEvent(SetCriticalEvent value),
+    TResult setUseGeoLocationForAddressEvent(
+        SetUseGeoLocationForAddressEvent value),
+    TResult setAddressEvent(SetAddressEvent value),
+    TResult setTargetLandmark(SetTargetLandmark value),
+    TResult setObjectElementString(SetObjectElementString value),
+    TResult setObjectElement(SetObjectElement value),
+    TResult setDescriptionEvent(SetDescriptionEvent value),
+    TResult setViolationAdditionalFeatureStringEvent(
+        SetViolationAdditionalFeatureStringEvent value),
+    TResult setViolationAdditionalFeatureEvent(
+        SetViolationAdditionalFeatureEvent value),
+    TResult setContractorStringEvent(SetContractorStringEvent value),
+    TResult setContractorEvent(SetContractorEvent value),
+    TResult addPhotoEvent(AddPhotoEvent value),
+    TResult removePhotoEvent(RemovePhotoEvent value),
+    TResult rotatePhotoEvent(RotatePhotoEvent value),
+    @required TResult orElse(),
+  }) {
+    assert(orElse != null);
+    if (addPhotoEvent != null) {
+      return addPhotoEvent(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class AddPhotoEvent implements ControlViolationFormEvent {
+  const factory AddPhotoEvent(Uint8List photo) = _$AddPhotoEvent;
+
+  Uint8List get photo;
+  @JsonKey(ignore: true)
+  $AddPhotoEventCopyWith<AddPhotoEvent> get copyWith;
+}
+
+/// @nodoc
+abstract class $RemovePhotoEventCopyWith<$Res> {
+  factory $RemovePhotoEventCopyWith(
+          RemovePhotoEvent value, $Res Function(RemovePhotoEvent) then) =
+      _$RemovePhotoEventCopyWithImpl<$Res>;
+  $Res call({int index});
+}
+
+/// @nodoc
+class _$RemovePhotoEventCopyWithImpl<$Res>
+    extends _$ControlViolationFormEventCopyWithImpl<$Res>
+    implements $RemovePhotoEventCopyWith<$Res> {
+  _$RemovePhotoEventCopyWithImpl(
+      RemovePhotoEvent _value, $Res Function(RemovePhotoEvent) _then)
+      : super(_value, (v) => _then(v as RemovePhotoEvent));
+
+  @override
+  RemovePhotoEvent get _value => super._value as RemovePhotoEvent;
+
+  @override
+  $Res call({
+    Object index = freezed,
+  }) {
+    return _then(RemovePhotoEvent(
+      index == freezed ? _value.index : index as int,
+    ));
+  }
+}
+
+/// @nodoc
+class _$RemovePhotoEvent implements RemovePhotoEvent {
+  const _$RemovePhotoEvent(this.index) : assert(index != null);
+
+  @override
+  final int index;
+
+  @override
+  String toString() {
+    return 'ControlViolationFormEvent.removePhotoEvent(index: $index)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is RemovePhotoEvent &&
+            (identical(other.index, index) ||
+                const DeepCollectionEquality().equals(other.index, index)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^ const DeepCollectionEquality().hash(index);
+
+  @JsonKey(ignore: true)
+  @override
+  $RemovePhotoEventCopyWith<RemovePhotoEvent> get copyWith =>
+      _$RemovePhotoEventCopyWithImpl<RemovePhotoEvent>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object>({
+    @required TResult setCriticalEvent(bool value),
+    @required TResult setUseGeoLocationForAddressEvent(bool value),
+    @required TResult setAddressEvent(Address address),
+    @required TResult setTargetLandmark(String targetLandmark),
+    @required TResult setObjectElementString(String objectElement),
+    @required TResult setObjectElement(ObjectElement objectElement),
+    @required TResult setDescriptionEvent(String description),
+    @required
+        TResult setViolationAdditionalFeatureStringEvent(
+            String violationAdditionalFeature),
+    @required
+        TResult setViolationAdditionalFeatureEvent(
+            ViolationAdditionalFeature violationAdditionalFeature),
+    @required TResult setContractorStringEvent(String contractor),
+    @required TResult setContractorEvent(Contractor contractor),
+    @required TResult addPhotoEvent(Uint8List photo),
+    @required TResult removePhotoEvent(int index),
+    @required TResult rotatePhotoEvent(int index, Uint8List photo),
+  }) {
+    assert(setCriticalEvent != null);
+    assert(setUseGeoLocationForAddressEvent != null);
+    assert(setAddressEvent != null);
+    assert(setTargetLandmark != null);
+    assert(setObjectElementString != null);
+    assert(setObjectElement != null);
+    assert(setDescriptionEvent != null);
+    assert(setViolationAdditionalFeatureStringEvent != null);
+    assert(setViolationAdditionalFeatureEvent != null);
+    assert(setContractorStringEvent != null);
+    assert(setContractorEvent != null);
+    assert(addPhotoEvent != null);
+    assert(removePhotoEvent != null);
+    assert(rotatePhotoEvent != null);
+    return removePhotoEvent(index);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object>({
+    TResult setCriticalEvent(bool value),
+    TResult setUseGeoLocationForAddressEvent(bool value),
+    TResult setAddressEvent(Address address),
+    TResult setTargetLandmark(String targetLandmark),
+    TResult setObjectElementString(String objectElement),
+    TResult setObjectElement(ObjectElement objectElement),
+    TResult setDescriptionEvent(String description),
+    TResult setViolationAdditionalFeatureStringEvent(
+        String violationAdditionalFeature),
+    TResult setViolationAdditionalFeatureEvent(
+        ViolationAdditionalFeature violationAdditionalFeature),
+    TResult setContractorStringEvent(String contractor),
+    TResult setContractorEvent(Contractor contractor),
+    TResult addPhotoEvent(Uint8List photo),
+    TResult removePhotoEvent(int index),
+    TResult rotatePhotoEvent(int index, Uint8List photo),
+    @required TResult orElse(),
+  }) {
+    assert(orElse != null);
+    if (removePhotoEvent != null) {
+      return removePhotoEvent(index);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object>({
+    @required TResult setCriticalEvent(SetCriticalEvent value),
+    @required
+        TResult setUseGeoLocationForAddressEvent(
+            SetUseGeoLocationForAddressEvent value),
+    @required TResult setAddressEvent(SetAddressEvent value),
+    @required TResult setTargetLandmark(SetTargetLandmark value),
+    @required TResult setObjectElementString(SetObjectElementString value),
+    @required TResult setObjectElement(SetObjectElement value),
+    @required TResult setDescriptionEvent(SetDescriptionEvent value),
+    @required
+        TResult setViolationAdditionalFeatureStringEvent(
+            SetViolationAdditionalFeatureStringEvent value),
+    @required
+        TResult setViolationAdditionalFeatureEvent(
+            SetViolationAdditionalFeatureEvent value),
+    @required TResult setContractorStringEvent(SetContractorStringEvent value),
+    @required TResult setContractorEvent(SetContractorEvent value),
+    @required TResult addPhotoEvent(AddPhotoEvent value),
+    @required TResult removePhotoEvent(RemovePhotoEvent value),
+    @required TResult rotatePhotoEvent(RotatePhotoEvent value),
+  }) {
+    assert(setCriticalEvent != null);
+    assert(setUseGeoLocationForAddressEvent != null);
+    assert(setAddressEvent != null);
+    assert(setTargetLandmark != null);
+    assert(setObjectElementString != null);
+    assert(setObjectElement != null);
+    assert(setDescriptionEvent != null);
+    assert(setViolationAdditionalFeatureStringEvent != null);
+    assert(setViolationAdditionalFeatureEvent != null);
+    assert(setContractorStringEvent != null);
+    assert(setContractorEvent != null);
+    assert(addPhotoEvent != null);
+    assert(removePhotoEvent != null);
+    assert(rotatePhotoEvent != null);
+    return removePhotoEvent(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object>({
+    TResult setCriticalEvent(SetCriticalEvent value),
+    TResult setUseGeoLocationForAddressEvent(
+        SetUseGeoLocationForAddressEvent value),
+    TResult setAddressEvent(SetAddressEvent value),
+    TResult setTargetLandmark(SetTargetLandmark value),
+    TResult setObjectElementString(SetObjectElementString value),
+    TResult setObjectElement(SetObjectElement value),
+    TResult setDescriptionEvent(SetDescriptionEvent value),
+    TResult setViolationAdditionalFeatureStringEvent(
+        SetViolationAdditionalFeatureStringEvent value),
+    TResult setViolationAdditionalFeatureEvent(
+        SetViolationAdditionalFeatureEvent value),
+    TResult setContractorStringEvent(SetContractorStringEvent value),
+    TResult setContractorEvent(SetContractorEvent value),
+    TResult addPhotoEvent(AddPhotoEvent value),
+    TResult removePhotoEvent(RemovePhotoEvent value),
+    TResult rotatePhotoEvent(RotatePhotoEvent value),
+    @required TResult orElse(),
+  }) {
+    assert(orElse != null);
+    if (removePhotoEvent != null) {
+      return removePhotoEvent(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class RemovePhotoEvent implements ControlViolationFormEvent {
+  const factory RemovePhotoEvent(int index) = _$RemovePhotoEvent;
+
+  int get index;
+  @JsonKey(ignore: true)
+  $RemovePhotoEventCopyWith<RemovePhotoEvent> get copyWith;
+}
+
+/// @nodoc
+abstract class $RotatePhotoEventCopyWith<$Res> {
+  factory $RotatePhotoEventCopyWith(
+          RotatePhotoEvent value, $Res Function(RotatePhotoEvent) then) =
+      _$RotatePhotoEventCopyWithImpl<$Res>;
+  $Res call({int index, Uint8List photo});
+}
+
+/// @nodoc
+class _$RotatePhotoEventCopyWithImpl<$Res>
+    extends _$ControlViolationFormEventCopyWithImpl<$Res>
+    implements $RotatePhotoEventCopyWith<$Res> {
+  _$RotatePhotoEventCopyWithImpl(
+      RotatePhotoEvent _value, $Res Function(RotatePhotoEvent) _then)
+      : super(_value, (v) => _then(v as RotatePhotoEvent));
+
+  @override
+  RotatePhotoEvent get _value => super._value as RotatePhotoEvent;
+
+  @override
+  $Res call({
+    Object index = freezed,
+    Object photo = freezed,
+  }) {
+    return _then(RotatePhotoEvent(
+      index == freezed ? _value.index : index as int,
+      photo == freezed ? _value.photo : photo as Uint8List,
+    ));
+  }
+}
+
+/// @nodoc
+class _$RotatePhotoEvent implements RotatePhotoEvent {
+  const _$RotatePhotoEvent(this.index, this.photo)
+      : assert(index != null),
+        assert(photo != null);
+
+  @override
+  final int index;
+  @override
+  final Uint8List photo;
+
+  @override
+  String toString() {
+    return 'ControlViolationFormEvent.rotatePhotoEvent(index: $index, photo: $photo)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is RotatePhotoEvent &&
+            (identical(other.index, index) ||
+                const DeepCollectionEquality().equals(other.index, index)) &&
+            (identical(other.photo, photo) ||
+                const DeepCollectionEquality().equals(other.photo, photo)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(index) ^
+      const DeepCollectionEquality().hash(photo);
+
+  @JsonKey(ignore: true)
+  @override
+  $RotatePhotoEventCopyWith<RotatePhotoEvent> get copyWith =>
+      _$RotatePhotoEventCopyWithImpl<RotatePhotoEvent>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object>({
+    @required TResult setCriticalEvent(bool value),
+    @required TResult setUseGeoLocationForAddressEvent(bool value),
+    @required TResult setAddressEvent(Address address),
+    @required TResult setTargetLandmark(String targetLandmark),
+    @required TResult setObjectElementString(String objectElement),
+    @required TResult setObjectElement(ObjectElement objectElement),
+    @required TResult setDescriptionEvent(String description),
+    @required
+        TResult setViolationAdditionalFeatureStringEvent(
+            String violationAdditionalFeature),
+    @required
+        TResult setViolationAdditionalFeatureEvent(
+            ViolationAdditionalFeature violationAdditionalFeature),
+    @required TResult setContractorStringEvent(String contractor),
+    @required TResult setContractorEvent(Contractor contractor),
+    @required TResult addPhotoEvent(Uint8List photo),
+    @required TResult removePhotoEvent(int index),
+    @required TResult rotatePhotoEvent(int index, Uint8List photo),
+  }) {
+    assert(setCriticalEvent != null);
+    assert(setUseGeoLocationForAddressEvent != null);
+    assert(setAddressEvent != null);
+    assert(setTargetLandmark != null);
+    assert(setObjectElementString != null);
+    assert(setObjectElement != null);
+    assert(setDescriptionEvent != null);
+    assert(setViolationAdditionalFeatureStringEvent != null);
+    assert(setViolationAdditionalFeatureEvent != null);
+    assert(setContractorStringEvent != null);
+    assert(setContractorEvent != null);
+    assert(addPhotoEvent != null);
+    assert(removePhotoEvent != null);
+    assert(rotatePhotoEvent != null);
+    return rotatePhotoEvent(index, photo);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object>({
+    TResult setCriticalEvent(bool value),
+    TResult setUseGeoLocationForAddressEvent(bool value),
+    TResult setAddressEvent(Address address),
+    TResult setTargetLandmark(String targetLandmark),
+    TResult setObjectElementString(String objectElement),
+    TResult setObjectElement(ObjectElement objectElement),
+    TResult setDescriptionEvent(String description),
+    TResult setViolationAdditionalFeatureStringEvent(
+        String violationAdditionalFeature),
+    TResult setViolationAdditionalFeatureEvent(
+        ViolationAdditionalFeature violationAdditionalFeature),
+    TResult setContractorStringEvent(String contractor),
+    TResult setContractorEvent(Contractor contractor),
+    TResult addPhotoEvent(Uint8List photo),
+    TResult removePhotoEvent(int index),
+    TResult rotatePhotoEvent(int index, Uint8List photo),
+    @required TResult orElse(),
+  }) {
+    assert(orElse != null);
+    if (rotatePhotoEvent != null) {
+      return rotatePhotoEvent(index, photo);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object>({
+    @required TResult setCriticalEvent(SetCriticalEvent value),
+    @required
+        TResult setUseGeoLocationForAddressEvent(
+            SetUseGeoLocationForAddressEvent value),
+    @required TResult setAddressEvent(SetAddressEvent value),
+    @required TResult setTargetLandmark(SetTargetLandmark value),
+    @required TResult setObjectElementString(SetObjectElementString value),
+    @required TResult setObjectElement(SetObjectElement value),
+    @required TResult setDescriptionEvent(SetDescriptionEvent value),
+    @required
+        TResult setViolationAdditionalFeatureStringEvent(
+            SetViolationAdditionalFeatureStringEvent value),
+    @required
+        TResult setViolationAdditionalFeatureEvent(
+            SetViolationAdditionalFeatureEvent value),
+    @required TResult setContractorStringEvent(SetContractorStringEvent value),
+    @required TResult setContractorEvent(SetContractorEvent value),
+    @required TResult addPhotoEvent(AddPhotoEvent value),
+    @required TResult removePhotoEvent(RemovePhotoEvent value),
+    @required TResult rotatePhotoEvent(RotatePhotoEvent value),
+  }) {
+    assert(setCriticalEvent != null);
+    assert(setUseGeoLocationForAddressEvent != null);
+    assert(setAddressEvent != null);
+    assert(setTargetLandmark != null);
+    assert(setObjectElementString != null);
+    assert(setObjectElement != null);
+    assert(setDescriptionEvent != null);
+    assert(setViolationAdditionalFeatureStringEvent != null);
+    assert(setViolationAdditionalFeatureEvent != null);
+    assert(setContractorStringEvent != null);
+    assert(setContractorEvent != null);
+    assert(addPhotoEvent != null);
+    assert(removePhotoEvent != null);
+    assert(rotatePhotoEvent != null);
+    return rotatePhotoEvent(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object>({
+    TResult setCriticalEvent(SetCriticalEvent value),
+    TResult setUseGeoLocationForAddressEvent(
+        SetUseGeoLocationForAddressEvent value),
+    TResult setAddressEvent(SetAddressEvent value),
+    TResult setTargetLandmark(SetTargetLandmark value),
+    TResult setObjectElementString(SetObjectElementString value),
+    TResult setObjectElement(SetObjectElement value),
+    TResult setDescriptionEvent(SetDescriptionEvent value),
+    TResult setViolationAdditionalFeatureStringEvent(
+        SetViolationAdditionalFeatureStringEvent value),
+    TResult setViolationAdditionalFeatureEvent(
+        SetViolationAdditionalFeatureEvent value),
+    TResult setContractorStringEvent(SetContractorStringEvent value),
+    TResult setContractorEvent(SetContractorEvent value),
+    TResult addPhotoEvent(AddPhotoEvent value),
+    TResult removePhotoEvent(RemovePhotoEvent value),
+    TResult rotatePhotoEvent(RotatePhotoEvent value),
+    @required TResult orElse(),
+  }) {
+    assert(orElse != null);
+    if (rotatePhotoEvent != null) {
+      return rotatePhotoEvent(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class RotatePhotoEvent implements ControlViolationFormEvent {
+  const factory RotatePhotoEvent(int index, Uint8List photo) =
+      _$RotatePhotoEvent;
+
+  int get index;
+  Uint8List get photo;
+  @JsonKey(ignore: true)
+  $RotatePhotoEventCopyWith<RotatePhotoEvent> get copyWith;
 }
