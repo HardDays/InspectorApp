@@ -15,6 +15,7 @@ class ProjectAutocomplete<T> extends StatelessWidget {
   final void Function(T) onSuggestionSelected;
   final String Function(T) formatter;
   final String Function(String) validator;
+  final void Function(String) onChanged;
 
   ProjectAutocomplete(this.title, {
     this.controller,
@@ -24,6 +25,7 @@ class ProjectAutocomplete<T> extends StatelessWidget {
     this.validator,
     this.formatter,
     this.enabled = false,
+    this.onChanged,
   });
 
   @override
@@ -43,14 +45,14 @@ class ProjectAutocomplete<T> extends StatelessWidget {
               color: Colors.white,
               elevation: 1,
             ),
-            
             validator: validator,
             hideOnLoading: true,
             hideOnEmpty: true,
             hideOnError: true,
             //noItemsFoundBuilder: (c) => null,
-            textFieldConfiguration: TextFieldConfiguration(
+            textFieldConfiguration: TextFieldConfiguration<String>(
               autofocus: false,
+              onChanged: onChanged,
               enabled: enabled,
               style: ProjectTextStyles.base.apply(color: ProjectColors.black),
               controller: controller,
