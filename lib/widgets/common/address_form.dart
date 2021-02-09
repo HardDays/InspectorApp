@@ -106,7 +106,7 @@ class _AddressFormState extends State<AddressForm> {
                     controller: _districtController,
                     formatter: (district) => district.name,
                     suggestionsCallback: (value) =>
-                        widget.dictionaryService.getDitricts(name: value),
+                        widget.dictionaryService.getDitricts(name: value, areaId: state.address.area?.id),
                     onSuggestionSelected: (district) =>
                         BlocProvider.of<AddressFormBloc>(context).add(
                             AddressFormEvent.setDistrictValueEvent(district)),
@@ -121,7 +121,7 @@ class _AddressFormState extends State<AddressForm> {
                     controller: _streetController,
                     formatter: (street) => street.name,
                     suggestionsCallback: (value) =>
-                        widget.dictionaryService.getStreets(name: value),
+                        widget.dictionaryService.getStreets(name: value, districtId: state.address.district?.id),
                     onSuggestionSelected: (street) =>
                         BlocProvider.of<AddressFormBloc>(context)
                             .add(AddressFormEvent.setStreetValueEvent(street)),
@@ -136,7 +136,7 @@ class _AddressFormState extends State<AddressForm> {
                     suggestionsCallback: (value) => widget.dictionaryService
                         .getAddresses(
                             houseNum: value,
-                            streetId: widget.initialAddress?.street?.id),
+                            streetId: state.address.street?.id),
                     onSuggestionSelected: (address) =>
                         BlocProvider.of<AddressFormBloc>(context)
                             .add(AddressFormEvent.setAddressEvent(address)),
