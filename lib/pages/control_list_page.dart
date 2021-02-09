@@ -8,6 +8,8 @@ import 'package:inspector/blocs/control_list/state.dart';
 import 'package:inspector/model/department_control/control_object.dart';
 import 'package:inspector/pages/control_object_page.dart';
 import 'package:inspector/pages/control_violation_form_page.dart';
+import 'package:inspector/services/department_control/department_control_service.dart';
+import 'package:inspector/style/accept_dialog.dart';
 import 'package:inspector/style/colors.dart';
 import 'package:inspector/style/icons.dart';
 import 'package:inspector/style/switch.dart';
@@ -18,6 +20,8 @@ import 'package:inspector/widgets/control/control_object_list.dart';
 import 'package:inspector/widgets/control/control_object_map.dart';
 import 'package:inspector/widgets/control/control_objects_paginated_list.dart';
 import 'package:inspector/widgets/control/filters.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 typedef Future RefreshFunction();
 
@@ -35,16 +39,10 @@ class _ControlListPageState extends State<ControlListPage> {
     return BlocBuilder<ControlListBloc, ControlListBlocState>(
       builder: (context, state) {
         return Scaffold(
-          appBar: FilterAppbar(
-            'Ведомственный контроль',
-            '',
-            '',
-            'Фильтры',
-            onUpdate: () {
-              _refreshIndicatorKey.currentState?.show();
-            },
-            onFilter:_onOpenFilters
-          ),
+          appBar: FilterAppbar('Ведомственный контроль', '', '', 'Фильтры',
+              onUpdate: () {
+            _refreshIndicatorKey.currentState?.show();
+          }, onFilter: _onOpenFilters),
           body: _buildBody(context, state),
         );
       },
@@ -90,12 +88,13 @@ class _ControlListPageState extends State<ControlListPage> {
         ),
         if (state.showMap)
           state.map(
-          (normalState) => normalState.listState.map(
-            emptyListLoadedState: (emptyListLoadedState) =>
-                _buildEmptyObjectsList(),
-            loadedAllListState: (loadedAllListState) =>
-              ControlObjectMap(
-                controlObjects: loadedAllListState.objects.where((e) => e.geometry != null).toList(),
+            (normalState) => normalState.listState.map(
+              emptyListLoadedState: (emptyListLoadedState) =>
+                  _buildEmptyObjectsList(),
+              loadedAllListState: (loadedAllListState) => ControlObjectMap(
+                controlObjects: loadedAllListState.objects
+                    .where((e) => e.geometry != null)
+                    .toList(),
                 openControlObject: _onOpenControlObject(context),
                 selectObject: _onSelectControlObject(context),
                 hasNotViolations: _onHasNotViolations(context),
@@ -104,19 +103,19 @@ class _ControlListPageState extends State<ControlListPage> {
               loadingListState: (loadingListState) => Center(
                 child: CircularProgressIndicator(),
               ),
-              loadedListState: (loadedListState) =>
-                ControlObjectMap(
-                  controlObjects: loadedListState.objects.where((e) => e.geometry != null).toList(),
-                  openControlObject: _onOpenControlObject(context),
-                  selectObject: _onSelectControlObject(context),
-                  hasNotViolations: _onHasNotViolations(context),
-                  hasViolation: _onHasViolations(context),
+              loadedListState: (loadedListState) => ControlObjectMap(
+                controlObjects: loadedListState.objects
+                    .where((e) => e.geometry != null)
+                    .toList(),
+                openControlObject: _onOpenControlObject(context),
+                selectObject: _onSelectControlObject(context),
+                hasNotViolations: _onHasNotViolations(context),
+                hasViolation: _onHasViolations(context),
               ),
             ),
             cantWorkInThisModeState: (cantWorkInThisModeState) =>
                 _cantWorkInThisMode(),
           )
-          
         else
           Expanded(
             child: RefreshIndicator(
@@ -224,7 +223,17 @@ class _ControlListPageState extends State<ControlListPage> {
       (ControlObject object) {};
 
   void Function(ControlObject) _onHasNotViolations(BuildContext context) =>
-      (ControlObject object) {};
+      (ControlObject object) async {
+        if ((await showDialog(
+                context: context,
+                child: AcceptDialog(
+                    message:
+                        'Объект ${object.id} обследован. Нарушений не выявленно. ${DateFormat("dd.MM.yyyy hh:mm").format(DateTime.now())}'))) !=
+            null) {
+          Provider.of<DepartmentControlService>(context, listen: false)
+              .registerControlResult(object);
+        }
+      };
 
   void Function(ControlObject) _onHasViolations(BuildContext context) =>
       (ControlObject object) async {

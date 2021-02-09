@@ -14,6 +14,7 @@ import 'package:inspector/model/dc_violation_status.dart';
 import 'package:inspector/model/department_control/contractor.dart';
 import 'package:inspector/model/department_control/control_object.dart';
 import 'package:inspector/model/department_code.dart';
+import 'package:inspector/model/department_control/control_result.dart';
 import 'package:inspector/model/department_control/object_element.dart';
 import 'package:inspector/model/department_control/object_type.dart';
 import 'package:inspector/model/department_control/violation_additional_feature.dart';
@@ -382,6 +383,8 @@ class ApiProvider {
     return _request(() => dio.get('/dc-objects/$dcObjectId/control-results/$dcControlResultId'));
   }
 
-
+  Future<dynamic> createDCControlResult(int dcObjectId, ControlResult result) {
+    return _request(() => dio.post('/dc-objects/$dcObjectId/control-results', data: result.toJson()));
+  }
 
 }

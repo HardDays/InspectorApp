@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:inspector/model/department_control/control_object.dart';
+import 'package:inspector/model/department_control/control_result.dart';
 import 'package:inspector/model/department_control/control_result_search_result.dart';
 import 'package:inspector/providers/api_provider.dart';
 
@@ -122,4 +123,8 @@ class DepartmentControlApiClient {
           dcControlResultId,
         ),
       );
+
+  Future<ControlResult> registerControlResult(ControlObject object, ControlResult result) async {
+    return ControlResult.fromJson(await apiProvider.createDCControlResult(object.id, result));
+  }
 }
