@@ -1,6 +1,11 @@
 
 import 'package:inspector/model/address.dart';
 import 'package:inspector/model/area.dart';
+import 'package:inspector/model/dc_object_element.dart';
+import 'package:inspector/model/dc_object_kind.dart';
+import 'package:inspector/model/dc_object_type.dart';
+import 'package:inspector/model/dc_violation_name.dart';
+import 'package:inspector/model/dc_violation_status.dart';
 import 'package:inspector/model/department_code.dart';
 import 'package:inspector/model/dictionary_metadata.dart';
 import 'package:inspector/model/district.dart';
@@ -55,6 +60,11 @@ class DictionaryService {
     DictionaryNames.violatorDocumentTypes: ApiDictionaryService().getViolatorDocumentTypes,
     DictionaryNames.reportStatuses: ApiDictionaryService().getReportStatuses,
     DictionaryNames.kladdrAddressTypes: ApiDictionaryService().getKladdrAddressTypes,
+    DictionaryNames.dcObjectElements: ApiDictionaryService().getDCObjectElements,
+    DictionaryNames.dcObjectKinds: ApiDictionaryService().getDCObjectKinds,
+    DictionaryNames.dcObjectTypes: ApiDictionaryService().getDCObjectTypes,
+    DictionaryNames.dcViolationNames: ApiDictionaryService().getDCViolationNames,
+    DictionaryNames.dcViolationStatuses: ApiDictionaryService().getDCViolationStatuses,
   };
 
  final Map<String, Function(Map<String, dynamic>)> _converters = {
@@ -76,7 +86,12 @@ class DictionaryService {
     DictionaryNames.violatorInfoPrivates: (json)=> ViolatorInfoPrivate.fromJson(json, stringified: true),
     DictionaryNames.violatorDocumentTypes: (json)=> ViolatorDocumentType.fromJson(json),
     DictionaryNames.reportStatuses: (json)=> ReportStatus.fromJson(json),
-    DictionaryNames.kladdrAddressTypes: (json)=> KladdrAddressObjectType.fromJson(json)
+    DictionaryNames.kladdrAddressTypes: (json)=> KladdrAddressObjectType.fromJson(json),
+    DictionaryNames.dcObjectElements: (json)=> DCObjectElement.fromJson(json),
+    DictionaryNames.dcObjectKinds: (json)=> DCObjectKind.fromJson(json),
+    DictionaryNames.dcObjectTypes: (json)=> DCObjectType.fromJson(json),
+    DictionaryNames.dcViolationNames: (json)=> DCViolationName.fromJson(json),
+    DictionaryNames.dcViolationStatuses: (json)=> DCViolationStatus.fromJson(json),
   };
 
   final _lock = Lock();
@@ -430,6 +445,39 @@ class DictionaryService {
         Query({
           'name LIKE ?': '$name%',
           'level = ?': level,
+        }),
+      ],
+      limit: 50
+    );
+  }
+
+  Future<List<DCObjectType>> getDCObjectTypes({String name}) async {
+    return await _getData<DCObjectType>(DictionaryNames.dcObjectTypes, 
+      queries: [
+        Query({
+          'name LIKE ?': '$name%',
+        }),
+      ],
+      limit: 50
+    );
+  }
+
+  Future<List<DCObjectKind>> getDCObjectKinds({String name}) async {
+    return await _getData<DCObjectKind>(DictionaryNames.dcObjectKinds, 
+      queries: [
+        Query({
+          'name LIKE ?': '$name%',
+        }),
+      ],
+      limit: 50
+    );
+  }
+
+   Future<List<DCObjectElement>> getDCObjectElements({String name}) async {
+    return await _getData<DCObjectElement>(DictionaryNames.dcObjectElements, 
+      queries: [
+        Query({
+          'name LIKE ?': '$name%',
         }),
       ],
       limit: 50

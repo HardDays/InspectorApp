@@ -6,8 +6,8 @@ part 'point.freezed.dart';
 @freezed
 abstract class Point with _$Point {
   const factory Point({
-    int x,
-    int y,
+    double x,
+    double y,
   }) = _Point;
 
   factory Point.fromJson(Map<String, dynamic> json) => _$PointFromJson(json);

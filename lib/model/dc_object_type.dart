@@ -1,20 +1,20 @@
-import 'dart:convert' as c;
+  import 'dart:convert' as c;
 
 import 'package:flutter/foundation.dart';
 
-class DepartmentCode {
+class DCObjectType {
   final int id;
   final String name;
   final String code;
   
-  DepartmentCode({
+  DCObjectType({
     @required this.id,
     @required this.name,
     @required this.code,
   });
 
-  factory DepartmentCode.fromJson(Map<String, dynamic> json) {
-    return DepartmentCode(
+  factory DCObjectType.fromJson(Map<String, dynamic> json) {
+    return DCObjectType(
       id: json['id'], 
       name: json['name'], 
       code: json['code']

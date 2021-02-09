@@ -13,9 +13,11 @@ import 'package:inspector/style/icons.dart';
 import 'package:inspector/style/switch.dart';
 import 'package:inspector/style/text_style.dart';
 import 'package:inspector/style/filter_appbar.dart';
+import 'package:inspector/style/top_dialog.dart';
 import 'package:inspector/widgets/control/control_object_list.dart';
 import 'package:inspector/widgets/control/control_object_map.dart';
 import 'package:inspector/widgets/control/control_objects_paginated_list.dart';
+import 'package:inspector/widgets/control/filters.dart';
 
 typedef Future RefreshFunction();
 
@@ -37,10 +39,11 @@ class _ControlListPageState extends State<ControlListPage> {
             'Ведомственный контроль',
             '',
             '',
-            '',
+            'Фильтры',
             onUpdate: () {
               _refreshIndicatorKey.currentState?.show();
             },
+            onFilter:_onOpenFilters
           ),
           body: _buildBody(context, state),
         );
@@ -86,12 +89,34 @@ class _ControlListPageState extends State<ControlListPage> {
           ),
         ),
         if (state.showMap)
-          ControlObjectMap(
-            openControlObject: _onOpenControlObject(context),
-            selectObject: _onSelectControlObject(context),
-            hasNotViolations: _onHasNotViolations(context),
-            hasViolation: _onHasViolations(context),
+          state.map(
+          (normalState) => normalState.listState.map(
+            emptyListLoadedState: (emptyListLoadedState) =>
+                _buildEmptyObjectsList(),
+            loadedAllListState: (loadedAllListState) =>
+              ControlObjectMap(
+                controlObjects: loadedAllListState.objects.where((e) => e.geometry != null).toList(),
+                openControlObject: _onOpenControlObject(context),
+                selectObject: _onSelectControlObject(context),
+                hasNotViolations: _onHasNotViolations(context),
+                hasViolation: _onHasViolations(context),
+              ),
+              loadingListState: (loadingListState) => Center(
+                child: CircularProgressIndicator(),
+              ),
+              loadedListState: (loadedListState) =>
+                ControlObjectMap(
+                  controlObjects: loadedListState.objects.where((e) => e.geometry != null).toList(),
+                  openControlObject: _onOpenControlObject(context),
+                  selectObject: _onSelectControlObject(context),
+                  hasNotViolations: _onHasNotViolations(context),
+                  hasViolation: _onHasViolations(context),
+              ),
+            ),
+            cantWorkInThisModeState: (cantWorkInThisModeState) =>
+                _cantWorkInThisMode(),
           )
+          
         else
           Expanded(
             child: RefreshIndicator(
@@ -169,6 +194,21 @@ class _ControlListPageState extends State<ControlListPage> {
           ),
         ],
       ),
+    );
+  }
+
+  void _onOpenFilters() async {
+    final result = await showGeneralDialog(
+      context: context,
+      barrierDismissible: true,
+      transitionDuration: Duration(milliseconds: 100),
+      barrierLabel: MaterialLocalizations.of(context).dialogLabel,
+      barrierColor: Colors.transparent,
+      pageBuilder: (context, animation1, animation2) {
+        return ProjectTopDialog(
+          child: ControlFiltersWidget(),
+        );
+      },
     );
   }
 

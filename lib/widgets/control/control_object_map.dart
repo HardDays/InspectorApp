@@ -41,24 +41,19 @@ class ControlObjectMap extends StatelessWidget {
                       'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
                   subdomains: ['a', 'b', 'c']),
               PolygonLayerOptions(
-                polygons: [
-                  Polygon(
-                    color: ProjectColors.red.withOpacity(0.5),
-                    borderColor: ProjectColors.blue,
-                    borderStrokeWidth: 1,
-                    points: [
-                      LatLng(55.7479487, 37.6207602),
-                      LatLng(55.7481479, 37.6206958),
-                      LatLng(55.7479849, 37.6194942),
-                      LatLng(55.7459921, 37.6205993),
-                      LatLng(55.7461612, 37.6208138),
-                      LatLng(55.7477554, 37.6199126),
-                      LatLng(55.7477192, 37.6202667),
-                      LatLng(55.7478581, 37.620374),
-                      LatLng(55.7479849, 37.620728),
-                    ],
-                  ),
-                ],
+                polygons: List.generate(controlObjects.length,
+                  (index) {
+                    final geometry = controlObjects[index].geometry.first.points;
+                    return Polygon(
+                      color: ProjectColors.red.withOpacity(0.5),
+                      borderColor: ProjectColors.blue,
+                      borderStrokeWidth: 1,
+                      points: List.generate(geometry.length, 
+                        (index) => LatLng(geometry[index].x.toDouble(), geometry[index].y.toDouble())
+                      )
+                    );
+                  }
+                )
               ),
             ],
           ),

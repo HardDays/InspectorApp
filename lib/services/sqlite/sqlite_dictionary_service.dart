@@ -26,57 +26,66 @@ class DictionaryNames {
   static const violatorDocumentTypes = 'violatorDocumentTypes';
   static const reportStatuses = 'reportStatuses';
   static const kladdrAddressTypes = 'kladdrAddressTypes';
-
+  static const dcObjectElements = 'dcObjectElements';
+  static const dcObjectKinds = 'dcObjectKinds';
+  static const dcObjectTypes = 'dcObjectTypes';
+  static const dcViolationNames = 'dcViolationNames';
+  static const dcViolationStatuses = 'dcViolationStatuses';
 }
 
 class TableDefinitions {
 
   static const metadata = 'dictionaryMetadata';
-  static const metadataDefinition = 'CREATE TABLE dictionaryMetadata(id INTEGER PRIMARY KEY, data TEXT)';
+  static const metadataDefinition = 'CREATE TABLE IF NOT EXISTS dictionaryMetadata(id INTEGER PRIMARY KEY, data TEXT)';
 
   static const Map<String, String> all = {
-    DictionaryNames.addresses: '''CREATE TABLE addresses(id INTEGER PRIMARY KEY, latitude FLOAT, longitude FLOAT, 
+    DictionaryNames.addresses: '''CREATE TABLE IF NOT EXISTS addresses(id INTEGER PRIMARY KEY, latitude FLOAT, longitude FLOAT, 
       houseNum TEXT, buildNum TEXT, constructionNum TEXT, specifiedAddress TEXT, unom INTEGER, unad INTEGER,
       area TEXT, district TEXT, street TEXT, areaId INTEGER, streetId INTEGER, districtId INTEGER
     )''',
-    DictionaryNames.streets: '''CREATE TABLE streets(id INTEGER PRIMARY KEY, name TEXT, code TEXT, 
+    DictionaryNames.streets: '''CREATE TABLE IF NOT EXISTS streets(id INTEGER PRIMARY KEY, name TEXT, code TEXT, 
       areaId INTEGER, districtId INTEGER
     )''',
-    DictionaryNames.areas: '''CREATE TABLE areas(id INTEGER PRIMARY KEY, name TEXT, code TEXT)''',
-    DictionaryNames.districts: '''CREATE TABLE districts(id INTEGER PRIMARY KEY, name TEXT, code TEXT, areaId INTEGER)''',
-    DictionaryNames.instructionStatuses: '''CREATE TABLE instructionStatuses(id INTEGER PRIMARY KEY, name TEXT)''',
-    DictionaryNames.specialObjects: '''CREATE TABLE specialObjects(id INTEGER PRIMARY KEY, name TEXT, code TEXT)''',
-    DictionaryNames.normativeActs: '''CREATE TABLE normativeActs(id INTEGER PRIMARY KEY, name TEXT, code TEXT)''',
-    DictionaryNames.normativeActArticles: '''CREATE TABLE normativeActArticles(id INTEGER PRIMARY KEY, name TEXT, 
+    DictionaryNames.areas: '''CREATE TABLE IF NOT EXISTS areas(id INTEGER PRIMARY KEY, name TEXT, code TEXT)''',
+    DictionaryNames.districts: '''CREATE TABLE IF NOT EXISTS districts(id INTEGER PRIMARY KEY, name TEXT, code TEXT, areaId INTEGER)''',
+    DictionaryNames.instructionStatuses: '''CREATE TABLE IF NOT EXISTS instructionStatuses(id INTEGER PRIMARY KEY, name TEXT)''',
+    DictionaryNames.specialObjects: '''CREATE TABLE IF NOT EXISTS specialObjects(id INTEGER PRIMARY KEY, name TEXT, code TEXT)''',
+    DictionaryNames.normativeActs: '''CREATE TABLE IF NOT EXISTS normativeActs(id INTEGER PRIMARY KEY, name TEXT, code TEXT)''',
+    DictionaryNames.normativeActArticles: '''CREATE TABLE IF NOT EXISTS normativeActArticles(id INTEGER PRIMARY KEY, name TEXT, 
       code TEXT, normativeActId INTEGER, normativeAct TEXT
     )''',
-    DictionaryNames.violationTypes: '''CREATE TABLE violationTypes(id INTEGER PRIMARY KEY, name TEXT, code TEXT, koap TEXT)''',
-    DictionaryNames.violatorTypes: '''CREATE TABLE violatorTypes(id INTEGER PRIMARY KEY, name TEXT, code TEXT)''',
-    DictionaryNames.departmentCodes: '''CREATE TABLE departmentCodes(id INTEGER PRIMARY KEY, name TEXT, code TEXT)''',
-    DictionaryNames.objectCategories: '''CREATE TABLE objectCategories(id INTEGER PRIMARY KEY, name TEXT, code TEXT)''',
-    DictionaryNames.violatorInfoIps: '''CREATE TABLE violatorInfoIps(id INTEGER PRIMARY KEY, phone TEXT, name TEXT, 
+    DictionaryNames.violationTypes: '''CREATE TABLE IF NOT EXISTS violationTypes(id INTEGER PRIMARY KEY, name TEXT, code TEXT, koap TEXT)''',
+    DictionaryNames.violatorTypes: '''CREATE TABLE IF NOT EXISTS violatorTypes(id INTEGER PRIMARY KEY, name TEXT, code TEXT)''',
+    DictionaryNames.departmentCodes: '''CREATE TABLE IF NOT EXISTS departmentCodes(id INTEGER PRIMARY KEY, name TEXT, code TEXT)''',
+    DictionaryNames.objectCategories: '''CREATE TABLE IF NOT EXISTS objectCategories(id INTEGER PRIMARY KEY, name TEXT, code TEXT)''',
+    DictionaryNames.violatorInfoIps: '''CREATE TABLE IF NOT EXISTS violatorInfoIps(id INTEGER PRIMARY KEY, phone TEXT, name TEXT, 
       lastName TEXT, firstName TEXT, patronym TEXT, 
       inn TEXT, snils TEXT, ogrnip TEXT, registrationDate TEXT, gender INTEGER, birthDate TEXT, birthPlace TEXT, 
       registrationAddress TEXT, registrationAddressString TEXT,
       account TEXT, corrAccount TEXT, bank TEXT, bik TEXT
     )''',
-    DictionaryNames.violatorInfoLegals: '''CREATE TABLE violatorInfoLegals(id INTEGER PRIMARY KEY, phone TEXT, name TEXT, 
+    DictionaryNames.violatorInfoLegals: '''CREATE TABLE IF NOT EXISTS violatorInfoLegals(id INTEGER PRIMARY KEY, phone TEXT, name TEXT, 
       inn TEXT, ogrn TEXT, kpp TEXT, regDate TEXT, 
       legalAddress TEXT, postalAddress TEXT, legalAddressString TEXT, postalAddressString TEXT,
       account TEXT, corrAccount TEXT, bank TEXT, bik TEXT
     )''',
-    DictionaryNames.violatorInfoOfficials: '''CREATE TABLE violatorInfoOfficials(id INTEGER PRIMARY KEY, phone TEXT, orgId INTEGER, orgName TEXT,
+    DictionaryNames.violatorInfoOfficials: '''CREATE TABLE IF NOT EXISTS violatorInfoOfficials(id INTEGER PRIMARY KEY, phone TEXT, orgId INTEGER, orgName TEXT,
       orgInn TEXT, orgOgrn TEXT, orgKpp TEXT, orgRegDate TEXT, orgPhone TEXT, 
       orgLegalAddress TEXT, orgPostalAddress TEXT, orgLegalAddressString TEXT, orgPostalAddressString TEXT
     )''',
-    DictionaryNames.violatorInfoPrivates: '''CREATE TABLE violatorInfoPrivates(id INTEGER PRIMARY KEY, phone TEXT,
+    DictionaryNames.violatorInfoPrivates: '''CREATE TABLE IF NOT EXISTS violatorInfoPrivates(id INTEGER PRIMARY KEY, phone TEXT,
       lastName TEXT, firstName TEXT, patronym TEXT, 
       inn TEXT, snils TEXT, docType TEXT, docSeries TEXT, docNumber TEXT, gender INTEGER, birthDate TEXT, birthPlace TEXT, 
       registrationAddress TEXT, registrationAddressString TEXT
     )''',
-    DictionaryNames.violatorDocumentTypes: '''CREATE TABLE violatorDocumentTypes(id INTEGER PRIMARY KEY, name TEXT)''',
-    DictionaryNames.reportStatuses: '''CREATE TABLE reportStatuses(id INTEGER PRIMARY KEY, name TEXT)''',
-    DictionaryNames.kladdrAddressTypes: '''CREATE TABLE kladdrAddressTypes(id INTEGER PRIMARY KEY, name TEXT, code TEXT, level TEXT)''',
+    DictionaryNames.violatorDocumentTypes: '''CREATE TABLE IF NOT EXISTS violatorDocumentTypes(id INTEGER PRIMARY KEY, name TEXT)''',
+    DictionaryNames.reportStatuses: '''CREATE TABLE IF NOT EXISTS reportStatuses(id INTEGER PRIMARY KEY, name TEXT)''',
+    DictionaryNames.kladdrAddressTypes: '''CREATE TABLE IF NOT EXISTS kladdrAddressTypes(id INTEGER PRIMARY KEY, name TEXT, code TEXT, level TEXT)''',
+    DictionaryNames.dcObjectElements: '''CREATE TABLE IF NOT EXISTS dcObjectElements(id INTEGER PRIMARY KEY, name TEXT)''',
+    DictionaryNames.dcObjectKinds: '''CREATE TABLE IF NOT EXISTS dcObjectKinds(id INTEGER PRIMARY KEY, name TEXT)''',
+    DictionaryNames.dcObjectTypes: '''CREATE TABLE IF NOT EXISTS dcObjectTypes(id INTEGER PRIMARY KEY, name TEXT, code TEXT)''',
+    DictionaryNames.dcViolationNames: '''CREATE TABLE IF NOT EXISTS dcViolationNames(id INTEGER PRIMARY KEY, name TEXT)''',
+    DictionaryNames.dcViolationStatuses: '''CREATE TABLE IF NOT EXISTS dcViolationStatuses(id INTEGER PRIMARY KEY, name TEXT)''',
   };
 }
 
@@ -106,6 +115,9 @@ class SqliteDictionaryService {
           await db.insert(TableDefinitions.metadata, {'id': 1, 'data': json.encode({})});
         },
         onOpen: (db) async {
+          for (final key in TableDefinitions.all.keys) {
+            await db.execute(TableDefinitions.all[key]);
+          }
           // await db.execute(TableDefinitions.all[ DictionaryNames.kladdrAddressTypes]);
           // await db.execute('drop table violationTypes');
           // await db.execute(TableDefinitions.all[ DictionaryNames.violationTypes]);

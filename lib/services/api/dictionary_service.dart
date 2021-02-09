@@ -2,6 +2,11 @@ import 'package:inspector/model/address.dart';
 import 'package:inspector/model/area.dart';
 import 'package:inspector/model/check_status.dart';
 import 'package:inspector/model/check_type.dart';
+import 'package:inspector/model/dc_object_element.dart';
+import 'package:inspector/model/dc_object_kind.dart';
+import 'package:inspector/model/dc_object_type.dart';
+import 'package:inspector/model/dc_violation_name.dart';
+import 'package:inspector/model/dc_violation_status.dart';
 import 'package:inspector/model/department_control/control_object.dart';
 import 'package:inspector/model/department_code.dart';
 import 'package:inspector/model/district.dart';
@@ -130,9 +135,24 @@ class ApiDictionaryService {
   Future<List<Street>> getStreets(int from, int to) =>
       _loadDictionary<Street>((d) => Street.fromJson(d), from, to);
 
-  Future<List<ControlObject>> getControlObjects(int from, int to, {String sort}) =>
-      _loadDictionary<ControlObject>((d) => ControlObject.fromJson(d), from, to);
+  // Future<List<ControlObject>> getControlObjects(int from, int to, {String sort}) =>
+  //     _loadDictionary<ControlObject>((d) => ControlObject.fromJson(d), from, to);
   
-   Future<List<KladdrAddressObjectType>> getKladdrAddressTypes(int from, int to) =>
+  Future<List<KladdrAddressObjectType>> getKladdrAddressTypes(int from, int to) =>
       _loadDictionary<KladdrAddressObjectType>((d) => KladdrAddressObjectType.fromJson(d), from, to);
+
+  Future<List<DCObjectKind>> getDCObjectKinds(int from, int to) =>
+      _loadDictionary<DCObjectKind>((d) => DCObjectKind.fromJson(d), from, to);
+  
+  Future<List<DCObjectElement>> getDCObjectElements(int from, int to) =>
+      _loadDictionary<DCObjectElement>((d) => DCObjectElement.fromJson(d), from, to);
+
+  Future<List<DCObjectType>> getDCObjectTypes(int from, int to) =>
+      _loadDictionary<DCObjectType>((d) => DCObjectType.fromJson(d), from, to);
+
+  Future<List<DCViolationName>> getDCViolationNames(int from, int to) =>
+      _loadDictionary<DCViolationName>((d) => DCViolationName.fromJson(d), from, to);
+  
+  Future<List<DCViolationStatus>> getDCViolationStatuses(int from, int to) =>
+      _loadDictionary<DCViolationStatus>((d) => DCViolationStatus.fromJson(d), from, to);
 }
