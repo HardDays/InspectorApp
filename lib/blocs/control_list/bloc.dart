@@ -87,7 +87,11 @@ class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
           } else {
             _notificationBloc.add(SnackBarNotificationEvent('Данный функционал пока не реализован'));
           }
-        }));
+        }, 
+        createViolationEvent: (event) async* { 
+          
+        },
+    ));
   }
 
   Stream<ControlListBlocState> _onLoadControlListEvent(

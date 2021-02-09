@@ -7,6 +7,7 @@ import 'package:inspector/blocs/control_list/event.dart';
 import 'package:inspector/blocs/control_list/state.dart';
 import 'package:inspector/model/department_control/control_object.dart';
 import 'package:inspector/pages/control_object_page.dart';
+import 'package:inspector/pages/control_violation_form_page.dart';
 import 'package:inspector/style/colors.dart';
 import 'package:inspector/style/icons.dart';
 import 'package:inspector/style/switch.dart';
@@ -186,11 +187,21 @@ class _ControlListPageState extends State<ControlListPage> {
       (ControlObject object) {};
 
   void Function(ControlObject) _onHasViolations(BuildContext context) =>
-      (ControlObject object) {};
+      (ControlObject object) async {
+        await Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ControlViolationFormPage(
+              controlObject: object,
+            ),
+          ),
+        );
+      };
 
   void Function(ControlObject) _onShowInMap(BuildContext context) =>
       (ControlObject object) {
-        BlocProvider.of<ControlListBloc>(context).add(ControlListBlocEvent.openInMapEvent(object));
+        BlocProvider.of<ControlListBloc>(context)
+            .add(ControlListBlocEvent.openInMapEvent(object));
       };
 
   void Function(bool) _onMapChanged(BuildContext context) => (bool value) {
