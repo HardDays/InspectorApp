@@ -17,7 +17,7 @@ class _$PointTearOff {
   const _$PointTearOff();
 
 // ignore: unused_element
-  _Point call({int x, int y}) {
+  _Point call({double x, double y}) {
     return _Point(
       x: x,
       y: y,
@@ -36,8 +36,8 @@ const $Point = _$PointTearOff();
 
 /// @nodoc
 mixin _$Point {
-  int get x;
-  int get y;
+  double get x;
+  double get y;
 
   Map<String, dynamic> toJson();
   @JsonKey(ignore: true)
@@ -48,7 +48,7 @@ mixin _$Point {
 abstract class $PointCopyWith<$Res> {
   factory $PointCopyWith(Point value, $Res Function(Point) then) =
       _$PointCopyWithImpl<$Res>;
-  $Res call({int x, int y});
+  $Res call({double x, double y});
 }
 
 /// @nodoc
@@ -65,8 +65,8 @@ class _$PointCopyWithImpl<$Res> implements $PointCopyWith<$Res> {
     Object y = freezed,
   }) {
     return _then(_value.copyWith(
-      x: x == freezed ? _value.x : x as int,
-      y: y == freezed ? _value.y : y as int,
+      x: x == freezed ? _value.x : x as double,
+      y: y == freezed ? _value.y : y as double,
     ));
   }
 }
@@ -76,7 +76,7 @@ abstract class _$PointCopyWith<$Res> implements $PointCopyWith<$Res> {
   factory _$PointCopyWith(_Point value, $Res Function(_Point) then) =
       __$PointCopyWithImpl<$Res>;
   @override
-  $Res call({int x, int y});
+  $Res call({double x, double y});
 }
 
 /// @nodoc
@@ -94,8 +94,8 @@ class __$PointCopyWithImpl<$Res> extends _$PointCopyWithImpl<$Res>
     Object y = freezed,
   }) {
     return _then(_Point(
-      x: x == freezed ? _value.x : x as int,
-      y: y == freezed ? _value.y : y as int,
+      x: x == freezed ? _value.x : x as double,
+      y: y == freezed ? _value.y : y as double,
     ));
   }
 }
@@ -110,9 +110,9 @@ class _$_Point implements _Point {
       _$_$_PointFromJson(json);
 
   @override
-  final int x;
+  final double x;
   @override
-  final int y;
+  final double y;
 
   @override
   String toString() {
@@ -147,14 +147,14 @@ class _$_Point implements _Point {
 }
 
 abstract class _Point implements Point {
-  const factory _Point({int x, int y}) = _$_Point;
+  const factory _Point({double x, double y}) = _$_Point;
 
   factory _Point.fromJson(Map<String, dynamic> json) = _$_Point.fromJson;
 
   @override
-  int get x;
+  double get x;
   @override
-  int get y;
+  double get y;
   @override
   @JsonKey(ignore: true)
   _$PointCopyWith<_Point> get copyWith;

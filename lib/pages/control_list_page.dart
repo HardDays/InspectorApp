@@ -86,12 +86,34 @@ class _ControlListPageState extends State<ControlListPage> {
           ),
         ),
         if (state.showMap)
-          ControlObjectMap(
-            openControlObject: _onOpenControlObject(context),
-            selectObject: _onSelectControlObject(context),
-            hasNotViolations: _onHasNotViolations(context),
-            hasViolation: _onHasViolations(context),
+          state.map(
+          (normalState) => normalState.listState.map(
+            emptyListLoadedState: (emptyListLoadedState) =>
+                _buildEmptyObjectsList(),
+            loadedAllListState: (loadedAllListState) =>
+              ControlObjectMap(
+                controlObjects: loadedAllListState.objects,
+                openControlObject: _onOpenControlObject(context),
+                selectObject: _onSelectControlObject(context),
+                hasNotViolations: _onHasNotViolations(context),
+                hasViolation: _onHasViolations(context),
+              ),
+              loadingListState: (loadingListState) => Center(
+                child: CircularProgressIndicator(),
+              ),
+              loadedListState: (loadedListState) =>
+                ControlObjectMap(
+                  controlObjects: loadedListState.objects,
+                  openControlObject: _onOpenControlObject(context),
+                  selectObject: _onSelectControlObject(context),
+                  hasNotViolations: _onHasNotViolations(context),
+                  hasViolation: _onHasViolations(context),
+              ),
+            ),
+            cantWorkInThisModeState: (cantWorkInThisModeState) =>
+                _cantWorkInThisMode(),
           )
+          
         else
           Expanded(
             child: RefreshIndicator(

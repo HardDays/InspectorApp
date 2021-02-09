@@ -8,8 +8,8 @@ part of 'point.dart';
 
 _$_Point _$_$_PointFromJson(Map<String, dynamic> json) {
   return _$_Point(
-    x: json['x'] as int,
-    y: json['y'] as int,
+    x: (json['x'] as num)?.toDouble(),
+    y: (json['y'] as num)?.toDouble(),
   );
 }
 
