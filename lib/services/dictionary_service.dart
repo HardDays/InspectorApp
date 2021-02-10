@@ -473,7 +473,7 @@ class DictionaryService {
     );
   }
 
-   Future<List<DCObjectElement>> getDCObjectElements({String name}) async {
+  Future<List<DCObjectElement>> getDCObjectElements({String name}) async {
     return await _getData<DCObjectElement>(DictionaryNames.dcObjectElements, 
       queries: [
         Query({

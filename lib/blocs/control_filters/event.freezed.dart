@@ -14,9 +14,9 @@ class _$ControlFiltersBlocEventTearOff {
   const _$ControlFiltersBlocEventTearOff();
 
 // ignore: unused_element
-  ChangeDCObjectTypeEvent changeDCObjectType(DCObjectType type) {
-    return ChangeDCObjectTypeEvent(
-      type,
+  CopyStateEvent copyState(ControlFiltersBlocState state) {
+    return CopyStateEvent(
+      state,
     );
   }
 }
@@ -27,24 +27,24 @@ const $ControlFiltersBlocEvent = _$ControlFiltersBlocEventTearOff();
 
 /// @nodoc
 mixin _$ControlFiltersBlocEvent {
-  DCObjectType get type;
+  ControlFiltersBlocState get state;
 
   @optionalTypeArgs
   TResult when<TResult extends Object>({
-    @required TResult changeDCObjectType(DCObjectType type),
+    @required TResult copyState(ControlFiltersBlocState state),
   });
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object>({
-    TResult changeDCObjectType(DCObjectType type),
+    TResult copyState(ControlFiltersBlocState state),
     @required TResult orElse(),
   });
   @optionalTypeArgs
   TResult map<TResult extends Object>({
-    @required TResult changeDCObjectType(ChangeDCObjectTypeEvent value),
+    @required TResult copyState(CopyStateEvent value),
   });
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object>({
-    TResult changeDCObjectType(ChangeDCObjectTypeEvent value),
+    TResult copyState(CopyStateEvent value),
     @required TResult orElse(),
   });
 
@@ -57,7 +57,9 @@ abstract class $ControlFiltersBlocEventCopyWith<$Res> {
   factory $ControlFiltersBlocEventCopyWith(ControlFiltersBlocEvent value,
           $Res Function(ControlFiltersBlocEvent) then) =
       _$ControlFiltersBlocEventCopyWithImpl<$Res>;
-  $Res call({DCObjectType type});
+  $Res call({ControlFiltersBlocState state});
+
+  $ControlFiltersBlocStateCopyWith<$Res> get state;
 }
 
 /// @nodoc
@@ -71,93 +73,105 @@ class _$ControlFiltersBlocEventCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object type = freezed,
+    Object state = freezed,
   }) {
     return _then(_value.copyWith(
-      type: type == freezed ? _value.type : type as DCObjectType,
+      state: state == freezed ? _value.state : state as ControlFiltersBlocState,
     ));
+  }
+
+  @override
+  $ControlFiltersBlocStateCopyWith<$Res> get state {
+    if (_value.state == null) {
+      return null;
+    }
+    return $ControlFiltersBlocStateCopyWith<$Res>(_value.state, (value) {
+      return _then(_value.copyWith(state: value));
+    });
   }
 }
 
 /// @nodoc
-abstract class $ChangeDCObjectTypeEventCopyWith<$Res>
+abstract class $CopyStateEventCopyWith<$Res>
     implements $ControlFiltersBlocEventCopyWith<$Res> {
-  factory $ChangeDCObjectTypeEventCopyWith(ChangeDCObjectTypeEvent value,
-          $Res Function(ChangeDCObjectTypeEvent) then) =
-      _$ChangeDCObjectTypeEventCopyWithImpl<$Res>;
+  factory $CopyStateEventCopyWith(
+          CopyStateEvent value, $Res Function(CopyStateEvent) then) =
+      _$CopyStateEventCopyWithImpl<$Res>;
   @override
-  $Res call({DCObjectType type});
+  $Res call({ControlFiltersBlocState state});
+
+  @override
+  $ControlFiltersBlocStateCopyWith<$Res> get state;
 }
 
 /// @nodoc
-class _$ChangeDCObjectTypeEventCopyWithImpl<$Res>
+class _$CopyStateEventCopyWithImpl<$Res>
     extends _$ControlFiltersBlocEventCopyWithImpl<$Res>
-    implements $ChangeDCObjectTypeEventCopyWith<$Res> {
-  _$ChangeDCObjectTypeEventCopyWithImpl(ChangeDCObjectTypeEvent _value,
-      $Res Function(ChangeDCObjectTypeEvent) _then)
-      : super(_value, (v) => _then(v as ChangeDCObjectTypeEvent));
+    implements $CopyStateEventCopyWith<$Res> {
+  _$CopyStateEventCopyWithImpl(
+      CopyStateEvent _value, $Res Function(CopyStateEvent) _then)
+      : super(_value, (v) => _then(v as CopyStateEvent));
 
   @override
-  ChangeDCObjectTypeEvent get _value => super._value as ChangeDCObjectTypeEvent;
+  CopyStateEvent get _value => super._value as CopyStateEvent;
 
   @override
   $Res call({
-    Object type = freezed,
+    Object state = freezed,
   }) {
-    return _then(ChangeDCObjectTypeEvent(
-      type == freezed ? _value.type : type as DCObjectType,
+    return _then(CopyStateEvent(
+      state == freezed ? _value.state : state as ControlFiltersBlocState,
     ));
   }
 }
 
 /// @nodoc
-class _$ChangeDCObjectTypeEvent implements ChangeDCObjectTypeEvent {
-  const _$ChangeDCObjectTypeEvent(this.type) : assert(type != null);
+class _$CopyStateEvent implements CopyStateEvent {
+  const _$CopyStateEvent(this.state) : assert(state != null);
 
   @override
-  final DCObjectType type;
+  final ControlFiltersBlocState state;
 
   @override
   String toString() {
-    return 'ControlFiltersBlocEvent.changeDCObjectType(type: $type)';
+    return 'ControlFiltersBlocEvent.copyState(state: $state)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is ChangeDCObjectTypeEvent &&
-            (identical(other.type, type) ||
-                const DeepCollectionEquality().equals(other.type, type)));
+        (other is CopyStateEvent &&
+            (identical(other.state, state) ||
+                const DeepCollectionEquality().equals(other.state, state)));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(type);
+      runtimeType.hashCode ^ const DeepCollectionEquality().hash(state);
 
   @JsonKey(ignore: true)
   @override
-  $ChangeDCObjectTypeEventCopyWith<ChangeDCObjectTypeEvent> get copyWith =>
-      _$ChangeDCObjectTypeEventCopyWithImpl<ChangeDCObjectTypeEvent>(
-          this, _$identity);
+  $CopyStateEventCopyWith<CopyStateEvent> get copyWith =>
+      _$CopyStateEventCopyWithImpl<CopyStateEvent>(this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object>({
-    @required TResult changeDCObjectType(DCObjectType type),
+    @required TResult copyState(ControlFiltersBlocState state),
   }) {
-    assert(changeDCObjectType != null);
-    return changeDCObjectType(type);
+    assert(copyState != null);
+    return copyState(state);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object>({
-    TResult changeDCObjectType(DCObjectType type),
+    TResult copyState(ControlFiltersBlocState state),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
-    if (changeDCObjectType != null) {
-      return changeDCObjectType(type);
+    if (copyState != null) {
+      return copyState(state);
     }
     return orElse();
   }
@@ -165,33 +179,33 @@ class _$ChangeDCObjectTypeEvent implements ChangeDCObjectTypeEvent {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object>({
-    @required TResult changeDCObjectType(ChangeDCObjectTypeEvent value),
+    @required TResult copyState(CopyStateEvent value),
   }) {
-    assert(changeDCObjectType != null);
-    return changeDCObjectType(this);
+    assert(copyState != null);
+    return copyState(this);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object>({
-    TResult changeDCObjectType(ChangeDCObjectTypeEvent value),
+    TResult copyState(CopyStateEvent value),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
-    if (changeDCObjectType != null) {
-      return changeDCObjectType(this);
+    if (copyState != null) {
+      return copyState(this);
     }
     return orElse();
   }
 }
 
-abstract class ChangeDCObjectTypeEvent implements ControlFiltersBlocEvent {
-  const factory ChangeDCObjectTypeEvent(DCObjectType type) =
-      _$ChangeDCObjectTypeEvent;
+abstract class CopyStateEvent implements ControlFiltersBlocEvent {
+  const factory CopyStateEvent(ControlFiltersBlocState state) =
+      _$CopyStateEvent;
 
   @override
-  DCObjectType get type;
+  ControlFiltersBlocState get state;
   @override
   @JsonKey(ignore: true)
-  $ChangeDCObjectTypeEventCopyWith<ChangeDCObjectTypeEvent> get copyWith;
+  $CopyStateEventCopyWith<CopyStateEvent> get copyWith;
 }
