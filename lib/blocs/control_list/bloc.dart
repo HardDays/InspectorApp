@@ -41,7 +41,9 @@ class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
           ControlListBlocState(
             filtersState: ControlFiltersBlocState(
               searchRadius: 500,
-              daysFromLastSurvey: 7
+              daysFromLastSurvey: 7,
+              camerasExist: true,
+              ignoreViolations: false
             ),
             listState: ControlObjectsListState.loadingListState(),
             mapState: ControlObjectsMapState(),
