@@ -5,11 +5,15 @@ part 'source.freezed.dart';
 
 @freezed
 abstract class Source with _$Source {
+  const Source._();
+
   const factory Source({
     int id,
     String name,
   }) = _Source;
 
   factory Source.fromJson(Map<String, dynamic> json) => _$SourceFromJson(json);
+
+  Map<String, dynamic> toSqliteJson() => toJson();
 
 }

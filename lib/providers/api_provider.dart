@@ -6,13 +6,17 @@ import 'package:inspector/model/address.dart';
 import 'package:inspector/model/area.dart';
 import 'package:inspector/model/check_status.dart';
 import 'package:inspector/model/check_type.dart';
-import 'package:inspector/model/dc_object_element.dart';
-import 'package:inspector/model/dc_object_kind.dart';
-import 'package:inspector/model/dc_object_type.dart';
-import 'package:inspector/model/dc_violation_name.dart';
-import 'package:inspector/model/dc_violation_status.dart';
+import 'package:inspector/model/department_control/contractor.dart';
 import 'package:inspector/model/department_control/control_object.dart';
 import 'package:inspector/model/department_code.dart';
+import 'package:inspector/model/department_control/control_result.dart';
+import 'package:inspector/model/department_control/object_element.dart';
+import 'package:inspector/model/department_control/object_kind.dart';
+import 'package:inspector/model/department_control/object_type.dart';
+import 'package:inspector/model/department_control/source.dart';
+import 'package:inspector/model/department_control/violation_additional_feature.dart';
+import 'package:inspector/model/department_control/violation_name.dart';
+import 'package:inspector/model/department_control/violation_status.dart' as dc;
 import 'package:inspector/model/district.dart';
 import 'package:inspector/model/employee.dart';
 import 'package:inspector/model/instruction_status.dart';
@@ -76,11 +80,14 @@ class ApiProvider {
     NormativeActArticle: '/dict/normative-act-articles',
     // ControlObject: '/dc-objects',
     KladdrAddressObjectType: '/dict/kladr-address-object-types',
-    DCObjectElement: '/dict/dc-object-elements',
-    DCObjectKind: '/dict/dc-object-kinds',
-    DCViolationName: '/dict/dc-violation-names',
-    DCViolationStatus: '/dict/dc-violation-statuses',
-    DCObjectType: '/dict/dc-object-types',
+    ObjectElement: '/dict/dc-object-elements',
+    ObjectKind: '/dict/dc-object-kinds',
+    dc.ViolationStatus: '/dict/dc-violation-statuses',
+    ObjectType: '/dict/dc-object-types',
+    Contractor: '/dict/dc-contractors',
+    ViolationName: '/dict/dc-violation-names',
+    ViolationAdditionalFeature: '/dict/dc-violation-additional-features',
+    Source: '/dict/dc-sources',
 
   };
 
@@ -375,6 +382,8 @@ class ApiProvider {
     return _request(() => dio.get('/dc-objects/$dcObjectId/control-results/$dcControlResultId'));
   }
 
-
+  Future<dynamic> createDCControlResult(int dcObjectId, ControlResult result) {
+    return _request(() => dio.post('/dc-objects/$dcObjectId/control-results', data: result.toJson()));
+  }
 
 }

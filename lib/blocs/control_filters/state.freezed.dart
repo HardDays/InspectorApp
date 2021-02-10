@@ -15,28 +15,25 @@ class _$ControlFiltersBlocStateTearOff {
 
 // ignore: unused_element
   AllState call(
-      {DCObjectType dcObjectType,
-      DCObjectKind dcObjectKind,
-      String externalId,
+      {ObjectType dcObjectType,
+      ObjectKind dcObjectKind,
+      int externalId,
       String objectName,
       Area area,
       District district,
-      ViolatorAddress address,
+      Address address,
       int searchRadius,
       String balanceOwner,
       int daysFromLastSurvey,
-      DateTime lastSurveyDateFrom,
-      DateTime lastSurveyDateTo,
+      List<DateTime> lastSurveyDates,
       bool camerasExist,
       bool ignoreViolations,
-      DCObjectElement objectElement,
-      DCViolationName violationName,
-      DCViolationStatus violationStatus,
-      String sourceId,
-      DateTime controlDateFrom,
-      DateTime controlDateTo,
-      DateTime detectionDateFrom,
-      DateTime detectionDateTo}) {
+      ObjectElement objectElement,
+      ViolationName violationName,
+      ViolationStatus violationStatus,
+      Source source,
+      List<DateTime> controlDates,
+      List<DateTime> detectionDates}) {
     return AllState(
       dcObjectType: dcObjectType,
       dcObjectKind: dcObjectKind,
@@ -48,18 +45,15 @@ class _$ControlFiltersBlocStateTearOff {
       searchRadius: searchRadius,
       balanceOwner: balanceOwner,
       daysFromLastSurvey: daysFromLastSurvey,
-      lastSurveyDateFrom: lastSurveyDateFrom,
-      lastSurveyDateTo: lastSurveyDateTo,
+      lastSurveyDates: lastSurveyDates,
       camerasExist: camerasExist,
       ignoreViolations: ignoreViolations,
       objectElement: objectElement,
       violationName: violationName,
       violationStatus: violationStatus,
-      sourceId: sourceId,
-      controlDateFrom: controlDateFrom,
-      controlDateTo: controlDateTo,
-      detectionDateFrom: detectionDateFrom,
-      detectionDateTo: detectionDateTo,
+      source: source,
+      controlDates: controlDates,
+      detectionDates: detectionDates,
     );
   }
 }
@@ -70,28 +64,25 @@ const $ControlFiltersBlocState = _$ControlFiltersBlocStateTearOff();
 
 /// @nodoc
 mixin _$ControlFiltersBlocState {
-  DCObjectType get dcObjectType;
-  DCObjectKind get dcObjectKind;
-  String get externalId;
+  ObjectType get dcObjectType;
+  ObjectKind get dcObjectKind;
+  int get externalId;
   String get objectName;
   Area get area;
   District get district;
-  ViolatorAddress get address;
+  Address get address;
   int get searchRadius;
   String get balanceOwner;
   int get daysFromLastSurvey;
-  DateTime get lastSurveyDateFrom;
-  DateTime get lastSurveyDateTo;
+  List<DateTime> get lastSurveyDates;
   bool get camerasExist;
   bool get ignoreViolations;
-  DCObjectElement get objectElement;
-  DCViolationName get violationName;
-  DCViolationStatus get violationStatus;
-  String get sourceId;
-  DateTime get controlDateFrom;
-  DateTime get controlDateTo;
-  DateTime get detectionDateFrom;
-  DateTime get detectionDateTo;
+  ObjectElement get objectElement;
+  ViolationName get violationName;
+  ViolationStatus get violationStatus;
+  Source get source;
+  List<DateTime> get controlDates;
+  List<DateTime> get detectionDates;
 
   @JsonKey(ignore: true)
   $ControlFiltersBlocStateCopyWith<ControlFiltersBlocState> get copyWith;
@@ -103,28 +94,32 @@ abstract class $ControlFiltersBlocStateCopyWith<$Res> {
           $Res Function(ControlFiltersBlocState) then) =
       _$ControlFiltersBlocStateCopyWithImpl<$Res>;
   $Res call(
-      {DCObjectType dcObjectType,
-      DCObjectKind dcObjectKind,
-      String externalId,
+      {ObjectType dcObjectType,
+      ObjectKind dcObjectKind,
+      int externalId,
       String objectName,
       Area area,
       District district,
-      ViolatorAddress address,
+      Address address,
       int searchRadius,
       String balanceOwner,
       int daysFromLastSurvey,
-      DateTime lastSurveyDateFrom,
-      DateTime lastSurveyDateTo,
+      List<DateTime> lastSurveyDates,
       bool camerasExist,
       bool ignoreViolations,
-      DCObjectElement objectElement,
-      DCViolationName violationName,
-      DCViolationStatus violationStatus,
-      String sourceId,
-      DateTime controlDateFrom,
-      DateTime controlDateTo,
-      DateTime detectionDateFrom,
-      DateTime detectionDateTo});
+      ObjectElement objectElement,
+      ViolationName violationName,
+      ViolationStatus violationStatus,
+      Source source,
+      List<DateTime> controlDates,
+      List<DateTime> detectionDates});
+
+  $ObjectTypeCopyWith<$Res> get dcObjectType;
+  $ObjectKindCopyWith<$Res> get dcObjectKind;
+  $ObjectElementCopyWith<$Res> get objectElement;
+  $ViolationNameCopyWith<$Res> get violationName;
+  $ViolationStatusCopyWith<$Res> get violationStatus;
+  $SourceCopyWith<$Res> get source;
 }
 
 /// @nodoc
@@ -148,33 +143,29 @@ class _$ControlFiltersBlocStateCopyWithImpl<$Res>
     Object searchRadius = freezed,
     Object balanceOwner = freezed,
     Object daysFromLastSurvey = freezed,
-    Object lastSurveyDateFrom = freezed,
-    Object lastSurveyDateTo = freezed,
+    Object lastSurveyDates = freezed,
     Object camerasExist = freezed,
     Object ignoreViolations = freezed,
     Object objectElement = freezed,
     Object violationName = freezed,
     Object violationStatus = freezed,
-    Object sourceId = freezed,
-    Object controlDateFrom = freezed,
-    Object controlDateTo = freezed,
-    Object detectionDateFrom = freezed,
-    Object detectionDateTo = freezed,
+    Object source = freezed,
+    Object controlDates = freezed,
+    Object detectionDates = freezed,
   }) {
     return _then(_value.copyWith(
       dcObjectType: dcObjectType == freezed
           ? _value.dcObjectType
-          : dcObjectType as DCObjectType,
+          : dcObjectType as ObjectType,
       dcObjectKind: dcObjectKind == freezed
           ? _value.dcObjectKind
-          : dcObjectKind as DCObjectKind,
-      externalId:
-          externalId == freezed ? _value.externalId : externalId as String,
+          : dcObjectKind as ObjectKind,
+      externalId: externalId == freezed ? _value.externalId : externalId as int,
       objectName:
           objectName == freezed ? _value.objectName : objectName as String,
       area: area == freezed ? _value.area : area as Area,
       district: district == freezed ? _value.district : district as District,
-      address: address == freezed ? _value.address : address as ViolatorAddress,
+      address: address == freezed ? _value.address : address as Address,
       searchRadius:
           searchRadius == freezed ? _value.searchRadius : searchRadius as int,
       balanceOwner: balanceOwner == freezed
@@ -183,12 +174,9 @@ class _$ControlFiltersBlocStateCopyWithImpl<$Res>
       daysFromLastSurvey: daysFromLastSurvey == freezed
           ? _value.daysFromLastSurvey
           : daysFromLastSurvey as int,
-      lastSurveyDateFrom: lastSurveyDateFrom == freezed
-          ? _value.lastSurveyDateFrom
-          : lastSurveyDateFrom as DateTime,
-      lastSurveyDateTo: lastSurveyDateTo == freezed
-          ? _value.lastSurveyDateTo
-          : lastSurveyDateTo as DateTime,
+      lastSurveyDates: lastSurveyDates == freezed
+          ? _value.lastSurveyDates
+          : lastSurveyDates as List<DateTime>,
       camerasExist:
           camerasExist == freezed ? _value.camerasExist : camerasExist as bool,
       ignoreViolations: ignoreViolations == freezed
@@ -196,27 +184,81 @@ class _$ControlFiltersBlocStateCopyWithImpl<$Res>
           : ignoreViolations as bool,
       objectElement: objectElement == freezed
           ? _value.objectElement
-          : objectElement as DCObjectElement,
+          : objectElement as ObjectElement,
       violationName: violationName == freezed
           ? _value.violationName
-          : violationName as DCViolationName,
+          : violationName as ViolationName,
       violationStatus: violationStatus == freezed
           ? _value.violationStatus
-          : violationStatus as DCViolationStatus,
-      sourceId: sourceId == freezed ? _value.sourceId : sourceId as String,
-      controlDateFrom: controlDateFrom == freezed
-          ? _value.controlDateFrom
-          : controlDateFrom as DateTime,
-      controlDateTo: controlDateTo == freezed
-          ? _value.controlDateTo
-          : controlDateTo as DateTime,
-      detectionDateFrom: detectionDateFrom == freezed
-          ? _value.detectionDateFrom
-          : detectionDateFrom as DateTime,
-      detectionDateTo: detectionDateTo == freezed
-          ? _value.detectionDateTo
-          : detectionDateTo as DateTime,
+          : violationStatus as ViolationStatus,
+      source: source == freezed ? _value.source : source as Source,
+      controlDates: controlDates == freezed
+          ? _value.controlDates
+          : controlDates as List<DateTime>,
+      detectionDates: detectionDates == freezed
+          ? _value.detectionDates
+          : detectionDates as List<DateTime>,
     ));
+  }
+
+  @override
+  $ObjectTypeCopyWith<$Res> get dcObjectType {
+    if (_value.dcObjectType == null) {
+      return null;
+    }
+    return $ObjectTypeCopyWith<$Res>(_value.dcObjectType, (value) {
+      return _then(_value.copyWith(dcObjectType: value));
+    });
+  }
+
+  @override
+  $ObjectKindCopyWith<$Res> get dcObjectKind {
+    if (_value.dcObjectKind == null) {
+      return null;
+    }
+    return $ObjectKindCopyWith<$Res>(_value.dcObjectKind, (value) {
+      return _then(_value.copyWith(dcObjectKind: value));
+    });
+  }
+
+  @override
+  $ObjectElementCopyWith<$Res> get objectElement {
+    if (_value.objectElement == null) {
+      return null;
+    }
+    return $ObjectElementCopyWith<$Res>(_value.objectElement, (value) {
+      return _then(_value.copyWith(objectElement: value));
+    });
+  }
+
+  @override
+  $ViolationNameCopyWith<$Res> get violationName {
+    if (_value.violationName == null) {
+      return null;
+    }
+    return $ViolationNameCopyWith<$Res>(_value.violationName, (value) {
+      return _then(_value.copyWith(violationName: value));
+    });
+  }
+
+  @override
+  $ViolationStatusCopyWith<$Res> get violationStatus {
+    if (_value.violationStatus == null) {
+      return null;
+    }
+    return $ViolationStatusCopyWith<$Res>(_value.violationStatus, (value) {
+      return _then(_value.copyWith(violationStatus: value));
+    });
+  }
+
+  @override
+  $SourceCopyWith<$Res> get source {
+    if (_value.source == null) {
+      return null;
+    }
+    return $SourceCopyWith<$Res>(_value.source, (value) {
+      return _then(_value.copyWith(source: value));
+    });
   }
 }
 
@@ -227,28 +269,38 @@ abstract class $AllStateCopyWith<$Res>
       _$AllStateCopyWithImpl<$Res>;
   @override
   $Res call(
-      {DCObjectType dcObjectType,
-      DCObjectKind dcObjectKind,
-      String externalId,
+      {ObjectType dcObjectType,
+      ObjectKind dcObjectKind,
+      int externalId,
       String objectName,
       Area area,
       District district,
-      ViolatorAddress address,
+      Address address,
       int searchRadius,
       String balanceOwner,
       int daysFromLastSurvey,
-      DateTime lastSurveyDateFrom,
-      DateTime lastSurveyDateTo,
+      List<DateTime> lastSurveyDates,
       bool camerasExist,
       bool ignoreViolations,
-      DCObjectElement objectElement,
-      DCViolationName violationName,
-      DCViolationStatus violationStatus,
-      String sourceId,
-      DateTime controlDateFrom,
-      DateTime controlDateTo,
-      DateTime detectionDateFrom,
-      DateTime detectionDateTo});
+      ObjectElement objectElement,
+      ViolationName violationName,
+      ViolationStatus violationStatus,
+      Source source,
+      List<DateTime> controlDates,
+      List<DateTime> detectionDates});
+
+  @override
+  $ObjectTypeCopyWith<$Res> get dcObjectType;
+  @override
+  $ObjectKindCopyWith<$Res> get dcObjectKind;
+  @override
+  $ObjectElementCopyWith<$Res> get objectElement;
+  @override
+  $ViolationNameCopyWith<$Res> get violationName;
+  @override
+  $ViolationStatusCopyWith<$Res> get violationStatus;
+  @override
+  $SourceCopyWith<$Res> get source;
 }
 
 /// @nodoc
@@ -273,33 +325,29 @@ class _$AllStateCopyWithImpl<$Res>
     Object searchRadius = freezed,
     Object balanceOwner = freezed,
     Object daysFromLastSurvey = freezed,
-    Object lastSurveyDateFrom = freezed,
-    Object lastSurveyDateTo = freezed,
+    Object lastSurveyDates = freezed,
     Object camerasExist = freezed,
     Object ignoreViolations = freezed,
     Object objectElement = freezed,
     Object violationName = freezed,
     Object violationStatus = freezed,
-    Object sourceId = freezed,
-    Object controlDateFrom = freezed,
-    Object controlDateTo = freezed,
-    Object detectionDateFrom = freezed,
-    Object detectionDateTo = freezed,
+    Object source = freezed,
+    Object controlDates = freezed,
+    Object detectionDates = freezed,
   }) {
     return _then(AllState(
       dcObjectType: dcObjectType == freezed
           ? _value.dcObjectType
-          : dcObjectType as DCObjectType,
+          : dcObjectType as ObjectType,
       dcObjectKind: dcObjectKind == freezed
           ? _value.dcObjectKind
-          : dcObjectKind as DCObjectKind,
-      externalId:
-          externalId == freezed ? _value.externalId : externalId as String,
+          : dcObjectKind as ObjectKind,
+      externalId: externalId == freezed ? _value.externalId : externalId as int,
       objectName:
           objectName == freezed ? _value.objectName : objectName as String,
       area: area == freezed ? _value.area : area as Area,
       district: district == freezed ? _value.district : district as District,
-      address: address == freezed ? _value.address : address as ViolatorAddress,
+      address: address == freezed ? _value.address : address as Address,
       searchRadius:
           searchRadius == freezed ? _value.searchRadius : searchRadius as int,
       balanceOwner: balanceOwner == freezed
@@ -308,12 +356,9 @@ class _$AllStateCopyWithImpl<$Res>
       daysFromLastSurvey: daysFromLastSurvey == freezed
           ? _value.daysFromLastSurvey
           : daysFromLastSurvey as int,
-      lastSurveyDateFrom: lastSurveyDateFrom == freezed
-          ? _value.lastSurveyDateFrom
-          : lastSurveyDateFrom as DateTime,
-      lastSurveyDateTo: lastSurveyDateTo == freezed
-          ? _value.lastSurveyDateTo
-          : lastSurveyDateTo as DateTime,
+      lastSurveyDates: lastSurveyDates == freezed
+          ? _value.lastSurveyDates
+          : lastSurveyDates as List<DateTime>,
       camerasExist:
           camerasExist == freezed ? _value.camerasExist : camerasExist as bool,
       ignoreViolations: ignoreViolations == freezed
@@ -321,32 +366,26 @@ class _$AllStateCopyWithImpl<$Res>
           : ignoreViolations as bool,
       objectElement: objectElement == freezed
           ? _value.objectElement
-          : objectElement as DCObjectElement,
+          : objectElement as ObjectElement,
       violationName: violationName == freezed
           ? _value.violationName
-          : violationName as DCViolationName,
+          : violationName as ViolationName,
       violationStatus: violationStatus == freezed
           ? _value.violationStatus
-          : violationStatus as DCViolationStatus,
-      sourceId: sourceId == freezed ? _value.sourceId : sourceId as String,
-      controlDateFrom: controlDateFrom == freezed
-          ? _value.controlDateFrom
-          : controlDateFrom as DateTime,
-      controlDateTo: controlDateTo == freezed
-          ? _value.controlDateTo
-          : controlDateTo as DateTime,
-      detectionDateFrom: detectionDateFrom == freezed
-          ? _value.detectionDateFrom
-          : detectionDateFrom as DateTime,
-      detectionDateTo: detectionDateTo == freezed
-          ? _value.detectionDateTo
-          : detectionDateTo as DateTime,
+          : violationStatus as ViolationStatus,
+      source: source == freezed ? _value.source : source as Source,
+      controlDates: controlDates == freezed
+          ? _value.controlDates
+          : controlDates as List<DateTime>,
+      detectionDates: detectionDates == freezed
+          ? _value.detectionDates
+          : detectionDates as List<DateTime>,
     ));
   }
 }
 
 /// @nodoc
-class _$AllState implements AllState {
+class _$AllState extends AllState {
   const _$AllState(
       {this.dcObjectType,
       this.dcObjectKind,
@@ -358,25 +397,23 @@ class _$AllState implements AllState {
       this.searchRadius,
       this.balanceOwner,
       this.daysFromLastSurvey,
-      this.lastSurveyDateFrom,
-      this.lastSurveyDateTo,
+      this.lastSurveyDates,
       this.camerasExist,
       this.ignoreViolations,
       this.objectElement,
       this.violationName,
       this.violationStatus,
-      this.sourceId,
-      this.controlDateFrom,
-      this.controlDateTo,
-      this.detectionDateFrom,
-      this.detectionDateTo});
+      this.source,
+      this.controlDates,
+      this.detectionDates})
+      : super._();
 
   @override
-  final DCObjectType dcObjectType;
+  final ObjectType dcObjectType;
   @override
-  final DCObjectKind dcObjectKind;
+  final ObjectKind dcObjectKind;
   @override
-  final String externalId;
+  final int externalId;
   @override
   final String objectName;
   @override
@@ -384,7 +421,7 @@ class _$AllState implements AllState {
   @override
   final District district;
   @override
-  final ViolatorAddress address;
+  final Address address;
   @override
   final int searchRadius;
   @override
@@ -392,33 +429,27 @@ class _$AllState implements AllState {
   @override
   final int daysFromLastSurvey;
   @override
-  final DateTime lastSurveyDateFrom;
-  @override
-  final DateTime lastSurveyDateTo;
+  final List<DateTime> lastSurveyDates;
   @override
   final bool camerasExist;
   @override
   final bool ignoreViolations;
   @override
-  final DCObjectElement objectElement;
+  final ObjectElement objectElement;
   @override
-  final DCViolationName violationName;
+  final ViolationName violationName;
   @override
-  final DCViolationStatus violationStatus;
+  final ViolationStatus violationStatus;
   @override
-  final String sourceId;
+  final Source source;
   @override
-  final DateTime controlDateFrom;
+  final List<DateTime> controlDates;
   @override
-  final DateTime controlDateTo;
-  @override
-  final DateTime detectionDateFrom;
-  @override
-  final DateTime detectionDateTo;
+  final List<DateTime> detectionDates;
 
   @override
   String toString() {
-    return 'ControlFiltersBlocState(dcObjectType: $dcObjectType, dcObjectKind: $dcObjectKind, externalId: $externalId, objectName: $objectName, area: $area, district: $district, address: $address, searchRadius: $searchRadius, balanceOwner: $balanceOwner, daysFromLastSurvey: $daysFromLastSurvey, lastSurveyDateFrom: $lastSurveyDateFrom, lastSurveyDateTo: $lastSurveyDateTo, camerasExist: $camerasExist, ignoreViolations: $ignoreViolations, objectElement: $objectElement, violationName: $violationName, violationStatus: $violationStatus, sourceId: $sourceId, controlDateFrom: $controlDateFrom, controlDateTo: $controlDateTo, detectionDateFrom: $detectionDateFrom, detectionDateTo: $detectionDateTo)';
+    return 'ControlFiltersBlocState(dcObjectType: $dcObjectType, dcObjectKind: $dcObjectKind, externalId: $externalId, objectName: $objectName, area: $area, district: $district, address: $address, searchRadius: $searchRadius, balanceOwner: $balanceOwner, daysFromLastSurvey: $daysFromLastSurvey, lastSurveyDates: $lastSurveyDates, camerasExist: $camerasExist, ignoreViolations: $ignoreViolations, objectElement: $objectElement, violationName: $violationName, violationStatus: $violationStatus, source: $source, controlDates: $controlDates, detectionDates: $detectionDates)';
   }
 
   @override
@@ -454,12 +485,9 @@ class _$AllState implements AllState {
             (identical(other.daysFromLastSurvey, daysFromLastSurvey) ||
                 const DeepCollectionEquality()
                     .equals(other.daysFromLastSurvey, daysFromLastSurvey)) &&
-            (identical(other.lastSurveyDateFrom, lastSurveyDateFrom) ||
+            (identical(other.lastSurveyDates, lastSurveyDates) ||
                 const DeepCollectionEquality()
-                    .equals(other.lastSurveyDateFrom, lastSurveyDateFrom)) &&
-            (identical(other.lastSurveyDateTo, lastSurveyDateTo) ||
-                const DeepCollectionEquality()
-                    .equals(other.lastSurveyDateTo, lastSurveyDateTo)) &&
+                    .equals(other.lastSurveyDates, lastSurveyDates)) &&
             (identical(other.camerasExist, camerasExist) ||
                 const DeepCollectionEquality()
                     .equals(other.camerasExist, camerasExist)) &&
@@ -475,21 +503,14 @@ class _$AllState implements AllState {
             (identical(other.violationStatus, violationStatus) ||
                 const DeepCollectionEquality()
                     .equals(other.violationStatus, violationStatus)) &&
-            (identical(other.sourceId, sourceId) ||
+            (identical(other.source, source) ||
+                const DeepCollectionEquality().equals(other.source, source)) &&
+            (identical(other.controlDates, controlDates) ||
                 const DeepCollectionEquality()
-                    .equals(other.sourceId, sourceId)) &&
-            (identical(other.controlDateFrom, controlDateFrom) ||
+                    .equals(other.controlDates, controlDates)) &&
+            (identical(other.detectionDates, detectionDates) ||
                 const DeepCollectionEquality()
-                    .equals(other.controlDateFrom, controlDateFrom)) &&
-            (identical(other.controlDateTo, controlDateTo) ||
-                const DeepCollectionEquality()
-                    .equals(other.controlDateTo, controlDateTo)) &&
-            (identical(other.detectionDateFrom, detectionDateFrom) ||
-                const DeepCollectionEquality()
-                    .equals(other.detectionDateFrom, detectionDateFrom)) &&
-            (identical(other.detectionDateTo, detectionDateTo) ||
-                const DeepCollectionEquality()
-                    .equals(other.detectionDateTo, detectionDateTo)));
+                    .equals(other.detectionDates, detectionDates)));
   }
 
   @override
@@ -505,18 +526,15 @@ class _$AllState implements AllState {
       const DeepCollectionEquality().hash(searchRadius) ^
       const DeepCollectionEquality().hash(balanceOwner) ^
       const DeepCollectionEquality().hash(daysFromLastSurvey) ^
-      const DeepCollectionEquality().hash(lastSurveyDateFrom) ^
-      const DeepCollectionEquality().hash(lastSurveyDateTo) ^
+      const DeepCollectionEquality().hash(lastSurveyDates) ^
       const DeepCollectionEquality().hash(camerasExist) ^
       const DeepCollectionEquality().hash(ignoreViolations) ^
       const DeepCollectionEquality().hash(objectElement) ^
       const DeepCollectionEquality().hash(violationName) ^
       const DeepCollectionEquality().hash(violationStatus) ^
-      const DeepCollectionEquality().hash(sourceId) ^
-      const DeepCollectionEquality().hash(controlDateFrom) ^
-      const DeepCollectionEquality().hash(controlDateTo) ^
-      const DeepCollectionEquality().hash(detectionDateFrom) ^
-      const DeepCollectionEquality().hash(detectionDateTo);
+      const DeepCollectionEquality().hash(source) ^
+      const DeepCollectionEquality().hash(controlDates) ^
+      const DeepCollectionEquality().hash(detectionDates);
 
   @JsonKey(ignore: true)
   @override
@@ -524,37 +542,35 @@ class _$AllState implements AllState {
       _$AllStateCopyWithImpl<AllState>(this, _$identity);
 }
 
-abstract class AllState implements ControlFiltersBlocState {
+abstract class AllState extends ControlFiltersBlocState {
+  const AllState._() : super._();
   const factory AllState(
-      {DCObjectType dcObjectType,
-      DCObjectKind dcObjectKind,
-      String externalId,
+      {ObjectType dcObjectType,
+      ObjectKind dcObjectKind,
+      int externalId,
       String objectName,
       Area area,
       District district,
-      ViolatorAddress address,
+      Address address,
       int searchRadius,
       String balanceOwner,
       int daysFromLastSurvey,
-      DateTime lastSurveyDateFrom,
-      DateTime lastSurveyDateTo,
+      List<DateTime> lastSurveyDates,
       bool camerasExist,
       bool ignoreViolations,
-      DCObjectElement objectElement,
-      DCViolationName violationName,
-      DCViolationStatus violationStatus,
-      String sourceId,
-      DateTime controlDateFrom,
-      DateTime controlDateTo,
-      DateTime detectionDateFrom,
-      DateTime detectionDateTo}) = _$AllState;
+      ObjectElement objectElement,
+      ViolationName violationName,
+      ViolationStatus violationStatus,
+      Source source,
+      List<DateTime> controlDates,
+      List<DateTime> detectionDates}) = _$AllState;
 
   @override
-  DCObjectType get dcObjectType;
+  ObjectType get dcObjectType;
   @override
-  DCObjectKind get dcObjectKind;
+  ObjectKind get dcObjectKind;
   @override
-  String get externalId;
+  int get externalId;
   @override
   String get objectName;
   @override
@@ -562,7 +578,7 @@ abstract class AllState implements ControlFiltersBlocState {
   @override
   District get district;
   @override
-  ViolatorAddress get address;
+  Address get address;
   @override
   int get searchRadius;
   @override
@@ -570,29 +586,23 @@ abstract class AllState implements ControlFiltersBlocState {
   @override
   int get daysFromLastSurvey;
   @override
-  DateTime get lastSurveyDateFrom;
-  @override
-  DateTime get lastSurveyDateTo;
+  List<DateTime> get lastSurveyDates;
   @override
   bool get camerasExist;
   @override
   bool get ignoreViolations;
   @override
-  DCObjectElement get objectElement;
+  ObjectElement get objectElement;
   @override
-  DCViolationName get violationName;
+  ViolationName get violationName;
   @override
-  DCViolationStatus get violationStatus;
+  ViolationStatus get violationStatus;
   @override
-  String get sourceId;
+  Source get source;
   @override
-  DateTime get controlDateFrom;
+  List<DateTime> get controlDates;
   @override
-  DateTime get controlDateTo;
-  @override
-  DateTime get detectionDateFrom;
-  @override
-  DateTime get detectionDateTo;
+  List<DateTime> get detectionDates;
   @override
   @JsonKey(ignore: true)
   $AllStateCopyWith<AllState> get copyWith;

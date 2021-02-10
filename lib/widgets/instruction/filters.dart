@@ -26,7 +26,7 @@ class _InstructionFiltersWidgetState extends State<InstructionFiltersWidget> {
 
   void initState() {
     super.initState();
-    _instructionNumController = TextEditingController(text: widget.filters.instructionNum);
+    _instructionNumController = TextEditingController(text: widget.filters?.instructionNum);
   }
 
   void dispose() {

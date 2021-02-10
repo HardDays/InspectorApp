@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:inspector/model/department_control/control_object.dart';
+import 'package:inspector/model/department_control/dcviolation.dart';
+import 'package:inspector/services/department_control/department_control_service.dart';
+import 'package:inspector/services/dictionary_service.dart';
 import 'package:inspector/style/appbar.dart';
 import 'package:inspector/widgets/control/control_object/control_object_info.dart';
 import 'package:inspector/widgets/control/violation_form/violation_form.dart';
+import 'package:provider/provider.dart';
 
 class ControlViolationFormPage extends StatelessWidget {
   const ControlViolationFormPage({
@@ -25,7 +29,14 @@ class ControlViolationFormPage extends StatelessWidget {
                 controlObject: controlObject,
               ),
               ViolationFormWidget(
-                onConfirm: () {},
+                dictionaryService: Provider.of<DictionaryService>(context, listen: false),
+                onConfirm: (DCViolation violation) {
+                  Provider.of<DepartmentControlService>(context, listen: false).registerControlResult(controlObject, violation: violation);
+                  Navigator.of(context).pop();
+                },
+                onCancel: () {
+                  Navigator.of(context).pop();
+                },
               ),
             ],
           ),

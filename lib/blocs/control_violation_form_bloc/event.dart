@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:inspector/model/address.dart';
 import 'package:inspector/model/department_control/contractor.dart';
@@ -11,6 +13,10 @@ abstract class ControlViolationFormEvent with _$ControlViolationFormEvent {
   const factory ControlViolationFormEvent.setCriticalEvent(
     bool value,
   ) = SetCriticalEvent;
+
+  const factory ControlViolationFormEvent.setUseGeoLocationForAddressEvent(
+    bool value,
+  ) = SetUseGeoLocationForAddressEvent;
 
   const factory ControlViolationFormEvent.setAddressEvent(
     Address address,
@@ -48,4 +54,17 @@ abstract class ControlViolationFormEvent with _$ControlViolationFormEvent {
     Contractor contractor,
   ) = SetContractorEvent;
 
+  const factory ControlViolationFormEvent.addPhotoEvent(
+    Uint8List photo,
+  ) = AddPhotoEvent;
+
+  const factory ControlViolationFormEvent.removePhotoEvent(
+    int index,
+  ) = RemovePhotoEvent;
+  
+  const factory ControlViolationFormEvent.rotatePhotoEvent(
+    int index,
+    Uint8List photo,
+  ) = RotatePhotoEvent;
+  
 }

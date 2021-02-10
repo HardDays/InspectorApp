@@ -3,8 +3,7 @@ import 'package:inspector/style/colors.dart';
 import 'package:inspector/style/input_title.dart';
 import 'package:inspector/style/text_style.dart';
 
-class ProjectTextField extends StatelessWidget { 
-
+class ProjectTextField extends StatelessWidget {
   final bool enabled;
   final int maxLines;
   final int minLines;
@@ -14,24 +13,25 @@ class ProjectTextField extends StatelessWidget {
   final TextEditingController controller;
   final Function(String) validator;
   final TextInputType inputType;
+  final void Function(String) onChanged;
 
   ProjectTextField({
-    this.controller, 
-    this.title, 
-    this.initialValue, 
-    this.minLines, 
-    this.maxLines, 
+    this.controller,
+    this.title,
+    this.initialValue,
+    this.minLines,
+    this.maxLines,
     this.hintText,
     this.validator,
     this.enabled = true,
     this.inputType,
+    this.onChanged,
   });
 
   Widget _buildField() {
     final border = OutlineInputBorder(
-      borderRadius: BorderRadius.circular(5),
-      borderSide: const BorderSide(color: ProjectColors.lightBlue, width: 1)
-    );
+        borderRadius: BorderRadius.circular(5),
+        borderSide: const BorderSide(color: ProjectColors.lightBlue, width: 1));
     return TextFormField(
       controller: controller,
       initialValue: initialValue,
@@ -41,6 +41,7 @@ class ProjectTextField extends StatelessWidget {
       minLines: minLines,
       enabled: enabled,
       keyboardType: inputType,
+      onChanged: onChanged,
       decoration: InputDecoration(
         filled: !enabled,
         fillColor: enabled ? null : ProjectColors.grey,
@@ -57,7 +58,8 @@ class ProjectTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (title != null) {
-      return ProjectInputTitle(title,
+      return ProjectInputTitle(
+        title,
         child: _buildField(),
       );
     } else {

@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:inspector/blocs/control_filters/state.dart';
 import 'package:inspector/blocs/control_list/filter_state.dart';
 import 'package:inspector/blocs/control_list/map_state.dart';
 import 'package:inspector/blocs/control_list/sort_state.dart';
@@ -10,7 +11,7 @@ part 'state.freezed.dart';
 abstract class ControlListBlocState with _$ControlListBlocState {
   const factory ControlListBlocState.cantWorkInThisModeState({
     ControlObjectsListState listState,
-    ControlObjectsFilterState filtersState,
+    ControlFiltersBlocState filtersState,
     ControlObjectsSortState sortState,
     ControlObjectsMapState mapState,
     bool showMap,
@@ -18,7 +19,7 @@ abstract class ControlListBlocState with _$ControlListBlocState {
 
   const factory ControlListBlocState({
     ControlObjectsListState listState,
-    ControlObjectsFilterState filtersState,
+    ControlFiltersBlocState filtersState,
     ControlObjectsSortState sortState,
     ControlObjectsMapState mapState,
     bool showMap,

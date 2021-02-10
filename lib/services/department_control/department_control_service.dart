@@ -1,6 +1,9 @@
+import 'package:inspector/blocs/control_filters/state.dart';
 import 'package:inspector/blocs/control_list/filter_state.dart';
 import 'package:inspector/blocs/control_list/sort_state.dart';
 import 'package:inspector/model/department_control/control_object.dart';
+import 'package:inspector/model/department_control/control_result.dart';
+import 'package:inspector/model/department_control/dcviolation.dart';
 import 'package:inspector/services/department_control/api/department_control_api_client.dart';
 import 'package:inspector/services/location/location.dart';
 import 'package:inspector/services/network_status_service/network_status.dart';
@@ -31,7 +34,7 @@ class DepartmentControlService {
   Future<List<ControlObject>> find(
     Location location,
     NetworkStatus networkStatus,
-    ControlObjectsFilterState filtersState,
+    ControlFiltersBlocState filtersState,
     ControlObjectsSortState sortState,
     int from,
     int to,
@@ -39,17 +42,49 @@ class DepartmentControlService {
     (longitude, latitude) => _apiClient.getControlObjects(
         userPositionX: latitude,
         userPositionY: longitude,
-        searchRadius: 500,
         onlyNearObjects: true,
         from: from,
         to: to,
-        daysFromLastSurvey: 7,
+        // filtering
+        searchRadius: filtersState.searchRadius,
+        daysFromLastSurvey: filtersState.daysFromLastSurvey,
+        dcObjectTypesIds: filtersState.dcObjectTypesIds,
+        dcObjectKind: filtersState.dcObjectType?.code,
+        externalId: filtersState.externalId,
+        objectName: filtersState.objectName,
+        areaIds: filtersState.areasIds,
+        districtIds: filtersState.districtIds,
+        addressIds: filtersState.areasIds,
+        balanceOwner: filtersState.balanceOwner,
+        lastSurveyDateFrom: filtersState.lastSurveyDateFrom,
+        lastSurveyDateTo: filtersState.lastSurveyDateTo,
+        camerasExist: filtersState.camerasExist,
+        ignoreViolations: filtersState.ignoreViolations,
+        objectElementIds: filtersState.objectElementIds,
+        violationNameIds: filtersState.violationNameIds,
+        violationStatusIds: filtersState.violationStatusIds,
+        sourceId: filtersState.source?.id,
+        detectionDateFrom: filtersState.detectionDateFrom,
+        detectionDateTo: filtersState.detectionDateTo,
+        controlDateFrom: filtersState.controlDateFrom,
+        controlDateTo: filtersState.controlDateTo,
     ),
     noLocationProvided: () => _apiClient.getControlObjects(
       from: from,
       to: to,
-      daysFromLastSurvey: 7,
+      searchRadius: filtersState.searchRadius,
+      daysFromLastSurvey: filtersState.daysFromLastSurvey,
     ),
   );
   
+  Future<ControlResult> registerControlResult(ControlObject object, {DCViolation violation}) async {
+    final result = ControlResult(
+      surveyDate: DateTime.now(),
+      violation: violation,
+      violationExists: violation != null,
+    );
+    final t  = await _apiClient.registerControlResult(object, result);
+    return t;
+  }
+
 }

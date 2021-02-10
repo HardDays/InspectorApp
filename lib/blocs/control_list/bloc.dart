@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:inspector/blocs/control_filters/state.dart';
 import 'package:inspector/blocs/control_list/event.dart';
 import 'package:inspector/blocs/control_list/filter_state.dart';
 import 'package:inspector/blocs/control_list/map_state.dart';
@@ -17,7 +18,7 @@ import 'package:inspector/services/network_status_service/network_status.dart';
 import 'package:inspector/services/network_status_service/network_status_service.dart';
 
 class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
-  static const pageCapacity = 50;
+  static const pageCapacity = 10;
 
   final LocationService _locationService;
   StreamSubscription<NetworkStatus> _networkStatusStreamSubscription;
@@ -38,7 +39,10 @@ class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
     this._notificationBloc,
   ) : super(
           ControlListBlocState(
-            filtersState: ControlObjectsFilterState(),
+            filtersState: ControlFiltersBlocState(
+              searchRadius: 500,
+              daysFromLastSurvey: 7
+            ),
             listState: ControlObjectsListState.loadingListState(),
             mapState: ControlObjectsMapState(),
             showMap: false,
@@ -64,6 +68,15 @@ class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
         loadControlListEvent: _onLoadControlListEvent,
         cantWorkInThisModeEvent: _onCantWorkInThisModeEvent,
         loadNextPageControlListEvent: _onLoadNextPageEvent,
+        changeFilters: (event) async * {
+          yield (
+            state.copyWith(
+              filtersState: event.state
+            )
+          );
+          print('Filtering');
+          add(LoadControlListEvent());
+        },
         refreshControlListEvent: (event) async* {
           yield (state.copyWith(
               listState: state.listState.maybeMap(
@@ -103,6 +116,7 @@ class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
         _location = await _locationService.actualLocation;
         _objects = await _departmentControlService.find(
             Location(latitude: 55.74, longitude: 37.63),
+            //_location,
             _networkStatus,
             state.filtersState,
             state.sortState,

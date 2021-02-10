@@ -1,24 +1,24 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies
 
-part of 'object_type.dart';
+part of 'object_kind.dart';
 
 // **************************************************************************
 // FreezedGenerator
 // **************************************************************************
 
 T _$identity<T>(T value) => value;
-ObjectType _$ObjectTypeFromJson(Map<String, dynamic> json) {
-  return _ObjectType.fromJson(json);
+ObjectKind _$ObjectKindFromJson(Map<String, dynamic> json) {
+  return _ObjectKind.fromJson(json);
 }
 
 /// @nodoc
-class _$ObjectTypeTearOff {
-  const _$ObjectTypeTearOff();
+class _$ObjectKindTearOff {
+  const _$ObjectKindTearOff();
 
 // ignore: unused_element
-  _ObjectType call({int id, String name, String code}) {
-    return _ObjectType(
+  _ObjectKind call({int id, String name, String code}) {
+    return _ObjectKind(
       id: id,
       name: name,
       code: code,
@@ -26,41 +26,41 @@ class _$ObjectTypeTearOff {
   }
 
 // ignore: unused_element
-  ObjectType fromJson(Map<String, Object> json) {
-    return ObjectType.fromJson(json);
+  ObjectKind fromJson(Map<String, Object> json) {
+    return ObjectKind.fromJson(json);
   }
 }
 
 /// @nodoc
 // ignore: unused_element
-const $ObjectType = _$ObjectTypeTearOff();
+const $ObjectKind = _$ObjectKindTearOff();
 
 /// @nodoc
-mixin _$ObjectType {
+mixin _$ObjectKind {
   int get id;
   String get name;
   String get code;
 
   Map<String, dynamic> toJson();
   @JsonKey(ignore: true)
-  $ObjectTypeCopyWith<ObjectType> get copyWith;
+  $ObjectKindCopyWith<ObjectKind> get copyWith;
 }
 
 /// @nodoc
-abstract class $ObjectTypeCopyWith<$Res> {
-  factory $ObjectTypeCopyWith(
-          ObjectType value, $Res Function(ObjectType) then) =
-      _$ObjectTypeCopyWithImpl<$Res>;
+abstract class $ObjectKindCopyWith<$Res> {
+  factory $ObjectKindCopyWith(
+          ObjectKind value, $Res Function(ObjectKind) then) =
+      _$ObjectKindCopyWithImpl<$Res>;
   $Res call({int id, String name, String code});
 }
 
 /// @nodoc
-class _$ObjectTypeCopyWithImpl<$Res> implements $ObjectTypeCopyWith<$Res> {
-  _$ObjectTypeCopyWithImpl(this._value, this._then);
+class _$ObjectKindCopyWithImpl<$Res> implements $ObjectKindCopyWith<$Res> {
+  _$ObjectKindCopyWithImpl(this._value, this._then);
 
-  final ObjectType _value;
+  final ObjectKind _value;
   // ignore: unused_field
-  final $Res Function(ObjectType) _then;
+  final $Res Function(ObjectKind) _then;
 
   @override
   $Res call({
@@ -77,23 +77,23 @@ class _$ObjectTypeCopyWithImpl<$Res> implements $ObjectTypeCopyWith<$Res> {
 }
 
 /// @nodoc
-abstract class _$ObjectTypeCopyWith<$Res> implements $ObjectTypeCopyWith<$Res> {
-  factory _$ObjectTypeCopyWith(
-          _ObjectType value, $Res Function(_ObjectType) then) =
-      __$ObjectTypeCopyWithImpl<$Res>;
+abstract class _$ObjectKindCopyWith<$Res> implements $ObjectKindCopyWith<$Res> {
+  factory _$ObjectKindCopyWith(
+          _ObjectKind value, $Res Function(_ObjectKind) then) =
+      __$ObjectKindCopyWithImpl<$Res>;
   @override
   $Res call({int id, String name, String code});
 }
 
 /// @nodoc
-class __$ObjectTypeCopyWithImpl<$Res> extends _$ObjectTypeCopyWithImpl<$Res>
-    implements _$ObjectTypeCopyWith<$Res> {
-  __$ObjectTypeCopyWithImpl(
-      _ObjectType _value, $Res Function(_ObjectType) _then)
-      : super(_value, (v) => _then(v as _ObjectType));
+class __$ObjectKindCopyWithImpl<$Res> extends _$ObjectKindCopyWithImpl<$Res>
+    implements _$ObjectKindCopyWith<$Res> {
+  __$ObjectKindCopyWithImpl(
+      _ObjectKind _value, $Res Function(_ObjectKind) _then)
+      : super(_value, (v) => _then(v as _ObjectKind));
 
   @override
-  _ObjectType get _value => super._value as _ObjectType;
+  _ObjectKind get _value => super._value as _ObjectKind;
 
   @override
   $Res call({
@@ -101,7 +101,7 @@ class __$ObjectTypeCopyWithImpl<$Res> extends _$ObjectTypeCopyWithImpl<$Res>
     Object name = freezed,
     Object code = freezed,
   }) {
-    return _then(_ObjectType(
+    return _then(_ObjectKind(
       id: id == freezed ? _value.id : id as int,
       name: name == freezed ? _value.name : name as String,
       code: code == freezed ? _value.code : code as String,
@@ -112,11 +112,11 @@ class __$ObjectTypeCopyWithImpl<$Res> extends _$ObjectTypeCopyWithImpl<$Res>
 @JsonSerializable()
 
 /// @nodoc
-class _$_ObjectType extends _ObjectType {
-  const _$_ObjectType({this.id, this.name, this.code}) : super._();
+class _$_ObjectKind extends _ObjectKind {
+  const _$_ObjectKind({this.id, this.name, this.code}) : super._();
 
-  factory _$_ObjectType.fromJson(Map<String, dynamic> json) =>
-      _$_$_ObjectTypeFromJson(json);
+  factory _$_ObjectKind.fromJson(Map<String, dynamic> json) =>
+      _$_$_ObjectKindFromJson(json);
 
   @override
   final int id;
@@ -127,13 +127,13 @@ class _$_ObjectType extends _ObjectType {
 
   @override
   String toString() {
-    return 'ObjectType(id: $id, name: $name, code: $code)';
+    return 'ObjectKind(id: $id, name: $name, code: $code)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _ObjectType &&
+        (other is _ObjectKind &&
             (identical(other.id, id) ||
                 const DeepCollectionEquality().equals(other.id, id)) &&
             (identical(other.name, name) ||
@@ -151,21 +151,21 @@ class _$_ObjectType extends _ObjectType {
 
   @JsonKey(ignore: true)
   @override
-  _$ObjectTypeCopyWith<_ObjectType> get copyWith =>
-      __$ObjectTypeCopyWithImpl<_ObjectType>(this, _$identity);
+  _$ObjectKindCopyWith<_ObjectKind> get copyWith =>
+      __$ObjectKindCopyWithImpl<_ObjectKind>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$_$_ObjectTypeToJson(this);
+    return _$_$_ObjectKindToJson(this);
   }
 }
 
-abstract class _ObjectType extends ObjectType {
-  const _ObjectType._() : super._();
-  const factory _ObjectType({int id, String name, String code}) = _$_ObjectType;
+abstract class _ObjectKind extends ObjectKind {
+  const _ObjectKind._() : super._();
+  const factory _ObjectKind({int id, String name, String code}) = _$_ObjectKind;
 
-  factory _ObjectType.fromJson(Map<String, dynamic> json) =
-      _$_ObjectType.fromJson;
+  factory _ObjectKind.fromJson(Map<String, dynamic> json) =
+      _$_ObjectKind.fromJson;
 
   @override
   int get id;
@@ -175,5 +175,5 @@ abstract class _ObjectType extends ObjectType {
   String get code;
   @override
   @JsonKey(ignore: true)
-  _$ObjectTypeCopyWith<_ObjectType> get copyWith;
+  _$ObjectKindCopyWith<_ObjectKind> get copyWith;
 }

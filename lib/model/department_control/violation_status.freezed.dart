@@ -1,24 +1,24 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies
 
-part of 'object_type.dart';
+part of 'violation_status.dart';
 
 // **************************************************************************
 // FreezedGenerator
 // **************************************************************************
 
 T _$identity<T>(T value) => value;
-ObjectType _$ObjectTypeFromJson(Map<String, dynamic> json) {
-  return _ObjectType.fromJson(json);
+ViolationStatus _$ViolationStatusFromJson(Map<String, dynamic> json) {
+  return _ViolationStatus.fromJson(json);
 }
 
 /// @nodoc
-class _$ObjectTypeTearOff {
-  const _$ObjectTypeTearOff();
+class _$ViolationStatusTearOff {
+  const _$ViolationStatusTearOff();
 
 // ignore: unused_element
-  _ObjectType call({int id, String name, String code}) {
-    return _ObjectType(
+  _ViolationStatus call({int id, String name, String code}) {
+    return _ViolationStatus(
       id: id,
       name: name,
       code: code,
@@ -26,41 +26,42 @@ class _$ObjectTypeTearOff {
   }
 
 // ignore: unused_element
-  ObjectType fromJson(Map<String, Object> json) {
-    return ObjectType.fromJson(json);
+  ViolationStatus fromJson(Map<String, Object> json) {
+    return ViolationStatus.fromJson(json);
   }
 }
 
 /// @nodoc
 // ignore: unused_element
-const $ObjectType = _$ObjectTypeTearOff();
+const $ViolationStatus = _$ViolationStatusTearOff();
 
 /// @nodoc
-mixin _$ObjectType {
+mixin _$ViolationStatus {
   int get id;
   String get name;
   String get code;
 
   Map<String, dynamic> toJson();
   @JsonKey(ignore: true)
-  $ObjectTypeCopyWith<ObjectType> get copyWith;
+  $ViolationStatusCopyWith<ViolationStatus> get copyWith;
 }
 
 /// @nodoc
-abstract class $ObjectTypeCopyWith<$Res> {
-  factory $ObjectTypeCopyWith(
-          ObjectType value, $Res Function(ObjectType) then) =
-      _$ObjectTypeCopyWithImpl<$Res>;
+abstract class $ViolationStatusCopyWith<$Res> {
+  factory $ViolationStatusCopyWith(
+          ViolationStatus value, $Res Function(ViolationStatus) then) =
+      _$ViolationStatusCopyWithImpl<$Res>;
   $Res call({int id, String name, String code});
 }
 
 /// @nodoc
-class _$ObjectTypeCopyWithImpl<$Res> implements $ObjectTypeCopyWith<$Res> {
-  _$ObjectTypeCopyWithImpl(this._value, this._then);
+class _$ViolationStatusCopyWithImpl<$Res>
+    implements $ViolationStatusCopyWith<$Res> {
+  _$ViolationStatusCopyWithImpl(this._value, this._then);
 
-  final ObjectType _value;
+  final ViolationStatus _value;
   // ignore: unused_field
-  final $Res Function(ObjectType) _then;
+  final $Res Function(ViolationStatus) _then;
 
   @override
   $Res call({
@@ -77,23 +78,25 @@ class _$ObjectTypeCopyWithImpl<$Res> implements $ObjectTypeCopyWith<$Res> {
 }
 
 /// @nodoc
-abstract class _$ObjectTypeCopyWith<$Res> implements $ObjectTypeCopyWith<$Res> {
-  factory _$ObjectTypeCopyWith(
-          _ObjectType value, $Res Function(_ObjectType) then) =
-      __$ObjectTypeCopyWithImpl<$Res>;
+abstract class _$ViolationStatusCopyWith<$Res>
+    implements $ViolationStatusCopyWith<$Res> {
+  factory _$ViolationStatusCopyWith(
+          _ViolationStatus value, $Res Function(_ViolationStatus) then) =
+      __$ViolationStatusCopyWithImpl<$Res>;
   @override
   $Res call({int id, String name, String code});
 }
 
 /// @nodoc
-class __$ObjectTypeCopyWithImpl<$Res> extends _$ObjectTypeCopyWithImpl<$Res>
-    implements _$ObjectTypeCopyWith<$Res> {
-  __$ObjectTypeCopyWithImpl(
-      _ObjectType _value, $Res Function(_ObjectType) _then)
-      : super(_value, (v) => _then(v as _ObjectType));
+class __$ViolationStatusCopyWithImpl<$Res>
+    extends _$ViolationStatusCopyWithImpl<$Res>
+    implements _$ViolationStatusCopyWith<$Res> {
+  __$ViolationStatusCopyWithImpl(
+      _ViolationStatus _value, $Res Function(_ViolationStatus) _then)
+      : super(_value, (v) => _then(v as _ViolationStatus));
 
   @override
-  _ObjectType get _value => super._value as _ObjectType;
+  _ViolationStatus get _value => super._value as _ViolationStatus;
 
   @override
   $Res call({
@@ -101,7 +104,7 @@ class __$ObjectTypeCopyWithImpl<$Res> extends _$ObjectTypeCopyWithImpl<$Res>
     Object name = freezed,
     Object code = freezed,
   }) {
-    return _then(_ObjectType(
+    return _then(_ViolationStatus(
       id: id == freezed ? _value.id : id as int,
       name: name == freezed ? _value.name : name as String,
       code: code == freezed ? _value.code : code as String,
@@ -112,11 +115,11 @@ class __$ObjectTypeCopyWithImpl<$Res> extends _$ObjectTypeCopyWithImpl<$Res>
 @JsonSerializable()
 
 /// @nodoc
-class _$_ObjectType extends _ObjectType {
-  const _$_ObjectType({this.id, this.name, this.code}) : super._();
+class _$_ViolationStatus extends _ViolationStatus {
+  const _$_ViolationStatus({this.id, this.name, this.code}) : super._();
 
-  factory _$_ObjectType.fromJson(Map<String, dynamic> json) =>
-      _$_$_ObjectTypeFromJson(json);
+  factory _$_ViolationStatus.fromJson(Map<String, dynamic> json) =>
+      _$_$_ViolationStatusFromJson(json);
 
   @override
   final int id;
@@ -127,13 +130,13 @@ class _$_ObjectType extends _ObjectType {
 
   @override
   String toString() {
-    return 'ObjectType(id: $id, name: $name, code: $code)';
+    return 'ViolationStatus(id: $id, name: $name, code: $code)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _ObjectType &&
+        (other is _ViolationStatus &&
             (identical(other.id, id) ||
                 const DeepCollectionEquality().equals(other.id, id)) &&
             (identical(other.name, name) ||
@@ -151,21 +154,22 @@ class _$_ObjectType extends _ObjectType {
 
   @JsonKey(ignore: true)
   @override
-  _$ObjectTypeCopyWith<_ObjectType> get copyWith =>
-      __$ObjectTypeCopyWithImpl<_ObjectType>(this, _$identity);
+  _$ViolationStatusCopyWith<_ViolationStatus> get copyWith =>
+      __$ViolationStatusCopyWithImpl<_ViolationStatus>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$_$_ObjectTypeToJson(this);
+    return _$_$_ViolationStatusToJson(this);
   }
 }
 
-abstract class _ObjectType extends ObjectType {
-  const _ObjectType._() : super._();
-  const factory _ObjectType({int id, String name, String code}) = _$_ObjectType;
+abstract class _ViolationStatus extends ViolationStatus {
+  const _ViolationStatus._() : super._();
+  const factory _ViolationStatus({int id, String name, String code}) =
+      _$_ViolationStatus;
 
-  factory _ObjectType.fromJson(Map<String, dynamic> json) =
-      _$_ObjectType.fromJson;
+  factory _ViolationStatus.fromJson(Map<String, dynamic> json) =
+      _$_ViolationStatus.fromJson;
 
   @override
   int get id;
@@ -175,5 +179,5 @@ abstract class _ObjectType extends ObjectType {
   String get code;
   @override
   @JsonKey(ignore: true)
-  _$ObjectTypeCopyWith<_ObjectType> get copyWith;
+  _$ViolationStatusCopyWith<_ViolationStatus> get copyWith;
 }

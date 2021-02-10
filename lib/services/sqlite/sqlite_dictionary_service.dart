@@ -31,6 +31,9 @@ class DictionaryNames {
   static const dcObjectTypes = 'dcObjectTypes';
   static const dcViolationNames = 'dcViolationNames';
   static const dcViolationStatuses = 'dcViolationStatuses';
+  static const dcContractors = 'dcContractors';
+  static const dcViolationAdditionalFeatures = 'dcViolationAdditionalFeatures';
+  static const dcSources = 'dcSources';
 }
 
 class TableDefinitions {
@@ -81,11 +84,14 @@ class TableDefinitions {
     DictionaryNames.violatorDocumentTypes: '''CREATE TABLE IF NOT EXISTS violatorDocumentTypes(id INTEGER PRIMARY KEY, name TEXT)''',
     DictionaryNames.reportStatuses: '''CREATE TABLE IF NOT EXISTS reportStatuses(id INTEGER PRIMARY KEY, name TEXT)''',
     DictionaryNames.kladdrAddressTypes: '''CREATE TABLE IF NOT EXISTS kladdrAddressTypes(id INTEGER PRIMARY KEY, name TEXT, code TEXT, level TEXT)''',
-    DictionaryNames.dcObjectElements: '''CREATE TABLE IF NOT EXISTS dcObjectElements(id INTEGER PRIMARY KEY, name TEXT)''',
+    DictionaryNames.dcObjectElements: '''CREATE TABLE IF NOT EXISTS dcObjectElements(id INTEGER PRIMARY KEY, name TEXT, typeId INTEGER, typeName TEXT, typeCode TEXT)''',
     DictionaryNames.dcObjectKinds: '''CREATE TABLE IF NOT EXISTS dcObjectKinds(id INTEGER PRIMARY KEY, name TEXT)''',
     DictionaryNames.dcObjectTypes: '''CREATE TABLE IF NOT EXISTS dcObjectTypes(id INTEGER PRIMARY KEY, name TEXT, code TEXT)''',
     DictionaryNames.dcViolationNames: '''CREATE TABLE IF NOT EXISTS dcViolationNames(id INTEGER PRIMARY KEY, name TEXT)''',
     DictionaryNames.dcViolationStatuses: '''CREATE TABLE IF NOT EXISTS dcViolationStatuses(id INTEGER PRIMARY KEY, name TEXT)''',
+    DictionaryNames.dcContractors: '''CREATE TABLE IF NOT EXISTS dcContractors(id INTEGER PRIMARY KEY, name TEXT, inn TEXT)''',
+    DictionaryNames.dcViolationAdditionalFeatures: '''CREATE TABLE IF NOT EXISTS dcViolationAdditionalFeatures(id INTEGER PRIMARY KEY, name TEXT)''',
+    DictionaryNames.dcSources: '''CREATE TABLE IF NOT EXISTS dcSources(id INTEGER PRIMARY KEY, name TEXT)''',
   };
 }
 
