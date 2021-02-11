@@ -90,7 +90,7 @@ class ControlViolationWidgetState extends State<ControlViolationWidget> {
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(top: 10, bottom: 10),
-                                  child: Text(widget.violation.objectElement.objectType.name,
+                                  child: Text(widget.violation.objectElement.objectType?.name ?? '',
                                     style: ProjectTextStyles.base.apply(color: ProjectColors.black),
                                   ),
                                 ),

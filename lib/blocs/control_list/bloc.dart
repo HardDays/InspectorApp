@@ -48,7 +48,7 @@ class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
             listState: ControlObjectsListState.loadingListState(),
             mapState: ControlObjectsMapState(),
             showMap: false,
-            sortState: ControlObjectsSortState.byLastSurveyDate,
+            sortState: ControlObjectSortStrings.lastSurveyDate,
           ),
         ) {
     add(ControlListBlocEvent.loadControlListEvent());
@@ -77,6 +77,15 @@ class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
             )
           );
           print('Filtering');
+          add(LoadControlListEvent());
+        },
+        changeSort:(event) async * {
+          yield (
+            state.copyWith(
+              sortState: event.state
+            )
+          );
+          print('Sorting');
           add(LoadControlListEvent());
         },
         refreshControlListEvent: (event) async* {

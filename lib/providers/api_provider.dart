@@ -43,6 +43,7 @@ import 'package:inspector/providers/exceptions/server_exception.dart';
 import 'package:inspector/providers/exceptions/timeout_exception.dart';
 import 'package:inspector/providers/exceptions/unauthorized_exception.dart';
 import 'package:inspector/providers/exceptions/unhadled_exception.dart';
+import 'package:intl/intl.dart';
 
 class ApiProvider {
   static const _defaultUrl = '${EnvironmentConfig.API_URL}/oati-integration';
@@ -147,6 +148,12 @@ class ApiProvider {
       }
     }
     return json;
+  }
+
+  String _formatDate(DateTime date) {
+    if (date != null) {
+      return DateFormat('dd.MM.yyyy').format(date);
+    }
   }
 
   void setToken(String token) {
@@ -284,13 +291,13 @@ class ApiProvider {
   }
 
   Future<dynamic> getControlObjects({
-    List<int> dcObjectTypesIds, 
+    int dcObjectTypesIds, 
     String dcObjectKind,
     int externalId,
     String objectName,
-    List<int> areaIds,
-    List<int> districtIds,
-    List<int> addressIds,
+    int areaIds,
+    int districtIds,
+    int addressIds,
     bool onlyNearObjects,
     double userPositionX,
     double userPositionY,
@@ -302,18 +309,18 @@ class ApiProvider {
     bool camerasExist,
     bool ignoreViolations,
     bool forCurrentUser,
-    List<int> objectElementIds,
-    List<int> violationNameIds,
+    int objectElementIds,
+    int violationNameIds,
     int sourceId,
     String violationNum,
-    List<int> violationStatusIds,
+    int violationStatusIds,
     DateTime detectionDateFrom,
     DateTime detectionDateTo,
     DateTime controlDateFrom,
     DateTime controlDateTo,
     int from,
     int to,
-    List<String> sort,
+    String sort,
   }) async => 
     _request(() => dio.get('$_departmentControlPath', queryParameters: _removeJsonNulls({
       'dcObjectTypesIds': dcObjectTypesIds,
@@ -329,8 +336,8 @@ class ApiProvider {
       'searchRadius': searchRadius,
       'balanceOwner': balanceOwner,
       'daysFromLastSurvey': daysFromLastSurvey,
-      'lastSurveyDateFrom': lastSurveyDateFrom?.toIso8601String(),
-      'lastSurveyDateTo': lastSurveyDateTo?.toIso8601String(),
+      'lastSurveyDateFrom': _formatDate(lastSurveyDateFrom),
+      'lastSurveyDateTo': _formatDate(lastSurveyDateTo),
       'camerasExist': camerasExist,
       'ignoreViolations': ignoreViolations,
       'forCurrentUser': forCurrentUser,
@@ -339,10 +346,10 @@ class ApiProvider {
       'sourceId': sourceId,
       'violationNum': violationNum,
       'violationStatusIds': violationStatusIds,
-      'detectionDateFrom': detectionDateFrom?.toIso8601String(),
-      'detectionDateTo': detectionDateTo?.toIso8601String(),
-      'controlDateFrom': controlDateFrom?.toIso8601String(),
-      'controlDateTo': controlDateTo?.toIso8601String(),
+      'detectionDateFrom': _formatDate(detectionDateFrom),
+      'detectionDateTo': _formatDate(detectionDateTo),
+      'controlDateFrom': _formatDate(controlDateFrom),
+      'controlDateTo': _formatDate(controlDateTo),
       'from': from,
       'to': to,
       'sort': sort,

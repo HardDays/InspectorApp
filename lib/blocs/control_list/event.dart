@@ -12,6 +12,7 @@ abstract class ControlListBlocEvent with _$ControlListBlocEvent {
   const factory ControlListBlocEvent.loadNextPageControlListEvent() = LoadNextPageControlListEvent;
   
   const factory ControlListBlocEvent.changeFilters(ControlFiltersBlocState state) = ChangeFiltersEvent;
+  const factory ControlListBlocEvent.changeSort(String state) = ChangeSortEvent;
 
   const factory ControlListBlocEvent.openInMapEvent(ControlObject object) = OpenInMapEvent;
   const factory ControlListBlocEvent.createViolationEvent(ControlObject object) = CreateViolationEvent;

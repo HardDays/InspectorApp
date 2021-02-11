@@ -12,7 +12,7 @@ abstract class ControlListBlocState with _$ControlListBlocState {
   const factory ControlListBlocState.cantWorkInThisModeState({
     ControlObjectsListState listState,
     ControlFiltersBlocState filtersState,
-    ControlObjectsSortState sortState,
+    String sortState,
     ControlObjectsMapState mapState,
     bool showMap,
   }) = CantWorkInThisModeState;
@@ -20,7 +20,7 @@ abstract class ControlListBlocState with _$ControlListBlocState {
   const factory ControlListBlocState({
     ControlObjectsListState listState,
     ControlFiltersBlocState filtersState,
-    ControlObjectsSortState sortState,
+    String sortState,
     ControlObjectsMapState mapState,
     bool showMap,
   }) = _ControlListBlocState;

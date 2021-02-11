@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:inspector/blocs/control_list/bloc.dart';
 import 'package:inspector/blocs/control_list/event.dart';
+import 'package:inspector/blocs/control_list/sort_state.dart';
 import 'package:inspector/blocs/control_list/state.dart';
 import 'package:inspector/model/department_control/control_object.dart';
 import 'package:inspector/pages/control_object_page.dart';
@@ -20,6 +21,7 @@ import 'package:inspector/widgets/control/control_object_list.dart';
 import 'package:inspector/widgets/control/control_object_map.dart';
 import 'package:inspector/widgets/control/control_objects_paginated_list.dart';
 import 'package:inspector/widgets/control/filters.dart';
+import 'package:inspector/widgets/sort_dialog.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -39,10 +41,13 @@ class _ControlListPageState extends State<ControlListPage> {
     return BlocBuilder<ControlListBloc, ControlListBlocState>(
       builder: (context, state) {
         return Scaffold(
-          appBar: FilterAppbar('Ведомственный контроль', '', '', 'Фильтры',
-              onUpdate: () {
-            _refreshIndicatorKey.currentState?.show();
-          }, onFilter: _onOpenFilters),
+          appBar: FilterAppbar('Ведомственный контроль', '', 'Сортировка', 'Фильтры',
+            onUpdate: () {
+              _refreshIndicatorKey.currentState?.show();
+            }, 
+            onFilter: _onOpenFilters,
+            onSort: _onOpenSort,
+          ),
           body: _buildBody(context, state),
         );
       },
@@ -198,7 +203,6 @@ class _ControlListPageState extends State<ControlListPage> {
 
   void _onOpenFilters() async {
     final bloc = BlocProvider.of<ControlListBloc>(context);
-    
     final result = await showGeneralDialog(
       context: context,
       barrierDismissible: true,
@@ -215,7 +219,25 @@ class _ControlListPageState extends State<ControlListPage> {
     if (result != null) {
       bloc.add(ControlListBlocEvent.changeFilters(result));
       _refreshIndicatorKey.currentState?.show();
-      // bloc.add(ControlListBlocEvent());
+    }
+  }
+
+  void _onOpenSort() async {
+    final bloc = BlocProvider.of<ControlListBloc>(context);
+    final titles = ['по дате последней проверки', 'по названию объекта', 'по типу объекта', 'по адресу объекта','по дате обследования', 'по контрольному сроку устранения нарушения'];
+    final result = await showModalBottomSheet(
+      context: context, 
+      backgroundColor: Colors.transparent,
+      builder: (context) => SortDialog(
+        bloc.state.sortState,
+        ControlObjectSortStrings.all,
+        titles,
+      ),
+    );
+
+    if (result != null) {
+      bloc.add(ControlListBlocEvent.changeSort(result));
+      _refreshIndicatorKey.currentState?.show();
     }
   }
 

@@ -17,7 +17,7 @@ class _$ControlListBlocStateTearOff {
   CantWorkInThisModeState cantWorkInThisModeState(
       {ControlObjectsListState listState,
       ControlFiltersBlocState filtersState,
-      ControlObjectsSortState sortState,
+      String sortState,
       ControlObjectsMapState mapState,
       bool showMap}) {
     return CantWorkInThisModeState(
@@ -33,7 +33,7 @@ class _$ControlListBlocStateTearOff {
   _ControlListBlocState call(
       {ControlObjectsListState listState,
       ControlFiltersBlocState filtersState,
-      ControlObjectsSortState sortState,
+      String sortState,
       ControlObjectsMapState mapState,
       bool showMap}) {
     return _ControlListBlocState(
@@ -54,7 +54,7 @@ const $ControlListBlocState = _$ControlListBlocStateTearOff();
 mixin _$ControlListBlocState {
   ControlObjectsListState get listState;
   ControlFiltersBlocState get filtersState;
-  ControlObjectsSortState get sortState;
+  String get sortState;
   ControlObjectsMapState get mapState;
   bool get showMap;
 
@@ -63,14 +63,14 @@ mixin _$ControlListBlocState {
     TResult $default(
         ControlObjectsListState listState,
         ControlFiltersBlocState filtersState,
-        ControlObjectsSortState sortState,
+        String sortState,
         ControlObjectsMapState mapState,
         bool showMap), {
     @required
         TResult cantWorkInThisModeState(
             ControlObjectsListState listState,
             ControlFiltersBlocState filtersState,
-            ControlObjectsSortState sortState,
+            String sortState,
             ControlObjectsMapState mapState,
             bool showMap),
   });
@@ -79,13 +79,13 @@ mixin _$ControlListBlocState {
     TResult $default(
         ControlObjectsListState listState,
         ControlFiltersBlocState filtersState,
-        ControlObjectsSortState sortState,
+        String sortState,
         ControlObjectsMapState mapState,
         bool showMap), {
     TResult cantWorkInThisModeState(
         ControlObjectsListState listState,
         ControlFiltersBlocState filtersState,
-        ControlObjectsSortState sortState,
+        String sortState,
         ControlObjectsMapState mapState,
         bool showMap),
     @required TResult orElse(),
@@ -114,7 +114,7 @@ abstract class $ControlListBlocStateCopyWith<$Res> {
   $Res call(
       {ControlObjectsListState listState,
       ControlFiltersBlocState filtersState,
-      ControlObjectsSortState sortState,
+      String sortState,
       ControlObjectsMapState mapState,
       bool showMap});
 
@@ -147,9 +147,7 @@ class _$ControlListBlocStateCopyWithImpl<$Res>
       filtersState: filtersState == freezed
           ? _value.filtersState
           : filtersState as ControlFiltersBlocState,
-      sortState: sortState == freezed
-          ? _value.sortState
-          : sortState as ControlObjectsSortState,
+      sortState: sortState == freezed ? _value.sortState : sortState as String,
       mapState: mapState == freezed
           ? _value.mapState
           : mapState as ControlObjectsMapState,
@@ -198,7 +196,7 @@ abstract class $CantWorkInThisModeStateCopyWith<$Res>
   $Res call(
       {ControlObjectsListState listState,
       ControlFiltersBlocState filtersState,
-      ControlObjectsSortState sortState,
+      String sortState,
       ControlObjectsMapState mapState,
       bool showMap});
 
@@ -236,9 +234,7 @@ class _$CantWorkInThisModeStateCopyWithImpl<$Res>
       filtersState: filtersState == freezed
           ? _value.filtersState
           : filtersState as ControlFiltersBlocState,
-      sortState: sortState == freezed
-          ? _value.sortState
-          : sortState as ControlObjectsSortState,
+      sortState: sortState == freezed ? _value.sortState : sortState as String,
       mapState: mapState == freezed
           ? _value.mapState
           : mapState as ControlObjectsMapState,
@@ -261,7 +257,7 @@ class _$CantWorkInThisModeState implements CantWorkInThisModeState {
   @override
   final ControlFiltersBlocState filtersState;
   @override
-  final ControlObjectsSortState sortState;
+  final String sortState;
   @override
   final ControlObjectsMapState mapState;
   @override
@@ -313,14 +309,14 @@ class _$CantWorkInThisModeState implements CantWorkInThisModeState {
     TResult $default(
         ControlObjectsListState listState,
         ControlFiltersBlocState filtersState,
-        ControlObjectsSortState sortState,
+        String sortState,
         ControlObjectsMapState mapState,
         bool showMap), {
     @required
         TResult cantWorkInThisModeState(
             ControlObjectsListState listState,
             ControlFiltersBlocState filtersState,
-            ControlObjectsSortState sortState,
+            String sortState,
             ControlObjectsMapState mapState,
             bool showMap),
   }) {
@@ -336,13 +332,13 @@ class _$CantWorkInThisModeState implements CantWorkInThisModeState {
     TResult $default(
         ControlObjectsListState listState,
         ControlFiltersBlocState filtersState,
-        ControlObjectsSortState sortState,
+        String sortState,
         ControlObjectsMapState mapState,
         bool showMap), {
     TResult cantWorkInThisModeState(
         ControlObjectsListState listState,
         ControlFiltersBlocState filtersState,
-        ControlObjectsSortState sortState,
+        String sortState,
         ControlObjectsMapState mapState,
         bool showMap),
     @required TResult orElse(),
@@ -385,7 +381,7 @@ abstract class CantWorkInThisModeState implements ControlListBlocState {
   const factory CantWorkInThisModeState(
       {ControlObjectsListState listState,
       ControlFiltersBlocState filtersState,
-      ControlObjectsSortState sortState,
+      String sortState,
       ControlObjectsMapState mapState,
       bool showMap}) = _$CantWorkInThisModeState;
 
@@ -394,7 +390,7 @@ abstract class CantWorkInThisModeState implements ControlListBlocState {
   @override
   ControlFiltersBlocState get filtersState;
   @override
-  ControlObjectsSortState get sortState;
+  String get sortState;
   @override
   ControlObjectsMapState get mapState;
   @override
@@ -414,7 +410,7 @@ abstract class _$ControlListBlocStateCopyWith<$Res>
   $Res call(
       {ControlObjectsListState listState,
       ControlFiltersBlocState filtersState,
-      ControlObjectsSortState sortState,
+      String sortState,
       ControlObjectsMapState mapState,
       bool showMap});
 
@@ -452,9 +448,7 @@ class __$ControlListBlocStateCopyWithImpl<$Res>
       filtersState: filtersState == freezed
           ? _value.filtersState
           : filtersState as ControlFiltersBlocState,
-      sortState: sortState == freezed
-          ? _value.sortState
-          : sortState as ControlObjectsSortState,
+      sortState: sortState == freezed ? _value.sortState : sortState as String,
       mapState: mapState == freezed
           ? _value.mapState
           : mapState as ControlObjectsMapState,
@@ -477,7 +471,7 @@ class _$_ControlListBlocState implements _ControlListBlocState {
   @override
   final ControlFiltersBlocState filtersState;
   @override
-  final ControlObjectsSortState sortState;
+  final String sortState;
   @override
   final ControlObjectsMapState mapState;
   @override
@@ -529,14 +523,14 @@ class _$_ControlListBlocState implements _ControlListBlocState {
     TResult $default(
         ControlObjectsListState listState,
         ControlFiltersBlocState filtersState,
-        ControlObjectsSortState sortState,
+        String sortState,
         ControlObjectsMapState mapState,
         bool showMap), {
     @required
         TResult cantWorkInThisModeState(
             ControlObjectsListState listState,
             ControlFiltersBlocState filtersState,
-            ControlObjectsSortState sortState,
+            String sortState,
             ControlObjectsMapState mapState,
             bool showMap),
   }) {
@@ -551,13 +545,13 @@ class _$_ControlListBlocState implements _ControlListBlocState {
     TResult $default(
         ControlObjectsListState listState,
         ControlFiltersBlocState filtersState,
-        ControlObjectsSortState sortState,
+        String sortState,
         ControlObjectsMapState mapState,
         bool showMap), {
     TResult cantWorkInThisModeState(
         ControlObjectsListState listState,
         ControlFiltersBlocState filtersState,
-        ControlObjectsSortState sortState,
+        String sortState,
         ControlObjectsMapState mapState,
         bool showMap),
     @required TResult orElse(),
@@ -599,7 +593,7 @@ abstract class _ControlListBlocState implements ControlListBlocState {
   const factory _ControlListBlocState(
       {ControlObjectsListState listState,
       ControlFiltersBlocState filtersState,
-      ControlObjectsSortState sortState,
+      String sortState,
       ControlObjectsMapState mapState,
       bool showMap}) = _$_ControlListBlocState;
 
@@ -608,7 +602,7 @@ abstract class _ControlListBlocState implements ControlListBlocState {
   @override
   ControlFiltersBlocState get filtersState;
   @override
-  ControlObjectsSortState get sortState;
+  String get sortState;
   @override
   ControlObjectsMapState get mapState;
   @override
