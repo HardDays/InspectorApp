@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:inspector/blocs/control_filters/state.dart';
 import 'package:inspector/blocs/control_list/event.dart';
-import 'package:inspector/blocs/control_list/filter_state.dart';
 import 'package:inspector/blocs/control_list/map_state.dart';
 import 'package:inspector/blocs/control_list/sort_state.dart';
 import 'package:inspector/blocs/control_list/state.dart';
@@ -30,7 +29,6 @@ class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
 
   List<ControlObject> _objects;
   Location _location;
-  bool _isLoading = false;
 
   ControlListBloc(
     this._departmentControlService,
@@ -122,38 +120,33 @@ class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
   Stream<ControlListBlocState> _onLoadControlListEvent(
       LoadControlListEvent event) async* {
     print('Loading');
-    if (!_isLoading) {
-      _isLoading = true;
-      _location = await _locationService.actualLocation;
-      _objects = await _departmentControlService.find(
-          Location(latitude: 55.74, longitude: 37.63),
-          //_location,
-          _networkStatus,
-          state.filtersState,
-          state.sortState,
-          0,
-          pageCapacity);
-      if (_objects.length > 0) {
-        if (_objects.length < pageCapacity) {
-          yield (state.copyWith(
-            listState: ControlObjectsListState.loadedAllListState(
-                objects: _objects, refresh: false),
-          ));
-        } else {
-          yield (state.copyWith(
-            listState: ControlObjectsListState.loadedListState(
-                objects: _objects, refresh: false),
-          ));
-        }
-        print('Loaded');
+    _location = await _locationService.actualLocation;
+    _objects = await _departmentControlService.find(
+        Location(latitude: 55.74, longitude: 37.63),
+        //_location,
+        _networkStatus,
+        state.filtersState,
+        state.sortState,
+        0,
+        pageCapacity);
+    if (_objects.length > 0) {
+      if (_objects.length < pageCapacity) {
+        yield (state.copyWith(
+          listState: ControlObjectsListState.loadedAllListState(
+              objects: _objects, refresh: false),
+        ));
       } else {
         yield (state.copyWith(
-          listState:
-              ControlObjectsListState.emptyListLoadedState(refresh: false),
+          listState: ControlObjectsListState.loadedListState(
+              objects: _objects, refresh: false),
         ));
-        print('Loaded');
       }
-      _isLoading = false;
+      print('Loaded');
+    } else {
+      yield (state.copyWith(
+        listState: ControlObjectsListState.emptyListLoadedState(refresh: false),
+      ));
+      print('Loaded');
     }
   }
 
@@ -197,28 +190,24 @@ class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
 
   Stream<ControlListBlocState> _onLoadNextPageEvent(
       LoadNextPageControlListEvent event) async* {
-    if (!_isLoading) {
-      _isLoading = true;
-      final _newObjects = await _departmentControlService.find(
-          _location,
-          _networkStatus,
-          state.filtersState,
-          state.sortState,
-          _objects.length,
-          _objects.length + pageCapacity);
-      if (_newObjects.length == 0 || _newObjects.length < pageCapacity) {
-        yield (state.copyWith(
-          listState: ControlObjectsListState.loadedAllListState(
-              objects: _objects, refresh: false),
-        ));
-      } else {
-        _objects += _newObjects;
-        yield (state.copyWith(
-          listState: ControlObjectsListState.loadedListState(
-              objects: _objects, refresh: false),
-        ));
-      }
-      _isLoading = false;
+    final _newObjects = await _departmentControlService.find(
+        _location,
+        _networkStatus,
+        state.filtersState,
+        state.sortState,
+        _objects.length,
+        _objects.length + pageCapacity);
+    if (_newObjects.length == 0 || _newObjects.length < pageCapacity) {
+      yield (state.copyWith(
+        listState: ControlObjectsListState.loadedAllListState(
+            objects: _objects, refresh: false),
+      ));
+    } else {
+      _objects += _newObjects;
+      yield (state.copyWith(
+        listState: ControlObjectsListState.loadedListState(
+            objects: _objects, refresh: false),
+      ));
     }
   }
 
