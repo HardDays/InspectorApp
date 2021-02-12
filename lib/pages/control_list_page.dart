@@ -9,6 +9,7 @@ import 'package:inspector/blocs/control_list/state.dart';
 import 'package:inspector/model/department_control/control_object.dart';
 import 'package:inspector/pages/control_object_page.dart';
 import 'package:inspector/pages/control_violation_form_page.dart';
+import 'package:inspector/providers/exceptions/api_exception.dart';
 import 'package:inspector/services/department_control/department_control_service.dart';
 import 'package:inspector/style/accept_dialog.dart';
 import 'package:inspector/style/colors.dart';
@@ -120,6 +121,7 @@ class _ControlListPageState extends State<ControlListPage> {
             ),
             cantWorkInThisModeState: (cantWorkInThisModeState) =>
                 _cantWorkInThisMode(),
+            apiExceptionState: (state) => _buildApiExceptionBody(state.exception),
           )
         else
           Expanded(
@@ -153,6 +155,7 @@ class _ControlListPageState extends State<ControlListPage> {
                 ),
                 cantWorkInThisModeState: (cantWorkInThisModeState) =>
                     _cantWorkInThisMode(),
+                apiExceptionState: (state) => _buildApiExceptionBody(state.exception),
               ),
             ),
           ),
@@ -161,6 +164,18 @@ class _ControlListPageState extends State<ControlListPage> {
   }
 
   Widget _buildEmptyObjectsList() {
+    return _buildErrorMessageBody(
+      'Поблизости не найдено объектов ведомственного контроля. Попробуйте отключить поиск по местоположению.',
+    );
+  }
+
+  Widget _buildApiExceptionBody(ApiException exception) {
+    return _buildErrorMessageBody(
+      'Произошла ошибка ${exception.message}: ${exception.details}',
+    );
+  }
+
+  Widget _buildErrorMessageBody(String message) {
     return CustomScrollView(
       slivers: [
         SliverFillRemaining(

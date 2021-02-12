@@ -4,6 +4,7 @@ import 'package:inspector/blocs/control_list/filter_state.dart';
 import 'package:inspector/blocs/control_list/map_state.dart';
 import 'package:inspector/blocs/control_list/sort_state.dart';
 import 'package:inspector/model/department_control/control_object.dart';
+import 'package:inspector/providers/exceptions/api_exception.dart';
 
 part 'state.freezed.dart';
 
@@ -24,6 +25,16 @@ abstract class ControlListBlocState with _$ControlListBlocState {
     ControlObjectsMapState mapState,
     bool showMap,
   }) = _ControlListBlocState;
+
+  const factory ControlListBlocState.apiExceptionState({
+    ControlObjectsListState listState,
+    ControlFiltersBlocState filtersState,
+    String sortState,
+    ControlObjectsMapState mapState,
+    bool showMap,
+    ApiException exception,
+  }) = _ControlListApiExceptionBlocState;
+
 }
 
 @freezed

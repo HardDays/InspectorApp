@@ -40,11 +40,10 @@ class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
   ) : super(
           ControlListBlocState(
             filtersState: ControlFiltersBlocState(
-              searchRadius: 500,
-              daysFromLastSurvey: 7,
-              camerasExist: true,
-              ignoreViolations: false
-            ),
+                searchRadius: 500,
+                daysFromLastSurvey: 7,
+                camerasExist: true,
+                ignoreViolations: false),
             listState: ControlObjectsListState.loadingListState(),
             mapState: ControlObjectsMapState(),
             showMap: false,
@@ -66,25 +65,22 @@ class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
   @override
   Stream<ControlListBlocState> mapEventToState(
       ControlListBlocEvent event) async* {
-    yield* (event.map(
+    try {
+      yield* (event.map(
         loadControlListEvent: _onLoadControlListEvent,
         cantWorkInThisModeEvent: _onCantWorkInThisModeEvent,
         loadNextPageControlListEvent: _onLoadNextPageEvent,
-        changeFilters: (event) async * {
-          yield (
-            state.copyWith(
-              filtersState: event.state
-            )
-          );
+        changeFilters: (event) async* {
+          yield (state.copyWith(
+            filtersState: event.state,
+          ));
           print('Filtering');
           add(LoadControlListEvent());
         },
-        changeSort:(event) async * {
-          yield (
-            state.copyWith(
-              sortState: event.state
-            )
-          );
+        changeSort: (event) async* {
+          yield (state.copyWith(
+            sortState: event.state,
+          ));
           print('Sorting');
           add(LoadControlListEvent());
         },
@@ -107,59 +103,83 @@ class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
         },
         openInMapEvent: (OpenInMapEvent event) async* {
           if (event.object.geometry == null) {
-            _notificationBloc.add(SnackBarNotificationEvent('Просмотр этого объекта на карте недоступен'));
+            _notificationBloc.add(SnackBarNotificationEvent(
+                'Просмотр этого объекта на карте недоступен'));
           } else {
-            _notificationBloc.add(SnackBarNotificationEvent('Данный функционал пока не реализован'));
+            _notificationBloc.add(SnackBarNotificationEvent(
+                'Данный функционал пока не реализован'));
           }
-        }, 
-        createViolationEvent: (event) async* { 
-          
         },
-    ));
+        createViolationEvent: (event) async* {},
+      ));
+    } on ApiException catch (e) {
+      print(e.message);
+      print(e.details);
+      yield* (_onApiException(e));
+    }
   }
 
   Stream<ControlListBlocState> _onLoadControlListEvent(
       LoadControlListEvent event) async* {
-    try {
-      print('Loading');
-      if (!_isLoading) {
-        _isLoading = true;
-        _location = await _locationService.actualLocation;
-        _objects = await _departmentControlService.find(
-            Location(latitude: 55.74, longitude: 37.63),
-            //_location,
-            _networkStatus,
-            state.filtersState,
-            state.sortState,
-            0,
-            pageCapacity);
-        if (_objects.length > 0) {
-          if (_objects.length < pageCapacity) {
-            yield (state.copyWith(
-              listState: ControlObjectsListState.loadedAllListState(
-                  objects: _objects, refresh: false),
-            ));
-          } else {
-            yield (state.copyWith(
-              listState: ControlObjectsListState.loadedListState(
-                  objects: _objects, refresh: false),
-            ));
-          }
-          print('Loaded');
+    print('Loading');
+    if (!_isLoading) {
+      _isLoading = true;
+      _location = await _locationService.actualLocation;
+      _objects = await _departmentControlService.find(
+          Location(latitude: 55.74, longitude: 37.63),
+          //_location,
+          _networkStatus,
+          state.filtersState,
+          state.sortState,
+          0,
+          pageCapacity);
+      if (_objects.length > 0) {
+        if (_objects.length < pageCapacity) {
+          yield (state.copyWith(
+            listState: ControlObjectsListState.loadedAllListState(
+                objects: _objects, refresh: false),
+          ));
         } else {
           yield (state.copyWith(
-            listState:
-                ControlObjectsListState.emptyListLoadedState(refresh: false),
+            listState: ControlObjectsListState.loadedListState(
+                objects: _objects, refresh: false),
           ));
-          print('Loaded');
         }
-        _isLoading = false;
+        print('Loaded');
+      } else {
+        yield (state.copyWith(
+          listState:
+              ControlObjectsListState.emptyListLoadedState(refresh: false),
+        ));
+        print('Loaded');
       }
-    } on ApiException catch (e) {
-      print(e.message);
-      print(e.details);
+      _isLoading = false;
     }
   }
+
+  Stream<ControlListBlocState> _onApiException(ApiException exception) async* {
+    if (state.listState.maybeMap(
+      emptyListLoadedState: (state) => true,
+      loadingListState: (state) => true,
+      orElse: () => false,
+    )) {
+      yield (_createApiExceptionState(exception, state));
+    } else {
+      _notificationBloc.add(SnackBarNotificationEvent(
+          'Произошла ошибка: ${exception.message}, ${exception.details}'));
+    }
+  }
+
+  ControlListBlocState _createApiExceptionState(
+          ApiException exception, ControlListBlocState prev) =>
+      ControlListBlocState.apiExceptionState(
+        exception: exception,
+        filtersState: prev.filtersState,
+        listState: prev.listState,
+        mapState: prev.mapState,
+        showMap: prev.showMap,
+        sortState: prev.sortState,
+      );
 
   Stream<ControlListBlocState> _onCantWorkInThisModeEvent(
       CantWorkInThisModeEvent event) async* {
