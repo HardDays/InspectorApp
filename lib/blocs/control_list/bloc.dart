@@ -70,6 +70,15 @@ class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
         loadControlListEvent: _onLoadControlListEvent,
         cantWorkInThisModeEvent: _onCantWorkInThisModeEvent,
         loadNextPageControlListEvent: _onLoadNextPageEvent,
+        selectControlObject: (event) async * {
+          yield (
+            state.copyWith(
+              mapState: ControlObjectsMapState(
+                selectedObject: event.object
+              ),
+            )
+          );
+        },
         changeFilters: (event) async * {
           yield (
             state.copyWith(
@@ -77,7 +86,7 @@ class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
             )
           );
           print('Filtering');
-          add(LoadControlListEvent());
+          // add(LoadControlListEvent());
         },
         changeSort:(event) async * {
           yield (
@@ -124,10 +133,9 @@ class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
       print('Loading');
       if (!_isLoading) {
         _isLoading = true;
-        _location = await _locationService.actualLocation;
+        _location = Location(latitude: 55.74, longitude: 37.63);// await _locationService.actualLocation;
         _objects = await _departmentControlService.find(
-            Location(latitude: 55.74, longitude: 37.63),
-            //_location,
+            _location,
             _networkStatus,
             state.filtersState,
             state.sortState,
@@ -201,6 +209,8 @@ class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
       _isLoading = false;
     }
   }
+
+  Location get location => _location;
 
   @override
   Future<void> close() async {

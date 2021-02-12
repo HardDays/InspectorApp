@@ -49,7 +49,7 @@ class DepartmentControlService {
         searchRadius: filtersState.searchRadius,
         daysFromLastSurvey: filtersState.daysFromLastSurvey,
         dcObjectTypesIds: filtersState.dcObjectType?.id,
-        dcObjectKind: filtersState.dcObjectType?.code,
+        dcObjectKind: filtersState.dcObjectType?.name,
         externalId: filtersState.externalId,
         objectName: filtersState.objectName,
         areaIds: filtersState.area?.id,

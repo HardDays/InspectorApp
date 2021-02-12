@@ -190,12 +190,14 @@ class ControlFiltersWidget extends StatelessWidget {
   }
 
   void _onFind(BuildContext context, ControlFiltersBloc bloc) {
+    final objectName = _objectNameController.text;
+    final ownerName = _balanceOwnerController.text;
     Navigator.pop(context,
       bloc.state.copyWith(
         externalId: int.tryParse(_externalIdController.text),
-        objectName: _objectNameController.text,
+        objectName: objectName.isEmpty ? null : objectName,
         searchRadius: int.tryParse(_searchRadiusController.text) ?? 500,
-        balanceOwner: _balanceOwnerController.text,
+        balanceOwner: ownerName.isEmpty ? null : ownerName,
         daysFromLastSurvey: int.tryParse(_daysFromLastSurveyController.text) ?? 7,
       )
     );

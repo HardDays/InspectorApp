@@ -14,8 +14,10 @@ class _$ControlObjectsMapStateTearOff {
   const _$ControlObjectsMapStateTearOff();
 
 // ignore: unused_element
-  _ControlObjectsMapState call() {
-    return const _ControlObjectsMapState();
+  _ControlObjectsMapState call({ControlObject selectedObject}) {
+    return _ControlObjectsMapState(
+      selectedObject: selectedObject,
+    );
   }
 }
 
@@ -24,13 +26,21 @@ class _$ControlObjectsMapStateTearOff {
 const $ControlObjectsMapState = _$ControlObjectsMapStateTearOff();
 
 /// @nodoc
-mixin _$ControlObjectsMapState {}
+mixin _$ControlObjectsMapState {
+  ControlObject get selectedObject;
+
+  @JsonKey(ignore: true)
+  $ControlObjectsMapStateCopyWith<ControlObjectsMapState> get copyWith;
+}
 
 /// @nodoc
 abstract class $ControlObjectsMapStateCopyWith<$Res> {
   factory $ControlObjectsMapStateCopyWith(ControlObjectsMapState value,
           $Res Function(ControlObjectsMapState) then) =
       _$ControlObjectsMapStateCopyWithImpl<$Res>;
+  $Res call({ControlObject selectedObject});
+
+  $ControlObjectCopyWith<$Res> get selectedObject;
 }
 
 /// @nodoc
@@ -41,13 +51,40 @@ class _$ControlObjectsMapStateCopyWithImpl<$Res>
   final ControlObjectsMapState _value;
   // ignore: unused_field
   final $Res Function(ControlObjectsMapState) _then;
+
+  @override
+  $Res call({
+    Object selectedObject = freezed,
+  }) {
+    return _then(_value.copyWith(
+      selectedObject: selectedObject == freezed
+          ? _value.selectedObject
+          : selectedObject as ControlObject,
+    ));
+  }
+
+  @override
+  $ControlObjectCopyWith<$Res> get selectedObject {
+    if (_value.selectedObject == null) {
+      return null;
+    }
+    return $ControlObjectCopyWith<$Res>(_value.selectedObject, (value) {
+      return _then(_value.copyWith(selectedObject: value));
+    });
+  }
 }
 
 /// @nodoc
-abstract class _$ControlObjectsMapStateCopyWith<$Res> {
+abstract class _$ControlObjectsMapStateCopyWith<$Res>
+    implements $ControlObjectsMapStateCopyWith<$Res> {
   factory _$ControlObjectsMapStateCopyWith(_ControlObjectsMapState value,
           $Res Function(_ControlObjectsMapState) then) =
       __$ControlObjectsMapStateCopyWithImpl<$Res>;
+  @override
+  $Res call({ControlObject selectedObject});
+
+  @override
+  $ControlObjectCopyWith<$Res> get selectedObject;
 }
 
 /// @nodoc
@@ -60,26 +97,59 @@ class __$ControlObjectsMapStateCopyWithImpl<$Res>
 
   @override
   _ControlObjectsMapState get _value => super._value as _ControlObjectsMapState;
+
+  @override
+  $Res call({
+    Object selectedObject = freezed,
+  }) {
+    return _then(_ControlObjectsMapState(
+      selectedObject: selectedObject == freezed
+          ? _value.selectedObject
+          : selectedObject as ControlObject,
+    ));
+  }
 }
 
 /// @nodoc
 class _$_ControlObjectsMapState implements _ControlObjectsMapState {
-  const _$_ControlObjectsMapState();
+  const _$_ControlObjectsMapState({this.selectedObject});
+
+  @override
+  final ControlObject selectedObject;
 
   @override
   String toString() {
-    return 'ControlObjectsMapState()';
+    return 'ControlObjectsMapState(selectedObject: $selectedObject)';
   }
 
   @override
   bool operator ==(dynamic other) {
-    return identical(this, other) || (other is _ControlObjectsMapState);
+    return identical(this, other) ||
+        (other is _ControlObjectsMapState &&
+            (identical(other.selectedObject, selectedObject) ||
+                const DeepCollectionEquality()
+                    .equals(other.selectedObject, selectedObject)));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode =>
+      runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(selectedObject);
+
+  @JsonKey(ignore: true)
+  @override
+  _$ControlObjectsMapStateCopyWith<_ControlObjectsMapState> get copyWith =>
+      __$ControlObjectsMapStateCopyWithImpl<_ControlObjectsMapState>(
+          this, _$identity);
 }
 
 abstract class _ControlObjectsMapState implements ControlObjectsMapState {
-  const factory _ControlObjectsMapState() = _$_ControlObjectsMapState;
+  const factory _ControlObjectsMapState({ControlObject selectedObject}) =
+      _$_ControlObjectsMapState;
+
+  @override
+  ControlObject get selectedObject;
+  @override
+  @JsonKey(ignore: true)
+  _$ControlObjectsMapStateCopyWith<_ControlObjectsMapState> get copyWith;
 }

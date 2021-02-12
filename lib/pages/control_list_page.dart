@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_map/flutter_map.dart';
 import 'package:inspector/blocs/control_list/bloc.dart';
 import 'package:inspector/blocs/control_list/event.dart';
 import 'package:inspector/blocs/control_list/sort_state.dart';
@@ -35,6 +36,8 @@ class ControlListPage extends StatefulWidget {
 class _ControlListPageState extends State<ControlListPage> {
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       new GlobalKey<RefreshIndicatorState>();
+
+  final MapController _mapController = MapController();
 
   @override
   Widget build(BuildContext context) {
@@ -97,25 +100,27 @@ class _ControlListPageState extends State<ControlListPage> {
               emptyListLoadedState: (emptyListLoadedState) =>
                   _buildEmptyObjectsList(),
               loadedAllListState: (loadedAllListState) => ControlObjectMap(
-                controlObjects: loadedAllListState.objects
-                    .where((e) => e.geometry != null)
-                    .toList(),
+                location: BlocProvider.of<ControlListBloc>(context).location,
+                controlObjects: loadedAllListState.objects,
+                selectedObject: normalState.mapState.selectedObject,
                 openControlObject: _onOpenControlObject(context),
                 selectObject: _onSelectControlObject(context),
                 hasNotViolations: _onHasNotViolations(context),
                 hasViolation: _onHasViolations(context),
+                mapController: _mapController,
               ),
               loadingListState: (loadingListState) => Center(
                 child: CircularProgressIndicator(),
               ),
               loadedListState: (loadedListState) => ControlObjectMap(
-                controlObjects: loadedListState.objects
-                    .where((e) => e.geometry != null)
-                    .toList(),
+                location: BlocProvider.of<ControlListBloc>(context).location,
+                controlObjects: loadedListState.objects,
+                selectedObject: normalState.mapState.selectedObject,
                 openControlObject: _onOpenControlObject(context),
                 selectObject: _onSelectControlObject(context),
                 hasNotViolations: _onHasNotViolations(context),
                 hasViolation: _onHasViolations(context),
+                mapController: _mapController,
               ),
             ),
             cantWorkInThisModeState: (cantWorkInThisModeState) =>
@@ -249,8 +254,9 @@ class _ControlListPageState extends State<ControlListPage> {
         );
       };
 
-  void Function(ControlObject) _onSelectControlObject(BuildContext context) =>
-      (ControlObject object) {};
+  void Function(ControlObject) _onSelectControlObject(BuildContext context) =>(ControlObject object) {
+       BlocProvider.of<ControlListBloc>(context).add(ControlListBlocEvent.selectControlObject(object));
+};
 
   void Function(ControlObject) _onHasNotViolations(BuildContext context) =>
       (ControlObject object) async {

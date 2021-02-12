@@ -104,8 +104,8 @@ class ApiProvider {
 
   Future<dynamic> _request(Function request) async {
     try {
-      final result = (await request()).data;
-      return result;
+      final res = (await request());  
+      return res.data;
     } on DioError catch (ex) {
       print(ex);
       if (ex.type == DioErrorType.RESPONSE) {
@@ -152,7 +152,7 @@ class ApiProvider {
 
   String _formatDate(DateTime date) {
     if (date != null) {
-      return DateFormat('dd.MM.yyyy').format(date);
+      return date.toIso8601String();
     }
   }
 

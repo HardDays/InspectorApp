@@ -36,7 +36,7 @@ abstract class ControlObjectsListState implements _$ControlObjectsListState {
   }) = EmptyListLoadedState;
 
   const factory ControlObjectsListState.loadingListState() = LoadingListState;
-
+  
   const factory ControlObjectsListState.loadedListState({
     List<ControlObject> objects,
     bool refresh,
