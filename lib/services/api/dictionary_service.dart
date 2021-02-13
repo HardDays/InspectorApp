@@ -9,6 +9,7 @@ import 'package:inspector/model/department_control/object_kind.dart';
 import 'package:inspector/model/department_control/object_type.dart';
 import 'package:inspector/model/department_control/source.dart';
 import 'package:inspector/model/department_control/violation_additional_feature.dart';
+import 'package:inspector/model/department_control/violation_classification_search_result.dart';
 import 'package:inspector/model/department_control/violation_name.dart';
 import 'package:inspector/model/department_control/violation_status.dart' as dc;
 import 'package:inspector/model/district.dart';
@@ -147,7 +148,7 @@ class ApiDictionaryService {
       _loadDictionary<ObjectKind>((d) => ObjectKind.fromJson(d), from, to);
   
   Future<List<ObjectElement>> getDCObjectElements(int from, int to) =>
-      _loadDictionary<ObjectElement>((d) => ObjectElement.fromSqliteJson(d), from, to);
+      _loadDictionary<ObjectElement>((d) => ObjectElement.fromJson(d), from, to);
 
   Future<List<ObjectType>> getDCObjectTypes(int from, int to) =>
       _loadDictionary<ObjectType>((d) => ObjectType.fromJson(d), from, to);
@@ -166,5 +167,8 @@ class ApiDictionaryService {
 
    Future<List<Source>> getDCSources(int from, int to) =>
       _loadDictionary<Source>((d) => Source.fromJson(d), from, to);
+
+  Future<List<ViolationClassificationSearchResult>> getViolationClassifications(int from, int to) =>
+      _loadDictionary<ViolationClassificationSearchResult>((d) => ViolationClassificationSearchResult.fromJson(d), from, to);
 
 }

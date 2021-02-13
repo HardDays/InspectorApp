@@ -15,6 +15,7 @@ import 'package:inspector/model/department_control/object_kind.dart';
 import 'package:inspector/model/department_control/object_type.dart';
 import 'package:inspector/model/department_control/source.dart';
 import 'package:inspector/model/department_control/violation_additional_feature.dart';
+import 'package:inspector/model/department_control/violation_classification_search_result.dart';
 import 'package:inspector/model/department_control/violation_name.dart';
 import 'package:inspector/model/department_control/violation_status.dart' as dc;
 import 'package:inspector/model/district.dart';
@@ -89,7 +90,7 @@ class ApiProvider {
     ViolationName: '/dict/dc-violation-names',
     ViolationAdditionalFeature: '/dict/dc-violation-additional-features',
     Source: '/dict/dc-sources',
-
+    ViolationClassificationSearchResult: '/dict/dc-violation-classifications',
   };
 
   final dio = Dio(BaseOptions(baseUrl: _defaultUrl));

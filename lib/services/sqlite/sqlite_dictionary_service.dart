@@ -34,6 +34,7 @@ class DictionaryNames {
   static const dcContractors = 'dcContractors';
   static const dcViolationAdditionalFeatures = 'dcViolationAdditionalFeatures';
   static const dcSources = 'dcSources';
+  static const dcViolationClassificationSearchResults = 'dcViolationClassificationSearchResults';
 }
 
 class TableDefinitions {
@@ -92,6 +93,28 @@ class TableDefinitions {
     DictionaryNames.dcContractors: '''CREATE TABLE IF NOT EXISTS dcContractors(id INTEGER PRIMARY KEY, name TEXT, inn TEXT)''',
     DictionaryNames.dcViolationAdditionalFeatures: '''CREATE TABLE IF NOT EXISTS dcViolationAdditionalFeatures(id INTEGER PRIMARY KEY, name TEXT)''',
     DictionaryNames.dcSources: '''CREATE TABLE IF NOT EXISTS dcSources(id INTEGER PRIMARY KEY, name TEXT)''',
+    DictionaryNames.dcViolationClassificationSearchResults: '''CREATE TABLE IF NOT EXISTS dcViolationClassificationSearchResults(
+      id INTEGER PRIMARY KEY,
+      ekn INTEGER,
+      warning TEXT,
+      regulations TEXT,
+      npa TEXT,
+      article TEXT,
+      violationNameId INTEGER,
+      violationNameName TEXT,
+      violationTypeId INTEGER,
+      violationTypeName TEXT,      
+      violationKindId INTEGER,
+      violationKindName TEXT,
+      objectTypeId INTEGER,
+      objectTypeName TEXT,
+      objectTypeCode TEXT,
+      objectElementId INTEGER,
+      objectElementName TEXT,
+      objectElementObjectTypeId INTEGER,
+      objectElementObjectTypeName TEXT,
+      objectElementObjectTypeCode TEXT
+    )''',
   };
 }
 
