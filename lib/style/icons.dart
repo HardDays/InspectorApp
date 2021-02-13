@@ -66,6 +66,13 @@ abstract class ProjectIcons {
   }) =>
       _buildIcon('icons/Icon/Delete.svg')(color, width, height);
 
+  static Widget delete1Icon({
+    Color color = ProjectColors.darkBlue,
+    double width = 16.0,
+    double height = 18.0,
+  }) =>
+      _buildIcon('icons/Icon/Delete-1.svg')(color, width, height);
+
   static Widget inspectorIcon({
     Color color = ProjectColors.mediumBlue,
     double width = 16.0,
