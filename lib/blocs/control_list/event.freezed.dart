@@ -62,6 +62,15 @@ class _$ControlListBlocEventTearOff {
   }
 
 // ignore: unused_element
+  RegisterViolationEvent registerViolationEvent(
+      ControlObject object, DCViolation violation) {
+    return RegisterViolationEvent(
+      object,
+      violation,
+    );
+  }
+
+// ignore: unused_element
   ChangeShowMapEvent changeShowMapEvent(bool showMap) {
     return ChangeShowMapEvent(
       showMap,
@@ -85,6 +94,9 @@ mixin _$ControlListBlocEvent {
     @required TResult changeSort(String state),
     @required TResult openInMapEvent(ControlObject object),
     @required TResult createViolationEvent(ControlObject object),
+    @required
+        TResult registerViolationEvent(
+            ControlObject object, DCViolation violation),
     @required TResult changeShowMapEvent(bool showMap),
   });
   @optionalTypeArgs
@@ -97,6 +109,7 @@ mixin _$ControlListBlocEvent {
     TResult changeSort(String state),
     TResult openInMapEvent(ControlObject object),
     TResult createViolationEvent(ControlObject object),
+    TResult registerViolationEvent(ControlObject object, DCViolation violation),
     TResult changeShowMapEvent(bool showMap),
     @required TResult orElse(),
   });
@@ -112,6 +125,7 @@ mixin _$ControlListBlocEvent {
     @required TResult changeSort(ChangeSortEvent value),
     @required TResult openInMapEvent(OpenInMapEvent value),
     @required TResult createViolationEvent(CreateViolationEvent value),
+    @required TResult registerViolationEvent(RegisterViolationEvent value),
     @required TResult changeShowMapEvent(ChangeShowMapEvent value),
   });
   @optionalTypeArgs
@@ -124,6 +138,7 @@ mixin _$ControlListBlocEvent {
     TResult changeSort(ChangeSortEvent value),
     TResult openInMapEvent(OpenInMapEvent value),
     TResult createViolationEvent(CreateViolationEvent value),
+    TResult registerViolationEvent(RegisterViolationEvent value),
     TResult changeShowMapEvent(ChangeShowMapEvent value),
     @required TResult orElse(),
   });
@@ -193,6 +208,9 @@ class _$LoadControlListEvent implements LoadControlListEvent {
     @required TResult changeSort(String state),
     @required TResult openInMapEvent(ControlObject object),
     @required TResult createViolationEvent(ControlObject object),
+    @required
+        TResult registerViolationEvent(
+            ControlObject object, DCViolation violation),
     @required TResult changeShowMapEvent(bool showMap),
   }) {
     assert(loadControlListEvent != null);
@@ -203,6 +221,7 @@ class _$LoadControlListEvent implements LoadControlListEvent {
     assert(changeSort != null);
     assert(openInMapEvent != null);
     assert(createViolationEvent != null);
+    assert(registerViolationEvent != null);
     assert(changeShowMapEvent != null);
     return loadControlListEvent();
   }
@@ -218,6 +237,7 @@ class _$LoadControlListEvent implements LoadControlListEvent {
     TResult changeSort(String state),
     TResult openInMapEvent(ControlObject object),
     TResult createViolationEvent(ControlObject object),
+    TResult registerViolationEvent(ControlObject object, DCViolation violation),
     TResult changeShowMapEvent(bool showMap),
     @required TResult orElse(),
   }) {
@@ -241,6 +261,7 @@ class _$LoadControlListEvent implements LoadControlListEvent {
     @required TResult changeSort(ChangeSortEvent value),
     @required TResult openInMapEvent(OpenInMapEvent value),
     @required TResult createViolationEvent(CreateViolationEvent value),
+    @required TResult registerViolationEvent(RegisterViolationEvent value),
     @required TResult changeShowMapEvent(ChangeShowMapEvent value),
   }) {
     assert(loadControlListEvent != null);
@@ -251,6 +272,7 @@ class _$LoadControlListEvent implements LoadControlListEvent {
     assert(changeSort != null);
     assert(openInMapEvent != null);
     assert(createViolationEvent != null);
+    assert(registerViolationEvent != null);
     assert(changeShowMapEvent != null);
     return loadControlListEvent(this);
   }
@@ -266,6 +288,7 @@ class _$LoadControlListEvent implements LoadControlListEvent {
     TResult changeSort(ChangeSortEvent value),
     TResult openInMapEvent(OpenInMapEvent value),
     TResult createViolationEvent(CreateViolationEvent value),
+    TResult registerViolationEvent(RegisterViolationEvent value),
     TResult changeShowMapEvent(ChangeShowMapEvent value),
     @required TResult orElse(),
   }) {
@@ -328,6 +351,9 @@ class _$CantWorkInThisModeEvent implements CantWorkInThisModeEvent {
     @required TResult changeSort(String state),
     @required TResult openInMapEvent(ControlObject object),
     @required TResult createViolationEvent(ControlObject object),
+    @required
+        TResult registerViolationEvent(
+            ControlObject object, DCViolation violation),
     @required TResult changeShowMapEvent(bool showMap),
   }) {
     assert(loadControlListEvent != null);
@@ -338,6 +364,7 @@ class _$CantWorkInThisModeEvent implements CantWorkInThisModeEvent {
     assert(changeSort != null);
     assert(openInMapEvent != null);
     assert(createViolationEvent != null);
+    assert(registerViolationEvent != null);
     assert(changeShowMapEvent != null);
     return cantWorkInThisModeEvent();
   }
@@ -353,6 +380,7 @@ class _$CantWorkInThisModeEvent implements CantWorkInThisModeEvent {
     TResult changeSort(String state),
     TResult openInMapEvent(ControlObject object),
     TResult createViolationEvent(ControlObject object),
+    TResult registerViolationEvent(ControlObject object, DCViolation violation),
     TResult changeShowMapEvent(bool showMap),
     @required TResult orElse(),
   }) {
@@ -376,6 +404,7 @@ class _$CantWorkInThisModeEvent implements CantWorkInThisModeEvent {
     @required TResult changeSort(ChangeSortEvent value),
     @required TResult openInMapEvent(OpenInMapEvent value),
     @required TResult createViolationEvent(CreateViolationEvent value),
+    @required TResult registerViolationEvent(RegisterViolationEvent value),
     @required TResult changeShowMapEvent(ChangeShowMapEvent value),
   }) {
     assert(loadControlListEvent != null);
@@ -386,6 +415,7 @@ class _$CantWorkInThisModeEvent implements CantWorkInThisModeEvent {
     assert(changeSort != null);
     assert(openInMapEvent != null);
     assert(createViolationEvent != null);
+    assert(registerViolationEvent != null);
     assert(changeShowMapEvent != null);
     return cantWorkInThisModeEvent(this);
   }
@@ -401,6 +431,7 @@ class _$CantWorkInThisModeEvent implements CantWorkInThisModeEvent {
     TResult changeSort(ChangeSortEvent value),
     TResult openInMapEvent(OpenInMapEvent value),
     TResult createViolationEvent(CreateViolationEvent value),
+    TResult registerViolationEvent(RegisterViolationEvent value),
     TResult changeShowMapEvent(ChangeShowMapEvent value),
     @required TResult orElse(),
   }) {
@@ -463,6 +494,9 @@ class _$RefreshControlListEvent implements RefreshControlListEvent {
     @required TResult changeSort(String state),
     @required TResult openInMapEvent(ControlObject object),
     @required TResult createViolationEvent(ControlObject object),
+    @required
+        TResult registerViolationEvent(
+            ControlObject object, DCViolation violation),
     @required TResult changeShowMapEvent(bool showMap),
   }) {
     assert(loadControlListEvent != null);
@@ -473,6 +507,7 @@ class _$RefreshControlListEvent implements RefreshControlListEvent {
     assert(changeSort != null);
     assert(openInMapEvent != null);
     assert(createViolationEvent != null);
+    assert(registerViolationEvent != null);
     assert(changeShowMapEvent != null);
     return refreshControlListEvent();
   }
@@ -488,6 +523,7 @@ class _$RefreshControlListEvent implements RefreshControlListEvent {
     TResult changeSort(String state),
     TResult openInMapEvent(ControlObject object),
     TResult createViolationEvent(ControlObject object),
+    TResult registerViolationEvent(ControlObject object, DCViolation violation),
     TResult changeShowMapEvent(bool showMap),
     @required TResult orElse(),
   }) {
@@ -511,6 +547,7 @@ class _$RefreshControlListEvent implements RefreshControlListEvent {
     @required TResult changeSort(ChangeSortEvent value),
     @required TResult openInMapEvent(OpenInMapEvent value),
     @required TResult createViolationEvent(CreateViolationEvent value),
+    @required TResult registerViolationEvent(RegisterViolationEvent value),
     @required TResult changeShowMapEvent(ChangeShowMapEvent value),
   }) {
     assert(loadControlListEvent != null);
@@ -521,6 +558,7 @@ class _$RefreshControlListEvent implements RefreshControlListEvent {
     assert(changeSort != null);
     assert(openInMapEvent != null);
     assert(createViolationEvent != null);
+    assert(registerViolationEvent != null);
     assert(changeShowMapEvent != null);
     return refreshControlListEvent(this);
   }
@@ -536,6 +574,7 @@ class _$RefreshControlListEvent implements RefreshControlListEvent {
     TResult changeSort(ChangeSortEvent value),
     TResult openInMapEvent(OpenInMapEvent value),
     TResult createViolationEvent(CreateViolationEvent value),
+    TResult registerViolationEvent(RegisterViolationEvent value),
     TResult changeShowMapEvent(ChangeShowMapEvent value),
     @required TResult orElse(),
   }) {
@@ -601,6 +640,9 @@ class _$LoadNextPageControlListEvent implements LoadNextPageControlListEvent {
     @required TResult changeSort(String state),
     @required TResult openInMapEvent(ControlObject object),
     @required TResult createViolationEvent(ControlObject object),
+    @required
+        TResult registerViolationEvent(
+            ControlObject object, DCViolation violation),
     @required TResult changeShowMapEvent(bool showMap),
   }) {
     assert(loadControlListEvent != null);
@@ -611,6 +653,7 @@ class _$LoadNextPageControlListEvent implements LoadNextPageControlListEvent {
     assert(changeSort != null);
     assert(openInMapEvent != null);
     assert(createViolationEvent != null);
+    assert(registerViolationEvent != null);
     assert(changeShowMapEvent != null);
     return loadNextPageControlListEvent();
   }
@@ -626,6 +669,7 @@ class _$LoadNextPageControlListEvent implements LoadNextPageControlListEvent {
     TResult changeSort(String state),
     TResult openInMapEvent(ControlObject object),
     TResult createViolationEvent(ControlObject object),
+    TResult registerViolationEvent(ControlObject object, DCViolation violation),
     TResult changeShowMapEvent(bool showMap),
     @required TResult orElse(),
   }) {
@@ -649,6 +693,7 @@ class _$LoadNextPageControlListEvent implements LoadNextPageControlListEvent {
     @required TResult changeSort(ChangeSortEvent value),
     @required TResult openInMapEvent(OpenInMapEvent value),
     @required TResult createViolationEvent(CreateViolationEvent value),
+    @required TResult registerViolationEvent(RegisterViolationEvent value),
     @required TResult changeShowMapEvent(ChangeShowMapEvent value),
   }) {
     assert(loadControlListEvent != null);
@@ -659,6 +704,7 @@ class _$LoadNextPageControlListEvent implements LoadNextPageControlListEvent {
     assert(changeSort != null);
     assert(openInMapEvent != null);
     assert(createViolationEvent != null);
+    assert(registerViolationEvent != null);
     assert(changeShowMapEvent != null);
     return loadNextPageControlListEvent(this);
   }
@@ -674,6 +720,7 @@ class _$LoadNextPageControlListEvent implements LoadNextPageControlListEvent {
     TResult changeSort(ChangeSortEvent value),
     TResult openInMapEvent(OpenInMapEvent value),
     TResult createViolationEvent(CreateViolationEvent value),
+    TResult registerViolationEvent(RegisterViolationEvent value),
     TResult changeShowMapEvent(ChangeShowMapEvent value),
     @required TResult orElse(),
   }) {
@@ -770,6 +817,9 @@ class _$ChangeFiltersEvent implements ChangeFiltersEvent {
     @required TResult changeSort(String state),
     @required TResult openInMapEvent(ControlObject object),
     @required TResult createViolationEvent(ControlObject object),
+    @required
+        TResult registerViolationEvent(
+            ControlObject object, DCViolation violation),
     @required TResult changeShowMapEvent(bool showMap),
   }) {
     assert(loadControlListEvent != null);
@@ -780,6 +830,7 @@ class _$ChangeFiltersEvent implements ChangeFiltersEvent {
     assert(changeSort != null);
     assert(openInMapEvent != null);
     assert(createViolationEvent != null);
+    assert(registerViolationEvent != null);
     assert(changeShowMapEvent != null);
     return changeFilters(state);
   }
@@ -795,6 +846,7 @@ class _$ChangeFiltersEvent implements ChangeFiltersEvent {
     TResult changeSort(String state),
     TResult openInMapEvent(ControlObject object),
     TResult createViolationEvent(ControlObject object),
+    TResult registerViolationEvent(ControlObject object, DCViolation violation),
     TResult changeShowMapEvent(bool showMap),
     @required TResult orElse(),
   }) {
@@ -818,6 +870,7 @@ class _$ChangeFiltersEvent implements ChangeFiltersEvent {
     @required TResult changeSort(ChangeSortEvent value),
     @required TResult openInMapEvent(OpenInMapEvent value),
     @required TResult createViolationEvent(CreateViolationEvent value),
+    @required TResult registerViolationEvent(RegisterViolationEvent value),
     @required TResult changeShowMapEvent(ChangeShowMapEvent value),
   }) {
     assert(loadControlListEvent != null);
@@ -828,6 +881,7 @@ class _$ChangeFiltersEvent implements ChangeFiltersEvent {
     assert(changeSort != null);
     assert(openInMapEvent != null);
     assert(createViolationEvent != null);
+    assert(registerViolationEvent != null);
     assert(changeShowMapEvent != null);
     return changeFilters(this);
   }
@@ -843,6 +897,7 @@ class _$ChangeFiltersEvent implements ChangeFiltersEvent {
     TResult changeSort(ChangeSortEvent value),
     TResult openInMapEvent(OpenInMapEvent value),
     TResult createViolationEvent(CreateViolationEvent value),
+    TResult registerViolationEvent(RegisterViolationEvent value),
     TResult changeShowMapEvent(ChangeShowMapEvent value),
     @required TResult orElse(),
   }) {
@@ -932,6 +987,9 @@ class _$ChangeSortEvent implements ChangeSortEvent {
     @required TResult changeSort(String state),
     @required TResult openInMapEvent(ControlObject object),
     @required TResult createViolationEvent(ControlObject object),
+    @required
+        TResult registerViolationEvent(
+            ControlObject object, DCViolation violation),
     @required TResult changeShowMapEvent(bool showMap),
   }) {
     assert(loadControlListEvent != null);
@@ -942,6 +1000,7 @@ class _$ChangeSortEvent implements ChangeSortEvent {
     assert(changeSort != null);
     assert(openInMapEvent != null);
     assert(createViolationEvent != null);
+    assert(registerViolationEvent != null);
     assert(changeShowMapEvent != null);
     return changeSort(state);
   }
@@ -957,6 +1016,7 @@ class _$ChangeSortEvent implements ChangeSortEvent {
     TResult changeSort(String state),
     TResult openInMapEvent(ControlObject object),
     TResult createViolationEvent(ControlObject object),
+    TResult registerViolationEvent(ControlObject object, DCViolation violation),
     TResult changeShowMapEvent(bool showMap),
     @required TResult orElse(),
   }) {
@@ -980,6 +1040,7 @@ class _$ChangeSortEvent implements ChangeSortEvent {
     @required TResult changeSort(ChangeSortEvent value),
     @required TResult openInMapEvent(OpenInMapEvent value),
     @required TResult createViolationEvent(CreateViolationEvent value),
+    @required TResult registerViolationEvent(RegisterViolationEvent value),
     @required TResult changeShowMapEvent(ChangeShowMapEvent value),
   }) {
     assert(loadControlListEvent != null);
@@ -990,6 +1051,7 @@ class _$ChangeSortEvent implements ChangeSortEvent {
     assert(changeSort != null);
     assert(openInMapEvent != null);
     assert(createViolationEvent != null);
+    assert(registerViolationEvent != null);
     assert(changeShowMapEvent != null);
     return changeSort(this);
   }
@@ -1005,6 +1067,7 @@ class _$ChangeSortEvent implements ChangeSortEvent {
     TResult changeSort(ChangeSortEvent value),
     TResult openInMapEvent(OpenInMapEvent value),
     TResult createViolationEvent(CreateViolationEvent value),
+    TResult registerViolationEvent(RegisterViolationEvent value),
     TResult changeShowMapEvent(ChangeShowMapEvent value),
     @required TResult orElse(),
   }) {
@@ -1105,6 +1168,9 @@ class _$OpenInMapEvent implements OpenInMapEvent {
     @required TResult changeSort(String state),
     @required TResult openInMapEvent(ControlObject object),
     @required TResult createViolationEvent(ControlObject object),
+    @required
+        TResult registerViolationEvent(
+            ControlObject object, DCViolation violation),
     @required TResult changeShowMapEvent(bool showMap),
   }) {
     assert(loadControlListEvent != null);
@@ -1115,6 +1181,7 @@ class _$OpenInMapEvent implements OpenInMapEvent {
     assert(changeSort != null);
     assert(openInMapEvent != null);
     assert(createViolationEvent != null);
+    assert(registerViolationEvent != null);
     assert(changeShowMapEvent != null);
     return openInMapEvent(object);
   }
@@ -1130,6 +1197,7 @@ class _$OpenInMapEvent implements OpenInMapEvent {
     TResult changeSort(String state),
     TResult openInMapEvent(ControlObject object),
     TResult createViolationEvent(ControlObject object),
+    TResult registerViolationEvent(ControlObject object, DCViolation violation),
     TResult changeShowMapEvent(bool showMap),
     @required TResult orElse(),
   }) {
@@ -1153,6 +1221,7 @@ class _$OpenInMapEvent implements OpenInMapEvent {
     @required TResult changeSort(ChangeSortEvent value),
     @required TResult openInMapEvent(OpenInMapEvent value),
     @required TResult createViolationEvent(CreateViolationEvent value),
+    @required TResult registerViolationEvent(RegisterViolationEvent value),
     @required TResult changeShowMapEvent(ChangeShowMapEvent value),
   }) {
     assert(loadControlListEvent != null);
@@ -1163,6 +1232,7 @@ class _$OpenInMapEvent implements OpenInMapEvent {
     assert(changeSort != null);
     assert(openInMapEvent != null);
     assert(createViolationEvent != null);
+    assert(registerViolationEvent != null);
     assert(changeShowMapEvent != null);
     return openInMapEvent(this);
   }
@@ -1178,6 +1248,7 @@ class _$OpenInMapEvent implements OpenInMapEvent {
     TResult changeSort(ChangeSortEvent value),
     TResult openInMapEvent(OpenInMapEvent value),
     TResult createViolationEvent(CreateViolationEvent value),
+    TResult registerViolationEvent(RegisterViolationEvent value),
     TResult changeShowMapEvent(ChangeShowMapEvent value),
     @required TResult orElse(),
   }) {
@@ -1279,6 +1350,9 @@ class _$CreateViolationEvent implements CreateViolationEvent {
     @required TResult changeSort(String state),
     @required TResult openInMapEvent(ControlObject object),
     @required TResult createViolationEvent(ControlObject object),
+    @required
+        TResult registerViolationEvent(
+            ControlObject object, DCViolation violation),
     @required TResult changeShowMapEvent(bool showMap),
   }) {
     assert(loadControlListEvent != null);
@@ -1289,6 +1363,7 @@ class _$CreateViolationEvent implements CreateViolationEvent {
     assert(changeSort != null);
     assert(openInMapEvent != null);
     assert(createViolationEvent != null);
+    assert(registerViolationEvent != null);
     assert(changeShowMapEvent != null);
     return createViolationEvent(object);
   }
@@ -1304,6 +1379,7 @@ class _$CreateViolationEvent implements CreateViolationEvent {
     TResult changeSort(String state),
     TResult openInMapEvent(ControlObject object),
     TResult createViolationEvent(ControlObject object),
+    TResult registerViolationEvent(ControlObject object, DCViolation violation),
     TResult changeShowMapEvent(bool showMap),
     @required TResult orElse(),
   }) {
@@ -1327,6 +1403,7 @@ class _$CreateViolationEvent implements CreateViolationEvent {
     @required TResult changeSort(ChangeSortEvent value),
     @required TResult openInMapEvent(OpenInMapEvent value),
     @required TResult createViolationEvent(CreateViolationEvent value),
+    @required TResult registerViolationEvent(RegisterViolationEvent value),
     @required TResult changeShowMapEvent(ChangeShowMapEvent value),
   }) {
     assert(loadControlListEvent != null);
@@ -1337,6 +1414,7 @@ class _$CreateViolationEvent implements CreateViolationEvent {
     assert(changeSort != null);
     assert(openInMapEvent != null);
     assert(createViolationEvent != null);
+    assert(registerViolationEvent != null);
     assert(changeShowMapEvent != null);
     return createViolationEvent(this);
   }
@@ -1352,6 +1430,7 @@ class _$CreateViolationEvent implements CreateViolationEvent {
     TResult changeSort(ChangeSortEvent value),
     TResult openInMapEvent(OpenInMapEvent value),
     TResult createViolationEvent(CreateViolationEvent value),
+    TResult registerViolationEvent(RegisterViolationEvent value),
     TResult changeShowMapEvent(ChangeShowMapEvent value),
     @required TResult orElse(),
   }) {
@@ -1370,6 +1449,212 @@ abstract class CreateViolationEvent implements ControlListBlocEvent {
   ControlObject get object;
   @JsonKey(ignore: true)
   $CreateViolationEventCopyWith<CreateViolationEvent> get copyWith;
+}
+
+/// @nodoc
+abstract class $RegisterViolationEventCopyWith<$Res> {
+  factory $RegisterViolationEventCopyWith(RegisterViolationEvent value,
+          $Res Function(RegisterViolationEvent) then) =
+      _$RegisterViolationEventCopyWithImpl<$Res>;
+  $Res call({ControlObject object, DCViolation violation});
+
+  $ControlObjectCopyWith<$Res> get object;
+  $DCViolationCopyWith<$Res> get violation;
+}
+
+/// @nodoc
+class _$RegisterViolationEventCopyWithImpl<$Res>
+    extends _$ControlListBlocEventCopyWithImpl<$Res>
+    implements $RegisterViolationEventCopyWith<$Res> {
+  _$RegisterViolationEventCopyWithImpl(RegisterViolationEvent _value,
+      $Res Function(RegisterViolationEvent) _then)
+      : super(_value, (v) => _then(v as RegisterViolationEvent));
+
+  @override
+  RegisterViolationEvent get _value => super._value as RegisterViolationEvent;
+
+  @override
+  $Res call({
+    Object object = freezed,
+    Object violation = freezed,
+  }) {
+    return _then(RegisterViolationEvent(
+      object == freezed ? _value.object : object as ControlObject,
+      violation == freezed ? _value.violation : violation as DCViolation,
+    ));
+  }
+
+  @override
+  $ControlObjectCopyWith<$Res> get object {
+    if (_value.object == null) {
+      return null;
+    }
+    return $ControlObjectCopyWith<$Res>(_value.object, (value) {
+      return _then(_value.copyWith(object: value));
+    });
+  }
+
+  @override
+  $DCViolationCopyWith<$Res> get violation {
+    if (_value.violation == null) {
+      return null;
+    }
+    return $DCViolationCopyWith<$Res>(_value.violation, (value) {
+      return _then(_value.copyWith(violation: value));
+    });
+  }
+}
+
+/// @nodoc
+class _$RegisterViolationEvent implements RegisterViolationEvent {
+  const _$RegisterViolationEvent(this.object, this.violation)
+      : assert(object != null),
+        assert(violation != null);
+
+  @override
+  final ControlObject object;
+  @override
+  final DCViolation violation;
+
+  @override
+  String toString() {
+    return 'ControlListBlocEvent.registerViolationEvent(object: $object, violation: $violation)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is RegisterViolationEvent &&
+            (identical(other.object, object) ||
+                const DeepCollectionEquality().equals(other.object, object)) &&
+            (identical(other.violation, violation) ||
+                const DeepCollectionEquality()
+                    .equals(other.violation, violation)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(object) ^
+      const DeepCollectionEquality().hash(violation);
+
+  @JsonKey(ignore: true)
+  @override
+  $RegisterViolationEventCopyWith<RegisterViolationEvent> get copyWith =>
+      _$RegisterViolationEventCopyWithImpl<RegisterViolationEvent>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object>({
+    @required TResult loadControlListEvent(),
+    @required TResult cantWorkInThisModeEvent(),
+    @required TResult refreshControlListEvent(),
+    @required TResult loadNextPageControlListEvent(),
+    @required TResult changeFilters(ControlFiltersBlocState state),
+    @required TResult changeSort(String state),
+    @required TResult openInMapEvent(ControlObject object),
+    @required TResult createViolationEvent(ControlObject object),
+    @required
+        TResult registerViolationEvent(
+            ControlObject object, DCViolation violation),
+    @required TResult changeShowMapEvent(bool showMap),
+  }) {
+    assert(loadControlListEvent != null);
+    assert(cantWorkInThisModeEvent != null);
+    assert(refreshControlListEvent != null);
+    assert(loadNextPageControlListEvent != null);
+    assert(changeFilters != null);
+    assert(changeSort != null);
+    assert(openInMapEvent != null);
+    assert(createViolationEvent != null);
+    assert(registerViolationEvent != null);
+    assert(changeShowMapEvent != null);
+    return registerViolationEvent(object, violation);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object>({
+    TResult loadControlListEvent(),
+    TResult cantWorkInThisModeEvent(),
+    TResult refreshControlListEvent(),
+    TResult loadNextPageControlListEvent(),
+    TResult changeFilters(ControlFiltersBlocState state),
+    TResult changeSort(String state),
+    TResult openInMapEvent(ControlObject object),
+    TResult createViolationEvent(ControlObject object),
+    TResult registerViolationEvent(ControlObject object, DCViolation violation),
+    TResult changeShowMapEvent(bool showMap),
+    @required TResult orElse(),
+  }) {
+    assert(orElse != null);
+    if (registerViolationEvent != null) {
+      return registerViolationEvent(object, violation);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object>({
+    @required TResult loadControlListEvent(LoadControlListEvent value),
+    @required TResult cantWorkInThisModeEvent(CantWorkInThisModeEvent value),
+    @required TResult refreshControlListEvent(RefreshControlListEvent value),
+    @required
+        TResult loadNextPageControlListEvent(
+            LoadNextPageControlListEvent value),
+    @required TResult changeFilters(ChangeFiltersEvent value),
+    @required TResult changeSort(ChangeSortEvent value),
+    @required TResult openInMapEvent(OpenInMapEvent value),
+    @required TResult createViolationEvent(CreateViolationEvent value),
+    @required TResult registerViolationEvent(RegisterViolationEvent value),
+    @required TResult changeShowMapEvent(ChangeShowMapEvent value),
+  }) {
+    assert(loadControlListEvent != null);
+    assert(cantWorkInThisModeEvent != null);
+    assert(refreshControlListEvent != null);
+    assert(loadNextPageControlListEvent != null);
+    assert(changeFilters != null);
+    assert(changeSort != null);
+    assert(openInMapEvent != null);
+    assert(createViolationEvent != null);
+    assert(registerViolationEvent != null);
+    assert(changeShowMapEvent != null);
+    return registerViolationEvent(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object>({
+    TResult loadControlListEvent(LoadControlListEvent value),
+    TResult cantWorkInThisModeEvent(CantWorkInThisModeEvent value),
+    TResult refreshControlListEvent(RefreshControlListEvent value),
+    TResult loadNextPageControlListEvent(LoadNextPageControlListEvent value),
+    TResult changeFilters(ChangeFiltersEvent value),
+    TResult changeSort(ChangeSortEvent value),
+    TResult openInMapEvent(OpenInMapEvent value),
+    TResult createViolationEvent(CreateViolationEvent value),
+    TResult registerViolationEvent(RegisterViolationEvent value),
+    TResult changeShowMapEvent(ChangeShowMapEvent value),
+    @required TResult orElse(),
+  }) {
+    assert(orElse != null);
+    if (registerViolationEvent != null) {
+      return registerViolationEvent(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class RegisterViolationEvent implements ControlListBlocEvent {
+  const factory RegisterViolationEvent(
+      ControlObject object, DCViolation violation) = _$RegisterViolationEvent;
+
+  ControlObject get object;
+  DCViolation get violation;
+  @JsonKey(ignore: true)
+  $RegisterViolationEventCopyWith<RegisterViolationEvent> get copyWith;
 }
 
 /// @nodoc
@@ -1441,6 +1726,9 @@ class _$ChangeShowMapEvent implements ChangeShowMapEvent {
     @required TResult changeSort(String state),
     @required TResult openInMapEvent(ControlObject object),
     @required TResult createViolationEvent(ControlObject object),
+    @required
+        TResult registerViolationEvent(
+            ControlObject object, DCViolation violation),
     @required TResult changeShowMapEvent(bool showMap),
   }) {
     assert(loadControlListEvent != null);
@@ -1451,6 +1739,7 @@ class _$ChangeShowMapEvent implements ChangeShowMapEvent {
     assert(changeSort != null);
     assert(openInMapEvent != null);
     assert(createViolationEvent != null);
+    assert(registerViolationEvent != null);
     assert(changeShowMapEvent != null);
     return changeShowMapEvent(showMap);
   }
@@ -1466,6 +1755,7 @@ class _$ChangeShowMapEvent implements ChangeShowMapEvent {
     TResult changeSort(String state),
     TResult openInMapEvent(ControlObject object),
     TResult createViolationEvent(ControlObject object),
+    TResult registerViolationEvent(ControlObject object, DCViolation violation),
     TResult changeShowMapEvent(bool showMap),
     @required TResult orElse(),
   }) {
@@ -1489,6 +1779,7 @@ class _$ChangeShowMapEvent implements ChangeShowMapEvent {
     @required TResult changeSort(ChangeSortEvent value),
     @required TResult openInMapEvent(OpenInMapEvent value),
     @required TResult createViolationEvent(CreateViolationEvent value),
+    @required TResult registerViolationEvent(RegisterViolationEvent value),
     @required TResult changeShowMapEvent(ChangeShowMapEvent value),
   }) {
     assert(loadControlListEvent != null);
@@ -1499,6 +1790,7 @@ class _$ChangeShowMapEvent implements ChangeShowMapEvent {
     assert(changeSort != null);
     assert(openInMapEvent != null);
     assert(createViolationEvent != null);
+    assert(registerViolationEvent != null);
     assert(changeShowMapEvent != null);
     return changeShowMapEvent(this);
   }
@@ -1514,6 +1806,7 @@ class _$ChangeShowMapEvent implements ChangeShowMapEvent {
     TResult changeSort(ChangeSortEvent value),
     TResult openInMapEvent(OpenInMapEvent value),
     TResult createViolationEvent(CreateViolationEvent value),
+    TResult registerViolationEvent(RegisterViolationEvent value),
     TResult changeShowMapEvent(ChangeShowMapEvent value),
     @required TResult orElse(),
   }) {

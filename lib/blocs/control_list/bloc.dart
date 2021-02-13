@@ -109,6 +109,17 @@ class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
           }
         },
         createViolationEvent: (event) async* {},
+        registerViolationEvent: (event) async* {
+          _notificationBloc.add(SnackBarNotificationEvent('Сохранение нарушения'));
+          try {
+            await _departmentControlService.registerControlResult(event.object, violation: event.violation);
+            _notificationBloc.add(SnackBarNotificationEvent('Сохранено успешно'));
+          }  on ApiException catch (e) {
+            print(e.message);
+            print(e.details);
+            yield* (_onApiException(e));
+          }
+        },
       ));
     } on ApiException catch (e) {
       print(e.message);
