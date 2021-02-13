@@ -30,19 +30,17 @@ class ControlObjectPage extends StatelessWidget {
           ),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
+      body: Padding(
           padding: const EdgeInsets.only(left: 30, right: 30, top: 20),
           child: Column(
             children: [
               ControlObjectInfo(
                 controlObject: _controlObject,
               ),
-              if (_controlObject.violations.isNotEmpty)
+              if (_controlObject.violations?.isNotEmpty)
                 _buildViolationsSection(),
             ],
           ),
-        ),
       ),
     );
   }
@@ -80,8 +78,9 @@ class ControlObjectPage extends StatelessWidget {
 
   Widget _buildViolationsSection() {
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
-        _buildFiltersSection(),
+        //_buildFiltersSection(),
         _buildViolationsList(),
       ],
     );
@@ -94,13 +93,12 @@ class ControlObjectPage extends StatelessWidget {
         color: Colors.white,
         border: Border.all(color: ProjectColors.lightBlue),
       ),
-      child: Expanded(
         child: ListView(
+          shrinkWrap: true,
           children: _controlObject.violations
               .map((violation) => ControlViolationWidget(violation: violation))
               .toList(),
         ),
-      ),
     );
   }
 }

@@ -1,10 +1,13 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:inspector/model/department_control/violation_short_search_result.dart';
 import 'package:inspector/pages/control_violation_page.dart';
 import 'package:inspector/style/colors.dart';
+import 'package:inspector/style/icons.dart';
 import 'package:inspector/style/text_style.dart';
+import 'package:intl/intl.dart';
 
 class ControlViolationWidget extends StatefulWidget {
 
@@ -60,11 +63,11 @@ class ControlViolationWidgetState extends State<ControlViolationWidget> {
                 padding: const EdgeInsets.only(left: 7, right: 7),
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
-                  color: ProjectColors.darkBlue,
+                  color: widget.violation.source.name == 'ЦАФАП' ? ProjectColors.darkBlue : ProjectColors.yellow,
                 ),
                 child: RotatedBox(
                   quarterTurns: -1,
-                  child: Text('ОАТИ',
+                  child: Text(widget.violation.source.name,
                     style: ProjectTextStyles.baseBold.apply(color: ProjectColors.white),
                   ),
                 ),
@@ -85,7 +88,7 @@ class ControlViolationWidgetState extends State<ControlViolationWidget> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text('${widget.violation.violationNum} от ${widget.violation.detectionDate} ',
+                                Text('Нарушение ${widget.violation.violationNum ?? ""} от ${DateFormat("hh:mm dd.MM.yyyy").format(widget.violation.detectionDate)} ',
                                   style: ProjectTextStyles.baseBold.apply(color: ProjectColors.blue),
                                 ),
                                 Padding(
@@ -104,15 +107,16 @@ class ControlViolationWidgetState extends State<ControlViolationWidget> {
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.only(top: 15, bottom: 15, right: 15),
-                              child: CachedNetworkImage(
-                                width: 120,
-                                height: 80,
-                                fit: BoxFit.cover ,
-                                imageUrl: 'https://picsum.photos/640/480',
+                            if(widget.violation.photos != null && widget.violation.photos.isNotEmpty)
+                              Padding(
+                                padding: const EdgeInsets.only(top: 15, bottom: 15, right: 15),
+                                child: Image(
+                                  width: 120,
+                                  height: 80,
+                                  fit: BoxFit.cover ,
+                                  image: MemoryImage(base64.decode(widget.violation.photos.first.data)),
+                                ),
                               ),
-                            ),
                             Container(
                               alignment: Alignment.topRight,
                               child: Container(
@@ -126,7 +130,7 @@ class ControlViolationWidgetState extends State<ControlViolationWidget> {
                                 ),
                                 padding: const EdgeInsets.only(left: 10, right: 10, top: 2, bottom: 4),
                                 margin: EdgeInsets.only(top: 15, right: _actions ? 15 : 0),
-                                child: Text('На контроле',
+                                child: Text(widget.violation.violationStatus.name,
                                   style: ProjectTextStyles.smallBold.apply(color: ProjectColors.cyan),
                                 ),
                               ),
@@ -152,6 +156,12 @@ class ControlViolationWidgetState extends State<ControlViolationWidget> {
                         ),
                         'Не устранено',
                       ),
+                      if(widget.violation.violationStatus.name == 'Снят с контроля')
+                        _buildAction(
+                          context,
+                          ProjectIcons.delete1Icon(),
+                          'Удалить',
+                        ),
                     ],  
                   ),
                 ),
