@@ -22,13 +22,13 @@ class _$ViolationShortSearchResultTearOff {
       {int id,
       String violationNum,
       ViolationStatus violationStatus,
-      String detectionDate,
+      DateTime detectionDate,
       Source source,
       ObjectElement objectElement,
       ViolationName eknViolationName,
       ViolationName otherViolationName,
-      String resolveDate,
-      String controlDate,
+      DateTime resolveDate,
+      DateTime controlDate,
       List<DCPhoto> photos}) {
     return _ViolationShortSearchResult(
       id: id,
@@ -60,13 +60,13 @@ mixin _$ViolationShortSearchResult {
   int get id;
   String get violationNum;
   ViolationStatus get violationStatus;
-  String get detectionDate;
+  DateTime get detectionDate;
   Source get source;
   ObjectElement get objectElement;
   ViolationName get eknViolationName;
   ViolationName get otherViolationName;
-  String get resolveDate;
-  String get controlDate;
+  DateTime get resolveDate;
+  DateTime get controlDate;
   List<DCPhoto> get photos;
 
   Map<String, dynamic> toJson();
@@ -83,13 +83,13 @@ abstract class $ViolationShortSearchResultCopyWith<$Res> {
       {int id,
       String violationNum,
       ViolationStatus violationStatus,
-      String detectionDate,
+      DateTime detectionDate,
       Source source,
       ObjectElement objectElement,
       ViolationName eknViolationName,
       ViolationName otherViolationName,
-      String resolveDate,
-      String controlDate,
+      DateTime resolveDate,
+      DateTime controlDate,
       List<DCPhoto> photos});
 
   $SourceCopyWith<$Res> get source;
@@ -131,7 +131,7 @@ class _$ViolationShortSearchResultCopyWithImpl<$Res>
           : violationStatus as ViolationStatus,
       detectionDate: detectionDate == freezed
           ? _value.detectionDate
-          : detectionDate as String,
+          : detectionDate as DateTime,
       source: source == freezed ? _value.source : source as Source,
       objectElement: objectElement == freezed
           ? _value.objectElement
@@ -143,9 +143,9 @@ class _$ViolationShortSearchResultCopyWithImpl<$Res>
           ? _value.otherViolationName
           : otherViolationName as ViolationName,
       resolveDate:
-          resolveDate == freezed ? _value.resolveDate : resolveDate as String,
+          resolveDate == freezed ? _value.resolveDate : resolveDate as DateTime,
       controlDate:
-          controlDate == freezed ? _value.controlDate : controlDate as String,
+          controlDate == freezed ? _value.controlDate : controlDate as DateTime,
       photos: photos == freezed ? _value.photos : photos as List<DCPhoto>,
     ));
   }
@@ -203,13 +203,13 @@ abstract class _$ViolationShortSearchResultCopyWith<$Res>
       {int id,
       String violationNum,
       ViolationStatus violationStatus,
-      String detectionDate,
+      DateTime detectionDate,
       Source source,
       ObjectElement objectElement,
       ViolationName eknViolationName,
       ViolationName otherViolationName,
-      String resolveDate,
-      String controlDate,
+      DateTime resolveDate,
+      DateTime controlDate,
       List<DCPhoto> photos});
 
   @override
@@ -258,7 +258,7 @@ class __$ViolationShortSearchResultCopyWithImpl<$Res>
           : violationStatus as ViolationStatus,
       detectionDate: detectionDate == freezed
           ? _value.detectionDate
-          : detectionDate as String,
+          : detectionDate as DateTime,
       source: source == freezed ? _value.source : source as Source,
       objectElement: objectElement == freezed
           ? _value.objectElement
@@ -270,9 +270,9 @@ class __$ViolationShortSearchResultCopyWithImpl<$Res>
           ? _value.otherViolationName
           : otherViolationName as ViolationName,
       resolveDate:
-          resolveDate == freezed ? _value.resolveDate : resolveDate as String,
+          resolveDate == freezed ? _value.resolveDate : resolveDate as DateTime,
       controlDate:
-          controlDate == freezed ? _value.controlDate : controlDate as String,
+          controlDate == freezed ? _value.controlDate : controlDate as DateTime,
       photos: photos == freezed ? _value.photos : photos as List<DCPhoto>,
     ));
   }
@@ -305,7 +305,7 @@ class _$_ViolationShortSearchResult implements _ViolationShortSearchResult {
   @override
   final ViolationStatus violationStatus;
   @override
-  final String detectionDate;
+  final DateTime detectionDate;
   @override
   final Source source;
   @override
@@ -315,9 +315,9 @@ class _$_ViolationShortSearchResult implements _ViolationShortSearchResult {
   @override
   final ViolationName otherViolationName;
   @override
-  final String resolveDate;
+  final DateTime resolveDate;
   @override
-  final String controlDate;
+  final DateTime controlDate;
   @override
   final List<DCPhoto> photos;
 
@@ -395,13 +395,13 @@ abstract class _ViolationShortSearchResult
       {int id,
       String violationNum,
       ViolationStatus violationStatus,
-      String detectionDate,
+      DateTime detectionDate,
       Source source,
       ObjectElement objectElement,
       ViolationName eknViolationName,
       ViolationName otherViolationName,
-      String resolveDate,
-      String controlDate,
+      DateTime resolveDate,
+      DateTime controlDate,
       List<DCPhoto> photos}) = _$_ViolationShortSearchResult;
 
   factory _ViolationShortSearchResult.fromJson(Map<String, dynamic> json) =
@@ -414,7 +414,7 @@ abstract class _ViolationShortSearchResult
   @override
   ViolationStatus get violationStatus;
   @override
-  String get detectionDate;
+  DateTime get detectionDate;
   @override
   Source get source;
   @override
@@ -424,9 +424,9 @@ abstract class _ViolationShortSearchResult
   @override
   ViolationName get otherViolationName;
   @override
-  String get resolveDate;
+  DateTime get resolveDate;
   @override
-  String get controlDate;
+  DateTime get controlDate;
   @override
   List<DCPhoto> get photos;
   @override

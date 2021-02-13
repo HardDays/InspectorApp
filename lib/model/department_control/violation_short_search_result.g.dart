@@ -15,7 +15,9 @@ _$_ViolationShortSearchResult _$_$_ViolationShortSearchResultFromJson(
         ? null
         : ViolationStatus.fromJson(
             json['violationStatus'] as Map<String, dynamic>),
-    detectionDate: json['detectionDate'] as String,
+    detectionDate: json['detectionDate'] == null
+        ? null
+        : DateTime.parse(json['detectionDate'] as String),
     source: json['source'] == null
         ? null
         : Source.fromJson(json['source'] as Map<String, dynamic>),
@@ -30,8 +32,12 @@ _$_ViolationShortSearchResult _$_$_ViolationShortSearchResultFromJson(
         ? null
         : ViolationName.fromJson(
             json['otherViolationName'] as Map<String, dynamic>),
-    resolveDate: json['resolveDate'] as String,
-    controlDate: json['controlDate'] as String,
+    resolveDate: json['resolveDate'] == null
+        ? null
+        : DateTime.parse(json['resolveDate'] as String),
+    controlDate: json['controlDate'] == null
+        ? null
+        : DateTime.parse(json['controlDate'] as String),
     photos: (json['photos'] as List)
         ?.map((e) =>
             e == null ? null : DCPhoto.fromJson(e as Map<String, dynamic>))
@@ -45,12 +51,12 @@ Map<String, dynamic> _$_$_ViolationShortSearchResultToJson(
       'id': instance.id,
       'violationNum': instance.violationNum,
       'violationStatus': instance.violationStatus,
-      'detectionDate': instance.detectionDate,
+      'detectionDate': instance.detectionDate?.toIso8601String(),
       'source': instance.source,
       'objectElement': instance.objectElement,
       'eknViolationName': instance.eknViolationName,
       'otherViolationName': instance.otherViolationName,
-      'resolveDate': instance.resolveDate,
-      'controlDate': instance.controlDate,
+      'resolveDate': instance.resolveDate?.toIso8601String(),
+      'controlDate': instance.controlDate?.toIso8601String(),
       'photos': instance.photos,
     };

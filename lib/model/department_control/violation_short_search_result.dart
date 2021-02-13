@@ -15,13 +15,13 @@ abstract class ViolationShortSearchResult with _$ViolationShortSearchResult {
     int id,
     String violationNum,
     ViolationStatus violationStatus,
-    String detectionDate,
+    DateTime detectionDate,
     Source source,
     ObjectElement objectElement,
     ViolationName eknViolationName,
     ViolationName otherViolationName,
-    String resolveDate,
-    String controlDate,
+    DateTime resolveDate,
+    DateTime controlDate,
     List<DCPhoto> photos,
   }) = _ViolationShortSearchResult;
 
