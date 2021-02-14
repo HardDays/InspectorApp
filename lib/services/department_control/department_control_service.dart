@@ -1,10 +1,10 @@
 import 'package:inspector/blocs/control_filters/state.dart';
-import 'package:inspector/blocs/control_list/filter_state.dart';
-import 'package:inspector/blocs/control_list/sort_state.dart';
 import 'package:inspector/model/department_control/control_object.dart';
 import 'package:inspector/model/department_control/control_result.dart';
 import 'package:inspector/model/department_control/dcviolation.dart';
+import 'package:inspector/providers/exceptions/api_exception.dart';
 import 'package:inspector/services/department_control/api/department_control_api_client.dart';
+import 'package:inspector/services/department_control/response.dart';
 import 'package:inspector/services/location/location.dart';
 import 'package:inspector/services/network_status_service/network_status.dart';
 
@@ -86,6 +86,17 @@ class DepartmentControlService {
     );
     final t  = await _apiClient.registerControlResult(object, result);
     return t;
+  }
+
+  Future<ControlResultsResponse> getControlResults(ControlObject object) async {
+    try {
+      final result = await _apiClient.getControlSearchResults(object.id);
+      if(result.isEmpty)
+        return ControlResultsResponse.emptyResultsListResponse();
+      return ControlResultsResponse.controlResultsListResponse(result);
+    } on ApiException catch (e) {
+      return ControlResultsResponse.exceptionResponse(e);
+    }
   }
 
 }
