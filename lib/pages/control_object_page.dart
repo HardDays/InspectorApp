@@ -1,46 +1,65 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:inspector/blocs/control_object/bloc.dart';
+import 'package:inspector/blocs/control_object/event.dart';
+import 'package:inspector/blocs/control_object/state.dart';
+import 'package:inspector/blocs/notification_bloc/bloc.dart';
 import 'package:inspector/model/department_control/control_object.dart';
+import 'package:inspector/services/department_control/department_control_service.dart';
+import 'package:inspector/style/appbar.dart';
 import 'package:inspector/style/colors.dart';
 import 'package:inspector/style/icons.dart';
 import 'package:inspector/style/text_style.dart';
 import 'package:inspector/widgets/control/control_object/control_object_info.dart';
-import 'package:inspector/widgets/control/control_object/violation.dart';
+import 'package:inspector/widgets/control/control_object/violation/violation_short_search_result_widget.dart';
+import 'package:provider/provider.dart';
 
 class ControlObjectPage extends StatelessWidget {
   ControlObjectPage(this._controlObject);
 
   final ControlObject _controlObject;
+  final _refreshKey = GlobalKey<RefreshIndicatorState>();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 0.0,
-        backgroundColor: ProjectColors.darkBlue,
-        centerTitle: true,
-        title: Padding(
-          padding: const EdgeInsets.only(left: 12),
-          child: Text(
-            'Объект ведомственного контроля',
-            style: ProjectTextStyles.title.apply(
-              color: ProjectColors.white,
+    return BlocProvider<ControlObjectBloc>(
+      create: (context) => ControlObjectBloc(
+        object: _controlObject,
+        departmentControlService:
+            Provider.of<DepartmentControlService>(context, listen: false),
+        notificationBloc: BlocProvider.of<NotificationBloc>(context),
+      ),
+      child: Scaffold(
+        appBar: ProjectAppbar('Объект ведомственного контроля'),
+        body: Padding(
+          padding: const EdgeInsets.only(left: 30, right: 30, top: 20),
+          child: RefreshIndicator(
+            key: _refreshKey,
+            onRefresh: () async {
+              BlocProvider.of<ControlObjectBloc>(context)
+                  .add(ControlObjectBlocEvent.loadEvent());
+              await BlocProvider.of<ControlObjectBloc>(context)
+                  .firstWhere((e) => e is! LoadingState);
+            },
+            child: SingleChildScrollView(
+              child: BlocBuilder<ControlObjectBloc, ControlObjectBlocState>(
+                builder: (context, state) {
+                  _refreshKey.currentState?.show();
+                  return Column(
+                    children: [
+                      ControlObjectInfo(
+                        controlObject: _controlObject,
+                      ),
+                      if (_controlObject.violations?.isNotEmpty)
+                        _buildViolationsSection(),
+                    ],
+                  );
+                },
+              ),
             ),
-            textAlign: TextAlign.center,
           ),
         ),
-      ),
-      body: Padding(
-          padding: const EdgeInsets.only(left: 30, right: 30, top: 20),
-          child: Column(
-            children: [
-              ControlObjectInfo(
-                controlObject: _controlObject,
-              ),
-              if (_controlObject.violations?.isNotEmpty)
-                _buildViolationsSection(),
-            ],
-          ),
       ),
     );
   }
@@ -93,12 +112,18 @@ class ControlObjectPage extends StatelessWidget {
         color: Colors.white,
         border: Border.all(color: ProjectColors.lightBlue),
       ),
-        child: ListView(
-          shrinkWrap: true,
-          children: _controlObject.violations
-              .map((violation) => ControlViolationWidget(violation: violation))
-              .toList(),
-        ),
+      child: ListView(
+        shrinkWrap: true,
+        children: _controlObject.violations
+            .map((violation) => ViolationShortSearchResultWidget(
+                  violation: violation,
+                  onClick: () {},
+                  onCompleted: () {},
+                  onNotCompleted: () {},
+                  onRemove: () {},
+                ))
+            .toList(),
+      ),
     );
   }
 }

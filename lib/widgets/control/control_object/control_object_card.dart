@@ -5,7 +5,7 @@ import 'package:inspector/style/colors.dart';
 import 'package:inspector/style/icons.dart';
 import 'package:inspector/style/text_style.dart';
 import 'package:inspector/widgets/control/control_object/control_object_widget.dart';
-import 'package:inspector/widgets/control/control_object/violation.dart';
+import 'package:inspector/widgets/control/control_object/violation/violation_short_search_result_widget.dart';
 
 class ControlObjectCard extends StatelessWidget {
   final ControlObject controlObject;
@@ -77,7 +77,11 @@ class ControlObjectCard extends StatelessWidget {
           Column(
             children: controlObject.violations
                 .map(
-                  (e) => ControlViolationWidget(
+                  (e) => ViolationShortSearchResultWidget(
+                    onClick: () {},
+                    onCompleted: () {},
+                    onNotCompleted: () {},
+                    onRemove: () {},
                     violation: e,
                   ),
                 )
