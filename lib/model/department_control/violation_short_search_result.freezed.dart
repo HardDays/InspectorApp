@@ -92,6 +92,7 @@ abstract class $ViolationShortSearchResultCopyWith<$Res> {
       DateTime controlDate,
       List<DCPhoto> photos});
 
+  $ViolationStatusCopyWith<$Res> get violationStatus;
   $SourceCopyWith<$Res> get source;
   $ObjectElementCopyWith<$Res> get objectElement;
   $ViolationNameCopyWith<$Res> get eknViolationName;
@@ -148,6 +149,16 @@ class _$ViolationShortSearchResultCopyWithImpl<$Res>
           controlDate == freezed ? _value.controlDate : controlDate as DateTime,
       photos: photos == freezed ? _value.photos : photos as List<DCPhoto>,
     ));
+  }
+
+  @override
+  $ViolationStatusCopyWith<$Res> get violationStatus {
+    if (_value.violationStatus == null) {
+      return null;
+    }
+    return $ViolationStatusCopyWith<$Res>(_value.violationStatus, (value) {
+      return _then(_value.copyWith(violationStatus: value));
+    });
   }
 
   @override
@@ -212,6 +223,8 @@ abstract class _$ViolationShortSearchResultCopyWith<$Res>
       DateTime controlDate,
       List<DCPhoto> photos});
 
+  @override
+  $ViolationStatusCopyWith<$Res> get violationStatus;
   @override
   $SourceCopyWith<$Res> get source;
   @override

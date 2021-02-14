@@ -62,7 +62,8 @@ _$_ViolationSearchResult _$_$_ViolationSearchResultFromJson(
         : Source.fromJson(json['source'] as Map<String, dynamic>),
     violationKind: json['violationKind'] == null
         ? null
-        : ViolationKind.fromJson(json['violationKind'] as Map<String, dynamic>),
+        : DCViolationKind.fromJson(
+            json['violationKind'] as Map<String, dynamic>),
     cafapAssigmentId: json['cafapAssigmentId'] as String,
     cafapPrescriptionId: json['cafapPrescriptionId'] as String,
     cafapPrescriptionNum: json['cafapPrescriptionNum'] as int,

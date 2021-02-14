@@ -38,7 +38,7 @@ class _$ViolationSearchResultTearOff {
       String violationNum,
       ViolationStatus violationStatus,
       Source source,
-      ViolationKind violationKind,
+      DCViolationKind violationKind,
       String cafapAssigmentId,
       String cafapPrescriptionId,
       int cafapPrescriptionNum,
@@ -110,7 +110,7 @@ mixin _$ViolationSearchResult {
   String get violationNum;
   ViolationStatus get violationStatus;
   Source get source;
-  ViolationKind get violationKind;
+  DCViolationKind get violationKind;
   String get cafapAssigmentId;
   String get cafapPrescriptionId;
   int get cafapPrescriptionNum;
@@ -150,7 +150,7 @@ abstract class $ViolationSearchResultCopyWith<$Res> {
       String violationNum,
       ViolationStatus violationStatus,
       Source source,
-      ViolationKind violationKind,
+      DCViolationKind violationKind,
       String cafapAssigmentId,
       String cafapPrescriptionId,
       int cafapPrescriptionNum,
@@ -164,7 +164,9 @@ abstract class $ViolationSearchResultCopyWith<$Res> {
   $ViolationClassificationCopyWith<$Res> get otherViolationClassification;
   $ObjectElementCopyWith<$Res> get objectElement;
   $ContractorCopyWith<$Res> get violator;
+  $ViolationStatusCopyWith<$Res> get violationStatus;
   $SourceCopyWith<$Res> get source;
+  $DCViolationKindCopyWith<$Res> get violationKind;
 }
 
 /// @nodoc
@@ -251,7 +253,7 @@ class _$ViolationSearchResultCopyWithImpl<$Res>
       source: source == freezed ? _value.source : source as Source,
       violationKind: violationKind == freezed
           ? _value.violationKind
-          : violationKind as ViolationKind,
+          : violationKind as DCViolationKind,
       cafapAssigmentId: cafapAssigmentId == freezed
           ? _value.cafapAssigmentId
           : cafapAssigmentId as String,
@@ -322,12 +324,32 @@ class _$ViolationSearchResultCopyWithImpl<$Res>
   }
 
   @override
+  $ViolationStatusCopyWith<$Res> get violationStatus {
+    if (_value.violationStatus == null) {
+      return null;
+    }
+    return $ViolationStatusCopyWith<$Res>(_value.violationStatus, (value) {
+      return _then(_value.copyWith(violationStatus: value));
+    });
+  }
+
+  @override
   $SourceCopyWith<$Res> get source {
     if (_value.source == null) {
       return null;
     }
     return $SourceCopyWith<$Res>(_value.source, (value) {
       return _then(_value.copyWith(source: value));
+    });
+  }
+
+  @override
+  $DCViolationKindCopyWith<$Res> get violationKind {
+    if (_value.violationKind == null) {
+      return null;
+    }
+    return $DCViolationKindCopyWith<$Res>(_value.violationKind, (value) {
+      return _then(_value.copyWith(violationKind: value));
     });
   }
 }
@@ -359,7 +381,7 @@ abstract class _$ViolationSearchResultCopyWith<$Res>
       String violationNum,
       ViolationStatus violationStatus,
       Source source,
-      ViolationKind violationKind,
+      DCViolationKind violationKind,
       String cafapAssigmentId,
       String cafapPrescriptionId,
       int cafapPrescriptionNum,
@@ -378,7 +400,11 @@ abstract class _$ViolationSearchResultCopyWith<$Res>
   @override
   $ContractorCopyWith<$Res> get violator;
   @override
+  $ViolationStatusCopyWith<$Res> get violationStatus;
+  @override
   $SourceCopyWith<$Res> get source;
+  @override
+  $DCViolationKindCopyWith<$Res> get violationKind;
 }
 
 /// @nodoc
@@ -467,7 +493,7 @@ class __$ViolationSearchResultCopyWithImpl<$Res>
       source: source == freezed ? _value.source : source as Source,
       violationKind: violationKind == freezed
           ? _value.violationKind
-          : violationKind as ViolationKind,
+          : violationKind as DCViolationKind,
       cafapAssigmentId: cafapAssigmentId == freezed
           ? _value.cafapAssigmentId
           : cafapAssigmentId as String,
@@ -572,7 +598,7 @@ class _$_ViolationSearchResult implements _ViolationSearchResult {
   @override
   final Source source;
   @override
-  final ViolationKind violationKind;
+  final DCViolationKind violationKind;
   @override
   final String cafapAssigmentId;
   @override
@@ -722,7 +748,7 @@ abstract class _ViolationSearchResult implements ViolationSearchResult {
       String violationNum,
       ViolationStatus violationStatus,
       Source source,
-      ViolationKind violationKind,
+      DCViolationKind violationKind,
       String cafapAssigmentId,
       String cafapPrescriptionId,
       int cafapPrescriptionNum,
@@ -774,7 +800,7 @@ abstract class _ViolationSearchResult implements ViolationSearchResult {
   @override
   Source get source;
   @override
-  ViolationKind get violationKind;
+  DCViolationKind get violationKind;
   @override
   String get cafapAssigmentId;
   @override
