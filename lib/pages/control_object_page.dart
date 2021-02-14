@@ -6,12 +6,16 @@ import 'package:inspector/blocs/control_object/event.dart';
 import 'package:inspector/blocs/control_object/state.dart';
 import 'package:inspector/blocs/notification_bloc/bloc.dart';
 import 'package:inspector/model/department_control/control_object.dart';
+import 'package:inspector/model/department_control/control_result_search_result.dart';
+import 'package:inspector/model/department_control/violation_short_search_result.dart';
 import 'package:inspector/services/department_control/department_control_service.dart';
 import 'package:inspector/style/appbar.dart';
 import 'package:inspector/style/colors.dart';
 import 'package:inspector/style/icons.dart';
 import 'package:inspector/style/text_style.dart';
 import 'package:inspector/widgets/control/control_object/control_object_info.dart';
+import 'package:inspector/widgets/control/control_object/search_result/search_result_widget.dart';
+import 'package:inspector/widgets/control/control_object/violation/violation_search_result_widget.dart';
 import 'package:inspector/widgets/control/control_object/violation/violation_short_search_result_widget.dart';
 import 'package:provider/provider.dart';
 
@@ -37,22 +41,29 @@ class ControlObjectPage extends StatelessWidget {
           child: RefreshIndicator(
             key: _refreshKey,
             onRefresh: () async {
-              BlocProvider.of<ControlObjectBloc>(context)
+              BlocProvider.of<ControlObjectBloc>(_refreshKey.currentContext)
                   .add(ControlObjectBlocEvent.loadEvent());
-              await BlocProvider.of<ControlObjectBloc>(context)
+              await BlocProvider.of<ControlObjectBloc>(_refreshKey.currentContext)
                   .firstWhere((e) => e is! LoadingState);
             },
             child: SingleChildScrollView(
               child: BlocBuilder<ControlObjectBloc, ControlObjectBlocState>(
                 builder: (context, state) {
-                  _refreshKey.currentState?.show();
+                  if (state is LoadedState && state.needRefresh)
+                    _refreshKey.currentState?.show();
                   return Column(
                     children: [
                       ControlObjectInfo(
                         controlObject: _controlObject,
                       ),
-                      if (_controlObject.violations?.isNotEmpty)
-                        _buildViolationsSection(),
+                      Padding(
+                        padding: EdgeInsets.all(20),
+                        child: state.maybeMap(
+                          loadedWithListState: (state) => _buildSearchResults(state.controlSearchResults),
+                          orElse: () =>
+                              _buildViolationsList(state.object.violations),
+                        ),
+                      ),
                     ],
                   );
                 },
@@ -95,35 +106,37 @@ class ControlObjectPage extends StatelessWidget {
     );
   }
 
-  Widget _buildViolationsSection() {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        //_buildFiltersSection(),
-        _buildViolationsList(),
-      ],
+  Widget _buildSearchResults(List<ControlResultSearchResult> searchResults) {
+    return ListView(
+      shrinkWrap: true,
+      children: searchResults
+          .map(
+            (searchResult) => searchResult.violationExists
+                ? ViolationSearchResultWidget(
+                    searchResult: searchResult,
+                    onClick: () {},
+                    onCompleted: () {},
+                    onNotCompleted: () {},
+                    onRemove: () {},
+                  )
+                : SearchResultWidget(searchResult: searchResult),
+          )
+          .toList(),
     );
   }
 
-  Widget _buildViolationsList() {
-    return Container(
-      margin: const EdgeInsets.only(top: 20),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border.all(color: ProjectColors.lightBlue),
-      ),
-      child: ListView(
-        shrinkWrap: true,
-        children: _controlObject.violations
-            .map((violation) => ViolationShortSearchResultWidget(
-                  violation: violation,
-                  onClick: () {},
-                  onCompleted: () {},
-                  onNotCompleted: () {},
-                  onRemove: () {},
-                ))
-            .toList(),
-      ),
+  Widget _buildViolationsList(List<ViolationShortSearchResult> violations) {
+    return ListView(
+      shrinkWrap: true,
+      children: violations
+          .map((violation) => ViolationShortSearchResultWidget(
+                violation: violation,
+                onClick: () {},
+                onCompleted: () {},
+                onNotCompleted: () {},
+                onRemove: () {},
+              ))
+          .toList(),
     );
   }
 }

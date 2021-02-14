@@ -74,6 +74,9 @@ class ControlViolationWidgetState extends State<ControlViolationWidget> {
         decoration: BoxDecoration(
           border: Border(
             top: BorderSide(color: ProjectColors.lightBlue),
+            right: BorderSide(color: ProjectColors.lightBlue),
+            left: BorderSide(color: ProjectColors.lightBlue),
+            bottom: BorderSide(color: ProjectColors.lightBlue),
           ),
         ),
         child: IntrinsicHeight(

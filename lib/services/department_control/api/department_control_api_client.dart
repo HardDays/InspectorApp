@@ -111,7 +111,7 @@ class DepartmentControlApiClient {
         from: from,
         sort: sort,
       ).then((response) => response['data']
-          .map((e) => ControlObject.fromJson(e)).cast<ControlObject>().toList());
+          .map((e) => ControlResultSearchResult.fromJson(e)).cast<ControlResultSearchResult>().toList());
 
   Future<ControlResultSearchResult> getControlSearchResultByIds(
     int dcObjectId,

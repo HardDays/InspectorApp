@@ -17,5 +17,6 @@ abstract class ControlObjectBlocState with _$ControlObjectBlocState {
 
   const factory ControlObjectBlocState.loadedState({
     ControlObject object,
+    bool needRefresh,
   }) = LoadedState;
 }

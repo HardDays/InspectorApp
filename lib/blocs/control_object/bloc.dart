@@ -13,7 +13,10 @@ class ControlObjectBloc
     @required this.object,
     @required this.departmentControlService,
     @required this.notificationBloc,
-  }) : super(ControlObjectBlocState.loadedState(object: object));
+  }) : super(ControlObjectBlocState.loadedState(
+          object: object,
+          needRefresh: true,
+        ));
 
   final ControlObject object;
   final DepartmentControlService departmentControlService;
@@ -24,7 +27,7 @@ class ControlObjectBloc
           ControlObjectBlocEvent event) =>
       event.map(
         loadEvent: (event) async* {
-          yield(ControlObjectBlocState.loadingState(object: object));
+          yield (ControlObjectBlocState.loadingState(object: object));
           final results =
               await departmentControlService.getControlResults(object);
           yield* (results.map(
@@ -37,6 +40,7 @@ class ControlObjectBloc
             emptyResultsListResponse: (response) async* {
               yield (ControlObjectBlocState.loadedState(
                 object: object,
+                needRefresh: false,
               ));
             },
             exceptionResponse: (response) async* {
@@ -45,6 +49,10 @@ class ControlObjectBloc
                   'При загрузке информации о нарушениях произошла ошибка ${response.e.message}: ${response.e.details}',
                 ),
               );
+              yield (ControlObjectBlocState.loadedState(
+                object: object,
+                needRefresh: false,
+              ));
             },
           ));
         },

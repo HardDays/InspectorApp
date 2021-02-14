@@ -31,9 +31,10 @@ class _$ControlObjectBlocStateTearOff {
   }
 
 // ignore: unused_element
-  LoadedState loadedState({ControlObject object}) {
+  LoadedState loadedState({ControlObject object, bool needRefresh}) {
     return LoadedState(
       object: object,
+      needRefresh: needRefresh,
     );
   }
 }
@@ -52,14 +53,14 @@ mixin _$ControlObjectBlocState {
     @required
         TResult loadedWithListState(ControlObject object,
             List<ControlResultSearchResult> controlSearchResults),
-    @required TResult loadedState(ControlObject object),
+    @required TResult loadedState(ControlObject object, bool needRefresh),
   });
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object>({
     TResult loadingState(ControlObject object),
     TResult loadedWithListState(ControlObject object,
         List<ControlResultSearchResult> controlSearchResults),
-    TResult loadedState(ControlObject object),
+    TResult loadedState(ControlObject object, bool needRefresh),
     @required TResult orElse(),
   });
   @optionalTypeArgs
@@ -189,7 +190,7 @@ class _$LoadingState implements LoadingState {
     @required
         TResult loadedWithListState(ControlObject object,
             List<ControlResultSearchResult> controlSearchResults),
-    @required TResult loadedState(ControlObject object),
+    @required TResult loadedState(ControlObject object, bool needRefresh),
   }) {
     assert(loadingState != null);
     assert(loadedWithListState != null);
@@ -203,7 +204,7 @@ class _$LoadingState implements LoadingState {
     TResult loadingState(ControlObject object),
     TResult loadedWithListState(ControlObject object,
         List<ControlResultSearchResult> controlSearchResults),
-    TResult loadedState(ControlObject object),
+    TResult loadedState(ControlObject object, bool needRefresh),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -335,7 +336,7 @@ class _$LoadedWithListState implements LoadedWithListState {
     @required
         TResult loadedWithListState(ControlObject object,
             List<ControlResultSearchResult> controlSearchResults),
-    @required TResult loadedState(ControlObject object),
+    @required TResult loadedState(ControlObject object, bool needRefresh),
   }) {
     assert(loadingState != null);
     assert(loadedWithListState != null);
@@ -349,7 +350,7 @@ class _$LoadedWithListState implements LoadedWithListState {
     TResult loadingState(ControlObject object),
     TResult loadedWithListState(ControlObject object,
         List<ControlResultSearchResult> controlSearchResults),
-    TResult loadedState(ControlObject object),
+    TResult loadedState(ControlObject object, bool needRefresh),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -409,7 +410,7 @@ abstract class $LoadedStateCopyWith<$Res>
           LoadedState value, $Res Function(LoadedState) then) =
       _$LoadedStateCopyWithImpl<$Res>;
   @override
-  $Res call({ControlObject object});
+  $Res call({ControlObject object, bool needRefresh});
 
   @override
   $ControlObjectCopyWith<$Res> get object;
@@ -429,23 +430,28 @@ class _$LoadedStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object object = freezed,
+    Object needRefresh = freezed,
   }) {
     return _then(LoadedState(
       object: object == freezed ? _value.object : object as ControlObject,
+      needRefresh:
+          needRefresh == freezed ? _value.needRefresh : needRefresh as bool,
     ));
   }
 }
 
 /// @nodoc
 class _$LoadedState implements LoadedState {
-  const _$LoadedState({this.object});
+  const _$LoadedState({this.object, this.needRefresh});
 
   @override
   final ControlObject object;
+  @override
+  final bool needRefresh;
 
   @override
   String toString() {
-    return 'ControlObjectBlocState.loadedState(object: $object)';
+    return 'ControlObjectBlocState.loadedState(object: $object, needRefresh: $needRefresh)';
   }
 
   @override
@@ -453,12 +459,17 @@ class _$LoadedState implements LoadedState {
     return identical(this, other) ||
         (other is LoadedState &&
             (identical(other.object, object) ||
-                const DeepCollectionEquality().equals(other.object, object)));
+                const DeepCollectionEquality().equals(other.object, object)) &&
+            (identical(other.needRefresh, needRefresh) ||
+                const DeepCollectionEquality()
+                    .equals(other.needRefresh, needRefresh)));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(object);
+      runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(object) ^
+      const DeepCollectionEquality().hash(needRefresh);
 
   @JsonKey(ignore: true)
   @override
@@ -472,12 +483,12 @@ class _$LoadedState implements LoadedState {
     @required
         TResult loadedWithListState(ControlObject object,
             List<ControlResultSearchResult> controlSearchResults),
-    @required TResult loadedState(ControlObject object),
+    @required TResult loadedState(ControlObject object, bool needRefresh),
   }) {
     assert(loadingState != null);
     assert(loadedWithListState != null);
     assert(loadedState != null);
-    return loadedState(object);
+    return loadedState(object, needRefresh);
   }
 
   @override
@@ -486,12 +497,12 @@ class _$LoadedState implements LoadedState {
     TResult loadingState(ControlObject object),
     TResult loadedWithListState(ControlObject object,
         List<ControlResultSearchResult> controlSearchResults),
-    TResult loadedState(ControlObject object),
+    TResult loadedState(ControlObject object, bool needRefresh),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
     if (loadedState != null) {
-      return loadedState(object);
+      return loadedState(object, needRefresh);
     }
     return orElse();
   }
@@ -526,10 +537,12 @@ class _$LoadedState implements LoadedState {
 }
 
 abstract class LoadedState implements ControlObjectBlocState {
-  const factory LoadedState({ControlObject object}) = _$LoadedState;
+  const factory LoadedState({ControlObject object, bool needRefresh}) =
+      _$LoadedState;
 
   @override
   ControlObject get object;
+  bool get needRefresh;
   @override
   @JsonKey(ignore: true)
   $LoadedStateCopyWith<LoadedState> get copyWith;
