@@ -109,11 +109,11 @@ class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
           }
         },
         createViolationEvent: (event) async* {},
-        registerViolationEvent: (event) async* {
-          _notificationBloc.add(SnackBarNotificationEvent('Сохранение нарушения'));
+        registerSearchResultEvent: (event) async* {
+          _notificationBloc.add(SnackBarNotificationEvent('Сохранение результата обследования'));
           try {
-            await _departmentControlService.registerControlResult(event.object, violation: event.violation);
-            _notificationBloc.add(SnackBarNotificationEvent('Сохранено успешно'));
+            final r = await _departmentControlService.registerControlResult(event.object, violation: event.violation);
+            _notificationBloc.add(OkDialogNotificationEvent('Сохранено успешно'));
           }  on ApiException catch (e) {
             print(e.message);
             print(e.details);

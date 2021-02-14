@@ -17,7 +17,7 @@ abstract class ControlListBlocEvent with _$ControlListBlocEvent {
 
   const factory ControlListBlocEvent.openInMapEvent(ControlObject object) = OpenInMapEvent;
   const factory ControlListBlocEvent.createViolationEvent(ControlObject object) = CreateViolationEvent;
-  const factory ControlListBlocEvent.registerViolationEvent(ControlObject object, DCViolation violation) = RegisterViolationEvent;
+  const factory ControlListBlocEvent.registerSearchResultEvent(ControlObject object, {DCViolation violation}) = RegisterSearchResultEvent;
 
   const factory ControlListBlocEvent.changeShowMapEvent(bool showMap) = ChangeShowMapEvent;
 }

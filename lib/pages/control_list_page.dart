@@ -42,10 +42,14 @@ class _ControlListPageState extends State<ControlListPage> {
     return BlocBuilder<ControlListBloc, ControlListBlocState>(
       builder: (context, state) {
         return Scaffold(
-          appBar: FilterAppbar('Ведомственный контроль', '', 'Сортировка', 'Фильтры',
+          appBar: FilterAppbar(
+            'Ведомственный контроль',
+            '',
+            'Сортировка',
+            'Фильтры',
             onUpdate: () {
               _refreshIndicatorKey.currentState?.show();
-            }, 
+            },
             onFilter: _onOpenFilters,
             onSort: _onOpenSort,
           ),
@@ -121,7 +125,8 @@ class _ControlListPageState extends State<ControlListPage> {
             ),
             cantWorkInThisModeState: (cantWorkInThisModeState) =>
                 _cantWorkInThisMode(),
-            apiExceptionState: (state) => _buildApiExceptionBody(state.exception),
+            apiExceptionState: (state) =>
+                _buildApiExceptionBody(state.exception),
           )
         else
           Expanded(
@@ -155,7 +160,8 @@ class _ControlListPageState extends State<ControlListPage> {
                 ),
                 cantWorkInThisModeState: (cantWorkInThisModeState) =>
                     _cantWorkInThisMode(),
-                apiExceptionState: (state) => _buildApiExceptionBody(state.exception),
+                apiExceptionState: (state) =>
+                    _buildApiExceptionBody(state.exception),
               ),
             ),
           ),
@@ -239,9 +245,16 @@ class _ControlListPageState extends State<ControlListPage> {
 
   void _onOpenSort() async {
     final bloc = BlocProvider.of<ControlListBloc>(context);
-    final titles = ['по дате последней проверки', 'по названию объекта', 'по типу объекта', 'по адресу объекта','по дате обследования', 'по контрольному сроку устранения нарушения'];
+    final titles = [
+      'по дате последней проверки',
+      'по названию объекта',
+      'по типу объекта',
+      'по адресу объекта',
+      'по дате обследования',
+      'по контрольному сроку устранения нарушения'
+    ];
     final result = await showModalBottomSheet(
-      context: context, 
+      context: context,
       backgroundColor: Colors.transparent,
       builder: (context) => SortDialog(
         bloc.state.sortState,
@@ -275,8 +288,11 @@ class _ControlListPageState extends State<ControlListPage> {
                     message:
                         'Объект ${object.id} обследован. Нарушений не выявленно. ${DateFormat("dd.MM.yyyy hh:mm").format(DateTime.now())}'))) !=
             null) {
-          Provider.of<DepartmentControlService>(context, listen: false)
-              .registerControlResult(object);
+          BlocProvider.of<ControlListBloc>(context).add(
+            ControlListBlocEvent.registerSearchResultEvent(
+              object,
+            ),
+          );
         }
       };
 
@@ -286,7 +302,9 @@ class _ControlListPageState extends State<ControlListPage> {
           context,
           MaterialPageRoute(
             builder: (context) => ControlViolationFormPage(
-              controlObject: object,
+              controlObject: object, onConfirm: (violation) { 
+                BlocProvider.of<ControlListBloc>(context).add(ControlListBlocEvent.registerSearchResultEvent(object, violation: violation));
+              },
             ),
           ),
         );

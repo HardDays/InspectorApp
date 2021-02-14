@@ -13,10 +13,12 @@ import 'package:provider/provider.dart';
 class ControlViolationFormPage extends StatelessWidget {
   const ControlViolationFormPage({
     Key key,
-    @required this.controlObject,
+    @required this.controlObject, 
+    @required this.onConfirm,
   }) : super(key: key);
 
   final ControlObject controlObject;
+  final void Function(DCViolation violation) onConfirm;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +35,7 @@ class ControlViolationFormPage extends StatelessWidget {
               ViolationFormWidget(
                 dictionaryService: Provider.of<DictionaryService>(context, listen: false),
                 onConfirm: (DCViolation violation) {
-                  BlocProvider.of<ControlListBloc>(context).add(ControlListBlocEvent.registerViolationEvent(controlObject, violation));
+                  onConfirm(violation);
                   Navigator.of(context).pop();
                 },
                 onCancel: () {

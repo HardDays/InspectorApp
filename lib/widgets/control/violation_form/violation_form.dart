@@ -84,13 +84,22 @@ class _ViolationFormWidgetState extends State<ViolationFormWidget> {
       ),
       child: BlocConsumer<ControlViolationFormBloc, CotnrolViolationFormState>(
         listener: (context, state) {
-          _addressController.text = state.address.toLongString();
-          _targetMarkController.text = state.targetLandmark;
-          _objectElementController.text = state.objectElement.name;
-          _descriptionController.text = state.description;
-          _additionalFeatureController.text =
-              state.violationAdditionalFeature.name;
-          _contractorController.text = state.contractor.name;
+          if(_addressController.text != state.address.toLongString())
+            _addressController.text = state.address.toLongString();
+          if(_targetMarkController.text != state.targetLandmark)
+            _targetMarkController.text = state.targetLandmark;
+          if(_objectElementController.text != state.objectElement.name)
+            _objectElementController.text = state.objectElement.name;
+          if(_descriptionController.text != state.description)
+            _descriptionController.text = state.description;
+          if(_additionalFeatureController.text !=
+              state.violationAdditionalFeature.name)
+                _additionalFeatureController.text =
+                  state.violationAdditionalFeature.name;
+          if(_contractorController.text != state.contractor.name)
+            _contractorController.text = state.contractor.name;
+          if(_violationClassificationController.text != state.violationClassification.violationName.name)
+            _violationClassificationController.text = state.violationClassification.violationName.name;
         },
         builder: (context, state) => Column(
           children: [
