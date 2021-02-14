@@ -10,6 +10,7 @@ import 'package:inspector/blocs/notification_bloc/states.dart';
 import 'package:inspector/navigation.gr.dart';
 import 'package:inspector/pages/dictionary_loading_page.dart';
 import 'package:inspector/services/persistance_service.dart';
+import 'package:inspector/style/accept_dialog.dart';
 import 'package:inspector/style/colors.dart';
 import 'package:inspector/widgets/bottom_navigation_bar.dart';
 import 'package:provider/provider.dart';
@@ -33,14 +34,24 @@ class MainPage extends StatelessWidget {
       child: Scaffold(
         body: BlocListener<NotificationBloc, NotificationBlocState>(
           listener: (context, state) {
-            if(state is SnackBarNotificationState) {
-              Scaffold.of(context).showSnackBar(
+            state.maybeMap(
+              okDialogNotificationState: (state) async => await showDialog(
+                context: context,
+                child: AcceptDialog(
+                  acceptTitle: 'Ок',
+                  cancelTitle: null,
+                  message: 'Данные успешно переданы в ЕИС ОАТИ',
+                ),
+              ),
+              snackBarNotificationState: (state) =>
+                  Scaffold.of(context).showSnackBar(
                 SnackBar(
                   backgroundColor: ProjectColors.darkBlue,
                   content: Text(state.message),
                 ),
-              );
-            }
+              ),
+              orElse: () {},
+            );
           },
           child: BlocListener<NavigationBloc, NavigationBlocState>(
             // им надо чтобы оно возвращало в рут при нажатии на таб внизу

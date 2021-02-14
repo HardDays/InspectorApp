@@ -1,14 +1,10 @@
-abstract class NotificationBlocState {
-  String get message;
-}
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-class SnackBarNotificationState extends NotificationBlocState {
-  final String message;
+part 'states.freezed.dart';
 
-  SnackBarNotificationState(this.message);
-}
-
-class EmptyNotificationState extends NotificationBlocState {
-  @override
-  String get message => '';
+@freezed
+abstract class NotificationBlocState with _$NotificationBlocState {
+  const factory NotificationBlocState.emptyNotificationState() = EmptyNotificationState;
+  const factory NotificationBlocState.snackBarNotificationState(String message) = SnackBarNotificationState;
+  const factory NotificationBlocState.okDialogNotificationState(String message) = OkDialogNotificationState;
 }

@@ -1,9 +1,9 @@
-abstract class NotificationBlocEvent {
-  String get message;
-}
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-class SnackBarNotificationEvent extends NotificationBlocEvent {
-  final String message;
+part 'events.freezed.dart';
 
-  SnackBarNotificationEvent(this.message);
+@freezed
+abstract class NotificationBlocEvent with _$NotificationBlocEvent {
+  const factory NotificationBlocEvent.snackBarNotificationEvent(String message) = SnackBarNotificationEvent;
+  const factory NotificationBlocEvent.okDialogNotificationEvent(String message) = OkDialogNotificationEvent;
 }
