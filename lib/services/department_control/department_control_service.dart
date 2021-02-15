@@ -2,6 +2,7 @@ import 'package:inspector/blocs/control_filters/state.dart';
 import 'package:inspector/model/department_control/control_object.dart';
 import 'package:inspector/model/department_control/control_result.dart';
 import 'package:inspector/model/department_control/dcviolation.dart';
+import 'package:inspector/model/department_control/perform_control.dart';
 import 'package:inspector/providers/exceptions/api_exception.dart';
 import 'package:inspector/services/department_control/api/department_control_api_client.dart';
 import 'package:inspector/services/department_control/response.dart';
@@ -98,5 +99,20 @@ class DepartmentControlService {
       return ControlResultsResponse.exceptionResponse(e);
     }
   }
+
+  Future<ControlResult> updateControlResult(ControlObject object, ControlResult result)
+    => _apiClient.updateControlResult(object, result);
+
+  Future<void> removeControlResult(ControlObject object, int resultId)
+    => _apiClient.removeControlResult(object, resultId);
+
+  Future<PerformControl> registerPerformControl(ControlObject object, int dcControlResultId, PerformControl performControl)
+    => _apiClient.registerPerformControl(object, dcControlResultId, performControl);
+
+  Future<PerformControl> updatePerformControl(ControlObject object, int dcControlResultId, PerformControl performControl)
+    => _apiClient.updatePerformControl(object, dcControlResultId, performControl);
+
+  Future<void> removePerformControl(ControlObject object, int dcControlResultId, PerformControl performControl)
+    => _apiClient.removePerformControl(object, dcControlResultId, performControl);
 
 }

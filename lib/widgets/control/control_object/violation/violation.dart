@@ -68,9 +68,7 @@ class ControlViolationWidgetState extends State<ControlViolationWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: widget.onClick,
-      child: Container(
+    return Container(
         decoration: BoxDecoration(
           border: Border(
             top: BorderSide(color: ProjectColors.lightBlue),
@@ -117,7 +115,7 @@ class ControlViolationWidgetState extends State<ControlViolationWidget> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'Нарушение ${widget.violationNum ?? ""} от ${DateFormat("hh:mm dd.MM.yyyy").format(widget.detectionDate)}',
+                                  'Нарушение ${widget.violationNum ?? ""} от ${widget.detectionDate != null ? DateFormat("hh:mm dd.MM.yyyy").format(widget.detectionDate) : ""}',
                                   style: ProjectTextStyles.baseBold
                                       .apply(color: ProjectColors.blue),
                                 ),
@@ -230,7 +228,6 @@ class ControlViolationWidgetState extends State<ControlViolationWidget> {
             ],
           ),
         ),
-      ),
     );
   }
 }

@@ -30,6 +30,9 @@ class ControlObjectBloc
           yield (ControlObjectBlocState.loadingState(object: object));
           final results =
               await departmentControlService.getControlResults(object);
+          print(object.violations.map((e) => e.id));
+          print(results.maybeMap(controlResultsListResponse: (r) => r.results.map((e) => e.id), orElse: () => null));
+          print(results.maybeMap(controlResultsListResponse: (r) => r.results.map((e) => e.violation?.id), orElse: () => null));
           yield* (results.map(
             controlResultsListResponse: (response) async* {
               yield (ControlObjectBlocState.loadedWithListState(

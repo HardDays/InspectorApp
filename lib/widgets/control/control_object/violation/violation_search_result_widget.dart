@@ -30,6 +30,9 @@ class ViolationSearchResultWidget extends StatelessWidget {
       violationNum: searchResult.violation.violationNum,
       violationStatus: searchResult.violation.violationStatus,
       onClick: onClick,
+      onCompleted: onCompleted,
+      onNotCompleted: onNotCompleted,
+      onRemove: onRemove,
     );
   }
 }

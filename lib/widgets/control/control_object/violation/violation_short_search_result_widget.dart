@@ -29,6 +29,9 @@ class ViolationShortSearchResultWidget extends StatelessWidget {
       violationNum: violation.violationNum,
       violationStatus: violation.violationStatus,
       onClick: onClick,
+      onCompleted: onCompleted,
+      onNotCompleted: onNotCompleted,
+      onRemove: onRemove,
     );
   }
 }

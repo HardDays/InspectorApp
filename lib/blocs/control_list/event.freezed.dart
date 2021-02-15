@@ -71,6 +71,67 @@ class _$ControlListBlocEventTearOff {
   }
 
 // ignore: unused_element
+  RemoveViolationEvent removeViolationEvent(
+      ControlObject object, int violationId) {
+    return RemoveViolationEvent(
+      object,
+      violationId,
+    );
+  }
+
+// ignore: unused_element
+  RegisterPerformControlEvent registerPerformControlEvent(
+      PerformControl performControl,
+      ControlObject object,
+      int controlResultId) {
+    return RegisterPerformControlEvent(
+      performControl,
+      object,
+      controlResultId,
+    );
+  }
+
+// ignore: unused_element
+  RemovePerformControlEvent removePerformControlEvent(
+      PerformControl performControl,
+      ControlObject object,
+      int controlResultId) {
+    return RemovePerformControlEvent(
+      performControl,
+      object,
+      controlResultId,
+    );
+  }
+
+// ignore: unused_element
+  UpdatePerformControlEvent updatePerformControlEvent(
+      PerformControl performControl,
+      ControlObject object,
+      int controlResultId) {
+    return UpdatePerformControlEvent(
+      performControl,
+      object,
+      controlResultId,
+    );
+  }
+
+// ignore: unused_element
+  UpdateResolveDateEvent updateResolveDateEvent(
+      ControlObject object,
+      int controlResultId,
+      DateTime resolveDate,
+      ViolationExtensionReason reason,
+      String comments) {
+    return UpdateResolveDateEvent(
+      object,
+      controlResultId,
+      resolveDate,
+      reason,
+      comments,
+    );
+  }
+
+// ignore: unused_element
   ChangeShowMapEvent changeShowMapEvent(bool showMap) {
     return ChangeShowMapEvent(
       showMap,
@@ -97,6 +158,24 @@ mixin _$ControlListBlocEvent {
     @required
         TResult registerSearchResultEvent(
             ControlObject object, DCViolation violation),
+    @required
+        TResult removeViolationEvent(ControlObject object, int violationId),
+    @required
+        TResult registerPerformControlEvent(PerformControl performControl,
+            ControlObject object, int controlResultId),
+    @required
+        TResult removePerformControlEvent(PerformControl performControl,
+            ControlObject object, int controlResultId),
+    @required
+        TResult updatePerformControlEvent(PerformControl performControl,
+            ControlObject object, int controlResultId),
+    @required
+        TResult updateResolveDateEvent(
+            ControlObject object,
+            int controlResultId,
+            DateTime resolveDate,
+            ViolationExtensionReason reason,
+            String comments),
     @required TResult changeShowMapEvent(bool showMap),
   });
   @optionalTypeArgs
@@ -111,6 +190,15 @@ mixin _$ControlListBlocEvent {
     TResult createViolationEvent(ControlObject object),
     TResult registerSearchResultEvent(
         ControlObject object, DCViolation violation),
+    TResult removeViolationEvent(ControlObject object, int violationId),
+    TResult registerPerformControlEvent(PerformControl performControl,
+        ControlObject object, int controlResultId),
+    TResult removePerformControlEvent(PerformControl performControl,
+        ControlObject object, int controlResultId),
+    TResult updatePerformControlEvent(PerformControl performControl,
+        ControlObject object, int controlResultId),
+    TResult updateResolveDateEvent(ControlObject object, int controlResultId,
+        DateTime resolveDate, ViolationExtensionReason reason, String comments),
     TResult changeShowMapEvent(bool showMap),
     @required TResult orElse(),
   });
@@ -128,6 +216,14 @@ mixin _$ControlListBlocEvent {
     @required TResult createViolationEvent(CreateViolationEvent value),
     @required
         TResult registerSearchResultEvent(RegisterSearchResultEvent value),
+    @required TResult removeViolationEvent(RemoveViolationEvent value),
+    @required
+        TResult registerPerformControlEvent(RegisterPerformControlEvent value),
+    @required
+        TResult removePerformControlEvent(RemovePerformControlEvent value),
+    @required
+        TResult updatePerformControlEvent(UpdatePerformControlEvent value),
+    @required TResult updateResolveDateEvent(UpdateResolveDateEvent value),
     @required TResult changeShowMapEvent(ChangeShowMapEvent value),
   });
   @optionalTypeArgs
@@ -141,6 +237,11 @@ mixin _$ControlListBlocEvent {
     TResult openInMapEvent(OpenInMapEvent value),
     TResult createViolationEvent(CreateViolationEvent value),
     TResult registerSearchResultEvent(RegisterSearchResultEvent value),
+    TResult removeViolationEvent(RemoveViolationEvent value),
+    TResult registerPerformControlEvent(RegisterPerformControlEvent value),
+    TResult removePerformControlEvent(RemovePerformControlEvent value),
+    TResult updatePerformControlEvent(UpdatePerformControlEvent value),
+    TResult updateResolveDateEvent(UpdateResolveDateEvent value),
     TResult changeShowMapEvent(ChangeShowMapEvent value),
     @required TResult orElse(),
   });
@@ -213,6 +314,24 @@ class _$LoadControlListEvent implements LoadControlListEvent {
     @required
         TResult registerSearchResultEvent(
             ControlObject object, DCViolation violation),
+    @required
+        TResult removeViolationEvent(ControlObject object, int violationId),
+    @required
+        TResult registerPerformControlEvent(PerformControl performControl,
+            ControlObject object, int controlResultId),
+    @required
+        TResult removePerformControlEvent(PerformControl performControl,
+            ControlObject object, int controlResultId),
+    @required
+        TResult updatePerformControlEvent(PerformControl performControl,
+            ControlObject object, int controlResultId),
+    @required
+        TResult updateResolveDateEvent(
+            ControlObject object,
+            int controlResultId,
+            DateTime resolveDate,
+            ViolationExtensionReason reason,
+            String comments),
     @required TResult changeShowMapEvent(bool showMap),
   }) {
     assert(loadControlListEvent != null);
@@ -224,6 +343,11 @@ class _$LoadControlListEvent implements LoadControlListEvent {
     assert(openInMapEvent != null);
     assert(createViolationEvent != null);
     assert(registerSearchResultEvent != null);
+    assert(removeViolationEvent != null);
+    assert(registerPerformControlEvent != null);
+    assert(removePerformControlEvent != null);
+    assert(updatePerformControlEvent != null);
+    assert(updateResolveDateEvent != null);
     assert(changeShowMapEvent != null);
     return loadControlListEvent();
   }
@@ -241,6 +365,15 @@ class _$LoadControlListEvent implements LoadControlListEvent {
     TResult createViolationEvent(ControlObject object),
     TResult registerSearchResultEvent(
         ControlObject object, DCViolation violation),
+    TResult removeViolationEvent(ControlObject object, int violationId),
+    TResult registerPerformControlEvent(PerformControl performControl,
+        ControlObject object, int controlResultId),
+    TResult removePerformControlEvent(PerformControl performControl,
+        ControlObject object, int controlResultId),
+    TResult updatePerformControlEvent(PerformControl performControl,
+        ControlObject object, int controlResultId),
+    TResult updateResolveDateEvent(ControlObject object, int controlResultId,
+        DateTime resolveDate, ViolationExtensionReason reason, String comments),
     TResult changeShowMapEvent(bool showMap),
     @required TResult orElse(),
   }) {
@@ -266,6 +399,14 @@ class _$LoadControlListEvent implements LoadControlListEvent {
     @required TResult createViolationEvent(CreateViolationEvent value),
     @required
         TResult registerSearchResultEvent(RegisterSearchResultEvent value),
+    @required TResult removeViolationEvent(RemoveViolationEvent value),
+    @required
+        TResult registerPerformControlEvent(RegisterPerformControlEvent value),
+    @required
+        TResult removePerformControlEvent(RemovePerformControlEvent value),
+    @required
+        TResult updatePerformControlEvent(UpdatePerformControlEvent value),
+    @required TResult updateResolveDateEvent(UpdateResolveDateEvent value),
     @required TResult changeShowMapEvent(ChangeShowMapEvent value),
   }) {
     assert(loadControlListEvent != null);
@@ -277,6 +418,11 @@ class _$LoadControlListEvent implements LoadControlListEvent {
     assert(openInMapEvent != null);
     assert(createViolationEvent != null);
     assert(registerSearchResultEvent != null);
+    assert(removeViolationEvent != null);
+    assert(registerPerformControlEvent != null);
+    assert(removePerformControlEvent != null);
+    assert(updatePerformControlEvent != null);
+    assert(updateResolveDateEvent != null);
     assert(changeShowMapEvent != null);
     return loadControlListEvent(this);
   }
@@ -293,6 +439,11 @@ class _$LoadControlListEvent implements LoadControlListEvent {
     TResult openInMapEvent(OpenInMapEvent value),
     TResult createViolationEvent(CreateViolationEvent value),
     TResult registerSearchResultEvent(RegisterSearchResultEvent value),
+    TResult removeViolationEvent(RemoveViolationEvent value),
+    TResult registerPerformControlEvent(RegisterPerformControlEvent value),
+    TResult removePerformControlEvent(RemovePerformControlEvent value),
+    TResult updatePerformControlEvent(UpdatePerformControlEvent value),
+    TResult updateResolveDateEvent(UpdateResolveDateEvent value),
     TResult changeShowMapEvent(ChangeShowMapEvent value),
     @required TResult orElse(),
   }) {
@@ -358,6 +509,24 @@ class _$CantWorkInThisModeEvent implements CantWorkInThisModeEvent {
     @required
         TResult registerSearchResultEvent(
             ControlObject object, DCViolation violation),
+    @required
+        TResult removeViolationEvent(ControlObject object, int violationId),
+    @required
+        TResult registerPerformControlEvent(PerformControl performControl,
+            ControlObject object, int controlResultId),
+    @required
+        TResult removePerformControlEvent(PerformControl performControl,
+            ControlObject object, int controlResultId),
+    @required
+        TResult updatePerformControlEvent(PerformControl performControl,
+            ControlObject object, int controlResultId),
+    @required
+        TResult updateResolveDateEvent(
+            ControlObject object,
+            int controlResultId,
+            DateTime resolveDate,
+            ViolationExtensionReason reason,
+            String comments),
     @required TResult changeShowMapEvent(bool showMap),
   }) {
     assert(loadControlListEvent != null);
@@ -369,6 +538,11 @@ class _$CantWorkInThisModeEvent implements CantWorkInThisModeEvent {
     assert(openInMapEvent != null);
     assert(createViolationEvent != null);
     assert(registerSearchResultEvent != null);
+    assert(removeViolationEvent != null);
+    assert(registerPerformControlEvent != null);
+    assert(removePerformControlEvent != null);
+    assert(updatePerformControlEvent != null);
+    assert(updateResolveDateEvent != null);
     assert(changeShowMapEvent != null);
     return cantWorkInThisModeEvent();
   }
@@ -386,6 +560,15 @@ class _$CantWorkInThisModeEvent implements CantWorkInThisModeEvent {
     TResult createViolationEvent(ControlObject object),
     TResult registerSearchResultEvent(
         ControlObject object, DCViolation violation),
+    TResult removeViolationEvent(ControlObject object, int violationId),
+    TResult registerPerformControlEvent(PerformControl performControl,
+        ControlObject object, int controlResultId),
+    TResult removePerformControlEvent(PerformControl performControl,
+        ControlObject object, int controlResultId),
+    TResult updatePerformControlEvent(PerformControl performControl,
+        ControlObject object, int controlResultId),
+    TResult updateResolveDateEvent(ControlObject object, int controlResultId,
+        DateTime resolveDate, ViolationExtensionReason reason, String comments),
     TResult changeShowMapEvent(bool showMap),
     @required TResult orElse(),
   }) {
@@ -411,6 +594,14 @@ class _$CantWorkInThisModeEvent implements CantWorkInThisModeEvent {
     @required TResult createViolationEvent(CreateViolationEvent value),
     @required
         TResult registerSearchResultEvent(RegisterSearchResultEvent value),
+    @required TResult removeViolationEvent(RemoveViolationEvent value),
+    @required
+        TResult registerPerformControlEvent(RegisterPerformControlEvent value),
+    @required
+        TResult removePerformControlEvent(RemovePerformControlEvent value),
+    @required
+        TResult updatePerformControlEvent(UpdatePerformControlEvent value),
+    @required TResult updateResolveDateEvent(UpdateResolveDateEvent value),
     @required TResult changeShowMapEvent(ChangeShowMapEvent value),
   }) {
     assert(loadControlListEvent != null);
@@ -422,6 +613,11 @@ class _$CantWorkInThisModeEvent implements CantWorkInThisModeEvent {
     assert(openInMapEvent != null);
     assert(createViolationEvent != null);
     assert(registerSearchResultEvent != null);
+    assert(removeViolationEvent != null);
+    assert(registerPerformControlEvent != null);
+    assert(removePerformControlEvent != null);
+    assert(updatePerformControlEvent != null);
+    assert(updateResolveDateEvent != null);
     assert(changeShowMapEvent != null);
     return cantWorkInThisModeEvent(this);
   }
@@ -438,6 +634,11 @@ class _$CantWorkInThisModeEvent implements CantWorkInThisModeEvent {
     TResult openInMapEvent(OpenInMapEvent value),
     TResult createViolationEvent(CreateViolationEvent value),
     TResult registerSearchResultEvent(RegisterSearchResultEvent value),
+    TResult removeViolationEvent(RemoveViolationEvent value),
+    TResult registerPerformControlEvent(RegisterPerformControlEvent value),
+    TResult removePerformControlEvent(RemovePerformControlEvent value),
+    TResult updatePerformControlEvent(UpdatePerformControlEvent value),
+    TResult updateResolveDateEvent(UpdateResolveDateEvent value),
     TResult changeShowMapEvent(ChangeShowMapEvent value),
     @required TResult orElse(),
   }) {
@@ -503,6 +704,24 @@ class _$RefreshControlListEvent implements RefreshControlListEvent {
     @required
         TResult registerSearchResultEvent(
             ControlObject object, DCViolation violation),
+    @required
+        TResult removeViolationEvent(ControlObject object, int violationId),
+    @required
+        TResult registerPerformControlEvent(PerformControl performControl,
+            ControlObject object, int controlResultId),
+    @required
+        TResult removePerformControlEvent(PerformControl performControl,
+            ControlObject object, int controlResultId),
+    @required
+        TResult updatePerformControlEvent(PerformControl performControl,
+            ControlObject object, int controlResultId),
+    @required
+        TResult updateResolveDateEvent(
+            ControlObject object,
+            int controlResultId,
+            DateTime resolveDate,
+            ViolationExtensionReason reason,
+            String comments),
     @required TResult changeShowMapEvent(bool showMap),
   }) {
     assert(loadControlListEvent != null);
@@ -514,6 +733,11 @@ class _$RefreshControlListEvent implements RefreshControlListEvent {
     assert(openInMapEvent != null);
     assert(createViolationEvent != null);
     assert(registerSearchResultEvent != null);
+    assert(removeViolationEvent != null);
+    assert(registerPerformControlEvent != null);
+    assert(removePerformControlEvent != null);
+    assert(updatePerformControlEvent != null);
+    assert(updateResolveDateEvent != null);
     assert(changeShowMapEvent != null);
     return refreshControlListEvent();
   }
@@ -531,6 +755,15 @@ class _$RefreshControlListEvent implements RefreshControlListEvent {
     TResult createViolationEvent(ControlObject object),
     TResult registerSearchResultEvent(
         ControlObject object, DCViolation violation),
+    TResult removeViolationEvent(ControlObject object, int violationId),
+    TResult registerPerformControlEvent(PerformControl performControl,
+        ControlObject object, int controlResultId),
+    TResult removePerformControlEvent(PerformControl performControl,
+        ControlObject object, int controlResultId),
+    TResult updatePerformControlEvent(PerformControl performControl,
+        ControlObject object, int controlResultId),
+    TResult updateResolveDateEvent(ControlObject object, int controlResultId,
+        DateTime resolveDate, ViolationExtensionReason reason, String comments),
     TResult changeShowMapEvent(bool showMap),
     @required TResult orElse(),
   }) {
@@ -556,6 +789,14 @@ class _$RefreshControlListEvent implements RefreshControlListEvent {
     @required TResult createViolationEvent(CreateViolationEvent value),
     @required
         TResult registerSearchResultEvent(RegisterSearchResultEvent value),
+    @required TResult removeViolationEvent(RemoveViolationEvent value),
+    @required
+        TResult registerPerformControlEvent(RegisterPerformControlEvent value),
+    @required
+        TResult removePerformControlEvent(RemovePerformControlEvent value),
+    @required
+        TResult updatePerformControlEvent(UpdatePerformControlEvent value),
+    @required TResult updateResolveDateEvent(UpdateResolveDateEvent value),
     @required TResult changeShowMapEvent(ChangeShowMapEvent value),
   }) {
     assert(loadControlListEvent != null);
@@ -567,6 +808,11 @@ class _$RefreshControlListEvent implements RefreshControlListEvent {
     assert(openInMapEvent != null);
     assert(createViolationEvent != null);
     assert(registerSearchResultEvent != null);
+    assert(removeViolationEvent != null);
+    assert(registerPerformControlEvent != null);
+    assert(removePerformControlEvent != null);
+    assert(updatePerformControlEvent != null);
+    assert(updateResolveDateEvent != null);
     assert(changeShowMapEvent != null);
     return refreshControlListEvent(this);
   }
@@ -583,6 +829,11 @@ class _$RefreshControlListEvent implements RefreshControlListEvent {
     TResult openInMapEvent(OpenInMapEvent value),
     TResult createViolationEvent(CreateViolationEvent value),
     TResult registerSearchResultEvent(RegisterSearchResultEvent value),
+    TResult removeViolationEvent(RemoveViolationEvent value),
+    TResult registerPerformControlEvent(RegisterPerformControlEvent value),
+    TResult removePerformControlEvent(RemovePerformControlEvent value),
+    TResult updatePerformControlEvent(UpdatePerformControlEvent value),
+    TResult updateResolveDateEvent(UpdateResolveDateEvent value),
     TResult changeShowMapEvent(ChangeShowMapEvent value),
     @required TResult orElse(),
   }) {
@@ -651,6 +902,24 @@ class _$LoadNextPageControlListEvent implements LoadNextPageControlListEvent {
     @required
         TResult registerSearchResultEvent(
             ControlObject object, DCViolation violation),
+    @required
+        TResult removeViolationEvent(ControlObject object, int violationId),
+    @required
+        TResult registerPerformControlEvent(PerformControl performControl,
+            ControlObject object, int controlResultId),
+    @required
+        TResult removePerformControlEvent(PerformControl performControl,
+            ControlObject object, int controlResultId),
+    @required
+        TResult updatePerformControlEvent(PerformControl performControl,
+            ControlObject object, int controlResultId),
+    @required
+        TResult updateResolveDateEvent(
+            ControlObject object,
+            int controlResultId,
+            DateTime resolveDate,
+            ViolationExtensionReason reason,
+            String comments),
     @required TResult changeShowMapEvent(bool showMap),
   }) {
     assert(loadControlListEvent != null);
@@ -662,6 +931,11 @@ class _$LoadNextPageControlListEvent implements LoadNextPageControlListEvent {
     assert(openInMapEvent != null);
     assert(createViolationEvent != null);
     assert(registerSearchResultEvent != null);
+    assert(removeViolationEvent != null);
+    assert(registerPerformControlEvent != null);
+    assert(removePerformControlEvent != null);
+    assert(updatePerformControlEvent != null);
+    assert(updateResolveDateEvent != null);
     assert(changeShowMapEvent != null);
     return loadNextPageControlListEvent();
   }
@@ -679,6 +953,15 @@ class _$LoadNextPageControlListEvent implements LoadNextPageControlListEvent {
     TResult createViolationEvent(ControlObject object),
     TResult registerSearchResultEvent(
         ControlObject object, DCViolation violation),
+    TResult removeViolationEvent(ControlObject object, int violationId),
+    TResult registerPerformControlEvent(PerformControl performControl,
+        ControlObject object, int controlResultId),
+    TResult removePerformControlEvent(PerformControl performControl,
+        ControlObject object, int controlResultId),
+    TResult updatePerformControlEvent(PerformControl performControl,
+        ControlObject object, int controlResultId),
+    TResult updateResolveDateEvent(ControlObject object, int controlResultId,
+        DateTime resolveDate, ViolationExtensionReason reason, String comments),
     TResult changeShowMapEvent(bool showMap),
     @required TResult orElse(),
   }) {
@@ -704,6 +987,14 @@ class _$LoadNextPageControlListEvent implements LoadNextPageControlListEvent {
     @required TResult createViolationEvent(CreateViolationEvent value),
     @required
         TResult registerSearchResultEvent(RegisterSearchResultEvent value),
+    @required TResult removeViolationEvent(RemoveViolationEvent value),
+    @required
+        TResult registerPerformControlEvent(RegisterPerformControlEvent value),
+    @required
+        TResult removePerformControlEvent(RemovePerformControlEvent value),
+    @required
+        TResult updatePerformControlEvent(UpdatePerformControlEvent value),
+    @required TResult updateResolveDateEvent(UpdateResolveDateEvent value),
     @required TResult changeShowMapEvent(ChangeShowMapEvent value),
   }) {
     assert(loadControlListEvent != null);
@@ -715,6 +1006,11 @@ class _$LoadNextPageControlListEvent implements LoadNextPageControlListEvent {
     assert(openInMapEvent != null);
     assert(createViolationEvent != null);
     assert(registerSearchResultEvent != null);
+    assert(removeViolationEvent != null);
+    assert(registerPerformControlEvent != null);
+    assert(removePerformControlEvent != null);
+    assert(updatePerformControlEvent != null);
+    assert(updateResolveDateEvent != null);
     assert(changeShowMapEvent != null);
     return loadNextPageControlListEvent(this);
   }
@@ -731,6 +1027,11 @@ class _$LoadNextPageControlListEvent implements LoadNextPageControlListEvent {
     TResult openInMapEvent(OpenInMapEvent value),
     TResult createViolationEvent(CreateViolationEvent value),
     TResult registerSearchResultEvent(RegisterSearchResultEvent value),
+    TResult removeViolationEvent(RemoveViolationEvent value),
+    TResult registerPerformControlEvent(RegisterPerformControlEvent value),
+    TResult removePerformControlEvent(RemovePerformControlEvent value),
+    TResult updatePerformControlEvent(UpdatePerformControlEvent value),
+    TResult updateResolveDateEvent(UpdateResolveDateEvent value),
     TResult changeShowMapEvent(ChangeShowMapEvent value),
     @required TResult orElse(),
   }) {
@@ -830,6 +1131,24 @@ class _$ChangeFiltersEvent implements ChangeFiltersEvent {
     @required
         TResult registerSearchResultEvent(
             ControlObject object, DCViolation violation),
+    @required
+        TResult removeViolationEvent(ControlObject object, int violationId),
+    @required
+        TResult registerPerformControlEvent(PerformControl performControl,
+            ControlObject object, int controlResultId),
+    @required
+        TResult removePerformControlEvent(PerformControl performControl,
+            ControlObject object, int controlResultId),
+    @required
+        TResult updatePerformControlEvent(PerformControl performControl,
+            ControlObject object, int controlResultId),
+    @required
+        TResult updateResolveDateEvent(
+            ControlObject object,
+            int controlResultId,
+            DateTime resolveDate,
+            ViolationExtensionReason reason,
+            String comments),
     @required TResult changeShowMapEvent(bool showMap),
   }) {
     assert(loadControlListEvent != null);
@@ -841,6 +1160,11 @@ class _$ChangeFiltersEvent implements ChangeFiltersEvent {
     assert(openInMapEvent != null);
     assert(createViolationEvent != null);
     assert(registerSearchResultEvent != null);
+    assert(removeViolationEvent != null);
+    assert(registerPerformControlEvent != null);
+    assert(removePerformControlEvent != null);
+    assert(updatePerformControlEvent != null);
+    assert(updateResolveDateEvent != null);
     assert(changeShowMapEvent != null);
     return changeFilters(state);
   }
@@ -858,6 +1182,15 @@ class _$ChangeFiltersEvent implements ChangeFiltersEvent {
     TResult createViolationEvent(ControlObject object),
     TResult registerSearchResultEvent(
         ControlObject object, DCViolation violation),
+    TResult removeViolationEvent(ControlObject object, int violationId),
+    TResult registerPerformControlEvent(PerformControl performControl,
+        ControlObject object, int controlResultId),
+    TResult removePerformControlEvent(PerformControl performControl,
+        ControlObject object, int controlResultId),
+    TResult updatePerformControlEvent(PerformControl performControl,
+        ControlObject object, int controlResultId),
+    TResult updateResolveDateEvent(ControlObject object, int controlResultId,
+        DateTime resolveDate, ViolationExtensionReason reason, String comments),
     TResult changeShowMapEvent(bool showMap),
     @required TResult orElse(),
   }) {
@@ -883,6 +1216,14 @@ class _$ChangeFiltersEvent implements ChangeFiltersEvent {
     @required TResult createViolationEvent(CreateViolationEvent value),
     @required
         TResult registerSearchResultEvent(RegisterSearchResultEvent value),
+    @required TResult removeViolationEvent(RemoveViolationEvent value),
+    @required
+        TResult registerPerformControlEvent(RegisterPerformControlEvent value),
+    @required
+        TResult removePerformControlEvent(RemovePerformControlEvent value),
+    @required
+        TResult updatePerformControlEvent(UpdatePerformControlEvent value),
+    @required TResult updateResolveDateEvent(UpdateResolveDateEvent value),
     @required TResult changeShowMapEvent(ChangeShowMapEvent value),
   }) {
     assert(loadControlListEvent != null);
@@ -894,6 +1235,11 @@ class _$ChangeFiltersEvent implements ChangeFiltersEvent {
     assert(openInMapEvent != null);
     assert(createViolationEvent != null);
     assert(registerSearchResultEvent != null);
+    assert(removeViolationEvent != null);
+    assert(registerPerformControlEvent != null);
+    assert(removePerformControlEvent != null);
+    assert(updatePerformControlEvent != null);
+    assert(updateResolveDateEvent != null);
     assert(changeShowMapEvent != null);
     return changeFilters(this);
   }
@@ -910,6 +1256,11 @@ class _$ChangeFiltersEvent implements ChangeFiltersEvent {
     TResult openInMapEvent(OpenInMapEvent value),
     TResult createViolationEvent(CreateViolationEvent value),
     TResult registerSearchResultEvent(RegisterSearchResultEvent value),
+    TResult removeViolationEvent(RemoveViolationEvent value),
+    TResult registerPerformControlEvent(RegisterPerformControlEvent value),
+    TResult removePerformControlEvent(RemovePerformControlEvent value),
+    TResult updatePerformControlEvent(UpdatePerformControlEvent value),
+    TResult updateResolveDateEvent(UpdateResolveDateEvent value),
     TResult changeShowMapEvent(ChangeShowMapEvent value),
     @required TResult orElse(),
   }) {
@@ -1002,6 +1353,24 @@ class _$ChangeSortEvent implements ChangeSortEvent {
     @required
         TResult registerSearchResultEvent(
             ControlObject object, DCViolation violation),
+    @required
+        TResult removeViolationEvent(ControlObject object, int violationId),
+    @required
+        TResult registerPerformControlEvent(PerformControl performControl,
+            ControlObject object, int controlResultId),
+    @required
+        TResult removePerformControlEvent(PerformControl performControl,
+            ControlObject object, int controlResultId),
+    @required
+        TResult updatePerformControlEvent(PerformControl performControl,
+            ControlObject object, int controlResultId),
+    @required
+        TResult updateResolveDateEvent(
+            ControlObject object,
+            int controlResultId,
+            DateTime resolveDate,
+            ViolationExtensionReason reason,
+            String comments),
     @required TResult changeShowMapEvent(bool showMap),
   }) {
     assert(loadControlListEvent != null);
@@ -1013,6 +1382,11 @@ class _$ChangeSortEvent implements ChangeSortEvent {
     assert(openInMapEvent != null);
     assert(createViolationEvent != null);
     assert(registerSearchResultEvent != null);
+    assert(removeViolationEvent != null);
+    assert(registerPerformControlEvent != null);
+    assert(removePerformControlEvent != null);
+    assert(updatePerformControlEvent != null);
+    assert(updateResolveDateEvent != null);
     assert(changeShowMapEvent != null);
     return changeSort(state);
   }
@@ -1030,6 +1404,15 @@ class _$ChangeSortEvent implements ChangeSortEvent {
     TResult createViolationEvent(ControlObject object),
     TResult registerSearchResultEvent(
         ControlObject object, DCViolation violation),
+    TResult removeViolationEvent(ControlObject object, int violationId),
+    TResult registerPerformControlEvent(PerformControl performControl,
+        ControlObject object, int controlResultId),
+    TResult removePerformControlEvent(PerformControl performControl,
+        ControlObject object, int controlResultId),
+    TResult updatePerformControlEvent(PerformControl performControl,
+        ControlObject object, int controlResultId),
+    TResult updateResolveDateEvent(ControlObject object, int controlResultId,
+        DateTime resolveDate, ViolationExtensionReason reason, String comments),
     TResult changeShowMapEvent(bool showMap),
     @required TResult orElse(),
   }) {
@@ -1055,6 +1438,14 @@ class _$ChangeSortEvent implements ChangeSortEvent {
     @required TResult createViolationEvent(CreateViolationEvent value),
     @required
         TResult registerSearchResultEvent(RegisterSearchResultEvent value),
+    @required TResult removeViolationEvent(RemoveViolationEvent value),
+    @required
+        TResult registerPerformControlEvent(RegisterPerformControlEvent value),
+    @required
+        TResult removePerformControlEvent(RemovePerformControlEvent value),
+    @required
+        TResult updatePerformControlEvent(UpdatePerformControlEvent value),
+    @required TResult updateResolveDateEvent(UpdateResolveDateEvent value),
     @required TResult changeShowMapEvent(ChangeShowMapEvent value),
   }) {
     assert(loadControlListEvent != null);
@@ -1066,6 +1457,11 @@ class _$ChangeSortEvent implements ChangeSortEvent {
     assert(openInMapEvent != null);
     assert(createViolationEvent != null);
     assert(registerSearchResultEvent != null);
+    assert(removeViolationEvent != null);
+    assert(registerPerformControlEvent != null);
+    assert(removePerformControlEvent != null);
+    assert(updatePerformControlEvent != null);
+    assert(updateResolveDateEvent != null);
     assert(changeShowMapEvent != null);
     return changeSort(this);
   }
@@ -1082,6 +1478,11 @@ class _$ChangeSortEvent implements ChangeSortEvent {
     TResult openInMapEvent(OpenInMapEvent value),
     TResult createViolationEvent(CreateViolationEvent value),
     TResult registerSearchResultEvent(RegisterSearchResultEvent value),
+    TResult removeViolationEvent(RemoveViolationEvent value),
+    TResult registerPerformControlEvent(RegisterPerformControlEvent value),
+    TResult removePerformControlEvent(RemovePerformControlEvent value),
+    TResult updatePerformControlEvent(UpdatePerformControlEvent value),
+    TResult updateResolveDateEvent(UpdateResolveDateEvent value),
     TResult changeShowMapEvent(ChangeShowMapEvent value),
     @required TResult orElse(),
   }) {
@@ -1185,6 +1586,24 @@ class _$OpenInMapEvent implements OpenInMapEvent {
     @required
         TResult registerSearchResultEvent(
             ControlObject object, DCViolation violation),
+    @required
+        TResult removeViolationEvent(ControlObject object, int violationId),
+    @required
+        TResult registerPerformControlEvent(PerformControl performControl,
+            ControlObject object, int controlResultId),
+    @required
+        TResult removePerformControlEvent(PerformControl performControl,
+            ControlObject object, int controlResultId),
+    @required
+        TResult updatePerformControlEvent(PerformControl performControl,
+            ControlObject object, int controlResultId),
+    @required
+        TResult updateResolveDateEvent(
+            ControlObject object,
+            int controlResultId,
+            DateTime resolveDate,
+            ViolationExtensionReason reason,
+            String comments),
     @required TResult changeShowMapEvent(bool showMap),
   }) {
     assert(loadControlListEvent != null);
@@ -1196,6 +1615,11 @@ class _$OpenInMapEvent implements OpenInMapEvent {
     assert(openInMapEvent != null);
     assert(createViolationEvent != null);
     assert(registerSearchResultEvent != null);
+    assert(removeViolationEvent != null);
+    assert(registerPerformControlEvent != null);
+    assert(removePerformControlEvent != null);
+    assert(updatePerformControlEvent != null);
+    assert(updateResolveDateEvent != null);
     assert(changeShowMapEvent != null);
     return openInMapEvent(object);
   }
@@ -1213,6 +1637,15 @@ class _$OpenInMapEvent implements OpenInMapEvent {
     TResult createViolationEvent(ControlObject object),
     TResult registerSearchResultEvent(
         ControlObject object, DCViolation violation),
+    TResult removeViolationEvent(ControlObject object, int violationId),
+    TResult registerPerformControlEvent(PerformControl performControl,
+        ControlObject object, int controlResultId),
+    TResult removePerformControlEvent(PerformControl performControl,
+        ControlObject object, int controlResultId),
+    TResult updatePerformControlEvent(PerformControl performControl,
+        ControlObject object, int controlResultId),
+    TResult updateResolveDateEvent(ControlObject object, int controlResultId,
+        DateTime resolveDate, ViolationExtensionReason reason, String comments),
     TResult changeShowMapEvent(bool showMap),
     @required TResult orElse(),
   }) {
@@ -1238,6 +1671,14 @@ class _$OpenInMapEvent implements OpenInMapEvent {
     @required TResult createViolationEvent(CreateViolationEvent value),
     @required
         TResult registerSearchResultEvent(RegisterSearchResultEvent value),
+    @required TResult removeViolationEvent(RemoveViolationEvent value),
+    @required
+        TResult registerPerformControlEvent(RegisterPerformControlEvent value),
+    @required
+        TResult removePerformControlEvent(RemovePerformControlEvent value),
+    @required
+        TResult updatePerformControlEvent(UpdatePerformControlEvent value),
+    @required TResult updateResolveDateEvent(UpdateResolveDateEvent value),
     @required TResult changeShowMapEvent(ChangeShowMapEvent value),
   }) {
     assert(loadControlListEvent != null);
@@ -1249,6 +1690,11 @@ class _$OpenInMapEvent implements OpenInMapEvent {
     assert(openInMapEvent != null);
     assert(createViolationEvent != null);
     assert(registerSearchResultEvent != null);
+    assert(removeViolationEvent != null);
+    assert(registerPerformControlEvent != null);
+    assert(removePerformControlEvent != null);
+    assert(updatePerformControlEvent != null);
+    assert(updateResolveDateEvent != null);
     assert(changeShowMapEvent != null);
     return openInMapEvent(this);
   }
@@ -1265,6 +1711,11 @@ class _$OpenInMapEvent implements OpenInMapEvent {
     TResult openInMapEvent(OpenInMapEvent value),
     TResult createViolationEvent(CreateViolationEvent value),
     TResult registerSearchResultEvent(RegisterSearchResultEvent value),
+    TResult removeViolationEvent(RemoveViolationEvent value),
+    TResult registerPerformControlEvent(RegisterPerformControlEvent value),
+    TResult removePerformControlEvent(RemovePerformControlEvent value),
+    TResult updatePerformControlEvent(UpdatePerformControlEvent value),
+    TResult updateResolveDateEvent(UpdateResolveDateEvent value),
     TResult changeShowMapEvent(ChangeShowMapEvent value),
     @required TResult orElse(),
   }) {
@@ -1369,6 +1820,24 @@ class _$CreateViolationEvent implements CreateViolationEvent {
     @required
         TResult registerSearchResultEvent(
             ControlObject object, DCViolation violation),
+    @required
+        TResult removeViolationEvent(ControlObject object, int violationId),
+    @required
+        TResult registerPerformControlEvent(PerformControl performControl,
+            ControlObject object, int controlResultId),
+    @required
+        TResult removePerformControlEvent(PerformControl performControl,
+            ControlObject object, int controlResultId),
+    @required
+        TResult updatePerformControlEvent(PerformControl performControl,
+            ControlObject object, int controlResultId),
+    @required
+        TResult updateResolveDateEvent(
+            ControlObject object,
+            int controlResultId,
+            DateTime resolveDate,
+            ViolationExtensionReason reason,
+            String comments),
     @required TResult changeShowMapEvent(bool showMap),
   }) {
     assert(loadControlListEvent != null);
@@ -1380,6 +1849,11 @@ class _$CreateViolationEvent implements CreateViolationEvent {
     assert(openInMapEvent != null);
     assert(createViolationEvent != null);
     assert(registerSearchResultEvent != null);
+    assert(removeViolationEvent != null);
+    assert(registerPerformControlEvent != null);
+    assert(removePerformControlEvent != null);
+    assert(updatePerformControlEvent != null);
+    assert(updateResolveDateEvent != null);
     assert(changeShowMapEvent != null);
     return createViolationEvent(object);
   }
@@ -1397,6 +1871,15 @@ class _$CreateViolationEvent implements CreateViolationEvent {
     TResult createViolationEvent(ControlObject object),
     TResult registerSearchResultEvent(
         ControlObject object, DCViolation violation),
+    TResult removeViolationEvent(ControlObject object, int violationId),
+    TResult registerPerformControlEvent(PerformControl performControl,
+        ControlObject object, int controlResultId),
+    TResult removePerformControlEvent(PerformControl performControl,
+        ControlObject object, int controlResultId),
+    TResult updatePerformControlEvent(PerformControl performControl,
+        ControlObject object, int controlResultId),
+    TResult updateResolveDateEvent(ControlObject object, int controlResultId,
+        DateTime resolveDate, ViolationExtensionReason reason, String comments),
     TResult changeShowMapEvent(bool showMap),
     @required TResult orElse(),
   }) {
@@ -1422,6 +1905,14 @@ class _$CreateViolationEvent implements CreateViolationEvent {
     @required TResult createViolationEvent(CreateViolationEvent value),
     @required
         TResult registerSearchResultEvent(RegisterSearchResultEvent value),
+    @required TResult removeViolationEvent(RemoveViolationEvent value),
+    @required
+        TResult registerPerformControlEvent(RegisterPerformControlEvent value),
+    @required
+        TResult removePerformControlEvent(RemovePerformControlEvent value),
+    @required
+        TResult updatePerformControlEvent(UpdatePerformControlEvent value),
+    @required TResult updateResolveDateEvent(UpdateResolveDateEvent value),
     @required TResult changeShowMapEvent(ChangeShowMapEvent value),
   }) {
     assert(loadControlListEvent != null);
@@ -1433,6 +1924,11 @@ class _$CreateViolationEvent implements CreateViolationEvent {
     assert(openInMapEvent != null);
     assert(createViolationEvent != null);
     assert(registerSearchResultEvent != null);
+    assert(removeViolationEvent != null);
+    assert(registerPerformControlEvent != null);
+    assert(removePerformControlEvent != null);
+    assert(updatePerformControlEvent != null);
+    assert(updateResolveDateEvent != null);
     assert(changeShowMapEvent != null);
     return createViolationEvent(this);
   }
@@ -1449,6 +1945,11 @@ class _$CreateViolationEvent implements CreateViolationEvent {
     TResult openInMapEvent(OpenInMapEvent value),
     TResult createViolationEvent(CreateViolationEvent value),
     TResult registerSearchResultEvent(RegisterSearchResultEvent value),
+    TResult removeViolationEvent(RemoveViolationEvent value),
+    TResult registerPerformControlEvent(RegisterPerformControlEvent value),
+    TResult removePerformControlEvent(RemovePerformControlEvent value),
+    TResult updatePerformControlEvent(UpdatePerformControlEvent value),
+    TResult updateResolveDateEvent(UpdateResolveDateEvent value),
     TResult changeShowMapEvent(ChangeShowMapEvent value),
     @required TResult orElse(),
   }) {
@@ -1577,6 +2078,24 @@ class _$RegisterSearchResultEvent implements RegisterSearchResultEvent {
     @required
         TResult registerSearchResultEvent(
             ControlObject object, DCViolation violation),
+    @required
+        TResult removeViolationEvent(ControlObject object, int violationId),
+    @required
+        TResult registerPerformControlEvent(PerformControl performControl,
+            ControlObject object, int controlResultId),
+    @required
+        TResult removePerformControlEvent(PerformControl performControl,
+            ControlObject object, int controlResultId),
+    @required
+        TResult updatePerformControlEvent(PerformControl performControl,
+            ControlObject object, int controlResultId),
+    @required
+        TResult updateResolveDateEvent(
+            ControlObject object,
+            int controlResultId,
+            DateTime resolveDate,
+            ViolationExtensionReason reason,
+            String comments),
     @required TResult changeShowMapEvent(bool showMap),
   }) {
     assert(loadControlListEvent != null);
@@ -1588,6 +2107,11 @@ class _$RegisterSearchResultEvent implements RegisterSearchResultEvent {
     assert(openInMapEvent != null);
     assert(createViolationEvent != null);
     assert(registerSearchResultEvent != null);
+    assert(removeViolationEvent != null);
+    assert(registerPerformControlEvent != null);
+    assert(removePerformControlEvent != null);
+    assert(updatePerformControlEvent != null);
+    assert(updateResolveDateEvent != null);
     assert(changeShowMapEvent != null);
     return registerSearchResultEvent(object, violation);
   }
@@ -1605,6 +2129,15 @@ class _$RegisterSearchResultEvent implements RegisterSearchResultEvent {
     TResult createViolationEvent(ControlObject object),
     TResult registerSearchResultEvent(
         ControlObject object, DCViolation violation),
+    TResult removeViolationEvent(ControlObject object, int violationId),
+    TResult registerPerformControlEvent(PerformControl performControl,
+        ControlObject object, int controlResultId),
+    TResult removePerformControlEvent(PerformControl performControl,
+        ControlObject object, int controlResultId),
+    TResult updatePerformControlEvent(PerformControl performControl,
+        ControlObject object, int controlResultId),
+    TResult updateResolveDateEvent(ControlObject object, int controlResultId,
+        DateTime resolveDate, ViolationExtensionReason reason, String comments),
     TResult changeShowMapEvent(bool showMap),
     @required TResult orElse(),
   }) {
@@ -1630,6 +2163,14 @@ class _$RegisterSearchResultEvent implements RegisterSearchResultEvent {
     @required TResult createViolationEvent(CreateViolationEvent value),
     @required
         TResult registerSearchResultEvent(RegisterSearchResultEvent value),
+    @required TResult removeViolationEvent(RemoveViolationEvent value),
+    @required
+        TResult registerPerformControlEvent(RegisterPerformControlEvent value),
+    @required
+        TResult removePerformControlEvent(RemovePerformControlEvent value),
+    @required
+        TResult updatePerformControlEvent(UpdatePerformControlEvent value),
+    @required TResult updateResolveDateEvent(UpdateResolveDateEvent value),
     @required TResult changeShowMapEvent(ChangeShowMapEvent value),
   }) {
     assert(loadControlListEvent != null);
@@ -1641,6 +2182,11 @@ class _$RegisterSearchResultEvent implements RegisterSearchResultEvent {
     assert(openInMapEvent != null);
     assert(createViolationEvent != null);
     assert(registerSearchResultEvent != null);
+    assert(removeViolationEvent != null);
+    assert(registerPerformControlEvent != null);
+    assert(removePerformControlEvent != null);
+    assert(updatePerformControlEvent != null);
+    assert(updateResolveDateEvent != null);
     assert(changeShowMapEvent != null);
     return registerSearchResultEvent(this);
   }
@@ -1657,6 +2203,11 @@ class _$RegisterSearchResultEvent implements RegisterSearchResultEvent {
     TResult openInMapEvent(OpenInMapEvent value),
     TResult createViolationEvent(CreateViolationEvent value),
     TResult registerSearchResultEvent(RegisterSearchResultEvent value),
+    TResult removeViolationEvent(RemoveViolationEvent value),
+    TResult registerPerformControlEvent(RegisterPerformControlEvent value),
+    TResult removePerformControlEvent(RemovePerformControlEvent value),
+    TResult updatePerformControlEvent(UpdatePerformControlEvent value),
+    TResult updateResolveDateEvent(UpdateResolveDateEvent value),
     TResult changeShowMapEvent(ChangeShowMapEvent value),
     @required TResult orElse(),
   }) {
@@ -1676,6 +2227,1390 @@ abstract class RegisterSearchResultEvent implements ControlListBlocEvent {
   DCViolation get violation;
   @JsonKey(ignore: true)
   $RegisterSearchResultEventCopyWith<RegisterSearchResultEvent> get copyWith;
+}
+
+/// @nodoc
+abstract class $RemoveViolationEventCopyWith<$Res> {
+  factory $RemoveViolationEventCopyWith(RemoveViolationEvent value,
+          $Res Function(RemoveViolationEvent) then) =
+      _$RemoveViolationEventCopyWithImpl<$Res>;
+  $Res call({ControlObject object, int violationId});
+
+  $ControlObjectCopyWith<$Res> get object;
+}
+
+/// @nodoc
+class _$RemoveViolationEventCopyWithImpl<$Res>
+    extends _$ControlListBlocEventCopyWithImpl<$Res>
+    implements $RemoveViolationEventCopyWith<$Res> {
+  _$RemoveViolationEventCopyWithImpl(
+      RemoveViolationEvent _value, $Res Function(RemoveViolationEvent) _then)
+      : super(_value, (v) => _then(v as RemoveViolationEvent));
+
+  @override
+  RemoveViolationEvent get _value => super._value as RemoveViolationEvent;
+
+  @override
+  $Res call({
+    Object object = freezed,
+    Object violationId = freezed,
+  }) {
+    return _then(RemoveViolationEvent(
+      object == freezed ? _value.object : object as ControlObject,
+      violationId == freezed ? _value.violationId : violationId as int,
+    ));
+  }
+
+  @override
+  $ControlObjectCopyWith<$Res> get object {
+    if (_value.object == null) {
+      return null;
+    }
+    return $ControlObjectCopyWith<$Res>(_value.object, (value) {
+      return _then(_value.copyWith(object: value));
+    });
+  }
+}
+
+/// @nodoc
+class _$RemoveViolationEvent implements RemoveViolationEvent {
+  const _$RemoveViolationEvent(this.object, this.violationId)
+      : assert(object != null),
+        assert(violationId != null);
+
+  @override
+  final ControlObject object;
+  @override
+  final int violationId;
+
+  @override
+  String toString() {
+    return 'ControlListBlocEvent.removeViolationEvent(object: $object, violationId: $violationId)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is RemoveViolationEvent &&
+            (identical(other.object, object) ||
+                const DeepCollectionEquality().equals(other.object, object)) &&
+            (identical(other.violationId, violationId) ||
+                const DeepCollectionEquality()
+                    .equals(other.violationId, violationId)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(object) ^
+      const DeepCollectionEquality().hash(violationId);
+
+  @JsonKey(ignore: true)
+  @override
+  $RemoveViolationEventCopyWith<RemoveViolationEvent> get copyWith =>
+      _$RemoveViolationEventCopyWithImpl<RemoveViolationEvent>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object>({
+    @required TResult loadControlListEvent(),
+    @required TResult cantWorkInThisModeEvent(),
+    @required TResult refreshControlListEvent(),
+    @required TResult loadNextPageControlListEvent(),
+    @required TResult changeFilters(ControlFiltersBlocState state),
+    @required TResult changeSort(String state),
+    @required TResult openInMapEvent(ControlObject object),
+    @required TResult createViolationEvent(ControlObject object),
+    @required
+        TResult registerSearchResultEvent(
+            ControlObject object, DCViolation violation),
+    @required
+        TResult removeViolationEvent(ControlObject object, int violationId),
+    @required
+        TResult registerPerformControlEvent(PerformControl performControl,
+            ControlObject object, int controlResultId),
+    @required
+        TResult removePerformControlEvent(PerformControl performControl,
+            ControlObject object, int controlResultId),
+    @required
+        TResult updatePerformControlEvent(PerformControl performControl,
+            ControlObject object, int controlResultId),
+    @required
+        TResult updateResolveDateEvent(
+            ControlObject object,
+            int controlResultId,
+            DateTime resolveDate,
+            ViolationExtensionReason reason,
+            String comments),
+    @required TResult changeShowMapEvent(bool showMap),
+  }) {
+    assert(loadControlListEvent != null);
+    assert(cantWorkInThisModeEvent != null);
+    assert(refreshControlListEvent != null);
+    assert(loadNextPageControlListEvent != null);
+    assert(changeFilters != null);
+    assert(changeSort != null);
+    assert(openInMapEvent != null);
+    assert(createViolationEvent != null);
+    assert(registerSearchResultEvent != null);
+    assert(removeViolationEvent != null);
+    assert(registerPerformControlEvent != null);
+    assert(removePerformControlEvent != null);
+    assert(updatePerformControlEvent != null);
+    assert(updateResolveDateEvent != null);
+    assert(changeShowMapEvent != null);
+    return removeViolationEvent(object, violationId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object>({
+    TResult loadControlListEvent(),
+    TResult cantWorkInThisModeEvent(),
+    TResult refreshControlListEvent(),
+    TResult loadNextPageControlListEvent(),
+    TResult changeFilters(ControlFiltersBlocState state),
+    TResult changeSort(String state),
+    TResult openInMapEvent(ControlObject object),
+    TResult createViolationEvent(ControlObject object),
+    TResult registerSearchResultEvent(
+        ControlObject object, DCViolation violation),
+    TResult removeViolationEvent(ControlObject object, int violationId),
+    TResult registerPerformControlEvent(PerformControl performControl,
+        ControlObject object, int controlResultId),
+    TResult removePerformControlEvent(PerformControl performControl,
+        ControlObject object, int controlResultId),
+    TResult updatePerformControlEvent(PerformControl performControl,
+        ControlObject object, int controlResultId),
+    TResult updateResolveDateEvent(ControlObject object, int controlResultId,
+        DateTime resolveDate, ViolationExtensionReason reason, String comments),
+    TResult changeShowMapEvent(bool showMap),
+    @required TResult orElse(),
+  }) {
+    assert(orElse != null);
+    if (removeViolationEvent != null) {
+      return removeViolationEvent(object, violationId);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object>({
+    @required TResult loadControlListEvent(LoadControlListEvent value),
+    @required TResult cantWorkInThisModeEvent(CantWorkInThisModeEvent value),
+    @required TResult refreshControlListEvent(RefreshControlListEvent value),
+    @required
+        TResult loadNextPageControlListEvent(
+            LoadNextPageControlListEvent value),
+    @required TResult changeFilters(ChangeFiltersEvent value),
+    @required TResult changeSort(ChangeSortEvent value),
+    @required TResult openInMapEvent(OpenInMapEvent value),
+    @required TResult createViolationEvent(CreateViolationEvent value),
+    @required
+        TResult registerSearchResultEvent(RegisterSearchResultEvent value),
+    @required TResult removeViolationEvent(RemoveViolationEvent value),
+    @required
+        TResult registerPerformControlEvent(RegisterPerformControlEvent value),
+    @required
+        TResult removePerformControlEvent(RemovePerformControlEvent value),
+    @required
+        TResult updatePerformControlEvent(UpdatePerformControlEvent value),
+    @required TResult updateResolveDateEvent(UpdateResolveDateEvent value),
+    @required TResult changeShowMapEvent(ChangeShowMapEvent value),
+  }) {
+    assert(loadControlListEvent != null);
+    assert(cantWorkInThisModeEvent != null);
+    assert(refreshControlListEvent != null);
+    assert(loadNextPageControlListEvent != null);
+    assert(changeFilters != null);
+    assert(changeSort != null);
+    assert(openInMapEvent != null);
+    assert(createViolationEvent != null);
+    assert(registerSearchResultEvent != null);
+    assert(removeViolationEvent != null);
+    assert(registerPerformControlEvent != null);
+    assert(removePerformControlEvent != null);
+    assert(updatePerformControlEvent != null);
+    assert(updateResolveDateEvent != null);
+    assert(changeShowMapEvent != null);
+    return removeViolationEvent(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object>({
+    TResult loadControlListEvent(LoadControlListEvent value),
+    TResult cantWorkInThisModeEvent(CantWorkInThisModeEvent value),
+    TResult refreshControlListEvent(RefreshControlListEvent value),
+    TResult loadNextPageControlListEvent(LoadNextPageControlListEvent value),
+    TResult changeFilters(ChangeFiltersEvent value),
+    TResult changeSort(ChangeSortEvent value),
+    TResult openInMapEvent(OpenInMapEvent value),
+    TResult createViolationEvent(CreateViolationEvent value),
+    TResult registerSearchResultEvent(RegisterSearchResultEvent value),
+    TResult removeViolationEvent(RemoveViolationEvent value),
+    TResult registerPerformControlEvent(RegisterPerformControlEvent value),
+    TResult removePerformControlEvent(RemovePerformControlEvent value),
+    TResult updatePerformControlEvent(UpdatePerformControlEvent value),
+    TResult updateResolveDateEvent(UpdateResolveDateEvent value),
+    TResult changeShowMapEvent(ChangeShowMapEvent value),
+    @required TResult orElse(),
+  }) {
+    assert(orElse != null);
+    if (removeViolationEvent != null) {
+      return removeViolationEvent(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class RemoveViolationEvent implements ControlListBlocEvent {
+  const factory RemoveViolationEvent(ControlObject object, int violationId) =
+      _$RemoveViolationEvent;
+
+  ControlObject get object;
+  int get violationId;
+  @JsonKey(ignore: true)
+  $RemoveViolationEventCopyWith<RemoveViolationEvent> get copyWith;
+}
+
+/// @nodoc
+abstract class $RegisterPerformControlEventCopyWith<$Res> {
+  factory $RegisterPerformControlEventCopyWith(
+          RegisterPerformControlEvent value,
+          $Res Function(RegisterPerformControlEvent) then) =
+      _$RegisterPerformControlEventCopyWithImpl<$Res>;
+  $Res call(
+      {PerformControl performControl,
+      ControlObject object,
+      int controlResultId});
+
+  $PerformControlCopyWith<$Res> get performControl;
+  $ControlObjectCopyWith<$Res> get object;
+}
+
+/// @nodoc
+class _$RegisterPerformControlEventCopyWithImpl<$Res>
+    extends _$ControlListBlocEventCopyWithImpl<$Res>
+    implements $RegisterPerformControlEventCopyWith<$Res> {
+  _$RegisterPerformControlEventCopyWithImpl(RegisterPerformControlEvent _value,
+      $Res Function(RegisterPerformControlEvent) _then)
+      : super(_value, (v) => _then(v as RegisterPerformControlEvent));
+
+  @override
+  RegisterPerformControlEvent get _value =>
+      super._value as RegisterPerformControlEvent;
+
+  @override
+  $Res call({
+    Object performControl = freezed,
+    Object object = freezed,
+    Object controlResultId = freezed,
+  }) {
+    return _then(RegisterPerformControlEvent(
+      performControl == freezed
+          ? _value.performControl
+          : performControl as PerformControl,
+      object == freezed ? _value.object : object as ControlObject,
+      controlResultId == freezed
+          ? _value.controlResultId
+          : controlResultId as int,
+    ));
+  }
+
+  @override
+  $PerformControlCopyWith<$Res> get performControl {
+    if (_value.performControl == null) {
+      return null;
+    }
+    return $PerformControlCopyWith<$Res>(_value.performControl, (value) {
+      return _then(_value.copyWith(performControl: value));
+    });
+  }
+
+  @override
+  $ControlObjectCopyWith<$Res> get object {
+    if (_value.object == null) {
+      return null;
+    }
+    return $ControlObjectCopyWith<$Res>(_value.object, (value) {
+      return _then(_value.copyWith(object: value));
+    });
+  }
+}
+
+/// @nodoc
+class _$RegisterPerformControlEvent implements RegisterPerformControlEvent {
+  const _$RegisterPerformControlEvent(
+      this.performControl, this.object, this.controlResultId)
+      : assert(performControl != null),
+        assert(object != null),
+        assert(controlResultId != null);
+
+  @override
+  final PerformControl performControl;
+  @override
+  final ControlObject object;
+  @override
+  final int controlResultId;
+
+  @override
+  String toString() {
+    return 'ControlListBlocEvent.registerPerformControlEvent(performControl: $performControl, object: $object, controlResultId: $controlResultId)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is RegisterPerformControlEvent &&
+            (identical(other.performControl, performControl) ||
+                const DeepCollectionEquality()
+                    .equals(other.performControl, performControl)) &&
+            (identical(other.object, object) ||
+                const DeepCollectionEquality().equals(other.object, object)) &&
+            (identical(other.controlResultId, controlResultId) ||
+                const DeepCollectionEquality()
+                    .equals(other.controlResultId, controlResultId)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(performControl) ^
+      const DeepCollectionEquality().hash(object) ^
+      const DeepCollectionEquality().hash(controlResultId);
+
+  @JsonKey(ignore: true)
+  @override
+  $RegisterPerformControlEventCopyWith<RegisterPerformControlEvent>
+      get copyWith => _$RegisterPerformControlEventCopyWithImpl<
+          RegisterPerformControlEvent>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object>({
+    @required TResult loadControlListEvent(),
+    @required TResult cantWorkInThisModeEvent(),
+    @required TResult refreshControlListEvent(),
+    @required TResult loadNextPageControlListEvent(),
+    @required TResult changeFilters(ControlFiltersBlocState state),
+    @required TResult changeSort(String state),
+    @required TResult openInMapEvent(ControlObject object),
+    @required TResult createViolationEvent(ControlObject object),
+    @required
+        TResult registerSearchResultEvent(
+            ControlObject object, DCViolation violation),
+    @required
+        TResult removeViolationEvent(ControlObject object, int violationId),
+    @required
+        TResult registerPerformControlEvent(PerformControl performControl,
+            ControlObject object, int controlResultId),
+    @required
+        TResult removePerformControlEvent(PerformControl performControl,
+            ControlObject object, int controlResultId),
+    @required
+        TResult updatePerformControlEvent(PerformControl performControl,
+            ControlObject object, int controlResultId),
+    @required
+        TResult updateResolveDateEvent(
+            ControlObject object,
+            int controlResultId,
+            DateTime resolveDate,
+            ViolationExtensionReason reason,
+            String comments),
+    @required TResult changeShowMapEvent(bool showMap),
+  }) {
+    assert(loadControlListEvent != null);
+    assert(cantWorkInThisModeEvent != null);
+    assert(refreshControlListEvent != null);
+    assert(loadNextPageControlListEvent != null);
+    assert(changeFilters != null);
+    assert(changeSort != null);
+    assert(openInMapEvent != null);
+    assert(createViolationEvent != null);
+    assert(registerSearchResultEvent != null);
+    assert(removeViolationEvent != null);
+    assert(registerPerformControlEvent != null);
+    assert(removePerformControlEvent != null);
+    assert(updatePerformControlEvent != null);
+    assert(updateResolveDateEvent != null);
+    assert(changeShowMapEvent != null);
+    return registerPerformControlEvent(performControl, object, controlResultId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object>({
+    TResult loadControlListEvent(),
+    TResult cantWorkInThisModeEvent(),
+    TResult refreshControlListEvent(),
+    TResult loadNextPageControlListEvent(),
+    TResult changeFilters(ControlFiltersBlocState state),
+    TResult changeSort(String state),
+    TResult openInMapEvent(ControlObject object),
+    TResult createViolationEvent(ControlObject object),
+    TResult registerSearchResultEvent(
+        ControlObject object, DCViolation violation),
+    TResult removeViolationEvent(ControlObject object, int violationId),
+    TResult registerPerformControlEvent(PerformControl performControl,
+        ControlObject object, int controlResultId),
+    TResult removePerformControlEvent(PerformControl performControl,
+        ControlObject object, int controlResultId),
+    TResult updatePerformControlEvent(PerformControl performControl,
+        ControlObject object, int controlResultId),
+    TResult updateResolveDateEvent(ControlObject object, int controlResultId,
+        DateTime resolveDate, ViolationExtensionReason reason, String comments),
+    TResult changeShowMapEvent(bool showMap),
+    @required TResult orElse(),
+  }) {
+    assert(orElse != null);
+    if (registerPerformControlEvent != null) {
+      return registerPerformControlEvent(
+          performControl, object, controlResultId);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object>({
+    @required TResult loadControlListEvent(LoadControlListEvent value),
+    @required TResult cantWorkInThisModeEvent(CantWorkInThisModeEvent value),
+    @required TResult refreshControlListEvent(RefreshControlListEvent value),
+    @required
+        TResult loadNextPageControlListEvent(
+            LoadNextPageControlListEvent value),
+    @required TResult changeFilters(ChangeFiltersEvent value),
+    @required TResult changeSort(ChangeSortEvent value),
+    @required TResult openInMapEvent(OpenInMapEvent value),
+    @required TResult createViolationEvent(CreateViolationEvent value),
+    @required
+        TResult registerSearchResultEvent(RegisterSearchResultEvent value),
+    @required TResult removeViolationEvent(RemoveViolationEvent value),
+    @required
+        TResult registerPerformControlEvent(RegisterPerformControlEvent value),
+    @required
+        TResult removePerformControlEvent(RemovePerformControlEvent value),
+    @required
+        TResult updatePerformControlEvent(UpdatePerformControlEvent value),
+    @required TResult updateResolveDateEvent(UpdateResolveDateEvent value),
+    @required TResult changeShowMapEvent(ChangeShowMapEvent value),
+  }) {
+    assert(loadControlListEvent != null);
+    assert(cantWorkInThisModeEvent != null);
+    assert(refreshControlListEvent != null);
+    assert(loadNextPageControlListEvent != null);
+    assert(changeFilters != null);
+    assert(changeSort != null);
+    assert(openInMapEvent != null);
+    assert(createViolationEvent != null);
+    assert(registerSearchResultEvent != null);
+    assert(removeViolationEvent != null);
+    assert(registerPerformControlEvent != null);
+    assert(removePerformControlEvent != null);
+    assert(updatePerformControlEvent != null);
+    assert(updateResolveDateEvent != null);
+    assert(changeShowMapEvent != null);
+    return registerPerformControlEvent(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object>({
+    TResult loadControlListEvent(LoadControlListEvent value),
+    TResult cantWorkInThisModeEvent(CantWorkInThisModeEvent value),
+    TResult refreshControlListEvent(RefreshControlListEvent value),
+    TResult loadNextPageControlListEvent(LoadNextPageControlListEvent value),
+    TResult changeFilters(ChangeFiltersEvent value),
+    TResult changeSort(ChangeSortEvent value),
+    TResult openInMapEvent(OpenInMapEvent value),
+    TResult createViolationEvent(CreateViolationEvent value),
+    TResult registerSearchResultEvent(RegisterSearchResultEvent value),
+    TResult removeViolationEvent(RemoveViolationEvent value),
+    TResult registerPerformControlEvent(RegisterPerformControlEvent value),
+    TResult removePerformControlEvent(RemovePerformControlEvent value),
+    TResult updatePerformControlEvent(UpdatePerformControlEvent value),
+    TResult updateResolveDateEvent(UpdateResolveDateEvent value),
+    TResult changeShowMapEvent(ChangeShowMapEvent value),
+    @required TResult orElse(),
+  }) {
+    assert(orElse != null);
+    if (registerPerformControlEvent != null) {
+      return registerPerformControlEvent(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class RegisterPerformControlEvent implements ControlListBlocEvent {
+  const factory RegisterPerformControlEvent(
+      PerformControl performControl,
+      ControlObject object,
+      int controlResultId) = _$RegisterPerformControlEvent;
+
+  PerformControl get performControl;
+  ControlObject get object;
+  int get controlResultId;
+  @JsonKey(ignore: true)
+  $RegisterPerformControlEventCopyWith<RegisterPerformControlEvent>
+      get copyWith;
+}
+
+/// @nodoc
+abstract class $RemovePerformControlEventCopyWith<$Res> {
+  factory $RemovePerformControlEventCopyWith(RemovePerformControlEvent value,
+          $Res Function(RemovePerformControlEvent) then) =
+      _$RemovePerformControlEventCopyWithImpl<$Res>;
+  $Res call(
+      {PerformControl performControl,
+      ControlObject object,
+      int controlResultId});
+
+  $PerformControlCopyWith<$Res> get performControl;
+  $ControlObjectCopyWith<$Res> get object;
+}
+
+/// @nodoc
+class _$RemovePerformControlEventCopyWithImpl<$Res>
+    extends _$ControlListBlocEventCopyWithImpl<$Res>
+    implements $RemovePerformControlEventCopyWith<$Res> {
+  _$RemovePerformControlEventCopyWithImpl(RemovePerformControlEvent _value,
+      $Res Function(RemovePerformControlEvent) _then)
+      : super(_value, (v) => _then(v as RemovePerformControlEvent));
+
+  @override
+  RemovePerformControlEvent get _value =>
+      super._value as RemovePerformControlEvent;
+
+  @override
+  $Res call({
+    Object performControl = freezed,
+    Object object = freezed,
+    Object controlResultId = freezed,
+  }) {
+    return _then(RemovePerformControlEvent(
+      performControl == freezed
+          ? _value.performControl
+          : performControl as PerformControl,
+      object == freezed ? _value.object : object as ControlObject,
+      controlResultId == freezed
+          ? _value.controlResultId
+          : controlResultId as int,
+    ));
+  }
+
+  @override
+  $PerformControlCopyWith<$Res> get performControl {
+    if (_value.performControl == null) {
+      return null;
+    }
+    return $PerformControlCopyWith<$Res>(_value.performControl, (value) {
+      return _then(_value.copyWith(performControl: value));
+    });
+  }
+
+  @override
+  $ControlObjectCopyWith<$Res> get object {
+    if (_value.object == null) {
+      return null;
+    }
+    return $ControlObjectCopyWith<$Res>(_value.object, (value) {
+      return _then(_value.copyWith(object: value));
+    });
+  }
+}
+
+/// @nodoc
+class _$RemovePerformControlEvent implements RemovePerformControlEvent {
+  const _$RemovePerformControlEvent(
+      this.performControl, this.object, this.controlResultId)
+      : assert(performControl != null),
+        assert(object != null),
+        assert(controlResultId != null);
+
+  @override
+  final PerformControl performControl;
+  @override
+  final ControlObject object;
+  @override
+  final int controlResultId;
+
+  @override
+  String toString() {
+    return 'ControlListBlocEvent.removePerformControlEvent(performControl: $performControl, object: $object, controlResultId: $controlResultId)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is RemovePerformControlEvent &&
+            (identical(other.performControl, performControl) ||
+                const DeepCollectionEquality()
+                    .equals(other.performControl, performControl)) &&
+            (identical(other.object, object) ||
+                const DeepCollectionEquality().equals(other.object, object)) &&
+            (identical(other.controlResultId, controlResultId) ||
+                const DeepCollectionEquality()
+                    .equals(other.controlResultId, controlResultId)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(performControl) ^
+      const DeepCollectionEquality().hash(object) ^
+      const DeepCollectionEquality().hash(controlResultId);
+
+  @JsonKey(ignore: true)
+  @override
+  $RemovePerformControlEventCopyWith<RemovePerformControlEvent> get copyWith =>
+      _$RemovePerformControlEventCopyWithImpl<RemovePerformControlEvent>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object>({
+    @required TResult loadControlListEvent(),
+    @required TResult cantWorkInThisModeEvent(),
+    @required TResult refreshControlListEvent(),
+    @required TResult loadNextPageControlListEvent(),
+    @required TResult changeFilters(ControlFiltersBlocState state),
+    @required TResult changeSort(String state),
+    @required TResult openInMapEvent(ControlObject object),
+    @required TResult createViolationEvent(ControlObject object),
+    @required
+        TResult registerSearchResultEvent(
+            ControlObject object, DCViolation violation),
+    @required
+        TResult removeViolationEvent(ControlObject object, int violationId),
+    @required
+        TResult registerPerformControlEvent(PerformControl performControl,
+            ControlObject object, int controlResultId),
+    @required
+        TResult removePerformControlEvent(PerformControl performControl,
+            ControlObject object, int controlResultId),
+    @required
+        TResult updatePerformControlEvent(PerformControl performControl,
+            ControlObject object, int controlResultId),
+    @required
+        TResult updateResolveDateEvent(
+            ControlObject object,
+            int controlResultId,
+            DateTime resolveDate,
+            ViolationExtensionReason reason,
+            String comments),
+    @required TResult changeShowMapEvent(bool showMap),
+  }) {
+    assert(loadControlListEvent != null);
+    assert(cantWorkInThisModeEvent != null);
+    assert(refreshControlListEvent != null);
+    assert(loadNextPageControlListEvent != null);
+    assert(changeFilters != null);
+    assert(changeSort != null);
+    assert(openInMapEvent != null);
+    assert(createViolationEvent != null);
+    assert(registerSearchResultEvent != null);
+    assert(removeViolationEvent != null);
+    assert(registerPerformControlEvent != null);
+    assert(removePerformControlEvent != null);
+    assert(updatePerformControlEvent != null);
+    assert(updateResolveDateEvent != null);
+    assert(changeShowMapEvent != null);
+    return removePerformControlEvent(performControl, object, controlResultId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object>({
+    TResult loadControlListEvent(),
+    TResult cantWorkInThisModeEvent(),
+    TResult refreshControlListEvent(),
+    TResult loadNextPageControlListEvent(),
+    TResult changeFilters(ControlFiltersBlocState state),
+    TResult changeSort(String state),
+    TResult openInMapEvent(ControlObject object),
+    TResult createViolationEvent(ControlObject object),
+    TResult registerSearchResultEvent(
+        ControlObject object, DCViolation violation),
+    TResult removeViolationEvent(ControlObject object, int violationId),
+    TResult registerPerformControlEvent(PerformControl performControl,
+        ControlObject object, int controlResultId),
+    TResult removePerformControlEvent(PerformControl performControl,
+        ControlObject object, int controlResultId),
+    TResult updatePerformControlEvent(PerformControl performControl,
+        ControlObject object, int controlResultId),
+    TResult updateResolveDateEvent(ControlObject object, int controlResultId,
+        DateTime resolveDate, ViolationExtensionReason reason, String comments),
+    TResult changeShowMapEvent(bool showMap),
+    @required TResult orElse(),
+  }) {
+    assert(orElse != null);
+    if (removePerformControlEvent != null) {
+      return removePerformControlEvent(performControl, object, controlResultId);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object>({
+    @required TResult loadControlListEvent(LoadControlListEvent value),
+    @required TResult cantWorkInThisModeEvent(CantWorkInThisModeEvent value),
+    @required TResult refreshControlListEvent(RefreshControlListEvent value),
+    @required
+        TResult loadNextPageControlListEvent(
+            LoadNextPageControlListEvent value),
+    @required TResult changeFilters(ChangeFiltersEvent value),
+    @required TResult changeSort(ChangeSortEvent value),
+    @required TResult openInMapEvent(OpenInMapEvent value),
+    @required TResult createViolationEvent(CreateViolationEvent value),
+    @required
+        TResult registerSearchResultEvent(RegisterSearchResultEvent value),
+    @required TResult removeViolationEvent(RemoveViolationEvent value),
+    @required
+        TResult registerPerformControlEvent(RegisterPerformControlEvent value),
+    @required
+        TResult removePerformControlEvent(RemovePerformControlEvent value),
+    @required
+        TResult updatePerformControlEvent(UpdatePerformControlEvent value),
+    @required TResult updateResolveDateEvent(UpdateResolveDateEvent value),
+    @required TResult changeShowMapEvent(ChangeShowMapEvent value),
+  }) {
+    assert(loadControlListEvent != null);
+    assert(cantWorkInThisModeEvent != null);
+    assert(refreshControlListEvent != null);
+    assert(loadNextPageControlListEvent != null);
+    assert(changeFilters != null);
+    assert(changeSort != null);
+    assert(openInMapEvent != null);
+    assert(createViolationEvent != null);
+    assert(registerSearchResultEvent != null);
+    assert(removeViolationEvent != null);
+    assert(registerPerformControlEvent != null);
+    assert(removePerformControlEvent != null);
+    assert(updatePerformControlEvent != null);
+    assert(updateResolveDateEvent != null);
+    assert(changeShowMapEvent != null);
+    return removePerformControlEvent(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object>({
+    TResult loadControlListEvent(LoadControlListEvent value),
+    TResult cantWorkInThisModeEvent(CantWorkInThisModeEvent value),
+    TResult refreshControlListEvent(RefreshControlListEvent value),
+    TResult loadNextPageControlListEvent(LoadNextPageControlListEvent value),
+    TResult changeFilters(ChangeFiltersEvent value),
+    TResult changeSort(ChangeSortEvent value),
+    TResult openInMapEvent(OpenInMapEvent value),
+    TResult createViolationEvent(CreateViolationEvent value),
+    TResult registerSearchResultEvent(RegisterSearchResultEvent value),
+    TResult removeViolationEvent(RemoveViolationEvent value),
+    TResult registerPerformControlEvent(RegisterPerformControlEvent value),
+    TResult removePerformControlEvent(RemovePerformControlEvent value),
+    TResult updatePerformControlEvent(UpdatePerformControlEvent value),
+    TResult updateResolveDateEvent(UpdateResolveDateEvent value),
+    TResult changeShowMapEvent(ChangeShowMapEvent value),
+    @required TResult orElse(),
+  }) {
+    assert(orElse != null);
+    if (removePerformControlEvent != null) {
+      return removePerformControlEvent(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class RemovePerformControlEvent implements ControlListBlocEvent {
+  const factory RemovePerformControlEvent(PerformControl performControl,
+      ControlObject object, int controlResultId) = _$RemovePerformControlEvent;
+
+  PerformControl get performControl;
+  ControlObject get object;
+  int get controlResultId;
+  @JsonKey(ignore: true)
+  $RemovePerformControlEventCopyWith<RemovePerformControlEvent> get copyWith;
+}
+
+/// @nodoc
+abstract class $UpdatePerformControlEventCopyWith<$Res> {
+  factory $UpdatePerformControlEventCopyWith(UpdatePerformControlEvent value,
+          $Res Function(UpdatePerformControlEvent) then) =
+      _$UpdatePerformControlEventCopyWithImpl<$Res>;
+  $Res call(
+      {PerformControl performControl,
+      ControlObject object,
+      int controlResultId});
+
+  $PerformControlCopyWith<$Res> get performControl;
+  $ControlObjectCopyWith<$Res> get object;
+}
+
+/// @nodoc
+class _$UpdatePerformControlEventCopyWithImpl<$Res>
+    extends _$ControlListBlocEventCopyWithImpl<$Res>
+    implements $UpdatePerformControlEventCopyWith<$Res> {
+  _$UpdatePerformControlEventCopyWithImpl(UpdatePerformControlEvent _value,
+      $Res Function(UpdatePerformControlEvent) _then)
+      : super(_value, (v) => _then(v as UpdatePerformControlEvent));
+
+  @override
+  UpdatePerformControlEvent get _value =>
+      super._value as UpdatePerformControlEvent;
+
+  @override
+  $Res call({
+    Object performControl = freezed,
+    Object object = freezed,
+    Object controlResultId = freezed,
+  }) {
+    return _then(UpdatePerformControlEvent(
+      performControl == freezed
+          ? _value.performControl
+          : performControl as PerformControl,
+      object == freezed ? _value.object : object as ControlObject,
+      controlResultId == freezed
+          ? _value.controlResultId
+          : controlResultId as int,
+    ));
+  }
+
+  @override
+  $PerformControlCopyWith<$Res> get performControl {
+    if (_value.performControl == null) {
+      return null;
+    }
+    return $PerformControlCopyWith<$Res>(_value.performControl, (value) {
+      return _then(_value.copyWith(performControl: value));
+    });
+  }
+
+  @override
+  $ControlObjectCopyWith<$Res> get object {
+    if (_value.object == null) {
+      return null;
+    }
+    return $ControlObjectCopyWith<$Res>(_value.object, (value) {
+      return _then(_value.copyWith(object: value));
+    });
+  }
+}
+
+/// @nodoc
+class _$UpdatePerformControlEvent implements UpdatePerformControlEvent {
+  const _$UpdatePerformControlEvent(
+      this.performControl, this.object, this.controlResultId)
+      : assert(performControl != null),
+        assert(object != null),
+        assert(controlResultId != null);
+
+  @override
+  final PerformControl performControl;
+  @override
+  final ControlObject object;
+  @override
+  final int controlResultId;
+
+  @override
+  String toString() {
+    return 'ControlListBlocEvent.updatePerformControlEvent(performControl: $performControl, object: $object, controlResultId: $controlResultId)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is UpdatePerformControlEvent &&
+            (identical(other.performControl, performControl) ||
+                const DeepCollectionEquality()
+                    .equals(other.performControl, performControl)) &&
+            (identical(other.object, object) ||
+                const DeepCollectionEquality().equals(other.object, object)) &&
+            (identical(other.controlResultId, controlResultId) ||
+                const DeepCollectionEquality()
+                    .equals(other.controlResultId, controlResultId)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(performControl) ^
+      const DeepCollectionEquality().hash(object) ^
+      const DeepCollectionEquality().hash(controlResultId);
+
+  @JsonKey(ignore: true)
+  @override
+  $UpdatePerformControlEventCopyWith<UpdatePerformControlEvent> get copyWith =>
+      _$UpdatePerformControlEventCopyWithImpl<UpdatePerformControlEvent>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object>({
+    @required TResult loadControlListEvent(),
+    @required TResult cantWorkInThisModeEvent(),
+    @required TResult refreshControlListEvent(),
+    @required TResult loadNextPageControlListEvent(),
+    @required TResult changeFilters(ControlFiltersBlocState state),
+    @required TResult changeSort(String state),
+    @required TResult openInMapEvent(ControlObject object),
+    @required TResult createViolationEvent(ControlObject object),
+    @required
+        TResult registerSearchResultEvent(
+            ControlObject object, DCViolation violation),
+    @required
+        TResult removeViolationEvent(ControlObject object, int violationId),
+    @required
+        TResult registerPerformControlEvent(PerformControl performControl,
+            ControlObject object, int controlResultId),
+    @required
+        TResult removePerformControlEvent(PerformControl performControl,
+            ControlObject object, int controlResultId),
+    @required
+        TResult updatePerformControlEvent(PerformControl performControl,
+            ControlObject object, int controlResultId),
+    @required
+        TResult updateResolveDateEvent(
+            ControlObject object,
+            int controlResultId,
+            DateTime resolveDate,
+            ViolationExtensionReason reason,
+            String comments),
+    @required TResult changeShowMapEvent(bool showMap),
+  }) {
+    assert(loadControlListEvent != null);
+    assert(cantWorkInThisModeEvent != null);
+    assert(refreshControlListEvent != null);
+    assert(loadNextPageControlListEvent != null);
+    assert(changeFilters != null);
+    assert(changeSort != null);
+    assert(openInMapEvent != null);
+    assert(createViolationEvent != null);
+    assert(registerSearchResultEvent != null);
+    assert(removeViolationEvent != null);
+    assert(registerPerformControlEvent != null);
+    assert(removePerformControlEvent != null);
+    assert(updatePerformControlEvent != null);
+    assert(updateResolveDateEvent != null);
+    assert(changeShowMapEvent != null);
+    return updatePerformControlEvent(performControl, object, controlResultId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object>({
+    TResult loadControlListEvent(),
+    TResult cantWorkInThisModeEvent(),
+    TResult refreshControlListEvent(),
+    TResult loadNextPageControlListEvent(),
+    TResult changeFilters(ControlFiltersBlocState state),
+    TResult changeSort(String state),
+    TResult openInMapEvent(ControlObject object),
+    TResult createViolationEvent(ControlObject object),
+    TResult registerSearchResultEvent(
+        ControlObject object, DCViolation violation),
+    TResult removeViolationEvent(ControlObject object, int violationId),
+    TResult registerPerformControlEvent(PerformControl performControl,
+        ControlObject object, int controlResultId),
+    TResult removePerformControlEvent(PerformControl performControl,
+        ControlObject object, int controlResultId),
+    TResult updatePerformControlEvent(PerformControl performControl,
+        ControlObject object, int controlResultId),
+    TResult updateResolveDateEvent(ControlObject object, int controlResultId,
+        DateTime resolveDate, ViolationExtensionReason reason, String comments),
+    TResult changeShowMapEvent(bool showMap),
+    @required TResult orElse(),
+  }) {
+    assert(orElse != null);
+    if (updatePerformControlEvent != null) {
+      return updatePerformControlEvent(performControl, object, controlResultId);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object>({
+    @required TResult loadControlListEvent(LoadControlListEvent value),
+    @required TResult cantWorkInThisModeEvent(CantWorkInThisModeEvent value),
+    @required TResult refreshControlListEvent(RefreshControlListEvent value),
+    @required
+        TResult loadNextPageControlListEvent(
+            LoadNextPageControlListEvent value),
+    @required TResult changeFilters(ChangeFiltersEvent value),
+    @required TResult changeSort(ChangeSortEvent value),
+    @required TResult openInMapEvent(OpenInMapEvent value),
+    @required TResult createViolationEvent(CreateViolationEvent value),
+    @required
+        TResult registerSearchResultEvent(RegisterSearchResultEvent value),
+    @required TResult removeViolationEvent(RemoveViolationEvent value),
+    @required
+        TResult registerPerformControlEvent(RegisterPerformControlEvent value),
+    @required
+        TResult removePerformControlEvent(RemovePerformControlEvent value),
+    @required
+        TResult updatePerformControlEvent(UpdatePerformControlEvent value),
+    @required TResult updateResolveDateEvent(UpdateResolveDateEvent value),
+    @required TResult changeShowMapEvent(ChangeShowMapEvent value),
+  }) {
+    assert(loadControlListEvent != null);
+    assert(cantWorkInThisModeEvent != null);
+    assert(refreshControlListEvent != null);
+    assert(loadNextPageControlListEvent != null);
+    assert(changeFilters != null);
+    assert(changeSort != null);
+    assert(openInMapEvent != null);
+    assert(createViolationEvent != null);
+    assert(registerSearchResultEvent != null);
+    assert(removeViolationEvent != null);
+    assert(registerPerformControlEvent != null);
+    assert(removePerformControlEvent != null);
+    assert(updatePerformControlEvent != null);
+    assert(updateResolveDateEvent != null);
+    assert(changeShowMapEvent != null);
+    return updatePerformControlEvent(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object>({
+    TResult loadControlListEvent(LoadControlListEvent value),
+    TResult cantWorkInThisModeEvent(CantWorkInThisModeEvent value),
+    TResult refreshControlListEvent(RefreshControlListEvent value),
+    TResult loadNextPageControlListEvent(LoadNextPageControlListEvent value),
+    TResult changeFilters(ChangeFiltersEvent value),
+    TResult changeSort(ChangeSortEvent value),
+    TResult openInMapEvent(OpenInMapEvent value),
+    TResult createViolationEvent(CreateViolationEvent value),
+    TResult registerSearchResultEvent(RegisterSearchResultEvent value),
+    TResult removeViolationEvent(RemoveViolationEvent value),
+    TResult registerPerformControlEvent(RegisterPerformControlEvent value),
+    TResult removePerformControlEvent(RemovePerformControlEvent value),
+    TResult updatePerformControlEvent(UpdatePerformControlEvent value),
+    TResult updateResolveDateEvent(UpdateResolveDateEvent value),
+    TResult changeShowMapEvent(ChangeShowMapEvent value),
+    @required TResult orElse(),
+  }) {
+    assert(orElse != null);
+    if (updatePerformControlEvent != null) {
+      return updatePerformControlEvent(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class UpdatePerformControlEvent implements ControlListBlocEvent {
+  const factory UpdatePerformControlEvent(PerformControl performControl,
+      ControlObject object, int controlResultId) = _$UpdatePerformControlEvent;
+
+  PerformControl get performControl;
+  ControlObject get object;
+  int get controlResultId;
+  @JsonKey(ignore: true)
+  $UpdatePerformControlEventCopyWith<UpdatePerformControlEvent> get copyWith;
+}
+
+/// @nodoc
+abstract class $UpdateResolveDateEventCopyWith<$Res> {
+  factory $UpdateResolveDateEventCopyWith(UpdateResolveDateEvent value,
+          $Res Function(UpdateResolveDateEvent) then) =
+      _$UpdateResolveDateEventCopyWithImpl<$Res>;
+  $Res call(
+      {ControlObject object,
+      int controlResultId,
+      DateTime resolveDate,
+      ViolationExtensionReason reason,
+      String comments});
+
+  $ControlObjectCopyWith<$Res> get object;
+  $ViolationExtensionReasonCopyWith<$Res> get reason;
+}
+
+/// @nodoc
+class _$UpdateResolveDateEventCopyWithImpl<$Res>
+    extends _$ControlListBlocEventCopyWithImpl<$Res>
+    implements $UpdateResolveDateEventCopyWith<$Res> {
+  _$UpdateResolveDateEventCopyWithImpl(UpdateResolveDateEvent _value,
+      $Res Function(UpdateResolveDateEvent) _then)
+      : super(_value, (v) => _then(v as UpdateResolveDateEvent));
+
+  @override
+  UpdateResolveDateEvent get _value => super._value as UpdateResolveDateEvent;
+
+  @override
+  $Res call({
+    Object object = freezed,
+    Object controlResultId = freezed,
+    Object resolveDate = freezed,
+    Object reason = freezed,
+    Object comments = freezed,
+  }) {
+    return _then(UpdateResolveDateEvent(
+      object == freezed ? _value.object : object as ControlObject,
+      controlResultId == freezed
+          ? _value.controlResultId
+          : controlResultId as int,
+      resolveDate == freezed ? _value.resolveDate : resolveDate as DateTime,
+      reason == freezed ? _value.reason : reason as ViolationExtensionReason,
+      comments == freezed ? _value.comments : comments as String,
+    ));
+  }
+
+  @override
+  $ControlObjectCopyWith<$Res> get object {
+    if (_value.object == null) {
+      return null;
+    }
+    return $ControlObjectCopyWith<$Res>(_value.object, (value) {
+      return _then(_value.copyWith(object: value));
+    });
+  }
+
+  @override
+  $ViolationExtensionReasonCopyWith<$Res> get reason {
+    if (_value.reason == null) {
+      return null;
+    }
+    return $ViolationExtensionReasonCopyWith<$Res>(_value.reason, (value) {
+      return _then(_value.copyWith(reason: value));
+    });
+  }
+}
+
+/// @nodoc
+class _$UpdateResolveDateEvent implements UpdateResolveDateEvent {
+  const _$UpdateResolveDateEvent(this.object, this.controlResultId,
+      this.resolveDate, this.reason, this.comments)
+      : assert(object != null),
+        assert(controlResultId != null),
+        assert(resolveDate != null),
+        assert(reason != null),
+        assert(comments != null);
+
+  @override
+  final ControlObject object;
+  @override
+  final int controlResultId;
+  @override
+  final DateTime resolveDate;
+  @override
+  final ViolationExtensionReason reason;
+  @override
+  final String comments;
+
+  @override
+  String toString() {
+    return 'ControlListBlocEvent.updateResolveDateEvent(object: $object, controlResultId: $controlResultId, resolveDate: $resolveDate, reason: $reason, comments: $comments)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is UpdateResolveDateEvent &&
+            (identical(other.object, object) ||
+                const DeepCollectionEquality().equals(other.object, object)) &&
+            (identical(other.controlResultId, controlResultId) ||
+                const DeepCollectionEquality()
+                    .equals(other.controlResultId, controlResultId)) &&
+            (identical(other.resolveDate, resolveDate) ||
+                const DeepCollectionEquality()
+                    .equals(other.resolveDate, resolveDate)) &&
+            (identical(other.reason, reason) ||
+                const DeepCollectionEquality().equals(other.reason, reason)) &&
+            (identical(other.comments, comments) ||
+                const DeepCollectionEquality()
+                    .equals(other.comments, comments)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(object) ^
+      const DeepCollectionEquality().hash(controlResultId) ^
+      const DeepCollectionEquality().hash(resolveDate) ^
+      const DeepCollectionEquality().hash(reason) ^
+      const DeepCollectionEquality().hash(comments);
+
+  @JsonKey(ignore: true)
+  @override
+  $UpdateResolveDateEventCopyWith<UpdateResolveDateEvent> get copyWith =>
+      _$UpdateResolveDateEventCopyWithImpl<UpdateResolveDateEvent>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object>({
+    @required TResult loadControlListEvent(),
+    @required TResult cantWorkInThisModeEvent(),
+    @required TResult refreshControlListEvent(),
+    @required TResult loadNextPageControlListEvent(),
+    @required TResult changeFilters(ControlFiltersBlocState state),
+    @required TResult changeSort(String state),
+    @required TResult openInMapEvent(ControlObject object),
+    @required TResult createViolationEvent(ControlObject object),
+    @required
+        TResult registerSearchResultEvent(
+            ControlObject object, DCViolation violation),
+    @required
+        TResult removeViolationEvent(ControlObject object, int violationId),
+    @required
+        TResult registerPerformControlEvent(PerformControl performControl,
+            ControlObject object, int controlResultId),
+    @required
+        TResult removePerformControlEvent(PerformControl performControl,
+            ControlObject object, int controlResultId),
+    @required
+        TResult updatePerformControlEvent(PerformControl performControl,
+            ControlObject object, int controlResultId),
+    @required
+        TResult updateResolveDateEvent(
+            ControlObject object,
+            int controlResultId,
+            DateTime resolveDate,
+            ViolationExtensionReason reason,
+            String comments),
+    @required TResult changeShowMapEvent(bool showMap),
+  }) {
+    assert(loadControlListEvent != null);
+    assert(cantWorkInThisModeEvent != null);
+    assert(refreshControlListEvent != null);
+    assert(loadNextPageControlListEvent != null);
+    assert(changeFilters != null);
+    assert(changeSort != null);
+    assert(openInMapEvent != null);
+    assert(createViolationEvent != null);
+    assert(registerSearchResultEvent != null);
+    assert(removeViolationEvent != null);
+    assert(registerPerformControlEvent != null);
+    assert(removePerformControlEvent != null);
+    assert(updatePerformControlEvent != null);
+    assert(updateResolveDateEvent != null);
+    assert(changeShowMapEvent != null);
+    return updateResolveDateEvent(
+        object, controlResultId, resolveDate, reason, comments);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object>({
+    TResult loadControlListEvent(),
+    TResult cantWorkInThisModeEvent(),
+    TResult refreshControlListEvent(),
+    TResult loadNextPageControlListEvent(),
+    TResult changeFilters(ControlFiltersBlocState state),
+    TResult changeSort(String state),
+    TResult openInMapEvent(ControlObject object),
+    TResult createViolationEvent(ControlObject object),
+    TResult registerSearchResultEvent(
+        ControlObject object, DCViolation violation),
+    TResult removeViolationEvent(ControlObject object, int violationId),
+    TResult registerPerformControlEvent(PerformControl performControl,
+        ControlObject object, int controlResultId),
+    TResult removePerformControlEvent(PerformControl performControl,
+        ControlObject object, int controlResultId),
+    TResult updatePerformControlEvent(PerformControl performControl,
+        ControlObject object, int controlResultId),
+    TResult updateResolveDateEvent(ControlObject object, int controlResultId,
+        DateTime resolveDate, ViolationExtensionReason reason, String comments),
+    TResult changeShowMapEvent(bool showMap),
+    @required TResult orElse(),
+  }) {
+    assert(orElse != null);
+    if (updateResolveDateEvent != null) {
+      return updateResolveDateEvent(
+          object, controlResultId, resolveDate, reason, comments);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object>({
+    @required TResult loadControlListEvent(LoadControlListEvent value),
+    @required TResult cantWorkInThisModeEvent(CantWorkInThisModeEvent value),
+    @required TResult refreshControlListEvent(RefreshControlListEvent value),
+    @required
+        TResult loadNextPageControlListEvent(
+            LoadNextPageControlListEvent value),
+    @required TResult changeFilters(ChangeFiltersEvent value),
+    @required TResult changeSort(ChangeSortEvent value),
+    @required TResult openInMapEvent(OpenInMapEvent value),
+    @required TResult createViolationEvent(CreateViolationEvent value),
+    @required
+        TResult registerSearchResultEvent(RegisterSearchResultEvent value),
+    @required TResult removeViolationEvent(RemoveViolationEvent value),
+    @required
+        TResult registerPerformControlEvent(RegisterPerformControlEvent value),
+    @required
+        TResult removePerformControlEvent(RemovePerformControlEvent value),
+    @required
+        TResult updatePerformControlEvent(UpdatePerformControlEvent value),
+    @required TResult updateResolveDateEvent(UpdateResolveDateEvent value),
+    @required TResult changeShowMapEvent(ChangeShowMapEvent value),
+  }) {
+    assert(loadControlListEvent != null);
+    assert(cantWorkInThisModeEvent != null);
+    assert(refreshControlListEvent != null);
+    assert(loadNextPageControlListEvent != null);
+    assert(changeFilters != null);
+    assert(changeSort != null);
+    assert(openInMapEvent != null);
+    assert(createViolationEvent != null);
+    assert(registerSearchResultEvent != null);
+    assert(removeViolationEvent != null);
+    assert(registerPerformControlEvent != null);
+    assert(removePerformControlEvent != null);
+    assert(updatePerformControlEvent != null);
+    assert(updateResolveDateEvent != null);
+    assert(changeShowMapEvent != null);
+    return updateResolveDateEvent(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object>({
+    TResult loadControlListEvent(LoadControlListEvent value),
+    TResult cantWorkInThisModeEvent(CantWorkInThisModeEvent value),
+    TResult refreshControlListEvent(RefreshControlListEvent value),
+    TResult loadNextPageControlListEvent(LoadNextPageControlListEvent value),
+    TResult changeFilters(ChangeFiltersEvent value),
+    TResult changeSort(ChangeSortEvent value),
+    TResult openInMapEvent(OpenInMapEvent value),
+    TResult createViolationEvent(CreateViolationEvent value),
+    TResult registerSearchResultEvent(RegisterSearchResultEvent value),
+    TResult removeViolationEvent(RemoveViolationEvent value),
+    TResult registerPerformControlEvent(RegisterPerformControlEvent value),
+    TResult removePerformControlEvent(RemovePerformControlEvent value),
+    TResult updatePerformControlEvent(UpdatePerformControlEvent value),
+    TResult updateResolveDateEvent(UpdateResolveDateEvent value),
+    TResult changeShowMapEvent(ChangeShowMapEvent value),
+    @required TResult orElse(),
+  }) {
+    assert(orElse != null);
+    if (updateResolveDateEvent != null) {
+      return updateResolveDateEvent(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class UpdateResolveDateEvent implements ControlListBlocEvent {
+  const factory UpdateResolveDateEvent(
+      ControlObject object,
+      int controlResultId,
+      DateTime resolveDate,
+      ViolationExtensionReason reason,
+      String comments) = _$UpdateResolveDateEvent;
+
+  ControlObject get object;
+  int get controlResultId;
+  DateTime get resolveDate;
+  ViolationExtensionReason get reason;
+  String get comments;
+  @JsonKey(ignore: true)
+  $UpdateResolveDateEventCopyWith<UpdateResolveDateEvent> get copyWith;
 }
 
 /// @nodoc
@@ -1750,6 +3685,24 @@ class _$ChangeShowMapEvent implements ChangeShowMapEvent {
     @required
         TResult registerSearchResultEvent(
             ControlObject object, DCViolation violation),
+    @required
+        TResult removeViolationEvent(ControlObject object, int violationId),
+    @required
+        TResult registerPerformControlEvent(PerformControl performControl,
+            ControlObject object, int controlResultId),
+    @required
+        TResult removePerformControlEvent(PerformControl performControl,
+            ControlObject object, int controlResultId),
+    @required
+        TResult updatePerformControlEvent(PerformControl performControl,
+            ControlObject object, int controlResultId),
+    @required
+        TResult updateResolveDateEvent(
+            ControlObject object,
+            int controlResultId,
+            DateTime resolveDate,
+            ViolationExtensionReason reason,
+            String comments),
     @required TResult changeShowMapEvent(bool showMap),
   }) {
     assert(loadControlListEvent != null);
@@ -1761,6 +3714,11 @@ class _$ChangeShowMapEvent implements ChangeShowMapEvent {
     assert(openInMapEvent != null);
     assert(createViolationEvent != null);
     assert(registerSearchResultEvent != null);
+    assert(removeViolationEvent != null);
+    assert(registerPerformControlEvent != null);
+    assert(removePerformControlEvent != null);
+    assert(updatePerformControlEvent != null);
+    assert(updateResolveDateEvent != null);
     assert(changeShowMapEvent != null);
     return changeShowMapEvent(showMap);
   }
@@ -1778,6 +3736,15 @@ class _$ChangeShowMapEvent implements ChangeShowMapEvent {
     TResult createViolationEvent(ControlObject object),
     TResult registerSearchResultEvent(
         ControlObject object, DCViolation violation),
+    TResult removeViolationEvent(ControlObject object, int violationId),
+    TResult registerPerformControlEvent(PerformControl performControl,
+        ControlObject object, int controlResultId),
+    TResult removePerformControlEvent(PerformControl performControl,
+        ControlObject object, int controlResultId),
+    TResult updatePerformControlEvent(PerformControl performControl,
+        ControlObject object, int controlResultId),
+    TResult updateResolveDateEvent(ControlObject object, int controlResultId,
+        DateTime resolveDate, ViolationExtensionReason reason, String comments),
     TResult changeShowMapEvent(bool showMap),
     @required TResult orElse(),
   }) {
@@ -1803,6 +3770,14 @@ class _$ChangeShowMapEvent implements ChangeShowMapEvent {
     @required TResult createViolationEvent(CreateViolationEvent value),
     @required
         TResult registerSearchResultEvent(RegisterSearchResultEvent value),
+    @required TResult removeViolationEvent(RemoveViolationEvent value),
+    @required
+        TResult registerPerformControlEvent(RegisterPerformControlEvent value),
+    @required
+        TResult removePerformControlEvent(RemovePerformControlEvent value),
+    @required
+        TResult updatePerformControlEvent(UpdatePerformControlEvent value),
+    @required TResult updateResolveDateEvent(UpdateResolveDateEvent value),
     @required TResult changeShowMapEvent(ChangeShowMapEvent value),
   }) {
     assert(loadControlListEvent != null);
@@ -1814,6 +3789,11 @@ class _$ChangeShowMapEvent implements ChangeShowMapEvent {
     assert(openInMapEvent != null);
     assert(createViolationEvent != null);
     assert(registerSearchResultEvent != null);
+    assert(removeViolationEvent != null);
+    assert(registerPerformControlEvent != null);
+    assert(removePerformControlEvent != null);
+    assert(updatePerformControlEvent != null);
+    assert(updateResolveDateEvent != null);
     assert(changeShowMapEvent != null);
     return changeShowMapEvent(this);
   }
@@ -1830,6 +3810,11 @@ class _$ChangeShowMapEvent implements ChangeShowMapEvent {
     TResult openInMapEvent(OpenInMapEvent value),
     TResult createViolationEvent(CreateViolationEvent value),
     TResult registerSearchResultEvent(RegisterSearchResultEvent value),
+    TResult removeViolationEvent(RemoveViolationEvent value),
+    TResult registerPerformControlEvent(RegisterPerformControlEvent value),
+    TResult removePerformControlEvent(RemovePerformControlEvent value),
+    TResult updatePerformControlEvent(UpdatePerformControlEvent value),
+    TResult updateResolveDateEvent(UpdateResolveDateEvent value),
     TResult changeShowMapEvent(ChangeShowMapEvent value),
     @required TResult orElse(),
   }) {

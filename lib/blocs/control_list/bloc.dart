@@ -110,15 +110,37 @@ class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
         },
         createViolationEvent: (event) async* {},
         registerSearchResultEvent: (event) async* {
-          _notificationBloc.add(SnackBarNotificationEvent('Сохранение результата обследования'));
-          try {
-            final r = await _departmentControlService.registerControlResult(event.object, violation: event.violation);
-            _notificationBloc.add(OkDialogNotificationEvent('Сохранено успешно'));
-          }  on ApiException catch (e) {
-            print(e.message);
-            print(e.details);
-            yield* (_onApiException(e));
-          }
+          _notificationBloc.add(
+              SnackBarNotificationEvent('Сохранение результата обследования'));
+          await _departmentControlService
+              .registerControlResult(event.object, violation: event.violation);
+          _notificationBloc.add(OkDialogNotificationEvent('Сохранено успешно'));
+        },
+        removePerformControlEvent: (event) async* {
+          _notificationBloc
+              .add(SnackBarNotificationEvent('Удаление контроля устранения'));
+          await _departmentControlService.removePerformControl(
+              event.object, event.controlResultId, event.performControl);
+          _notificationBloc.add(OkDialogNotificationEvent('Удалено успешно'));
+        },
+        registerPerformControlEvent: (event) async* {
+          await _departmentControlService.registerPerformControl(
+              event.object, event.controlResultId, event.performControl);
+          _notificationBloc.add(OkDialogNotificationEvent('Сохранено успешно'));
+        },
+        updatePerformControlEvent: (event) async* {
+          await _departmentControlService.updatePerformControl(
+              event.object, event.controlResultId, event.performControl);
+          _notificationBloc.add(OkDialogNotificationEvent('Обновлено успешно'));
+        },
+        updateResolveDateEvent: (event) async* {
+          _notificationBloc
+              .add(OkDialogNotificationEvent('Функционал в разработке'));
+        },
+        removeViolationEvent: (event) async* {
+          await _departmentControlService.removeControlResult(
+              event.object, event.violationId);
+          _notificationBloc.add(OkDialogNotificationEvent('Обновлено успешно'));
         },
       ));
     } on ApiException catch (e) {
