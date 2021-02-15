@@ -68,12 +68,23 @@ class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
         loadControlListEvent: _onLoadControlListEvent,
         cantWorkInThisModeEvent: _onCantWorkInThisModeEvent,
         loadNextPageControlListEvent: _onLoadNextPageEvent,
-        changeFilters: (event) async* {
-          yield (state.copyWith(
-            filtersState: event.state,
-          ));
+        selectControlObject: (event) async * {
+          yield (
+            state.copyWith(
+              mapState: ControlObjectsMapState(
+                selectedObject: event.object
+              ),
+            )
+          );
+        },
+        changeFilters: (event) async * {
+          yield (
+            state.copyWith(
+              filtersState: event.state
+            )
+          );
           print('Filtering');
-          add(LoadControlListEvent());
+          // add(LoadControlListEvent());
         },
         changeSort: (event) async* {
           yield (state.copyWith(
@@ -243,6 +254,8 @@ class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
       ));
     }
   }
+
+  Location get location => _location;
 
   @override
   Future<void> close() async {
