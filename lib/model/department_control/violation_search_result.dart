@@ -7,8 +7,8 @@ import 'package:inspector/model/department_control/source.dart';
 import 'package:inspector/model/department_control/violation_additional_feature.dart';
 import 'package:inspector/model/department_control/violation_classification.dart';
 import 'package:inspector/model/department_control/violation_extension_period_search_result.dart';
-import 'package:inspector/model/violation_kind.dart';
-import 'package:inspector/model/violation_status.dart';
+import 'package:inspector/model/department_control/dcviolation_kind.dart';
+import 'package:inspector/model/department_control/violation_status.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'violation_search_result.g.dart';
@@ -36,7 +36,7 @@ abstract class ViolationSearchResult with _$ViolationSearchResult {
     String violationNum,
     ViolationStatus violationStatus,
     Source source,
-    ViolationKind violationKind,
+    DCViolationKind violationKind,
     String cafapAssigmentId,
     String cafapPrescriptionId,
     int cafapPrescriptionNum,

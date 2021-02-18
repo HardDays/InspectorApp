@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:inspector/blocs/control_list/bloc.dart';
+import 'package:inspector/blocs/control_list/event.dart';
 import 'package:inspector/model/department_control/control_object.dart';
 import 'package:inspector/model/department_control/dcviolation.dart';
-import 'package:inspector/services/department_control/department_control_service.dart';
 import 'package:inspector/services/dictionary_service.dart';
 import 'package:inspector/style/appbar.dart';
 import 'package:inspector/widgets/control/control_object/control_object_info.dart';
@@ -11,10 +13,12 @@ import 'package:provider/provider.dart';
 class ControlViolationFormPage extends StatelessWidget {
   const ControlViolationFormPage({
     Key key,
-    @required this.controlObject,
+    @required this.controlObject, 
+    @required this.onConfirm,
   }) : super(key: key);
 
   final ControlObject controlObject;
+  final void Function(DCViolation violation) onConfirm;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +35,7 @@ class ControlViolationFormPage extends StatelessWidget {
               ViolationFormWidget(
                 dictionaryService: Provider.of<DictionaryService>(context, listen: false),
                 onConfirm: (DCViolation violation) {
-                  Provider.of<DepartmentControlService>(context, listen: false).registerControlResult(controlObject, violation: violation);
+                  onConfirm(violation);
                   Navigator.of(context).pop();
                 },
                 onCancel: () {

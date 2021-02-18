@@ -8,11 +8,11 @@
 // }
 abstract class ControlObjectSortStrings {
   static const lastSurveyDate = 'lastSurveyDate';
-  static const type = 'type';
   static const name = 'name';
+  static const type = 'type';
   static const address = 'address';
   static const lastCheckDate = 'lastCheckDate';
   static const resolveDate = 'resolveDate';
 
-  static const all = [lastSurveyDate, type, name, address, lastCheckDate, resolveDate];
+  static const all = [lastSurveyDate, name, type, address, lastCheckDate, resolveDate];
 }

@@ -13,8 +13,10 @@ import 'package:inspector/model/department_control/control_result.dart';
 import 'package:inspector/model/department_control/object_element.dart';
 import 'package:inspector/model/department_control/object_kind.dart';
 import 'package:inspector/model/department_control/object_type.dart';
+import 'package:inspector/model/department_control/perform_control.dart';
 import 'package:inspector/model/department_control/source.dart';
 import 'package:inspector/model/department_control/violation_additional_feature.dart';
+import 'package:inspector/model/department_control/violation_classification_search_result.dart';
 import 'package:inspector/model/department_control/violation_name.dart';
 import 'package:inspector/model/department_control/violation_status.dart' as dc;
 import 'package:inspector/model/district.dart';
@@ -89,7 +91,7 @@ class ApiProvider {
     ViolationName: '/dict/dc-violation-names',
     ViolationAdditionalFeature: '/dict/dc-violation-additional-features',
     Source: '/dict/dc-sources',
-
+    ViolationClassificationSearchResult: '/dict/dc-violation-classifications',
   };
 
   final dio = Dio(BaseOptions(baseUrl: _defaultUrl));
@@ -105,6 +107,7 @@ class ApiProvider {
   Future<dynamic> _request(Function request) async {
     try {
       final res = (await request());  
+      print(res.request.queryParameters);
       return res.data;
     } on DioError catch (ex) {
       print(ex);
@@ -392,5 +395,26 @@ class ApiProvider {
   Future<dynamic> createDCControlResult(int dcObjectId, ControlResult result) {
     return _request(() => dio.post('/dc-objects/$dcObjectId/control-results', data: result.toJson()));
   }
+
+  Future<dynamic> updateDCControlResult(int dcObjectId, ControlResult result) {
+    return _request(() => dio.patch('/dc-objects/$dcObjectId/control-results/${result.id}', data: result.toJson()));
+  }
+
+  Future<dynamic> removeDCControlResult(int dcObjectId, int dcControlResultId) {
+    return _request(() => dio.delete('/dc-objects/$dcObjectId/control-results/$dcControlResultId'));
+  }
+
+  Future<dynamic> createDCPerformControlResult(int dcObjectId, int dcControlResultId, PerformControl performControl) {
+    return _request(() => dio.post('/dc-objects/$dcObjectId/control-results/$dcControlResultId/perform-controls', data: performControl.toJson()));
+  }
+
+  Future<dynamic> updateDCPerformControlResult(int dcObjectId, int dcControlResultId, PerformControl performControl) {
+    return _request(() => dio.patch('/dc-objects/$dcObjectId/control-results/$dcControlResultId/perform-controls', data: performControl.toJson()));
+  }
+
+  Future<dynamic> removeDCPerformControlResult(int dcObjectId, int dcControlResultId, int performControlId) {
+    return _request(() => dio.delete('/dc-objects/$dcObjectId/control-results/$dcControlResultId/perform-controls/$performControlId'));
+  }
+
 
 }

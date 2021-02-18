@@ -5,6 +5,7 @@ import 'package:inspector/model/address.dart';
 import 'package:inspector/model/department_control/contractor.dart';
 import 'package:inspector/model/department_control/object_element.dart';
 import 'package:inspector/model/department_control/violation_additional_feature.dart';
+import 'package:inspector/model/department_control/violation_classification_search_result.dart';
 
 part 'event.freezed.dart';
 
@@ -67,4 +68,12 @@ abstract class ControlViolationFormEvent with _$ControlViolationFormEvent {
     Uint8List photo,
   ) = RotatePhotoEvent;
   
+  const factory ControlViolationFormEvent.setViolationClassificationString(
+    String classification,
+  ) = SetViolationClassificationString;
+
+  const factory ControlViolationFormEvent.setViolationClassifications(
+    ViolationClassificationSearchResult classification,
+  ) = SetViolationClassification;
+
 }

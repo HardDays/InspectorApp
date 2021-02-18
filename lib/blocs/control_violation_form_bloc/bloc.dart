@@ -9,13 +9,17 @@ import 'package:inspector/model/department_control/contractor.dart';
 import 'package:inspector/model/department_control/dcphoto.dart';
 import 'package:inspector/model/department_control/object_element.dart';
 import 'package:inspector/model/department_control/violation_additional_feature.dart';
+import 'package:inspector/model/department_control/violation_classification.dart';
+import 'package:inspector/model/department_control/violation_classification_search_result.dart';
+import 'package:inspector/model/department_control/violation_name.dart';
 
 class ControlViolationFormBloc
     extends Bloc<ControlViolationFormEvent, CotnrolViolationFormState> {
-  ControlViolationFormBloc(CotnrolViolationFormState initialState, {this.notificationBloc})
+  ControlViolationFormBloc(CotnrolViolationFormState initialState,
+      {this.notificationBloc})
       : super(initialState);
 
-    final NotificationBloc notificationBloc;
+  final NotificationBloc notificationBloc;
 
   @override
   Stream<CotnrolViolationFormState> mapEventToState(
@@ -65,6 +69,23 @@ class ControlViolationFormBloc
               ),
           ));
         },
+        setViolationClassifications: (event) async* {
+          yield (state.copyWith(
+            violationClassification: ViolationClassification(
+              id: event.classification.id,
+              violationName: event.classification.violationName,
+            ),
+          ));
+        },
+        setViolationClassificationString: (event) async* {
+          yield (state.copyWith(
+            violationClassification: ViolationClassification(
+              violationName: ViolationName(
+                name: event.classification,
+              ),
+            ),
+          ));
+        },
       );
 
   Stream<CotnrolViolationFormState> _onSetAddressEvent(
@@ -96,7 +117,8 @@ class ControlViolationFormBloc
   Stream<CotnrolViolationFormState> _onSetUseGeoLocationForAddressEvent(
       SetUseGeoLocationForAddressEvent event) async* {
     //yield (state.copyWith(setAddressByGeoLocation: event.value));
-    notificationBloc.add(SnackBarNotificationEvent('Этот функционал пока не реализован'));
+    notificationBloc
+        .add(SnackBarNotificationEvent('Этот функционал пока не реализован'));
   }
 
   Stream<CotnrolViolationFormState> _onSetDescriptionEvent(

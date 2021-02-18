@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:inspector/model/department_control/control_object.dart';
 import 'package:inspector/model/department_control/control_result.dart';
 import 'package:inspector/model/department_control/control_result_search_result.dart';
+import 'package:inspector/model/department_control/perform_control.dart';
 import 'package:inspector/providers/api_provider.dart';
 
 class DepartmentControlApiClient {
@@ -111,7 +112,7 @@ class DepartmentControlApiClient {
         from: from,
         sort: sort,
       ).then((response) => response['data']
-          .map((e) => ControlObject.fromJson(e)).cast<ControlObject>().toList());
+          .map((e) => ControlResultSearchResult.fromJson(e)).cast<ControlResultSearchResult>().toList());
 
   Future<ControlResultSearchResult> getControlSearchResultByIds(
     int dcObjectId,
@@ -127,4 +128,21 @@ class DepartmentControlApiClient {
   Future<ControlResult> registerControlResult(ControlObject object, ControlResult result) async {
     return ControlResult.fromJson(await apiProvider.createDCControlResult(object.id, result));
   }
+
+  Future<ControlResult> updateControlResult(ControlObject object, ControlResult result) async {
+    return ControlResult.fromJson(await apiProvider.updateDCControlResult(object.id, result));
+  }
+
+  Future<void> removeControlResult(ControlObject object, int resultId)
+    => apiProvider.removeDCControlResult(object.id, resultId);
+
+  Future<PerformControl> registerPerformControl(ControlObject object, int dcControlResultId, PerformControl performControl)
+    async => PerformControl.fromJson(await apiProvider.createDCPerformControlResult(object.id, dcControlResultId, performControl));
+
+  Future<PerformControl> updatePerformControl(ControlObject object, int dcControlResultId, PerformControl performControl)
+    async => PerformControl.fromJson(await apiProvider.updateDCPerformControlResult(object.id, dcControlResultId, performControl));
+
+  Future<void> removePerformControl(ControlObject object, int dcControlResultId, PerformControl performControl)
+    async => await apiProvider.removeDCPerformControlResult(object.id, dcControlResultId, performControl.id);
+
 }

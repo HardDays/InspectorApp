@@ -12,6 +12,9 @@ import 'package:inspector/model/department_control/dcphoto.dart';
 import 'package:inspector/model/department_control/dcviolation.dart';
 import 'package:inspector/model/department_control/object_element.dart';
 import 'package:inspector/model/department_control/violation_additional_feature.dart';
+import 'package:inspector/model/department_control/violation_classification.dart';
+import 'package:inspector/model/department_control/violation_classification_search_result.dart';
+import 'package:inspector/model/department_control/violation_name.dart';
 import 'package:inspector/services/dictionary_service.dart';
 import 'package:inspector/style/autocomplete.dart';
 import 'package:inspector/style/button.dart';
@@ -47,6 +50,8 @@ class _ViolationFormWidgetState extends State<ViolationFormWidget> {
   TextEditingController _descriptionController = TextEditingController();
   TextEditingController _additionalFeatureController = TextEditingController();
   TextEditingController _contractorController = TextEditingController();
+  TextEditingController _violationClassificationController =
+      TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -65,18 +70,36 @@ class _ViolationFormWidgetState extends State<ViolationFormWidget> {
           violationAdditionalFeature:
               widget.initialViolation?.additionalFeatures?.first ??
                   ViolationAdditionalFeature(name: ''),
+          showClassificationField: widget.initialViolation == null,
+          violationClassification:
+              widget.initialViolation?.eknViolationClassification ??
+                  widget.initialViolation?.otherViolationClassification ??
+                  ViolationClassification(
+                    violationName: ViolationName(
+                      name: '',
+                    ),
+                  ),
         ),
         notificationBloc: BlocProvider.of<NotificationBloc>(context),
       ),
       child: BlocConsumer<ControlViolationFormBloc, CotnrolViolationFormState>(
         listener: (context, state) {
-          _addressController.text = state.address.toLongString();
-          _targetMarkController.text = state.targetLandmark;
-          _objectElementController.text = state.objectElement.name;
-          _descriptionController.text = state.description;
-          _additionalFeatureController.text =
-              state.violationAdditionalFeature.name;
-          _contractorController.text = state.contractor.name;
+          if(_addressController.text != state.address.toLongString())
+            _addressController.text = state.address.toLongString();
+          if(_targetMarkController.text != state.targetLandmark)
+            _targetMarkController.text = state.targetLandmark;
+          if(_objectElementController.text != state.objectElement.name)
+            _objectElementController.text = state.objectElement.name;
+          if(_descriptionController.text != state.description)
+            _descriptionController.text = state.description;
+          if(_additionalFeatureController.text !=
+              state.violationAdditionalFeature.name)
+                _additionalFeatureController.text =
+                  state.violationAdditionalFeature.name;
+          if(_contractorController.text != state.contractor.name)
+            _contractorController.text = state.contractor.name;
+          if(_violationClassificationController.text != state.violationClassification.violationName.name)
+            _violationClassificationController.text = state.violationClassification.violationName.name;
         },
         builder: (context, state) => Column(
           children: [
@@ -180,6 +203,27 @@ class _ViolationFormWidgetState extends State<ViolationFormWidget> {
               suggestionsCallback: (value) =>
                   widget.dictionaryService.getDCObjectElements(name: value),
             ),
+            if (state.showClassificationField)
+              Padding(
+                padding: EdgeInsets.only(top: 20),
+                child: ProjectAutocomplete<ViolationClassificationSearchResult>(
+                  'Наименование нарушения по ЕКН',
+                  controller: _violationClassificationController,
+                  hintText: 'Введите данные',
+                  enabled: true,
+                  formatter: (value) => value.violationName.name,
+                  onChanged: (value) =>
+                      BlocProvider.of<ControlViolationFormBloc>(context).add(
+                          ControlViolationFormEvent
+                              .setViolationClassificationString(value)),
+                  onSuggestionSelected: (value) =>
+                      BlocProvider.of<ControlViolationFormBloc>(context).add(
+                          ControlViolationFormEvent
+                              .setViolationClassifications(value)),
+                  suggestionsCallback: (value) => widget.dictionaryService
+                      .getViolationClassificationSearchResults(name: value, objectElement: state.objectElement),
+                ),
+              ),
             SizedBox(
               height: 20,
             ),
@@ -261,15 +305,19 @@ class _ViolationFormWidgetState extends State<ViolationFormWidget> {
                   'Отменить',
                   onPressed: widget.onCancel,
                 ),
-                SizedBox(width: 20,),
+                SizedBox(
+                  width: 20,
+                ),
                 ProjectButton.builtFlatButton(
                   'Сохранить',
                   onPressed: () {
-                    final violation = (widget.initialViolation ?? DCViolation()).copyWith(
+                    final violation =
+                        (widget.initialViolation ?? DCViolation()).copyWith(
                       btiAddress: state.address,
                       address: state.targetLandmark,
                       objectElement: state.objectElement,
                       description: state.description,
+                      eknViolationClassification: state.violationClassification,
                       violator: state.contractor,
                       critical: state.critical,
                       additionalFeatures: [state.violationAdditionalFeature],

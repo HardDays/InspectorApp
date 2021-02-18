@@ -10,6 +10,7 @@ import 'package:inspector/blocs/control_list/state.dart';
 import 'package:inspector/model/department_control/control_object.dart';
 import 'package:inspector/pages/control_object_page.dart';
 import 'package:inspector/pages/control_violation_form_page.dart';
+import 'package:inspector/providers/exceptions/api_exception.dart';
 import 'package:inspector/services/department_control/department_control_service.dart';
 import 'package:inspector/style/accept_dialog.dart';
 import 'package:inspector/style/colors.dart';
@@ -44,10 +45,14 @@ class _ControlListPageState extends State<ControlListPage> {
     return BlocBuilder<ControlListBloc, ControlListBlocState>(
       builder: (context, state) {
         return Scaffold(
-          appBar: FilterAppbar('Ведомственный контроль', '', 'Сортировка', 'Фильтры',
+          appBar: FilterAppbar(
+            'Ведомственный контроль',
+            '',
+            'Сортировка',
+            'Фильтры',
             onUpdate: () {
               _refreshIndicatorKey.currentState?.show();
-            }, 
+            },
             onFilter: _onOpenFilters,
             onSort: _onOpenSort,
           ),
@@ -125,6 +130,8 @@ class _ControlListPageState extends State<ControlListPage> {
             ),
             cantWorkInThisModeState: (cantWorkInThisModeState) =>
                 _cantWorkInThisMode(),
+            apiExceptionState: (state) =>
+                _buildApiExceptionBody(state.exception),
           )
         else
           Expanded(
@@ -158,6 +165,8 @@ class _ControlListPageState extends State<ControlListPage> {
                 ),
                 cantWorkInThisModeState: (cantWorkInThisModeState) =>
                     _cantWorkInThisMode(),
+                apiExceptionState: (state) =>
+                    _buildApiExceptionBody(state.exception),
               ),
             ),
           ),
@@ -166,6 +175,18 @@ class _ControlListPageState extends State<ControlListPage> {
   }
 
   Widget _buildEmptyObjectsList() {
+    return _buildErrorMessageBody(
+      'Поблизости не найдено объектов ведомственного контроля. Попробуйте отключить поиск по местоположению.',
+    );
+  }
+
+  Widget _buildApiExceptionBody(ApiException exception) {
+    return _buildErrorMessageBody(
+      'Произошла ошибка ${exception.message}: ${exception.details}',
+    );
+  }
+
+  Widget _buildErrorMessageBody(String message) {
     return CustomScrollView(
       slivers: [
         SliverFillRemaining(
@@ -229,9 +250,16 @@ class _ControlListPageState extends State<ControlListPage> {
 
   void _onOpenSort() async {
     final bloc = BlocProvider.of<ControlListBloc>(context);
-    final titles = ['по дате последней проверки', 'по названию объекта', 'по типу объекта', 'по адресу объекта','по дате обследования', 'по контрольному сроку устранения нарушения'];
+    final titles = [
+      'по дате последней проверки',
+      'по названию объекта',
+      'по типу объекта',
+      'по адресу объекта',
+      'по дате обследования',
+      'по контрольному сроку устранения нарушения'
+    ];
     final result = await showModalBottomSheet(
-      context: context, 
+      context: context,
       backgroundColor: Colors.transparent,
       builder: (context) => SortDialog(
         bloc.state.sortState,
@@ -266,8 +294,11 @@ class _ControlListPageState extends State<ControlListPage> {
                     message:
                         'Объект ${object.id} обследован. Нарушений не выявленно. ${DateFormat("dd.MM.yyyy hh:mm").format(DateTime.now())}'))) !=
             null) {
-          Provider.of<DepartmentControlService>(context, listen: false)
-              .registerControlResult(object);
+          BlocProvider.of<ControlListBloc>(context).add(
+            ControlListBlocEvent.registerSearchResultEvent(
+              object,
+            ),
+          );
         }
       };
 
@@ -277,7 +308,9 @@ class _ControlListPageState extends State<ControlListPage> {
           context,
           MaterialPageRoute(
             builder: (context) => ControlViolationFormPage(
-              controlObject: object,
+              controlObject: object, onConfirm: (violation) { 
+                BlocProvider.of<ControlListBloc>(context).add(ControlListBlocEvent.registerSearchResultEvent(object, violation: violation));
+              },
             ),
           ),
         );

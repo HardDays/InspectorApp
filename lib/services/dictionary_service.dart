@@ -8,6 +8,7 @@ import 'package:inspector/model/department_control/object_kind.dart';
 import 'package:inspector/model/department_control/object_type.dart';
 import 'package:inspector/model/department_control/source.dart';
 import 'package:inspector/model/department_control/violation_additional_feature.dart';
+import 'package:inspector/model/department_control/violation_classification_search_result.dart';
 import 'package:inspector/model/department_control/violation_name.dart';
 import 'package:inspector/model/department_control/violation_status.dart';
 import 'package:inspector/model/dictionary_metadata.dart';
@@ -71,6 +72,7 @@ class DictionaryService {
     DictionaryNames.dcContractors: ApiDictionaryService().getContractors,
     DictionaryNames.dcViolationAdditionalFeatures: ApiDictionaryService().getViolationAdditionalFeatures,
     DictionaryNames.dcSources: ApiDictionaryService().getDCSources,
+    DictionaryNames.dcViolationClassificationSearchResults: ApiDictionaryService().getViolationClassifications,
   };
 
  final Map<String, Function(Map<String, dynamic>)> _converters = {
@@ -101,6 +103,7 @@ class DictionaryService {
     DictionaryNames.dcContractors: (json)=> Contractor.fromJson(json),
     DictionaryNames.dcViolationAdditionalFeatures: (json)=> ViolationAdditionalFeature.fromJson(json),
     DictionaryNames.dcSources: (json)=> Source.fromJson(json),
+    DictionaryNames.dcViolationClassificationSearchResults: (json) => ViolationClassificationSearchResult.fromSqliteJson(json),
   };
 
   final _lock = Lock();
@@ -544,6 +547,22 @@ class DictionaryService {
       queries: [
         Query({
           'name LIKE ?': '$name%',
+        }),
+      ],
+      limit: 50
+    );
+  }
+
+   Future<List<ViolationClassificationSearchResult>> getViolationClassificationSearchResults({String name, ObjectElement objectElement}) async {
+    return await _getData<ViolationClassificationSearchResult>(DictionaryNames.dcViolationClassificationSearchResults, 
+      queries: [
+        Query({
+          'violationNameName LIKE ?': '$name%',
+          if(objectElement != null)
+            if(objectElement.id != null)
+              'objectElementId = ?': objectElement.id
+            else
+              'objectElementName LIKE ?': '${objectElement.name}%',
         }),
       ],
       limit: 50
