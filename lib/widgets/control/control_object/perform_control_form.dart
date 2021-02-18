@@ -11,8 +11,9 @@ class PerformControlFormWidget extends StatefulWidget {
   const PerformControlFormWidget({
     Key key,
     this.performControl,
-    this.violationNum, this.onConfirm, this.onCancel,
-
+    this.violationNum,
+    this.onConfirm,
+    this.onCancel,
   }) : super(key: key);
 
   final PerformControl performControl;
@@ -26,7 +27,6 @@ class PerformControlFormWidget extends StatefulWidget {
 }
 
 class _PerformControlFormWidgetState extends State<PerformControlFormWidget> {
-
   PerformControl performControl;
 
   @override
@@ -48,23 +48,16 @@ class _PerformControlFormWidgetState extends State<PerformControlFormWidget> {
           images: performControl.photos.map((e) => base64.decode(e.data))
               .toList(),
           names: performControl.photos.map((e) => e.name ?? '').toList(),
-          onPicked: (f) => setState(() {
-            final newList = List.of(performControl.photos);
-            newList.add(DCPhoto(data: base64.encode(f.readAsBytesSync())));
-            performControl = performControl.copyWith(photos: newList);
-          }),
-          onRemoved: (i) => setState(() {
-            final newList = List.of(performControl.photos);
-            newList.removeAt(i);
-            performControl = performControl.copyWith(photos: newList);
-          }),
-          onRotated: (i, f) => setState(() {
-            final newList = List.of(performControl.photos);
-            final photo = performControl.photos[i];
-            newList.removeAt(i);
-            newList.insert(i, photo.copyWith(data: base64.encode(f)));
-            performControl = performControl.copyWith(photos: newList);
-          }),
+          onPicked: (f) => setState(
+            () => performControl.photos.add(
+              DCPhoto(
+                data: base64.encode(f.readAsBytesSync()),
+                name: f.path,
+              ),
+            ),
+          ),
+          onRemoved: (i) => setState(() => performControl.photos.removeAt(i)),
+          onRotated: (i, f) => setState(() => performControl.photos[i] = performControl.photos[i].copyWith(data: base64.encode(f))),
         ),
         Row(
           mainAxisSize: MainAxisSize.min,
