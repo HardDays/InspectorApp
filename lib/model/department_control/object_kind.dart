@@ -11,7 +11,6 @@ abstract class ObjectKind with _$ObjectKind {
   const factory ObjectKind({
     int id,
     String name,
-    String code,
   }) = _ObjectKind;
 
   factory ObjectKind.fromJson(Map<String, dynamic> json) =>
