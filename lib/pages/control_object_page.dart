@@ -120,6 +120,7 @@ class ControlObjectPage extends StatelessWidget {
       List<ControlResultSearchResult> searchResults, BuildContext context) {
     return ListView(
       shrinkWrap: true,
+      physics: ScrollPhysics(),
       children: searchResults
           .map(
             (searchResult) => searchResult.violationExists
@@ -138,7 +139,7 @@ class ControlObjectPage extends StatelessWidget {
                     onCompleted: () async {
                       await showDialog(
                         context: context,
-                        builder: (BuildContext context) => ProjectDialog(
+                        builder: (BuildContext ctx) => ProjectDialog(
                           child: PerformControlFormWidget(
                             onConfirm: (performControl) {
                               BlocProvider.of<ControlListBloc>(context).add(
@@ -147,9 +148,10 @@ class ControlObjectPage extends StatelessWidget {
                                           performControl,
                                           _controlObject,
                                           searchResult.id));
+                              Navigator.of(ctx).pop();
                             },
                             onCancel: () {
-                              Navigator.of(context).pop();
+                              Navigator.of(ctx).pop();
                             },
                             violationNum: searchResult.violation.violationNum,
                             performControl: PerformControl(
@@ -165,7 +167,7 @@ class ControlObjectPage extends StatelessWidget {
                     onNotCompleted: () async {
                       await showDialog(
                         context: context,
-                        builder: (BuildContext context) => ProjectDialog(
+                        builder: (BuildContext ctx) => ProjectDialog(
                           child: PerformControlFormWidget(
                             onConfirm: (performControl) {
                               BlocProvider.of<ControlListBloc>(context).add(
@@ -176,9 +178,10 @@ class ControlObjectPage extends StatelessWidget {
                                   searchResult.id,
                                 ),
                               );
+                              Navigator.of(ctx).pop();
                             },
                             onCancel: () {
-                              Navigator.of(context).pop();
+                              Navigator.of(ctx).pop();
                             },
                             violationNum: searchResult.violation.violationNum,
                             performControl: PerformControl(
@@ -210,6 +213,7 @@ class ControlObjectPage extends StatelessWidget {
       List<ViolationShortSearchResult> violations, BuildContext context) {
     return ListView(
       shrinkWrap: true,
+      physics: ScrollPhysics(),
       children: violations
           .map((violation) => ViolationShortSearchResultWidget(
                 violation: violation,
@@ -217,7 +221,7 @@ class ControlObjectPage extends StatelessWidget {
                 onCompleted: () async {
                   await showDialog(
                     context: context,
-                    builder: (BuildContext context) => ProjectDialog(
+                    builder: (BuildContext ctx) => ProjectDialog(
                       child: PerformControlFormWidget(
                         onConfirm: (performControl) {
                           BlocProvider.of<ControlListBloc>(context).add(
@@ -227,9 +231,10 @@ class ControlObjectPage extends StatelessWidget {
                               violation.id,
                             ),
                           );
+                          Navigator.of(ctx).pop();
                         },
                         onCancel: () {
-                          Navigator.of(context).pop();
+                          Navigator.of(ctx).pop();
                         },
                         violationNum: violation.violationNum,
                         performControl: PerformControl(
@@ -245,7 +250,7 @@ class ControlObjectPage extends StatelessWidget {
                 onNotCompleted: () async {
                   await showDialog(
                     context: context,
-                    builder: (BuildContext context) => ProjectDialog(
+                    builder: (BuildContext ctx) => ProjectDialog(
                       child: PerformControlFormWidget(
                         onConfirm: (performControl) {
                           BlocProvider.of<ControlListBloc>(context).add(
@@ -255,9 +260,10 @@ class ControlObjectPage extends StatelessWidget {
                               violation.id,
                             ),
                           );
+                          Navigator.of(ctx).pop();
                         },
                         onCancel: () {
-                          Navigator.of(context).pop();
+                          Navigator.of(ctx).pop();
                         },
                         violationNum: violation.violationNum,
                         performControl: PerformControl(

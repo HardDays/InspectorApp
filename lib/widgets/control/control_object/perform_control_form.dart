@@ -45,23 +45,25 @@ class _PerformControlFormWidgetState extends State<PerformControlFormWidget> {
             .resolved ? "Устранено" : "Не устранено"} ${DateFormat(
             "dd.MM.yyyy hh:mm").format(widget.performControl.factDate)}'),
         ImagePicker(
-          images: widget.performControl.photos.map((e) => base64.decode(e.data))
+          images: performControl.photos.map((e) => base64.decode(e.data))
               .toList(),
+          names: performControl.photos.map((e) => e.name ?? '').toList(),
           onPicked: (f) => setState(() {
             final newList = List.of(performControl.photos);
             newList.add(DCPhoto(data: base64.encode(f.readAsBytesSync())));
-            performControl.copyWith(photos: newList);
+            performControl = performControl.copyWith(photos: newList);
           }),
           onRemoved: (i) => setState(() {
             final newList = List.of(performControl.photos);
             newList.removeAt(i);
-            performControl.copyWith(photos: newList);
+            performControl = performControl.copyWith(photos: newList);
           }),
           onRotated: (i, f) => setState(() {
             final newList = List.of(performControl.photos);
+            final photo = performControl.photos[i];
             newList.removeAt(i);
-            newList.insert(i, DCPhoto(data: base64.encode(f)));
-            performControl.copyWith(photos: newList);
+            newList.insert(i, photo.copyWith(data: base64.encode(f)));
+            performControl = performControl.copyWith(photos: newList);
           }),
         ),
         Row(
