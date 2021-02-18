@@ -17,11 +17,10 @@ class _$ViolationStatusTearOff {
   const _$ViolationStatusTearOff();
 
 // ignore: unused_element
-  _ViolationStatus call({int id, String name, String code}) {
+  _ViolationStatus call({int id, String name}) {
     return _ViolationStatus(
       id: id,
       name: name,
-      code: code,
     );
   }
 
@@ -39,7 +38,6 @@ const $ViolationStatus = _$ViolationStatusTearOff();
 mixin _$ViolationStatus {
   int get id;
   String get name;
-  String get code;
 
   Map<String, dynamic> toJson();
   @JsonKey(ignore: true)
@@ -51,7 +49,7 @@ abstract class $ViolationStatusCopyWith<$Res> {
   factory $ViolationStatusCopyWith(
           ViolationStatus value, $Res Function(ViolationStatus) then) =
       _$ViolationStatusCopyWithImpl<$Res>;
-  $Res call({int id, String name, String code});
+  $Res call({int id, String name});
 }
 
 /// @nodoc
@@ -67,12 +65,10 @@ class _$ViolationStatusCopyWithImpl<$Res>
   $Res call({
     Object id = freezed,
     Object name = freezed,
-    Object code = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed ? _value.id : id as int,
       name: name == freezed ? _value.name : name as String,
-      code: code == freezed ? _value.code : code as String,
     ));
   }
 }
@@ -84,7 +80,7 @@ abstract class _$ViolationStatusCopyWith<$Res>
           _ViolationStatus value, $Res Function(_ViolationStatus) then) =
       __$ViolationStatusCopyWithImpl<$Res>;
   @override
-  $Res call({int id, String name, String code});
+  $Res call({int id, String name});
 }
 
 /// @nodoc
@@ -102,12 +98,10 @@ class __$ViolationStatusCopyWithImpl<$Res>
   $Res call({
     Object id = freezed,
     Object name = freezed,
-    Object code = freezed,
   }) {
     return _then(_ViolationStatus(
       id: id == freezed ? _value.id : id as int,
       name: name == freezed ? _value.name : name as String,
-      code: code == freezed ? _value.code : code as String,
     ));
   }
 }
@@ -116,7 +110,7 @@ class __$ViolationStatusCopyWithImpl<$Res>
 
 /// @nodoc
 class _$_ViolationStatus extends _ViolationStatus {
-  const _$_ViolationStatus({this.id, this.name, this.code}) : super._();
+  const _$_ViolationStatus({this.id, this.name}) : super._();
 
   factory _$_ViolationStatus.fromJson(Map<String, dynamic> json) =>
       _$_$_ViolationStatusFromJson(json);
@@ -125,12 +119,10 @@ class _$_ViolationStatus extends _ViolationStatus {
   final int id;
   @override
   final String name;
-  @override
-  final String code;
 
   @override
   String toString() {
-    return 'ViolationStatus(id: $id, name: $name, code: $code)';
+    return 'ViolationStatus(id: $id, name: $name)';
   }
 
   @override
@@ -140,17 +132,14 @@ class _$_ViolationStatus extends _ViolationStatus {
             (identical(other.id, id) ||
                 const DeepCollectionEquality().equals(other.id, id)) &&
             (identical(other.name, name) ||
-                const DeepCollectionEquality().equals(other.name, name)) &&
-            (identical(other.code, code) ||
-                const DeepCollectionEquality().equals(other.code, code)));
+                const DeepCollectionEquality().equals(other.name, name)));
   }
 
   @override
   int get hashCode =>
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(id) ^
-      const DeepCollectionEquality().hash(name) ^
-      const DeepCollectionEquality().hash(code);
+      const DeepCollectionEquality().hash(name);
 
   @JsonKey(ignore: true)
   @override
@@ -165,8 +154,7 @@ class _$_ViolationStatus extends _ViolationStatus {
 
 abstract class _ViolationStatus extends ViolationStatus {
   const _ViolationStatus._() : super._();
-  const factory _ViolationStatus({int id, String name, String code}) =
-      _$_ViolationStatus;
+  const factory _ViolationStatus({int id, String name}) = _$_ViolationStatus;
 
   factory _ViolationStatus.fromJson(Map<String, dynamic> json) =
       _$_ViolationStatus.fromJson;
@@ -175,8 +163,6 @@ abstract class _ViolationStatus extends ViolationStatus {
   int get id;
   @override
   String get name;
-  @override
-  String get code;
   @override
   @JsonKey(ignore: true)
   _$ViolationStatusCopyWith<_ViolationStatus> get copyWith;

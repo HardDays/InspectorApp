@@ -11,7 +11,6 @@ abstract class ViolationStatus with _$ViolationStatus {
   const factory ViolationStatus({
     int id,
     String name,
-    String code,
   }) = _ViolationStatus;
 
   factory ViolationStatus.fromJson(Map<String, dynamic> json) =>

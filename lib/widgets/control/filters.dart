@@ -183,7 +183,6 @@ class ControlFiltersWidget extends StatelessWidget {
   }
 
   void _onClear(ControlFiltersBloc bloc) {
-    print(int.tryParse('fd'));
     final state = ControlFiltersBlocState(searchRadius: 500, daysFromLastSurvey: 7);
     bloc.add(CopyStateEvent(state));
     _initControllers(state);

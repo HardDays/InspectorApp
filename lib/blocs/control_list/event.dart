@@ -26,13 +26,9 @@ abstract class ControlListBlocEvent with _$ControlListBlocEvent {
 
   const factory ControlListBlocEvent.changeSort(String state) = ChangeSortEvent;
 
-  const factory ControlListBlocEvent.openInMapEvent(ControlObject object) =
-      OpenInMapEvent;
-  
+  const factory ControlListBlocEvent.openInMapEvent(ControlObject object) = OpenInMapEvent;
+  const factory ControlListBlocEvent.createViolationEvent(ControlObject object) = CreateViolationEvent;
   const factory ControlListBlocEvent.selectControlObject(ControlObject object) = SelectControlObjectEvent;
-
-  const factory ControlListBlocEvent.createViolationEvent(
-      ControlObject object) = CreateViolationEvent;
 
   const factory ControlListBlocEvent.registerSearchResultEvent(
       ControlObject object,

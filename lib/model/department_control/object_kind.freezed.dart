@@ -17,11 +17,10 @@ class _$ObjectKindTearOff {
   const _$ObjectKindTearOff();
 
 // ignore: unused_element
-  _ObjectKind call({int id, String name, String code}) {
+  _ObjectKind call({int id, String name}) {
     return _ObjectKind(
       id: id,
       name: name,
-      code: code,
     );
   }
 
@@ -39,7 +38,6 @@ const $ObjectKind = _$ObjectKindTearOff();
 mixin _$ObjectKind {
   int get id;
   String get name;
-  String get code;
 
   Map<String, dynamic> toJson();
   @JsonKey(ignore: true)
@@ -51,7 +49,7 @@ abstract class $ObjectKindCopyWith<$Res> {
   factory $ObjectKindCopyWith(
           ObjectKind value, $Res Function(ObjectKind) then) =
       _$ObjectKindCopyWithImpl<$Res>;
-  $Res call({int id, String name, String code});
+  $Res call({int id, String name});
 }
 
 /// @nodoc
@@ -66,12 +64,10 @@ class _$ObjectKindCopyWithImpl<$Res> implements $ObjectKindCopyWith<$Res> {
   $Res call({
     Object id = freezed,
     Object name = freezed,
-    Object code = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed ? _value.id : id as int,
       name: name == freezed ? _value.name : name as String,
-      code: code == freezed ? _value.code : code as String,
     ));
   }
 }
@@ -82,7 +78,7 @@ abstract class _$ObjectKindCopyWith<$Res> implements $ObjectKindCopyWith<$Res> {
           _ObjectKind value, $Res Function(_ObjectKind) then) =
       __$ObjectKindCopyWithImpl<$Res>;
   @override
-  $Res call({int id, String name, String code});
+  $Res call({int id, String name});
 }
 
 /// @nodoc
@@ -99,12 +95,10 @@ class __$ObjectKindCopyWithImpl<$Res> extends _$ObjectKindCopyWithImpl<$Res>
   $Res call({
     Object id = freezed,
     Object name = freezed,
-    Object code = freezed,
   }) {
     return _then(_ObjectKind(
       id: id == freezed ? _value.id : id as int,
       name: name == freezed ? _value.name : name as String,
-      code: code == freezed ? _value.code : code as String,
     ));
   }
 }
@@ -113,7 +107,7 @@ class __$ObjectKindCopyWithImpl<$Res> extends _$ObjectKindCopyWithImpl<$Res>
 
 /// @nodoc
 class _$_ObjectKind extends _ObjectKind {
-  const _$_ObjectKind({this.id, this.name, this.code}) : super._();
+  const _$_ObjectKind({this.id, this.name}) : super._();
 
   factory _$_ObjectKind.fromJson(Map<String, dynamic> json) =>
       _$_$_ObjectKindFromJson(json);
@@ -122,12 +116,10 @@ class _$_ObjectKind extends _ObjectKind {
   final int id;
   @override
   final String name;
-  @override
-  final String code;
 
   @override
   String toString() {
-    return 'ObjectKind(id: $id, name: $name, code: $code)';
+    return 'ObjectKind(id: $id, name: $name)';
   }
 
   @override
@@ -137,17 +129,14 @@ class _$_ObjectKind extends _ObjectKind {
             (identical(other.id, id) ||
                 const DeepCollectionEquality().equals(other.id, id)) &&
             (identical(other.name, name) ||
-                const DeepCollectionEquality().equals(other.name, name)) &&
-            (identical(other.code, code) ||
-                const DeepCollectionEquality().equals(other.code, code)));
+                const DeepCollectionEquality().equals(other.name, name)));
   }
 
   @override
   int get hashCode =>
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(id) ^
-      const DeepCollectionEquality().hash(name) ^
-      const DeepCollectionEquality().hash(code);
+      const DeepCollectionEquality().hash(name);
 
   @JsonKey(ignore: true)
   @override
@@ -162,7 +151,7 @@ class _$_ObjectKind extends _ObjectKind {
 
 abstract class _ObjectKind extends ObjectKind {
   const _ObjectKind._() : super._();
-  const factory _ObjectKind({int id, String name, String code}) = _$_ObjectKind;
+  const factory _ObjectKind({int id, String name}) = _$_ObjectKind;
 
   factory _ObjectKind.fromJson(Map<String, dynamic> json) =
       _$_ObjectKind.fromJson;
@@ -171,8 +160,6 @@ abstract class _ObjectKind extends ObjectKind {
   int get id;
   @override
   String get name;
-  @override
-  String get code;
   @override
   @JsonKey(ignore: true)
   _$ObjectKindCopyWith<_ObjectKind> get copyWith;
