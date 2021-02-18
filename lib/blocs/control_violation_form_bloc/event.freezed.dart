@@ -95,9 +95,10 @@ class _$ControlViolationFormEventTearOff {
   }
 
 // ignore: unused_element
-  AddPhotoEvent addPhotoEvent(Uint8List photo) {
+  AddPhotoEvent addPhotoEvent(Uint8List photo, String name) {
     return AddPhotoEvent(
       photo,
+      name,
     );
   }
 
@@ -156,7 +157,7 @@ mixin _$ControlViolationFormEvent {
             ViolationAdditionalFeature violationAdditionalFeature),
     @required TResult setContractorStringEvent(String contractor),
     @required TResult setContractorEvent(Contractor contractor),
-    @required TResult addPhotoEvent(Uint8List photo),
+    @required TResult addPhotoEvent(Uint8List photo, String name),
     @required TResult removePhotoEvent(int index),
     @required TResult rotatePhotoEvent(int index, Uint8List photo),
     @required TResult setViolationClassificationString(String classification),
@@ -179,7 +180,7 @@ mixin _$ControlViolationFormEvent {
         ViolationAdditionalFeature violationAdditionalFeature),
     TResult setContractorStringEvent(String contractor),
     TResult setContractorEvent(Contractor contractor),
-    TResult addPhotoEvent(Uint8List photo),
+    TResult addPhotoEvent(Uint8List photo, String name),
     TResult removePhotoEvent(int index),
     TResult rotatePhotoEvent(int index, Uint8List photo),
     TResult setViolationClassificationString(String classification),
@@ -334,7 +335,7 @@ class _$SetCriticalEvent implements SetCriticalEvent {
             ViolationAdditionalFeature violationAdditionalFeature),
     @required TResult setContractorStringEvent(String contractor),
     @required TResult setContractorEvent(Contractor contractor),
-    @required TResult addPhotoEvent(Uint8List photo),
+    @required TResult addPhotoEvent(Uint8List photo, String name),
     @required TResult removePhotoEvent(int index),
     @required TResult rotatePhotoEvent(int index, Uint8List photo),
     @required TResult setViolationClassificationString(String classification),
@@ -377,7 +378,7 @@ class _$SetCriticalEvent implements SetCriticalEvent {
         ViolationAdditionalFeature violationAdditionalFeature),
     TResult setContractorStringEvent(String contractor),
     TResult setContractorEvent(Contractor contractor),
-    TResult addPhotoEvent(Uint8List photo),
+    TResult addPhotoEvent(Uint8List photo, String name),
     TResult removePhotoEvent(int index),
     TResult rotatePhotoEvent(int index, Uint8List photo),
     TResult setViolationClassificationString(String classification),
@@ -562,7 +563,7 @@ class _$SetUseGeoLocationForAddressEvent
             ViolationAdditionalFeature violationAdditionalFeature),
     @required TResult setContractorStringEvent(String contractor),
     @required TResult setContractorEvent(Contractor contractor),
-    @required TResult addPhotoEvent(Uint8List photo),
+    @required TResult addPhotoEvent(Uint8List photo, String name),
     @required TResult removePhotoEvent(int index),
     @required TResult rotatePhotoEvent(int index, Uint8List photo),
     @required TResult setViolationClassificationString(String classification),
@@ -605,7 +606,7 @@ class _$SetUseGeoLocationForAddressEvent
         ViolationAdditionalFeature violationAdditionalFeature),
     TResult setContractorStringEvent(String contractor),
     TResult setContractorEvent(Contractor contractor),
-    TResult addPhotoEvent(Uint8List photo),
+    TResult addPhotoEvent(Uint8List photo, String name),
     TResult removePhotoEvent(int index),
     TResult rotatePhotoEvent(int index, Uint8List photo),
     TResult setViolationClassificationString(String classification),
@@ -788,7 +789,7 @@ class _$SetAddressEvent implements SetAddressEvent {
             ViolationAdditionalFeature violationAdditionalFeature),
     @required TResult setContractorStringEvent(String contractor),
     @required TResult setContractorEvent(Contractor contractor),
-    @required TResult addPhotoEvent(Uint8List photo),
+    @required TResult addPhotoEvent(Uint8List photo, String name),
     @required TResult removePhotoEvent(int index),
     @required TResult rotatePhotoEvent(int index, Uint8List photo),
     @required TResult setViolationClassificationString(String classification),
@@ -831,7 +832,7 @@ class _$SetAddressEvent implements SetAddressEvent {
         ViolationAdditionalFeature violationAdditionalFeature),
     TResult setContractorStringEvent(String contractor),
     TResult setContractorEvent(Contractor contractor),
-    TResult addPhotoEvent(Uint8List photo),
+    TResult addPhotoEvent(Uint8List photo, String name),
     TResult removePhotoEvent(int index),
     TResult rotatePhotoEvent(int index, Uint8List photo),
     TResult setViolationClassificationString(String classification),
@@ -1016,7 +1017,7 @@ class _$SetTargetLandmark implements SetTargetLandmark {
             ViolationAdditionalFeature violationAdditionalFeature),
     @required TResult setContractorStringEvent(String contractor),
     @required TResult setContractorEvent(Contractor contractor),
-    @required TResult addPhotoEvent(Uint8List photo),
+    @required TResult addPhotoEvent(Uint8List photo, String name),
     @required TResult removePhotoEvent(int index),
     @required TResult rotatePhotoEvent(int index, Uint8List photo),
     @required TResult setViolationClassificationString(String classification),
@@ -1059,7 +1060,7 @@ class _$SetTargetLandmark implements SetTargetLandmark {
         ViolationAdditionalFeature violationAdditionalFeature),
     TResult setContractorStringEvent(String contractor),
     TResult setContractorEvent(Contractor contractor),
-    TResult addPhotoEvent(Uint8List photo),
+    TResult addPhotoEvent(Uint8List photo, String name),
     TResult removePhotoEvent(int index),
     TResult rotatePhotoEvent(int index, Uint8List photo),
     TResult setViolationClassificationString(String classification),
@@ -1242,7 +1243,7 @@ class _$SetObjectElementString implements SetObjectElementString {
             ViolationAdditionalFeature violationAdditionalFeature),
     @required TResult setContractorStringEvent(String contractor),
     @required TResult setContractorEvent(Contractor contractor),
-    @required TResult addPhotoEvent(Uint8List photo),
+    @required TResult addPhotoEvent(Uint8List photo, String name),
     @required TResult removePhotoEvent(int index),
     @required TResult rotatePhotoEvent(int index, Uint8List photo),
     @required TResult setViolationClassificationString(String classification),
@@ -1285,7 +1286,7 @@ class _$SetObjectElementString implements SetObjectElementString {
         ViolationAdditionalFeature violationAdditionalFeature),
     TResult setContractorStringEvent(String contractor),
     TResult setContractorEvent(Contractor contractor),
-    TResult addPhotoEvent(Uint8List photo),
+    TResult addPhotoEvent(Uint8List photo, String name),
     TResult removePhotoEvent(int index),
     TResult rotatePhotoEvent(int index, Uint8List photo),
     TResult setViolationClassificationString(String classification),
@@ -1481,7 +1482,7 @@ class _$SetObjectElement implements SetObjectElement {
             ViolationAdditionalFeature violationAdditionalFeature),
     @required TResult setContractorStringEvent(String contractor),
     @required TResult setContractorEvent(Contractor contractor),
-    @required TResult addPhotoEvent(Uint8List photo),
+    @required TResult addPhotoEvent(Uint8List photo, String name),
     @required TResult removePhotoEvent(int index),
     @required TResult rotatePhotoEvent(int index, Uint8List photo),
     @required TResult setViolationClassificationString(String classification),
@@ -1524,7 +1525,7 @@ class _$SetObjectElement implements SetObjectElement {
         ViolationAdditionalFeature violationAdditionalFeature),
     TResult setContractorStringEvent(String contractor),
     TResult setContractorEvent(Contractor contractor),
-    TResult addPhotoEvent(Uint8List photo),
+    TResult addPhotoEvent(Uint8List photo, String name),
     TResult removePhotoEvent(int index),
     TResult rotatePhotoEvent(int index, Uint8List photo),
     TResult setViolationClassificationString(String classification),
@@ -1706,7 +1707,7 @@ class _$SetDescriptionEvent implements SetDescriptionEvent {
             ViolationAdditionalFeature violationAdditionalFeature),
     @required TResult setContractorStringEvent(String contractor),
     @required TResult setContractorEvent(Contractor contractor),
-    @required TResult addPhotoEvent(Uint8List photo),
+    @required TResult addPhotoEvent(Uint8List photo, String name),
     @required TResult removePhotoEvent(int index),
     @required TResult rotatePhotoEvent(int index, Uint8List photo),
     @required TResult setViolationClassificationString(String classification),
@@ -1749,7 +1750,7 @@ class _$SetDescriptionEvent implements SetDescriptionEvent {
         ViolationAdditionalFeature violationAdditionalFeature),
     TResult setContractorStringEvent(String contractor),
     TResult setContractorEvent(Contractor contractor),
-    TResult addPhotoEvent(Uint8List photo),
+    TResult addPhotoEvent(Uint8List photo, String name),
     TResult removePhotoEvent(int index),
     TResult rotatePhotoEvent(int index, Uint8List photo),
     TResult setViolationClassificationString(String classification),
@@ -1944,7 +1945,7 @@ class _$SetViolationAdditionalFeatureStringEvent
             ViolationAdditionalFeature violationAdditionalFeature),
     @required TResult setContractorStringEvent(String contractor),
     @required TResult setContractorEvent(Contractor contractor),
-    @required TResult addPhotoEvent(Uint8List photo),
+    @required TResult addPhotoEvent(Uint8List photo, String name),
     @required TResult removePhotoEvent(int index),
     @required TResult rotatePhotoEvent(int index, Uint8List photo),
     @required TResult setViolationClassificationString(String classification),
@@ -1987,7 +1988,7 @@ class _$SetViolationAdditionalFeatureStringEvent
         ViolationAdditionalFeature violationAdditionalFeature),
     TResult setContractorStringEvent(String contractor),
     TResult setContractorEvent(Contractor contractor),
-    TResult addPhotoEvent(Uint8List photo),
+    TResult addPhotoEvent(Uint8List photo, String name),
     TResult removePhotoEvent(int index),
     TResult rotatePhotoEvent(int index, Uint8List photo),
     TResult setViolationClassificationString(String classification),
@@ -2198,7 +2199,7 @@ class _$SetViolationAdditionalFeatureEvent
             ViolationAdditionalFeature violationAdditionalFeature),
     @required TResult setContractorStringEvent(String contractor),
     @required TResult setContractorEvent(Contractor contractor),
-    @required TResult addPhotoEvent(Uint8List photo),
+    @required TResult addPhotoEvent(Uint8List photo, String name),
     @required TResult removePhotoEvent(int index),
     @required TResult rotatePhotoEvent(int index, Uint8List photo),
     @required TResult setViolationClassificationString(String classification),
@@ -2241,7 +2242,7 @@ class _$SetViolationAdditionalFeatureEvent
         ViolationAdditionalFeature violationAdditionalFeature),
     TResult setContractorStringEvent(String contractor),
     TResult setContractorEvent(Contractor contractor),
-    TResult addPhotoEvent(Uint8List photo),
+    TResult addPhotoEvent(Uint8List photo, String name),
     TResult removePhotoEvent(int index),
     TResult rotatePhotoEvent(int index, Uint8List photo),
     TResult setViolationClassificationString(String classification),
@@ -2429,7 +2430,7 @@ class _$SetContractorStringEvent implements SetContractorStringEvent {
             ViolationAdditionalFeature violationAdditionalFeature),
     @required TResult setContractorStringEvent(String contractor),
     @required TResult setContractorEvent(Contractor contractor),
-    @required TResult addPhotoEvent(Uint8List photo),
+    @required TResult addPhotoEvent(Uint8List photo, String name),
     @required TResult removePhotoEvent(int index),
     @required TResult rotatePhotoEvent(int index, Uint8List photo),
     @required TResult setViolationClassificationString(String classification),
@@ -2472,7 +2473,7 @@ class _$SetContractorStringEvent implements SetContractorStringEvent {
         ViolationAdditionalFeature violationAdditionalFeature),
     TResult setContractorStringEvent(String contractor),
     TResult setContractorEvent(Contractor contractor),
-    TResult addPhotoEvent(Uint8List photo),
+    TResult addPhotoEvent(Uint8List photo, String name),
     TResult removePhotoEvent(int index),
     TResult rotatePhotoEvent(int index, Uint8List photo),
     TResult setViolationClassificationString(String classification),
@@ -2666,7 +2667,7 @@ class _$SetContractorEvent implements SetContractorEvent {
             ViolationAdditionalFeature violationAdditionalFeature),
     @required TResult setContractorStringEvent(String contractor),
     @required TResult setContractorEvent(Contractor contractor),
-    @required TResult addPhotoEvent(Uint8List photo),
+    @required TResult addPhotoEvent(Uint8List photo, String name),
     @required TResult removePhotoEvent(int index),
     @required TResult rotatePhotoEvent(int index, Uint8List photo),
     @required TResult setViolationClassificationString(String classification),
@@ -2709,7 +2710,7 @@ class _$SetContractorEvent implements SetContractorEvent {
         ViolationAdditionalFeature violationAdditionalFeature),
     TResult setContractorStringEvent(String contractor),
     TResult setContractorEvent(Contractor contractor),
-    TResult addPhotoEvent(Uint8List photo),
+    TResult addPhotoEvent(Uint8List photo, String name),
     TResult removePhotoEvent(int index),
     TResult rotatePhotoEvent(int index, Uint8List photo),
     TResult setViolationClassificationString(String classification),
@@ -2819,7 +2820,7 @@ abstract class $AddPhotoEventCopyWith<$Res> {
   factory $AddPhotoEventCopyWith(
           AddPhotoEvent value, $Res Function(AddPhotoEvent) then) =
       _$AddPhotoEventCopyWithImpl<$Res>;
-  $Res call({Uint8List photo});
+  $Res call({Uint8List photo, String name});
 }
 
 /// @nodoc
@@ -2836,23 +2837,29 @@ class _$AddPhotoEventCopyWithImpl<$Res>
   @override
   $Res call({
     Object photo = freezed,
+    Object name = freezed,
   }) {
     return _then(AddPhotoEvent(
       photo == freezed ? _value.photo : photo as Uint8List,
+      name == freezed ? _value.name : name as String,
     ));
   }
 }
 
 /// @nodoc
 class _$AddPhotoEvent implements AddPhotoEvent {
-  const _$AddPhotoEvent(this.photo) : assert(photo != null);
+  const _$AddPhotoEvent(this.photo, this.name)
+      : assert(photo != null),
+        assert(name != null);
 
   @override
   final Uint8List photo;
+  @override
+  final String name;
 
   @override
   String toString() {
-    return 'ControlViolationFormEvent.addPhotoEvent(photo: $photo)';
+    return 'ControlViolationFormEvent.addPhotoEvent(photo: $photo, name: $name)';
   }
 
   @override
@@ -2860,12 +2867,16 @@ class _$AddPhotoEvent implements AddPhotoEvent {
     return identical(this, other) ||
         (other is AddPhotoEvent &&
             (identical(other.photo, photo) ||
-                const DeepCollectionEquality().equals(other.photo, photo)));
+                const DeepCollectionEquality().equals(other.photo, photo)) &&
+            (identical(other.name, name) ||
+                const DeepCollectionEquality().equals(other.name, name)));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(photo);
+      runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(photo) ^
+      const DeepCollectionEquality().hash(name);
 
   @JsonKey(ignore: true)
   @override
@@ -2890,7 +2901,7 @@ class _$AddPhotoEvent implements AddPhotoEvent {
             ViolationAdditionalFeature violationAdditionalFeature),
     @required TResult setContractorStringEvent(String contractor),
     @required TResult setContractorEvent(Contractor contractor),
-    @required TResult addPhotoEvent(Uint8List photo),
+    @required TResult addPhotoEvent(Uint8List photo, String name),
     @required TResult removePhotoEvent(int index),
     @required TResult rotatePhotoEvent(int index, Uint8List photo),
     @required TResult setViolationClassificationString(String classification),
@@ -2914,7 +2925,7 @@ class _$AddPhotoEvent implements AddPhotoEvent {
     assert(rotatePhotoEvent != null);
     assert(setViolationClassificationString != null);
     assert(setViolationClassifications != null);
-    return addPhotoEvent(photo);
+    return addPhotoEvent(photo, name);
   }
 
   @override
@@ -2933,7 +2944,7 @@ class _$AddPhotoEvent implements AddPhotoEvent {
         ViolationAdditionalFeature violationAdditionalFeature),
     TResult setContractorStringEvent(String contractor),
     TResult setContractorEvent(Contractor contractor),
-    TResult addPhotoEvent(Uint8List photo),
+    TResult addPhotoEvent(Uint8List photo, String name),
     TResult removePhotoEvent(int index),
     TResult rotatePhotoEvent(int index, Uint8List photo),
     TResult setViolationClassificationString(String classification),
@@ -2943,7 +2954,7 @@ class _$AddPhotoEvent implements AddPhotoEvent {
   }) {
     assert(orElse != null);
     if (addPhotoEvent != null) {
-      return addPhotoEvent(photo);
+      return addPhotoEvent(photo, name);
     }
     return orElse();
   }
@@ -3030,9 +3041,10 @@ class _$AddPhotoEvent implements AddPhotoEvent {
 }
 
 abstract class AddPhotoEvent implements ControlViolationFormEvent {
-  const factory AddPhotoEvent(Uint8List photo) = _$AddPhotoEvent;
+  const factory AddPhotoEvent(Uint8List photo, String name) = _$AddPhotoEvent;
 
   Uint8List get photo;
+  String get name;
   @JsonKey(ignore: true)
   $AddPhotoEventCopyWith<AddPhotoEvent> get copyWith;
 }
@@ -3113,7 +3125,7 @@ class _$RemovePhotoEvent implements RemovePhotoEvent {
             ViolationAdditionalFeature violationAdditionalFeature),
     @required TResult setContractorStringEvent(String contractor),
     @required TResult setContractorEvent(Contractor contractor),
-    @required TResult addPhotoEvent(Uint8List photo),
+    @required TResult addPhotoEvent(Uint8List photo, String name),
     @required TResult removePhotoEvent(int index),
     @required TResult rotatePhotoEvent(int index, Uint8List photo),
     @required TResult setViolationClassificationString(String classification),
@@ -3156,7 +3168,7 @@ class _$RemovePhotoEvent implements RemovePhotoEvent {
         ViolationAdditionalFeature violationAdditionalFeature),
     TResult setContractorStringEvent(String contractor),
     TResult setContractorEvent(Contractor contractor),
-    TResult addPhotoEvent(Uint8List photo),
+    TResult addPhotoEvent(Uint8List photo, String name),
     TResult removePhotoEvent(int index),
     TResult rotatePhotoEvent(int index, Uint8List photo),
     TResult setViolationClassificationString(String classification),
@@ -3346,7 +3358,7 @@ class _$RotatePhotoEvent implements RotatePhotoEvent {
             ViolationAdditionalFeature violationAdditionalFeature),
     @required TResult setContractorStringEvent(String contractor),
     @required TResult setContractorEvent(Contractor contractor),
-    @required TResult addPhotoEvent(Uint8List photo),
+    @required TResult addPhotoEvent(Uint8List photo, String name),
     @required TResult removePhotoEvent(int index),
     @required TResult rotatePhotoEvent(int index, Uint8List photo),
     @required TResult setViolationClassificationString(String classification),
@@ -3389,7 +3401,7 @@ class _$RotatePhotoEvent implements RotatePhotoEvent {
         ViolationAdditionalFeature violationAdditionalFeature),
     TResult setContractorStringEvent(String contractor),
     TResult setContractorEvent(Contractor contractor),
-    TResult addPhotoEvent(Uint8List photo),
+    TResult addPhotoEvent(Uint8List photo, String name),
     TResult removePhotoEvent(int index),
     TResult rotatePhotoEvent(int index, Uint8List photo),
     TResult setViolationClassificationString(String classification),
@@ -3581,7 +3593,7 @@ class _$SetViolationClassificationString
             ViolationAdditionalFeature violationAdditionalFeature),
     @required TResult setContractorStringEvent(String contractor),
     @required TResult setContractorEvent(Contractor contractor),
-    @required TResult addPhotoEvent(Uint8List photo),
+    @required TResult addPhotoEvent(Uint8List photo, String name),
     @required TResult removePhotoEvent(int index),
     @required TResult rotatePhotoEvent(int index, Uint8List photo),
     @required TResult setViolationClassificationString(String classification),
@@ -3624,7 +3636,7 @@ class _$SetViolationClassificationString
         ViolationAdditionalFeature violationAdditionalFeature),
     TResult setContractorStringEvent(String contractor),
     TResult setContractorEvent(Contractor contractor),
-    TResult addPhotoEvent(Uint8List photo),
+    TResult addPhotoEvent(Uint8List photo, String name),
     TResult removePhotoEvent(int index),
     TResult rotatePhotoEvent(int index, Uint8List photo),
     TResult setViolationClassificationString(String classification),
@@ -3828,7 +3840,7 @@ class _$SetViolationClassification implements SetViolationClassification {
             ViolationAdditionalFeature violationAdditionalFeature),
     @required TResult setContractorStringEvent(String contractor),
     @required TResult setContractorEvent(Contractor contractor),
-    @required TResult addPhotoEvent(Uint8List photo),
+    @required TResult addPhotoEvent(Uint8List photo, String name),
     @required TResult removePhotoEvent(int index),
     @required TResult rotatePhotoEvent(int index, Uint8List photo),
     @required TResult setViolationClassificationString(String classification),
@@ -3871,7 +3883,7 @@ class _$SetViolationClassification implements SetViolationClassification {
         ViolationAdditionalFeature violationAdditionalFeature),
     TResult setContractorStringEvent(String contractor),
     TResult setContractorEvent(Contractor contractor),
-    TResult addPhotoEvent(Uint8List photo),
+    TResult addPhotoEvent(Uint8List photo, String name),
     TResult removePhotoEvent(int index),
     TResult rotatePhotoEvent(int index, Uint8List photo),
     TResult setViolationClassificationString(String classification),

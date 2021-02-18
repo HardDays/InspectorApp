@@ -57,6 +57,7 @@ abstract class ControlViolationFormEvent with _$ControlViolationFormEvent {
 
   const factory ControlViolationFormEvent.addPhotoEvent(
     Uint8List photo,
+    String name,
   ) = AddPhotoEvent;
 
   const factory ControlViolationFormEvent.removePhotoEvent(

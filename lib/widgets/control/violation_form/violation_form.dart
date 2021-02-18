@@ -286,9 +286,11 @@ class _ViolationFormWidgetState extends State<ViolationFormWidget> {
                     ControlViolationFormEvent.rotatePhotoEvent(index, image));
               },
               onPicked: (file) {
-                BlocProvider.of<ControlViolationFormBloc>(context).add(
-                    ControlViolationFormEvent.addPhotoEvent(
-                        file.readAsBytesSync()));
+                BlocProvider.of<ControlViolationFormBloc>(context)
+                    .add(ControlViolationFormEvent.addPhotoEvent(
+                  file.readAsBytesSync(),
+                  file.path,
+                ));
               },
               onRemoved: (index) {
                 BlocProvider.of<ControlViolationFormBloc>(context)

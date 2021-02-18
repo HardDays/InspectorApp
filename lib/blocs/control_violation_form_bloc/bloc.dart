@@ -46,6 +46,7 @@ class ControlViolationFormBloc
                   data: base64.encode(
                     event.photo,
                   ),
+                  name: event.name,
                 ),
               ),
           ));
