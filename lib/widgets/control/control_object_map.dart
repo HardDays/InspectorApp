@@ -3,7 +3,6 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:geodesy/geodesy.dart';
 import 'package:inspector/model/department_control/control_object.dart';
 import 'package:inspector/model/department_control/map_geometric_object_type.dart';
-import 'package:inspector/model/department_control/point.dart';
 import 'package:inspector/services/location/location.dart';
 import 'package:inspector/style/button.dart';
 import 'package:inspector/style/colors.dart';

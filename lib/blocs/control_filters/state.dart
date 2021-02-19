@@ -8,7 +8,6 @@ import 'package:inspector/model/department_control/source.dart';
 import 'package:inspector/model/department_control/violation_name.dart';
 import 'package:inspector/model/department_control/violation_status.dart';
 import 'package:inspector/model/district.dart';
-import 'package:inspector/model/violator_address.dart';
 
 part 'state.freezed.dart';
 

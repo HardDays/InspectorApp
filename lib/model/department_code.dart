@@ -1,5 +1,3 @@
-import 'dart:convert' as c;
-
 import 'package:flutter/foundation.dart';
 
 class DepartmentCode {

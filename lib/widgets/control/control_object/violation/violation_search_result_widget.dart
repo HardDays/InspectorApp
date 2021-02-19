@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:inspector/model/department_control/control_result_search_result.dart';
-import 'package:inspector/model/department_control/violation_search_result.dart';
 import 'package:inspector/widgets/control/control_object/violation/violation.dart';
 
 class ViolationSearchResultWidget extends StatelessWidget {

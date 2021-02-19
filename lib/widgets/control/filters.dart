@@ -13,7 +13,6 @@ import 'package:inspector/model/department_control/source.dart';
 import 'package:inspector/model/department_control/violation_name.dart';
 import 'package:inspector/model/department_control/violation_status.dart';
 import 'package:inspector/model/district.dart';
-import 'package:inspector/model/violator_address.dart';
 import 'package:inspector/style/autocomplete.dart';
 import 'package:inspector/style/button.dart';
 import 'package:inspector/style/checkbox.dart';
@@ -23,7 +22,6 @@ import 'package:inspector/style/select.dart';
 import 'package:inspector/style/text_field.dart';
 import 'package:inspector/style/text_style.dart';
 import 'package:inspector/style/title.dart';
-
 
 class ControlFiltersWidget extends StatelessWidget {
   final _cameras = ['Да', 'Нет'];

@@ -13,8 +13,6 @@ import 'package:inspector/model/department_control/violation_name.dart';
 import 'package:inspector/model/department_control/violation_status.dart';
 import 'package:inspector/model/district.dart';
 import 'package:inspector/services/dictionary_service.dart';
-import 'package:inspector/services/sqlite/sqlite_dictionary_service.dart';
-
 
 class ControlFiltersBloc extends Bloc<ControlFiltersBlocEvent, ControlFiltersBlocState> {
 

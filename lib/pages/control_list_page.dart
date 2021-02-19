@@ -11,7 +11,6 @@ import 'package:inspector/model/department_control/control_object.dart';
 import 'package:inspector/pages/control_object_page.dart';
 import 'package:inspector/pages/control_violation_form_page.dart';
 import 'package:inspector/providers/exceptions/api_exception.dart';
-import 'package:inspector/services/department_control/department_control_service.dart';
 import 'package:inspector/style/accept_dialog.dart';
 import 'package:inspector/style/colors.dart';
 import 'package:inspector/style/icons.dart';
@@ -25,7 +24,6 @@ import 'package:inspector/widgets/control/control_objects_paginated_list.dart';
 import 'package:inspector/widgets/control/filters.dart';
 import 'package:inspector/widgets/sort_dialog.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
 
 typedef Future RefreshFunction();
 

@@ -10,7 +10,6 @@ import 'package:inspector/model/department_control/dcphoto.dart';
 import 'package:inspector/model/department_control/object_element.dart';
 import 'package:inspector/model/department_control/violation_additional_feature.dart';
 import 'package:inspector/model/department_control/violation_classification.dart';
-import 'package:inspector/model/department_control/violation_classification_search_result.dart';
 import 'package:inspector/model/department_control/violation_name.dart';
 
 class ControlViolationFormBloc
