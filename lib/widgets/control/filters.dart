@@ -193,9 +193,9 @@ class ControlFiltersWidget extends StatelessWidget {
       bloc.state.copyWith(
         externalId: int.tryParse(_externalIdController.text),
         objectName: objectName.isEmpty ? null : objectName,
-        searchRadius: int.tryParse(_searchRadiusController.text) ?? 500,
+        searchRadius: int.tryParse(_searchRadiusController.text),
         balanceOwner: ownerName.isEmpty ? null : ownerName,
-        daysFromLastSurvey: int.tryParse(_daysFromLastSurveyController.text) ?? 7,
+        daysFromLastSurvey: int.tryParse(_daysFromLastSurveyController.text),
       )
     );
   }
