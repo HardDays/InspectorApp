@@ -104,97 +104,100 @@ class ControlViolationWidgetState extends State<ControlViolationWidget> {
                     controller: _controller,
                     actionExtentRatio: 0.15,
                     actionPane: SlidableDrawerActionPane(),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Flexible(
-                          child: Padding(
-                            padding: const EdgeInsets.all(20),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Нарушение ${widget.violationNum ?? ""} от ${widget.detectionDate != null ? DateFormat("hh:mm dd.MM.yyyy").format(widget.detectionDate) : ""}',
-                                  style: ProjectTextStyles.baseBold
-                                      .apply(color: ProjectColors.blue),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      top: 10, bottom: 10),
-                                  child: Text(
-                                    widget.objectElement.objectType?.name ?? '',
+                    child: InkWell(
+                      onTap: widget.onClick,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Flexible(
+                            child: Padding(
+                              padding: const EdgeInsets.all(20),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Нарушение ${widget.violationNum ?? ""} от ${widget.detectionDate != null ? DateFormat("hh:mm dd.MM.yyyy").format(widget.detectionDate) : ""}',
+                                    style: ProjectTextStyles.baseBold
+                                        .apply(color: ProjectColors.blue),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 10, bottom: 10),
+                                    child: Text(
+                                      widget.objectElement.objectType?.name ?? '',
+                                      style: ProjectTextStyles.base
+                                          .apply(color: ProjectColors.black),
+                                    ),
+                                  ),
+                                  Text(
+                                    widget.violationName.name,
                                     style: ProjectTextStyles.base
                                         .apply(color: ProjectColors.black),
                                   ),
-                                ),
-                                Text(
-                                  widget.violationName.name,
-                                  style: ProjectTextStyles.base
-                                      .apply(color: ProjectColors.black),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            if (widget.photos != null &&
-                                widget.photos.isNotEmpty)
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                  top: 15,
-                                  bottom: 15,
-                                  right: 15,
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              if (widget.photos != null &&
+                                  widget.photos.isNotEmpty)
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                    top: 15,
+                                    bottom: 15,
+                                    right: 15,
+                                  ),
+                                  child: Image(
+                                    width: 120,
+                                    height: 80,
+                                    fit: BoxFit.cover,
+                                    image: MemoryImage(
+                                      base64.decode(widget.photos.first.data),
+                                    ),
+                                  ),
                                 ),
-                                child: Image(
-                                  width: 120,
-                                  height: 80,
-                                  fit: BoxFit.cover,
-                                  image: MemoryImage(
-                                    base64.decode(widget.photos.first.data),
+                              Container(
+                                alignment: Alignment.topRight,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    border: Border(
+                                      left: BorderSide(
+                                        color: ProjectColors.cyan,
+                                      ),
+                                      top: BorderSide(
+                                        color: ProjectColors.cyan,
+                                      ),
+                                      bottom: BorderSide(
+                                        color: ProjectColors.cyan,
+                                      ),
+                                      right: _actions
+                                          ? BorderSide(
+                                              color: ProjectColors.cyan,
+                                            )
+                                          : BorderSide(
+                                              width: 0,
+                                              color: Colors.transparent,
+                                            ),
+                                    ),
+                                  ),
+                                  padding: const EdgeInsets.only(
+                                      left: 10, right: 10, top: 2, bottom: 4),
+                                  margin: EdgeInsets.only(
+                                      top: 15, right: _actions ? 15 : 0),
+                                  child: Text(
+                                    widget.violationStatus.name,
+                                    style: ProjectTextStyles.smallBold
+                                        .apply(color: ProjectColors.cyan),
                                   ),
                                 ),
                               ),
-                            Container(
-                              alignment: Alignment.topRight,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  border: Border(
-                                    left: BorderSide(
-                                      color: ProjectColors.cyan,
-                                    ),
-                                    top: BorderSide(
-                                      color: ProjectColors.cyan,
-                                    ),
-                                    bottom: BorderSide(
-                                      color: ProjectColors.cyan,
-                                    ),
-                                    right: _actions
-                                        ? BorderSide(
-                                            color: ProjectColors.cyan,
-                                          )
-                                        : BorderSide(
-                                            width: 0,
-                                            color: Colors.transparent,
-                                          ),
-                                  ),
-                                ),
-                                padding: const EdgeInsets.only(
-                                    left: 10, right: 10, top: 2, bottom: 4),
-                                margin: EdgeInsets.only(
-                                    top: 15, right: _actions ? 15 : 0),
-                                child: Text(
-                                  widget.violationStatus.name,
-                                  style: ProjectTextStyles.smallBold
-                                      .apply(color: ProjectColors.cyan),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                     secondaryActions: [
                       ViolationAction(
