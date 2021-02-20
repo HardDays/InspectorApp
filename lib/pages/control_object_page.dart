@@ -15,10 +15,10 @@ import 'package:inspector/model/department_control/violation_short_search_result
 import 'package:inspector/pages/control_violation_page.dart';
 import 'package:inspector/services/department_control/department_control_service.dart';
 import 'package:inspector/style/appbar.dart';
-import 'package:inspector/style/colors.dart';
+//import 'package:inspector/style/colors.dart';
 import 'package:inspector/style/dialog.dart';
-import 'package:inspector/style/icons.dart';
-import 'package:inspector/style/text_style.dart';
+//import 'package:inspector/style/icons.dart';
+//import 'package:inspector/style/text_style.dart';
 import 'package:inspector/widgets/control/control_object/control_object_info.dart';
 import 'package:inspector/widgets/control/control_object/perform_control_form.dart';
 import 'package:inspector/widgets/control/control_object/search_result/search_result_widget.dart';
@@ -85,36 +85,36 @@ class ControlObjectPage extends StatelessWidget {
     );
   }
 
-  Widget _buildIcon(Widget icon, String title) {
-    return Row(
-      children: [
-        icon,
-        Padding(
-          padding: const EdgeInsets.only(left: 10),
-          child: Text(
-            title,
-            style: ProjectTextStyles.small.apply(color: ProjectColors.black),
-          ),
-        )
-      ],
-    );
-  }
+  // Widget _buildIcon(Widget icon, String title) {
+  //   return Row(
+  //     children: [
+  //       icon,
+  //       Padding(
+  //         padding: const EdgeInsets.only(left: 10),
+  //         child: Text(
+  //           title,
+  //           style: ProjectTextStyles.small.apply(color: ProjectColors.black),
+  //         ),
+  //       )
+  //     ],
+  //   );
+  // }
 
-  Widget _buildFiltersSection() {
-    return Padding(
-      padding: const EdgeInsets.only(top: 30),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          _buildIcon(
-              ProjectIcons.sortIcon(color: ProjectColors.blue), 'По статусу'),
-          Padding(padding: const EdgeInsets.only(left: 15)),
-          _buildIcon(
-              ProjectIcons.filterIcon(color: ProjectColors.blue), 'Фильтр'),
-        ],
-      ),
-    );
-  }
+  // Widget _buildFiltersSection() {
+  //   return Padding(
+  //     padding: const EdgeInsets.only(top: 30),
+  //     child: Row(
+  //       mainAxisAlignment: MainAxisAlignment.end,
+  //       children: [
+  //         _buildIcon(
+  //             ProjectIcons.sortIcon(color: ProjectColors.blue), 'По статусу'),
+  //         Padding(padding: const EdgeInsets.only(left: 15)),
+  //         _buildIcon(
+  //             ProjectIcons.filterIcon(color: ProjectColors.blue), 'Фильтр'),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   Widget _buildSearchResults(
       List<ControlResultSearchResult> searchResults, BuildContext context) {

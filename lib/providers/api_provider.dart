@@ -151,11 +151,8 @@ class ApiProvider {
     return json;
   }
 
-  String _formatDate(DateTime date) {
-    if (date != null) {
-      return date.toIso8601String();
-    }
-  }
+  String _formatDate(DateTime date) 
+    => date != null ? date.toIso8601String() : null;
 
   void setToken(String token) {
     if (token == null) {

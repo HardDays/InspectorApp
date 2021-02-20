@@ -19,6 +19,7 @@ class SpecialObject {
         code: json['code']
       );
     }
+    return null;
   }
   
    Map<String, dynamic> toJson() {
