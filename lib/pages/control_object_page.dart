@@ -15,8 +15,10 @@ import 'package:inspector/model/department_control/violation_short_search_result
 import 'package:inspector/pages/control_violation_page.dart';
 import 'package:inspector/services/department_control/department_control_service.dart';
 import 'package:inspector/style/appbar.dart';
+
 //import 'package:inspector/style/colors.dart';
 import 'package:inspector/style/dialog.dart';
+
 //import 'package:inspector/style/icons.dart';
 //import 'package:inspector/style/text_style.dart';
 import 'package:inspector/widgets/control/control_object/control_object_info.dart';
@@ -203,7 +205,14 @@ class ControlObjectPage extends StatelessWidget {
                       );
                     },
                   )
-                : SearchResultWidget(searchResult: searchResult),
+                : SearchResultWidget(
+                    searchResult: searchResult,
+                    onRemove: searchResult.violation?.cafapAssigmentId == null ? () {
+                      BlocProvider.of<ControlListBloc>(context).add(
+                          ControlListBlocEvent.removeViolationEvent(_controlObject, searchResult.id),
+                      );
+                    } : null,
+                  ),
           )
           .toList(),
     );
