@@ -200,24 +200,26 @@ class ControlViolationWidgetState extends State<ControlViolationWidget> {
                       ),
                     ),
                     secondaryActions: [
-                      ViolationAction(
-                        text: 'Устранено',
-                        icon: Icon(
-                          Icons.check,
-                          color: ProjectColors.green,
-                          size: 26,
+                      if (widget.onCompleted != null)
+                        ViolationAction(
+                          text: 'Устранено',
+                          icon: Icon(
+                            Icons.check,
+                            color: ProjectColors.green,
+                            size: 26,
+                          ),
+                          onTap: widget.onCompleted,
                         ),
-                        onTap: widget.onCompleted,
-                      ),
-                      ViolationAction(
-                        text: 'Не устранено',
-                        icon: Icon(
-                          Icons.close,
-                          color: ProjectColors.red,
-                          size: 26,
+                      if (widget.onNotCompleted != null)
+                        ViolationAction(
+                          text: 'Не устранено',
+                          icon: Icon(
+                            Icons.close,
+                            color: ProjectColors.red,
+                            size: 26,
+                          ),
+                          onTap: widget.onNotCompleted,
                         ),
-                        onTap: widget.onNotCompleted,
-                      ),
                       if (widget.onRemove != null)
                         ViolationAction(
                           text: 'Удалить',
