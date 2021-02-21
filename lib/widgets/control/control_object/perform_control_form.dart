@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:inspector/model/department_control/dcphoto.dart';
 import 'package:inspector/model/department_control/perform_control.dart';
 import 'package:inspector/style/button.dart';
+import 'package:inspector/style/colors.dart';
 import 'package:inspector/style/image_picker.dart';
+import 'package:inspector/style/text_style.dart';
 import 'package:intl/intl.dart';
 
 class PerformControlFormWidget extends StatefulWidget {
@@ -41,9 +43,20 @@ class _PerformControlFormWidgetState extends State<PerformControlFormWidget> {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Text('Нарушение ${widget.violationNum ?? ""} ${widget.performControl
-            .resolved ? "Устранено" : "Не устранено"} ${DateFormat(
-            "dd.MM.yyyy hh:mm").format(widget.performControl.factDate)}'),
+        Text(
+          'Нарушение ${widget.violationNum ?? ""}',
+          style: ProjectTextStyles.title,
+        ),
+        Text(
+          '${widget.performControl.resolved ? "Устранено" : "Не устранено"}',
+          style: ProjectTextStyles.title.apply(
+            color: widget.performControl.resolved ? ProjectColors.green : ProjectColors.red,
+          ),
+        ),
+        Text(
+          '${DateFormat("dd.MM.yyyy hh:mm").format(widget.performControl.factDate)}',
+          style: ProjectTextStyles.title,
+        ),
         ImagePicker(
           images: performControl.photos.map((e) => base64.decode(e.data))
               .toList(),
