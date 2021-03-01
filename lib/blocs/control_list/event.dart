@@ -67,4 +67,10 @@ abstract class ControlListBlocEvent with _$ControlListBlocEvent {
 
   const factory ControlListBlocEvent.changeShowMapEvent(bool showMap) =
       ChangeShowMapEvent;
+
+  const factory ControlListBlocEvent.updateControlResultEvent(
+    ControlObject object,
+    int controlResultId,
+    DCViolation violation,
+  ) = UpdateControlResultEvent;
 }

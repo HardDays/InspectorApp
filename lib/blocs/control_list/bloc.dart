@@ -174,6 +174,19 @@ class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
           yield* (_onApiException(e));
         }
       },
+      updateControlResultEvent: (event) async* {
+        try {
+          _notificationBloc.add(
+              SnackBarNotificationEvent('Обновление результата обследования'));
+          await _departmentControlService.updateControlResult(
+              event.object, event.controlResultId, event.violation);
+          _notificationBloc.add(OkDialogNotificationEvent('Обновлено успешно'));
+        } on ApiException catch (e) {
+          print(e.message);
+          print(e.details);
+          yield* (_onApiException(e));
+        }
+      },
     ));
   }
 

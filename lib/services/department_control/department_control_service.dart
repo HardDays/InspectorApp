@@ -1,8 +1,10 @@
 import 'package:inspector/blocs/control_filters/state.dart';
 import 'package:inspector/model/department_control/control_object.dart';
 import 'package:inspector/model/department_control/control_result.dart';
+import 'package:inspector/model/department_control/control_result_search_result.dart';
 import 'package:inspector/model/department_control/dcviolation.dart';
 import 'package:inspector/model/department_control/perform_control.dart';
+import 'package:inspector/model/department_control/violation_extension_period.dart';
 import 'package:inspector/providers/exceptions/api_exception.dart';
 import 'package:inspector/services/department_control/api/department_control_api_client.dart';
 import 'package:inspector/services/department_control/response.dart';
@@ -100,8 +102,11 @@ class DepartmentControlService {
     }
   }
 
-  Future<ControlResult> updateControlResult(ControlObject object, ControlResult result)
-    => _apiClient.updateControlResult(object, result);
+  Future<ControlResultSearchResult> getControlResult(ControlObject object, ControlResultSearchResult result)
+    => _apiClient.getControlSearchResultByIds(object.id, result.id);
+
+  Future<ControlResult> updateControlResult(ControlObject object, int dcControlResultId, DCViolation violation)
+    => _apiClient.updateControlResult(object, dcControlResultId, violation);
 
   Future<void> removeControlResult(ControlObject object, int resultId)
     => _apiClient.removeControlResult(object, resultId);
@@ -114,5 +119,8 @@ class DepartmentControlService {
 
   Future<void> removePerformControl(ControlObject object, int dcControlResultId, PerformControl performControl)
     => _apiClient.removePerformControl(object, dcControlResultId, performControl);
+
+  Future<void> extendPeriod(ControlObject object, int dcControlResultId, ViolationExtensionPeriod violationExtensionPeriod)
+    => _apiClient.extendPeriod(object, dcControlResultId, violationExtensionPeriod);
 
 }

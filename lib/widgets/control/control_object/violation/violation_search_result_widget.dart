@@ -10,6 +10,7 @@ class ViolationSearchResultWidget extends StatelessWidget {
     this.onNotCompleted,
     this.onRemove,
     this.searchResult,
+    this.onEdit,
   }) : super(key: key);
 
   final ControlResultSearchResult searchResult;
@@ -17,6 +18,7 @@ class ViolationSearchResultWidget extends StatelessWidget {
   final void Function() onCompleted;
   final void Function() onNotCompleted;
   final void Function() onRemove;
+  final void Function() onEdit;
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +36,7 @@ class ViolationSearchResultWidget extends StatelessWidget {
       onCompleted: _canCreatePerformControl ? onCompleted : null,
       onNotCompleted: _canCreatePerformControl ? onNotCompleted : null,
       onRemove: _canBeDeleted ? onRemove : null,
+      onEdit: _canBeDeleted ? onEdit : null,
     );
   }
 

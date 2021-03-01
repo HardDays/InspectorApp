@@ -9,6 +9,7 @@ import 'package:inspector/model/check_type.dart';
 import 'package:inspector/model/department_control/contractor.dart';
 import 'package:inspector/model/department_code.dart';
 import 'package:inspector/model/department_control/control_result.dart';
+import 'package:inspector/model/department_control/dcviolation.dart';
 import 'package:inspector/model/department_control/object_element.dart';
 import 'package:inspector/model/department_control/object_kind.dart';
 import 'package:inspector/model/department_control/object_type.dart';
@@ -16,6 +17,8 @@ import 'package:inspector/model/department_control/perform_control.dart';
 import 'package:inspector/model/department_control/source.dart';
 import 'package:inspector/model/department_control/violation_additional_feature.dart';
 import 'package:inspector/model/department_control/violation_classification_search_result.dart';
+import 'package:inspector/model/department_control/violation_extension_period.dart';
+import 'package:inspector/model/department_control/violation_extension_reason.dart';
 import 'package:inspector/model/department_control/violation_name.dart';
 import 'package:inspector/model/department_control/violation_status.dart' as dc;
 import 'package:inspector/model/district.dart';
@@ -90,6 +93,7 @@ class ApiProvider {
     ViolationAdditionalFeature: '/dict/dc-violation-additional-features',
     Source: '/dict/dc-sources',
     ViolationClassificationSearchResult: '/dict/dc-violation-classifications',
+    ViolationExtensionReason: '/dict/dc-extension-reasons',
   };
 
   final dio = Dio(BaseOptions(baseUrl: _defaultUrl));
@@ -391,8 +395,8 @@ class ApiProvider {
     return _request(() => dio.post('/dc-objects/$dcObjectId/control-results', data: result.toJson()));
   }
 
-  Future<dynamic> updateDCControlResult(int dcObjectId, ControlResult result) {
-    return _request(() => dio.patch('/dc-objects/$dcObjectId/control-results/${result.id}', data: result.toJson()));
+  Future<dynamic> updateDCControlResult(int dcObjectId, int dcControlResultId, DCViolation violation) {
+    return _request(() => dio.patch('/dc-objects/$dcObjectId/control-results/$dcControlResultId', data: {"violation": violation}));
   }
 
   Future<dynamic> removeDCControlResult(int dcObjectId, int dcControlResultId) {
@@ -411,5 +415,7 @@ class ApiProvider {
     return _request(() => dio.delete('/dc-objects/$dcObjectId/control-results/$dcControlResultId/perform-controls/$performControlId'));
   }
 
-
+  Future<dynamic> extendPeriod(int dcObjectId, int dcControlResultId, ViolationExtensionPeriod violationExtensionPeriod) {
+    return _request(() => dio.post('/dc-objects/${dcObjectId}/control-results/${dcControlResultId}/op/extend-resolution-period', data: violationExtensionPeriod.toJson()));
+  }
 }

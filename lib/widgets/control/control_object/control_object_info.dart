@@ -19,7 +19,7 @@ class ControlObjectInfo extends StatelessWidget {
       children: [
         ProjectSection('Объект',
             child: ControlStatusWidget(controlObject.type.name,
-                controlObject.externalId.toString())),
+                controlObject.id.toString())),
         _buildDivider(),
         ProjectSection('Адрес', description: controlObject.address),
         _buildDivider(),

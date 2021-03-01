@@ -35,6 +35,7 @@ class DictionaryNames {
   static const dcViolationAdditionalFeatures = 'dcViolationAdditionalFeatures';
   static const dcSources = 'dcSources';
   static const dcViolationClassificationSearchResults = 'dcViolationClassificationSearchResults';
+  static const dcViolationExtensionReasons = 'dcViolationExtensionReasons';
 }
 
 class TableDefinitions {
@@ -115,6 +116,7 @@ class TableDefinitions {
       objectElementObjectTypeName TEXT,
       objectElementObjectTypeCode TEXT
     )''',
+    DictionaryNames.dcViolationExtensionReasons: '''CREATE TABLE IF NOT EXISTS dcViolationExtensionReasons(id INTEGER PRIMARY KEY, name TEXT)''',
   };
 }
 

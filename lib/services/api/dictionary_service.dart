@@ -10,6 +10,7 @@ import 'package:inspector/model/department_control/object_type.dart';
 import 'package:inspector/model/department_control/source.dart';
 import 'package:inspector/model/department_control/violation_additional_feature.dart';
 import 'package:inspector/model/department_control/violation_classification_search_result.dart';
+import 'package:inspector/model/department_control/violation_extension_reason.dart';
 import 'package:inspector/model/department_control/violation_name.dart';
 import 'package:inspector/model/department_control/violation_status.dart' as dc;
 import 'package:inspector/model/district.dart';
@@ -170,5 +171,8 @@ class ApiDictionaryService {
 
   Future<List<ViolationClassificationSearchResult>> getViolationClassifications(int from, int to) =>
       _loadDictionary<ViolationClassificationSearchResult>((d) => ViolationClassificationSearchResult.fromJson(d), from, to);
+  
+  Future<List<ViolationExtensionReason>> getViolationExtensionReasons(int from, int to) =>
+      _loadDictionary<ViolationExtensionReason>((d) => ViolationExtensionReason.fromJson(d), from, to);
 
 }

@@ -27,6 +27,7 @@ class ControlViolationWidget extends StatefulWidget {
     this.onCompleted,
     this.onNotCompleted,
     this.onRemove,
+    this.onEdit,
   }) : super(key: key);
 
   final Source source;
@@ -40,6 +41,7 @@ class ControlViolationWidget extends StatefulWidget {
   final void Function() onCompleted;
   final void Function() onNotCompleted;
   final void Function() onRemove;
+  final void Function() onEdit;
 
   @override
   ControlViolationWidgetState createState() => ControlViolationWidgetState();
@@ -225,6 +227,12 @@ class ControlViolationWidgetState extends State<ControlViolationWidget> {
                           text: 'Удалить',
                           icon: ProjectIcons.delete1Icon(),
                           onTap: widget.onRemove,
+                        ),
+                      if (widget.onEdit != null)
+                        ViolationAction(
+                          text: 'Редактировать',
+                          icon: ProjectIcons.editIcon(),
+                          onTap: widget.onEdit,
                         ),
                     ],
                   ),

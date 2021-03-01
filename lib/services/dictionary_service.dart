@@ -9,6 +9,7 @@ import 'package:inspector/model/department_control/object_type.dart';
 import 'package:inspector/model/department_control/source.dart';
 import 'package:inspector/model/department_control/violation_additional_feature.dart';
 import 'package:inspector/model/department_control/violation_classification_search_result.dart';
+import 'package:inspector/model/department_control/violation_extension_reason.dart';
 import 'package:inspector/model/department_control/violation_name.dart';
 import 'package:inspector/model/department_control/violation_status.dart';
 import 'package:inspector/model/dictionary_metadata.dart';
@@ -73,6 +74,7 @@ class DictionaryService {
     DictionaryNames.dcViolationAdditionalFeatures: ApiDictionaryService().getViolationAdditionalFeatures,
     DictionaryNames.dcSources: ApiDictionaryService().getDCSources,
     DictionaryNames.dcViolationClassificationSearchResults: ApiDictionaryService().getViolationClassifications,
+    DictionaryNames.dcViolationExtensionReasons: ApiDictionaryService().getViolationExtensionReasons,
   };
 
  final Map<String, Function(Map<String, dynamic>)> _converters = {
@@ -104,6 +106,7 @@ class DictionaryService {
     DictionaryNames.dcViolationAdditionalFeatures: (json)=> ViolationAdditionalFeature.fromJson(json),
     DictionaryNames.dcSources: (json)=> Source.fromJson(json),
     DictionaryNames.dcViolationClassificationSearchResults: (json) => ViolationClassificationSearchResult.fromSqliteJson(json),
+    DictionaryNames.dcViolationExtensionReasons: (json) => ViolationExtensionReason.fromJson(json),
   };
 
   final _lock = Lock();
@@ -563,6 +566,17 @@ class DictionaryService {
               'objectElementId = ?': objectElement.id
             else
               'objectElementName LIKE ?': '${objectElement.name}%',
+        }),
+      ],
+      limit: 50
+    );
+  }
+
+  Future<List<ViolationExtensionReason>> getViolationExtensionReasons({String name}) async {
+    return await _getData<ViolationExtensionReason>(DictionaryNames.dcViolationExtensionReasons,
+      queries: [
+        Query({
+          'name LIKE ?': '%$name%',
         }),
       ],
       limit: 50

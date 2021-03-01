@@ -10,8 +10,10 @@ import 'package:inspector/blocs/notification_bloc/bloc.dart';
 import 'package:inspector/model/department_control/control_object.dart';
 import 'package:inspector/model/department_control/control_result_search_result.dart';
 import 'package:inspector/model/department_control/dcphoto.dart';
+import 'package:inspector/model/department_control/dcviolation.dart';
 import 'package:inspector/model/department_control/perform_control.dart';
 import 'package:inspector/model/department_control/violation_short_search_result.dart';
+import 'package:inspector/pages/control_violation_form_page.dart';
 import 'package:inspector/pages/control_violation_page.dart';
 import 'package:inspector/services/department_control/department_control_service.dart';
 import 'package:inspector/style/appbar.dart';
@@ -204,14 +206,55 @@ class ControlObjectPage extends StatelessWidget {
                         ),
                       );
                     },
+                    onEdit: () async {
+                      await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ControlViolationFormPage(
+                            controlObject: _controlObject,
+                            violation: DCViolation(
+                              id: searchResult.violation.id,
+                              violator: searchResult.violation.violator,
+                              address: searchResult.violation.address,
+                              additionalFeatures:
+                                  searchResult.violation.additionalFeatures,
+                              btiAddress: searchResult.violation.btiAddress,
+                              controlDate: searchResult.violation.controlDate,
+                              critical: searchResult.violation.critical,
+                              description: searchResult.violation.description,
+                              detectionDate:
+                                  searchResult.violation.detectionDate,
+                              eknViolationClassification: searchResult
+                                  .violation.eknViolationClassification,
+                              objectElement:
+                                  searchResult.violation.objectElement,
+                              otherViolationClassification: searchResult
+                                  .violation.otherViolationClassification,
+                              photos: searchResult.violation.photos,
+                              refAddressTinao:
+                                  searchResult.violation.refAddressTinao,
+                              resolveDate: searchResult.violation.resolveDate,
+                            ),
+                            onConfirm: (result) {
+                              BlocProvider.of<ControlListBloc>(context).add(
+                                  ControlListBlocEvent.updateControlResultEvent(
+                                      _controlObject, searchResult.id, result));
+                            },
+                          ),
+                        ),
+                      );
+                    },
                   )
                 : SearchResultWidget(
                     searchResult: searchResult,
-                    onRemove: searchResult.violation?.cafapAssigmentId == null ? () {
-                      BlocProvider.of<ControlListBloc>(context).add(
-                          ControlListBlocEvent.removeViolationEvent(_controlObject, searchResult.id),
-                      );
-                    } : null,
+                    onRemove: searchResult.violation?.cafapAssigmentId == null
+                        ? () {
+                            BlocProvider.of<ControlListBloc>(context).add(
+                              ControlListBlocEvent.removeViolationEvent(
+                                  _controlObject, searchResult.id),
+                            );
+                          }
+                        : null,
                   ),
           )
           .toList(),

@@ -12,10 +12,12 @@ class ControlViolationFormPage extends StatelessWidget {
     Key key,
     @required this.controlObject, 
     @required this.onConfirm,
+    this.violation,
   }) : super(key: key);
 
   final ControlObject controlObject;
   final void Function(DCViolation violation) onConfirm;
+  final DCViolation violation;
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +40,7 @@ class ControlViolationFormPage extends StatelessWidget {
                 onCancel: () {
                   Navigator.of(context).pop();
                 },
+                initialViolation: violation,
               ),
             ],
           ),

@@ -2,7 +2,9 @@ import 'package:flutter/foundation.dart';
 import 'package:inspector/model/department_control/control_object.dart';
 import 'package:inspector/model/department_control/control_result.dart';
 import 'package:inspector/model/department_control/control_result_search_result.dart';
+import 'package:inspector/model/department_control/dcviolation.dart';
 import 'package:inspector/model/department_control/perform_control.dart';
+import 'package:inspector/model/department_control/violation_extension_period.dart';
 import 'package:inspector/providers/api_provider.dart';
 
 class DepartmentControlApiClient {
@@ -129,8 +131,8 @@ class DepartmentControlApiClient {
     return ControlResult.fromJson(await apiProvider.createDCControlResult(object.id, result));
   }
 
-  Future<ControlResult> updateControlResult(ControlObject object, ControlResult result) async {
-    return ControlResult.fromJson(await apiProvider.updateDCControlResult(object.id, result));
+  Future<ControlResult> updateControlResult(ControlObject object, int dcControlResultId, DCViolation violation) async {
+    return ControlResult.fromJson(await apiProvider.updateDCControlResult(object.id, dcControlResultId, violation));
   }
 
   Future<void> removeControlResult(ControlObject object, int resultId)
@@ -144,5 +146,9 @@ class DepartmentControlApiClient {
 
   Future<void> removePerformControl(ControlObject object, int dcControlResultId, PerformControl performControl)
     async => await apiProvider.removeDCPerformControlResult(object.id, dcControlResultId, performControl.id);
+
+  Future<void> extendPeriod(ControlObject object, int dcControlResultId, ViolationExtensionPeriod violationExtensionPeriod) async {
+    await apiProvider.extendPeriod(object.id, dcControlResultId, violationExtensionPeriod);
+  }
 
 }
