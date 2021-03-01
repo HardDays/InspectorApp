@@ -2,6 +2,7 @@ import 'package:inspector/model/address.dart';
 import 'package:inspector/model/department_control/contractor.dart';
 import 'package:inspector/model/department_control/dcphoto.dart';
 import 'package:inspector/model/department_control/object_element.dart';
+import 'package:inspector/model/department_control/perform_control_search_result.dart';
 import 'package:inspector/model/department_control/perform_mark.dart';
 import 'package:inspector/model/department_control/source.dart';
 import 'package:inspector/model/department_control/violation_additional_feature.dart';
@@ -42,6 +43,7 @@ abstract class ViolationSearchResult with _$ViolationSearchResult {
     int cafapPrescriptionNum,
     bool cafapViolationConfirmed,
     List<PerformMark> performMarks,
+    List<PerformControlSearchResult> performControls,
     List<ViolationExtensionPeriodSearchResult> extensionPeriods,
     bool creationSentToCafap,
     bool closureSentToCafap,

@@ -44,6 +44,7 @@ class _$ViolationSearchResultTearOff {
       int cafapPrescriptionNum,
       bool cafapViolationConfirmed,
       List<PerformMark> performMarks,
+      List<PerformControlSearchResult> performControls,
       List<ViolationExtensionPeriodSearchResult> extensionPeriods,
       bool creationSentToCafap,
       bool closureSentToCafap}) {
@@ -73,6 +74,7 @@ class _$ViolationSearchResultTearOff {
       cafapPrescriptionNum: cafapPrescriptionNum,
       cafapViolationConfirmed: cafapViolationConfirmed,
       performMarks: performMarks,
+      performControls: performControls,
       extensionPeriods: extensionPeriods,
       creationSentToCafap: creationSentToCafap,
       closureSentToCafap: closureSentToCafap,
@@ -116,6 +118,7 @@ mixin _$ViolationSearchResult {
   int get cafapPrescriptionNum;
   bool get cafapViolationConfirmed;
   List<PerformMark> get performMarks;
+  List<PerformControlSearchResult> get performControls;
   List<ViolationExtensionPeriodSearchResult> get extensionPeriods;
   bool get creationSentToCafap;
   bool get closureSentToCafap;
@@ -156,6 +159,7 @@ abstract class $ViolationSearchResultCopyWith<$Res> {
       int cafapPrescriptionNum,
       bool cafapViolationConfirmed,
       List<PerformMark> performMarks,
+      List<PerformControlSearchResult> performControls,
       List<ViolationExtensionPeriodSearchResult> extensionPeriods,
       bool creationSentToCafap,
       bool closureSentToCafap});
@@ -205,6 +209,7 @@ class _$ViolationSearchResultCopyWithImpl<$Res>
     Object cafapPrescriptionNum = freezed,
     Object cafapViolationConfirmed = freezed,
     Object performMarks = freezed,
+    Object performControls = freezed,
     Object extensionPeriods = freezed,
     Object creationSentToCafap = freezed,
     Object closureSentToCafap = freezed,
@@ -269,6 +274,9 @@ class _$ViolationSearchResultCopyWithImpl<$Res>
       performMarks: performMarks == freezed
           ? _value.performMarks
           : performMarks as List<PerformMark>,
+      performControls: performControls == freezed
+          ? _value.performControls
+          : performControls as List<PerformControlSearchResult>,
       extensionPeriods: extensionPeriods == freezed
           ? _value.extensionPeriods
           : extensionPeriods as List<ViolationExtensionPeriodSearchResult>,
@@ -387,6 +395,7 @@ abstract class _$ViolationSearchResultCopyWith<$Res>
       int cafapPrescriptionNum,
       bool cafapViolationConfirmed,
       List<PerformMark> performMarks,
+      List<PerformControlSearchResult> performControls,
       List<ViolationExtensionPeriodSearchResult> extensionPeriods,
       bool creationSentToCafap,
       bool closureSentToCafap});
@@ -445,6 +454,7 @@ class __$ViolationSearchResultCopyWithImpl<$Res>
     Object cafapPrescriptionNum = freezed,
     Object cafapViolationConfirmed = freezed,
     Object performMarks = freezed,
+    Object performControls = freezed,
     Object extensionPeriods = freezed,
     Object creationSentToCafap = freezed,
     Object closureSentToCafap = freezed,
@@ -509,6 +519,9 @@ class __$ViolationSearchResultCopyWithImpl<$Res>
       performMarks: performMarks == freezed
           ? _value.performMarks
           : performMarks as List<PerformMark>,
+      performControls: performControls == freezed
+          ? _value.performControls
+          : performControls as List<PerformControlSearchResult>,
       extensionPeriods: extensionPeriods == freezed
           ? _value.extensionPeriods
           : extensionPeriods as List<ViolationExtensionPeriodSearchResult>,
@@ -552,6 +565,7 @@ class _$_ViolationSearchResult implements _ViolationSearchResult {
       this.cafapPrescriptionNum,
       this.cafapViolationConfirmed,
       this.performMarks,
+      this.performControls,
       this.extensionPeriods,
       this.creationSentToCafap,
       this.closureSentToCafap});
@@ -610,6 +624,8 @@ class _$_ViolationSearchResult implements _ViolationSearchResult {
   @override
   final List<PerformMark> performMarks;
   @override
+  final List<PerformControlSearchResult> performControls;
+  @override
   final List<ViolationExtensionPeriodSearchResult> extensionPeriods;
   @override
   final bool creationSentToCafap;
@@ -618,7 +634,7 @@ class _$_ViolationSearchResult implements _ViolationSearchResult {
 
   @override
   String toString() {
-    return 'ViolationSearchResult(id: $id, detectionDate: $detectionDate, eknViolationClassification: $eknViolationClassification, otherViolationClassification: $otherViolationClassification, btiAddress: $btiAddress, address: $address, btiRefAddress: $btiRefAddress, refAddressTinao: $refAddressTinao, objectElement: $objectElement, description: $description, violator: $violator, critical: $critical, resolveDate: $resolveDate, controlDate: $controlDate, additionalFeatures: $additionalFeatures, photos: $photos, violationNum: $violationNum, violationStatus: $violationStatus, source: $source, violationKind: $violationKind, cafapAssigmentId: $cafapAssigmentId, cafapPrescriptionId: $cafapPrescriptionId, cafapPrescriptionNum: $cafapPrescriptionNum, cafapViolationConfirmed: $cafapViolationConfirmed, performMarks: $performMarks, extensionPeriods: $extensionPeriods, creationSentToCafap: $creationSentToCafap, closureSentToCafap: $closureSentToCafap)';
+    return 'ViolationSearchResult(id: $id, detectionDate: $detectionDate, eknViolationClassification: $eknViolationClassification, otherViolationClassification: $otherViolationClassification, btiAddress: $btiAddress, address: $address, btiRefAddress: $btiRefAddress, refAddressTinao: $refAddressTinao, objectElement: $objectElement, description: $description, violator: $violator, critical: $critical, resolveDate: $resolveDate, controlDate: $controlDate, additionalFeatures: $additionalFeatures, photos: $photos, violationNum: $violationNum, violationStatus: $violationStatus, source: $source, violationKind: $violationKind, cafapAssigmentId: $cafapAssigmentId, cafapPrescriptionId: $cafapPrescriptionId, cafapPrescriptionNum: $cafapPrescriptionNum, cafapViolationConfirmed: $cafapViolationConfirmed, performMarks: $performMarks, performControls: $performControls, extensionPeriods: $extensionPeriods, creationSentToCafap: $creationSentToCafap, closureSentToCafap: $closureSentToCafap)';
   }
 
   @override
@@ -678,6 +694,7 @@ class _$_ViolationSearchResult implements _ViolationSearchResult {
             (identical(other.cafapPrescriptionNum, cafapPrescriptionNum) || const DeepCollectionEquality().equals(other.cafapPrescriptionNum, cafapPrescriptionNum)) &&
             (identical(other.cafapViolationConfirmed, cafapViolationConfirmed) || const DeepCollectionEquality().equals(other.cafapViolationConfirmed, cafapViolationConfirmed)) &&
             (identical(other.performMarks, performMarks) || const DeepCollectionEquality().equals(other.performMarks, performMarks)) &&
+            (identical(other.performControls, performControls) || const DeepCollectionEquality().equals(other.performControls, performControls)) &&
             (identical(other.extensionPeriods, extensionPeriods) || const DeepCollectionEquality().equals(other.extensionPeriods, extensionPeriods)) &&
             (identical(other.creationSentToCafap, creationSentToCafap) || const DeepCollectionEquality().equals(other.creationSentToCafap, creationSentToCafap)) &&
             (identical(other.closureSentToCafap, closureSentToCafap) || const DeepCollectionEquality().equals(other.closureSentToCafap, closureSentToCafap)));
@@ -711,6 +728,7 @@ class _$_ViolationSearchResult implements _ViolationSearchResult {
       const DeepCollectionEquality().hash(cafapPrescriptionNum) ^
       const DeepCollectionEquality().hash(cafapViolationConfirmed) ^
       const DeepCollectionEquality().hash(performMarks) ^
+      const DeepCollectionEquality().hash(performControls) ^
       const DeepCollectionEquality().hash(extensionPeriods) ^
       const DeepCollectionEquality().hash(creationSentToCafap) ^
       const DeepCollectionEquality().hash(closureSentToCafap);
@@ -754,6 +772,7 @@ abstract class _ViolationSearchResult implements ViolationSearchResult {
       int cafapPrescriptionNum,
       bool cafapViolationConfirmed,
       List<PerformMark> performMarks,
+      List<PerformControlSearchResult> performControls,
       List<ViolationExtensionPeriodSearchResult> extensionPeriods,
       bool creationSentToCafap,
       bool closureSentToCafap}) = _$_ViolationSearchResult;
@@ -811,6 +830,8 @@ abstract class _ViolationSearchResult implements ViolationSearchResult {
   bool get cafapViolationConfirmed;
   @override
   List<PerformMark> get performMarks;
+  @override
+  List<PerformControlSearchResult> get performControls;
   @override
   List<ViolationExtensionPeriodSearchResult> get extensionPeriods;
   @override

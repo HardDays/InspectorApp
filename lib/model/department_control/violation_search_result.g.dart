@@ -72,6 +72,11 @@ _$_ViolationSearchResult _$_$_ViolationSearchResultFromJson(
         ?.map((e) =>
             e == null ? null : PerformMark.fromJson(e as Map<String, dynamic>))
         ?.toList(),
+    performControls: (json['performControls'] as List)
+        ?.map((e) => e == null
+            ? null
+            : PerformControlSearchResult.fromJson(e as Map<String, dynamic>))
+        ?.toList(),
     extensionPeriods: (json['extensionPeriods'] as List)
         ?.map((e) => e == null
             ? null
@@ -111,6 +116,7 @@ Map<String, dynamic> _$_$_ViolationSearchResultToJson(
       'cafapPrescriptionNum': instance.cafapPrescriptionNum,
       'cafapViolationConfirmed': instance.cafapViolationConfirmed,
       'performMarks': instance.performMarks,
+      'performControls': instance.performControls,
       'extensionPeriods': instance.extensionPeriods,
       'creationSentToCafap': instance.creationSentToCafap,
       'closureSentToCafap': instance.closureSentToCafap,
