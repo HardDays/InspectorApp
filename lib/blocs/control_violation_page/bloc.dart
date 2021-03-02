@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:core';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,6 +12,8 @@ import 'package:inspector/model/department_control/perform_control.dart';
 import 'package:inspector/model/department_control/perform_control_search_result.dart';
 import 'package:inspector/providers/exceptions/api_exception.dart';
 import 'package:inspector/services/department_control/department_control_service.dart';
+import 'package:inspector/services/network_status_service/network_status.dart';
+import 'package:inspector/services/network_status_service/network_status_service.dart';
 
 class ControlViolationPageBloc
     extends Bloc<ControlViolationPageBlocEvent, ControlViolationPageBlocState> {
@@ -19,6 +22,7 @@ class ControlViolationPageBloc
     this.searchResult,
     this.departmentControlService,
     this.notificationBloc,
+    this.networkStatusService,
   ) : super(
           ControlViolationPageBlocState.initialState(
             controlObject: controlObject,
@@ -28,10 +32,15 @@ class ControlViolationPageBloc
     _initialperformControls = searchResult.violation.performControls ??
         List<PerformControlSearchResult>();
     add(ControlViolationPageBlocEvent.refresh());
+    _networkStatusStreamSubscription =
+        networkStatusService.listenNetworkStatus.listen((value) {
+      _networkStatus = value;
+    });
   }
 
   final DepartmentControlService departmentControlService;
   final NotificationBloc notificationBloc;
+  final NetworkStatusService networkStatusService;
 
   final ControlObject controlObject;
   final ControlResultSearchResult searchResult;
@@ -42,6 +51,9 @@ class ControlViolationPageBloc
       List<PerformControlSearchResult>();
   List<PerformControlSearchResult> _removedPerformCotronls =
       List<PerformControlSearchResult>();
+
+  NetworkStatus _networkStatus;
+  StreamSubscription<NetworkStatus> _networkStatusStreamSubscription;
 
   @override
   Stream<ControlViolationPageBlocState> mapEventToState(
@@ -54,6 +66,7 @@ class ControlViolationPageBloc
               controlObject,
               searchResult.id,
               event.performControl,
+              _networkStatus,
             );
             yield ControlViolationPageBlocState.initialState(
               controlObject: state.controlObject,
@@ -113,7 +126,8 @@ class ControlViolationPageBloc
             await departmentControlService.extendPeriod(
               controlObject,
               searchResult.id,
-              event.extensionPeriod, 
+              event.extensionPeriod,
+              _networkStatus,
             );
             notificationBloc
                 .add(OkDialogNotificationEvent('Успешно сохранено'));
@@ -131,6 +145,7 @@ class ControlViolationPageBloc
             searchResult: await departmentControlService.getControlResult(
               state.controlObject,
               state.searchResult,
+              _networkStatus,
             ),
             editable: true,
           );
@@ -174,6 +189,7 @@ class ControlViolationPageBloc
             controlObject,
             searchResult.id,
             convert(x),
+            _networkStatus,
           );
         } on ApiException catch (e) {
           print(e.message);
@@ -194,6 +210,7 @@ class ControlViolationPageBloc
             controlObject,
             searchResult.id,
             convert(x),
+            _networkStatus,
           );
         } on ApiException catch (e) {
           print(e.message);
@@ -214,4 +231,10 @@ class ControlViolationPageBloc
         planDate: performControl.planDate,
         resolved: performControl.resolved,
       );
+
+  @override
+  Future<void> close() async {
+    await super.close();
+    _networkStatusStreamSubscription.cancel();
+  }
 }

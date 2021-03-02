@@ -8,6 +8,10 @@ part of 'state.dart';
 // **************************************************************************
 
 T _$identity<T>(T value) => value;
+ControlFiltersBlocState _$ControlFiltersBlocStateFromJson(
+    Map<String, dynamic> json) {
+  return AllState.fromJson(json);
+}
 
 /// @nodoc
 class _$ControlFiltersBlocStateTearOff {
@@ -56,6 +60,11 @@ class _$ControlFiltersBlocStateTearOff {
       detectionDates: detectionDates,
     );
   }
+
+// ignore: unused_element
+  ControlFiltersBlocState fromJson(Map<String, Object> json) {
+    return ControlFiltersBlocState.fromJson(json);
+  }
 }
 
 /// @nodoc
@@ -84,6 +93,7 @@ mixin _$ControlFiltersBlocState {
   List<DateTime> get controlDates;
   List<DateTime> get detectionDates;
 
+  Map<String, dynamic> toJson();
   @JsonKey(ignore: true)
   $ControlFiltersBlocStateCopyWith<ControlFiltersBlocState> get copyWith;
 }
@@ -384,6 +394,8 @@ class _$AllStateCopyWithImpl<$Res>
   }
 }
 
+@JsonSerializable()
+
 /// @nodoc
 class _$AllState extends AllState {
   const _$AllState(
@@ -407,6 +419,9 @@ class _$AllState extends AllState {
       this.controlDates,
       this.detectionDates})
       : super._();
+
+  factory _$AllState.fromJson(Map<String, dynamic> json) =>
+      _$_$AllStateFromJson(json);
 
   @override
   final ObjectType dcObjectType;
@@ -540,6 +555,11 @@ class _$AllState extends AllState {
   @override
   $AllStateCopyWith<AllState> get copyWith =>
       _$AllStateCopyWithImpl<AllState>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$_$AllStateToJson(this);
+  }
 }
 
 abstract class AllState extends ControlFiltersBlocState {
@@ -564,6 +584,8 @@ abstract class AllState extends ControlFiltersBlocState {
       Source source,
       List<DateTime> controlDates,
       List<DateTime> detectionDates}) = _$AllState;
+
+  factory AllState.fromJson(Map<String, dynamic> json) = _$AllState.fromJson;
 
   @override
   ObjectType get dcObjectType;

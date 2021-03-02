@@ -16,6 +16,7 @@ import 'package:inspector/model/department_control/violation_short_search_result
 import 'package:inspector/pages/control_violation_form_page.dart';
 import 'package:inspector/pages/control_violation_page.dart';
 import 'package:inspector/services/department_control/department_control_service.dart';
+import 'package:inspector/services/network_status_service/network_status_service.dart';
 import 'package:inspector/style/appbar.dart';
 
 //import 'package:inspector/style/colors.dart';
@@ -44,6 +45,8 @@ class ControlObjectPage extends StatelessWidget {
         departmentControlService:
             Provider.of<DepartmentControlService>(context, listen: false),
         notificationBloc: BlocProvider.of<NotificationBloc>(context),
+        networkStatusService:
+            Provider.of<NetworkStatusService>(context, listen: false),
       ),
       child: Scaffold(
         appBar: ProjectAppbar('Объект ведомственного контроля'),

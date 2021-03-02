@@ -12,6 +12,7 @@ import 'package:inspector/model/department_control/control_result_search_result.
 import 'package:inspector/model/department_control/dcphoto.dart';
 import 'package:inspector/model/department_control/perform_control.dart';
 import 'package:inspector/services/department_control/department_control_service.dart';
+import 'package:inspector/services/network_status_service/network_status_service.dart';
 import 'package:inspector/style/button.dart';
 import 'package:inspector/style/colors.dart';
 import 'package:inspector/style/dialog.dart';
@@ -47,6 +48,7 @@ class ControlViolationPage extends StatelessWidget {
         searchResult,
         Provider.of<DepartmentControlService>(context, listen: false),
         BlocProvider.of<NotificationBloc>(context),
+        Provider.of<NetworkStatusService>(context, listen: false),
       ),
       child: Scaffold(
         backgroundColor: Colors.white,

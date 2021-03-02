@@ -9,6 +9,7 @@ import 'package:inspector/blocs/control_list/state.dart';
 import 'package:inspector/blocs/notification_bloc/bloc.dart';
 import 'package:inspector/blocs/notification_bloc/events.dart';
 import 'package:inspector/model/department_control/control_object.dart';
+import 'package:inspector/model/department_control/control_result.dart';
 import 'package:inspector/providers/exceptions/api_exception.dart';
 import 'package:inspector/services/department_control/department_control_service.dart';
 import 'package:inspector/services/location/location.dart';
@@ -115,8 +116,15 @@ class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
         try {
           _notificationBloc.add(
               SnackBarNotificationEvent('Сохранение результата обследования'));
-          await _departmentControlService.registerControlResult(event.object,
-              violation: event.violation);
+          ControlResult result = ControlResult(
+            violation: event.violation,
+            surveyDate: DateTime.now(),
+          );
+          await _departmentControlService.registerControlResult(
+            event.object,
+            result,
+            _networkStatus,
+          );
           _notificationBloc.add(OkDialogNotificationEvent('Сохранено успешно'));
         } on ApiException catch (e) {
           print(e.message);
@@ -129,7 +137,11 @@ class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
           _notificationBloc
               .add(SnackBarNotificationEvent('Удаление контроля устранения'));
           await _departmentControlService.removePerformControl(
-              event.object, event.controlResultId, event.performControl);
+            event.object,
+            event.controlResultId,
+            event.performControl,
+            _networkStatus,
+          );
           _notificationBloc.add(OkDialogNotificationEvent('Удалено успешно'));
         } on ApiException catch (e) {
           print(e.message);
@@ -140,7 +152,11 @@ class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
       registerPerformControlEvent: (event) async* {
         try {
           await _departmentControlService.registerPerformControl(
-              event.object, event.controlResultId, event.performControl);
+            event.object,
+            event.controlResultId,
+            event.performControl,
+            _networkStatus,
+          );
           _notificationBloc.add(OkDialogNotificationEvent('Сохранено успешно'));
         } on ApiException catch (e) {
           print(e.message);
@@ -151,7 +167,11 @@ class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
       updatePerformControlEvent: (event) async* {
         try {
           await _departmentControlService.updatePerformControl(
-              event.object, event.controlResultId, event.performControl);
+            event.object,
+            event.controlResultId,
+            event.performControl,
+            _networkStatus,
+          );
           _notificationBloc.add(OkDialogNotificationEvent('Обновлено успешно'));
         } on ApiException catch (e) {
           print(e.message);
@@ -166,7 +186,10 @@ class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
       removeViolationEvent: (event) async* {
         try {
           await _departmentControlService.removeControlResult(
-              event.object, event.violationId);
+            event.object,
+            event.violationId,
+            _networkStatus,
+          );
           _notificationBloc.add(OkDialogNotificationEvent('Удалено успешно'));
         } on ApiException catch (e) {
           print(e.message);
@@ -179,7 +202,11 @@ class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
           _notificationBloc.add(
               SnackBarNotificationEvent('Обновление результата обследования'));
           await _departmentControlService.updateControlResult(
-              event.object, event.controlResultId, event.violation);
+            event.object,
+            event.controlResultId,
+            event.violation,
+            _networkStatus,
+          );
           _notificationBloc.add(OkDialogNotificationEvent('Обновлено успешно'));
         } on ApiException catch (e) {
           print(e.message);

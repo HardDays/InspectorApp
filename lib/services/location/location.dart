@@ -1,6 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'location.freezed.dart';
+part 'location.g.dart';
 
 @freezed
 abstract class Location with _$Location {
@@ -10,5 +11,8 @@ abstract class Location with _$Location {
   }) = _Location;
 
   const factory Location.noLocationProvided() = NoLocationProvider;
+
+  factory Location.fromJson(Map<String, dynamic> json) =>
+      _$LocationFromJson(json);
 
 }
