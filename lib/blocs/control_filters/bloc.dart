@@ -12,6 +12,7 @@ import 'package:inspector/model/department_control/source.dart';
 import 'package:inspector/model/department_control/violation_name.dart';
 import 'package:inspector/model/department_control/violation_status.dart';
 import 'package:inspector/model/district.dart';
+import 'package:inspector/model/street.dart';
 import 'package:inspector/services/dictionary_service.dart';
 import 'package:inspector/services/sqlite/sqlite_dictionary_service.dart';
 
@@ -38,8 +39,12 @@ class ControlFiltersBloc extends Bloc<ControlFiltersBlocEvent, ControlFiltersBlo
     return await _dictionarySevice.getDitricts(name: name, areaId: state.area?.id);
   }
 
+  Future<List<Street>> getStreets(String name) async {
+    return await _dictionarySevice.getStreets(name: name, districtId: state.district?.id);
+  }
+
   Future<List<Address>> getAddresses(String name) async {
-    return await _dictionarySevice.getAddresses(houseNum: name, districtId: state.district?.id, areaId: state.area?.id);
+    return await _dictionarySevice.getAddresses(houseNum: name, districtId: state.district?.id, areaId: state.area?.id, streetId: state.street?.id);
   }
 
   Future<List<ViolationName>> getDCViolationNames(String name) async {

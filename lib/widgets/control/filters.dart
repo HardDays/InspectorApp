@@ -13,6 +13,7 @@ import 'package:inspector/model/department_control/source.dart';
 import 'package:inspector/model/department_control/violation_name.dart';
 import 'package:inspector/model/department_control/violation_status.dart';
 import 'package:inspector/model/district.dart';
+import 'package:inspector/model/street.dart';
 import 'package:inspector/model/violator_address.dart';
 import 'package:inspector/style/autocomplete.dart';
 import 'package:inspector/style/button.dart';
@@ -37,6 +38,7 @@ class ControlFiltersWidget extends StatelessWidget {
   final _dcObjectKindController = TextEditingController();
   final _areaController = TextEditingController();
   final _districtController = TextEditingController();
+  final _streetController = TextEditingController();
   final _addressController = TextEditingController();
   final _dcObjectElementController = TextEditingController();
   final _dcViolationNameController = TextEditingController();
@@ -58,6 +60,7 @@ class ControlFiltersWidget extends StatelessWidget {
     _dcObjectTypeController.clear();
     _dcObjectKindController.clear();
     _areaController.clear();
+    _streetController.clear();
     _districtController.clear();
     _addressController.clear();
     _dcObjectElementController.clear();
@@ -74,7 +77,8 @@ class ControlFiltersWidget extends StatelessWidget {
     _dcObjectKindController.text = state.dcObjectKind?.name;
     _areaController.text = state.area?.name;
     _districtController.text = state.district?.name;
-    _addressController.text = state.address?.toLongString();
+    _addressController.text = state.address?.toString();
+    _streetController.text = state.street?.toString();
     _dcObjectElementController.text = state.objectElement?.name;
     _dcViolationNameController.text = state.violationName?.name;
     _dcViolationStatusController.text = state.violationStatus?.name;
@@ -115,6 +119,15 @@ class ControlFiltersWidget extends StatelessWidget {
   void _onDistrictSelect(ControlFiltersBloc bloc, District district) {
     bloc.add(CopyStateEvent(bloc.state.copyWith(district: district)));
     _districtController.text = district?.name;
+  }
+
+  Future<Iterable<Street>> _onStreetSearch(BuildContext context, String name) async  {
+    return await BlocProvider.of<ControlFiltersBloc>(context).getStreets(name);
+  }
+
+  void _onStreetSelect(ControlFiltersBloc bloc, Street street) {
+    bloc.add(CopyStateEvent(bloc.state.copyWith(street: street)));
+    _streetController.text = street?.toString();
   }
 
   Future<Iterable<Address>> _onAddressSearch(BuildContext context, String name) async  {
@@ -296,16 +309,34 @@ class ControlFiltersWidget extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Flexible(
+                          child: ProjectAutocomplete('Улица',
+                            hintText: 'Все',
+                            enabled: true,
+                            suggestionsCallback: (text)=> _onStreetSearch(context, text),
+                            onSuggestionSelected: (value)=> _onStreetSelect(bloc, value),
+                            controller: _streetController,
+                            formatter: (value) => '${value.toString()}',
+                          ),
+                        ),
+                        Padding(padding: const EdgeInsets.only(left: 35)),
+                        Flexible(
                           child: ProjectAutocomplete('Адрес',
                             hintText: 'Все',
                             enabled: true,
                             suggestionsCallback: (text)=> _onAddressSearch(context, text),
                             onSuggestionSelected: (value)=> _onAddressSelect(bloc, value),
                             controller: _addressController,
-                            formatter: (value) => '${value.toSearchString()}',
+                            formatter: (value) => '${value.toString()}',
                           ),
                         ),
-                        Padding(padding: const EdgeInsets.only(left: 35)),
+                      ]
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 18),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
                         Flexible(
                           child: ProjectTextField(
                             title: 'Радиус поиска, м',

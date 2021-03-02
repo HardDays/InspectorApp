@@ -8,6 +8,7 @@ import 'package:inspector/model/department_control/source.dart';
 import 'package:inspector/model/department_control/violation_name.dart';
 import 'package:inspector/model/department_control/violation_status.dart';
 import 'package:inspector/model/district.dart';
+import 'package:inspector/model/street.dart';
 import 'package:inspector/model/violator_address.dart';
 
 part 'state.freezed.dart';
@@ -23,6 +24,7 @@ abstract class ControlFiltersBlocState with _$ControlFiltersBlocState {
     String objectName,
     Area area,
     District district,
+    Street street,
     Address address,
     int searchRadius,
     String balanceOwner,
@@ -41,6 +43,7 @@ abstract class ControlFiltersBlocState with _$ControlFiltersBlocState {
   List<int> get areasIds => area != null ? [area.id] : null;
   List<int> get districtIds => district != null ? [district.id] : null;
   List<int> get addressIds => address != null ? [address.id] : null;
+  List<int> get streetIds => street != null ? [street.id] : null;
   List<int> get dcObjectTypesIds => dcObjectType != null ? [dcObjectType.id] : null;
   List<int> get objectElementIds => objectElement != null ? [objectElement.id] : null;
   List<int> get violationNameIds => violationName != null ? [violationName.id] : null;

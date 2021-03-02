@@ -56,6 +56,7 @@ class DepartmentControlService {
         areaIds: filtersState.area?.id,
         districtIds: filtersState.district?.id,
         addressIds: filtersState.address?.id,
+        streetIds: filtersState.street?.id,
         balanceOwner: filtersState.balanceOwner,
         lastSurveyDateFrom: filtersState.lastSurveyDateFrom,
         lastSurveyDateTo: filtersState.lastSurveyDateTo,
