@@ -7,7 +7,7 @@ import 'package:inspector/blocs/profile/bloc.dart';
 import 'package:inspector/blocs/profile/state.dart';
 import 'package:inspector/providers/api_provider.dart';
 import 'package:inspector/services/auth_service.dart';
-import 'package:inspector/services/department_control/api/department_control_api_client.dart';
+import 'package:inspector/services/department_control/client/api/department_control_api_client.dart';
 import 'package:inspector/services/department_control/department_control_service.dart';
 import 'package:inspector/services/dictionary_service.dart';
 import 'package:inspector/services/location/geolocator_location_service.dart';
@@ -54,6 +54,7 @@ class InjectorWidget extends StatelessWidget {
         Provider(
           create: (context) => DepartmentControlService(
             Provider.of<DepartmentControlApiClient>(context, listen: false),
+            Provider.of<DepartmentControlApiClient>(context, listen: false), // TODO: replace with local client
           ),
         ),
         Provider<LocationService>(

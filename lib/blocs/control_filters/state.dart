@@ -10,6 +10,7 @@ import 'package:inspector/model/department_control/violation_status.dart';
 import 'package:inspector/model/district.dart';
 
 part 'state.freezed.dart';
+part 'state.g.dart';
 
 @freezed
 abstract class ControlFiltersBlocState with _$ControlFiltersBlocState {
@@ -53,6 +54,8 @@ abstract class ControlFiltersBlocState with _$ControlFiltersBlocState {
 
   DateTime get lastSurveyDateFrom => lastSurveyDates != null && lastSurveyDates.isNotEmpty ? lastSurveyDates.first : null;
   DateTime get lastSurveyDateTo => lastSurveyDates != null && lastSurveyDates.length == 2 ? lastSurveyDates.last : null;
-  
+
+  factory ControlFiltersBlocState.fromJson(Map<String, dynamic> json) =>
+      _$ControlFiltersBlocStateFromJson(json);
 }
 

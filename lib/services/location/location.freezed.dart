@@ -8,6 +8,17 @@ part of 'location.dart';
 // **************************************************************************
 
 T _$identity<T>(T value) => value;
+Location _$LocationFromJson(Map<String, dynamic> json) {
+  switch (json['runtimeType'] as String) {
+    case 'default':
+      return _Location.fromJson(json);
+    case 'noLocationProvided':
+      return NoLocationProvider.fromJson(json);
+
+    default:
+      throw FallThroughError();
+  }
+}
 
 /// @nodoc
 class _$LocationTearOff {
@@ -24,6 +35,11 @@ class _$LocationTearOff {
 // ignore: unused_element
   NoLocationProvider noLocationProvided() {
     return const NoLocationProvider();
+  }
+
+// ignore: unused_element
+  Location fromJson(Map<String, Object> json) {
+    return Location.fromJson(json);
   }
 }
 
@@ -55,6 +71,7 @@ mixin _$Location {
     TResult noLocationProvided(NoLocationProvider value),
     @required TResult orElse(),
   });
+  Map<String, dynamic> toJson();
 }
 
 /// @nodoc
@@ -100,11 +117,16 @@ class __$LocationCopyWithImpl<$Res> extends _$LocationCopyWithImpl<$Res>
   }
 }
 
+@JsonSerializable()
+
 /// @nodoc
 class _$_Location implements _Location {
   const _$_Location({@required this.longitude, @required this.latitude})
       : assert(longitude != null),
         assert(latitude != null);
+
+  factory _$_Location.fromJson(Map<String, dynamic> json) =>
+      _$_$_LocationFromJson(json);
 
   @override
   final double longitude;
@@ -188,11 +210,18 @@ class _$_Location implements _Location {
     }
     return orElse();
   }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$_$_LocationToJson(this)..['runtimeType'] = 'default';
+  }
 }
 
 abstract class _Location implements Location {
   const factory _Location(
       {@required double longitude, @required double latitude}) = _$_Location;
+
+  factory _Location.fromJson(Map<String, dynamic> json) = _$_Location.fromJson;
 
   double get longitude;
   double get latitude;
@@ -219,9 +248,14 @@ class _$NoLocationProviderCopyWithImpl<$Res>
   NoLocationProvider get _value => super._value as NoLocationProvider;
 }
 
+@JsonSerializable()
+
 /// @nodoc
 class _$NoLocationProvider implements NoLocationProvider {
   const _$NoLocationProvider();
+
+  factory _$NoLocationProvider.fromJson(Map<String, dynamic> json) =>
+      _$_$NoLocationProviderFromJson(json);
 
   @override
   String toString() {
@@ -285,8 +319,17 @@ class _$NoLocationProvider implements NoLocationProvider {
     }
     return orElse();
   }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$_$NoLocationProviderToJson(this)
+      ..['runtimeType'] = 'noLocationProvided';
+  }
 }
 
 abstract class NoLocationProvider implements Location {
   const factory NoLocationProvider() = _$NoLocationProvider;
+
+  factory NoLocationProvider.fromJson(Map<String, dynamic> json) =
+      _$NoLocationProvider.fromJson;
 }

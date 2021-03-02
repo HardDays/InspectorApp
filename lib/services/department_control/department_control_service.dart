@@ -6,33 +6,18 @@ import 'package:inspector/model/department_control/dcviolation.dart';
 import 'package:inspector/model/department_control/perform_control.dart';
 import 'package:inspector/model/department_control/violation_extension_period.dart';
 import 'package:inspector/providers/exceptions/api_exception.dart';
-import 'package:inspector/services/department_control/api/department_control_api_client.dart';
-import 'package:inspector/services/department_control/response.dart';
+import 'package:inspector/services/department_control/client/api/department_control_api_client.dart';
+import 'package:inspector/services/department_control/client/department_control_service_client.dart';
+import 'package:inspector/services/department_control/client/request.dart';
+import 'package:inspector/services/department_control/client/response.dart';
 import 'package:inspector/services/location/location.dart';
 import 'package:inspector/services/network_status_service/network_status.dart';
 
 class DepartmentControlService {
-  DepartmentControlService(this._apiClient);
+  DepartmentControlService(this._apiClient, this._localClient);
 
   final DepartmentControlApiClient _apiClient;
-
-  Future<List<ControlObject>> findByPosition(
-    double userPositionX,
-    double userPositionY, {
-    NetworkStatus networkStatus = const NetworkStatus(ConnectionStatus.online, DataSendingMode.automatic),
-  }) async {
-    if (networkStatus.connectionStatus == ConnectionStatus.online) {
-      return _apiClient.getControlObjects(
-        userPositionX: userPositionX,
-        userPositionY: userPositionY,
-      );
-    } else {
-      return _apiClient.getControlObjects(
-        userPositionX: userPositionX,
-        userPositionY: userPositionY,
-      );
-    }
-  }
+  final DepartmentControlServiceClient _localClient;
 
   Future<List<ControlObject>> find(
     Location location,
@@ -41,60 +26,68 @@ class DepartmentControlService {
     String sortState,
     int from,
     int to,
-  ) => location.when(
-    (longitude, latitude) => _apiClient.getControlObjects(
-        userPositionX: latitude,
-        userPositionY: longitude,
-        onlyNearObjects: true,
-        from: from,
-        to: to,
-        // filtering
-        searchRadius: filtersState.searchRadius,
-        daysFromLastSurvey: filtersState.daysFromLastSurvey,
-        dcObjectTypesIds: filtersState.dcObjectType?.id,
-        dcObjectKind: filtersState.dcObjectType?.name,
-        externalId: filtersState.externalId,
-        objectName: filtersState.objectName,
-        areaIds: filtersState.area?.id,
-        districtIds: filtersState.district?.id,
-        addressIds: filtersState.address?.id,
-        balanceOwner: filtersState.balanceOwner,
-        lastSurveyDateFrom: filtersState.lastSurveyDateFrom,
-        lastSurveyDateTo: filtersState.lastSurveyDateTo,
-        camerasExist: filtersState.camerasExist,
-        ignoreViolations: filtersState.ignoreViolations,
-        objectElementIds: filtersState.objectElement?.id,
-        violationNameIds: filtersState.violationName?.id,
-        violationStatusIds: filtersState.violationStatus?.id,
-        sourceId: filtersState.source?.id,
-        detectionDateFrom: filtersState.detectionDateFrom,
-        detectionDateTo: filtersState.detectionDateTo,
-        controlDateFrom: filtersState.controlDateFrom,
-        controlDateTo: filtersState.controlDateTo,
-        sort: sortState
-    ),
-    noLocationProvided: () => _apiClient.getControlObjects(
+  ) async {
+    final client = _getClient(networkStatus);
+    final request = DepartmentControlObjectsRequest(
+      onlyNearObjects: true,
       from: from,
       to: to,
+      // filtering
       searchRadius: filtersState.searchRadius,
       daysFromLastSurvey: filtersState.daysFromLastSurvey,
-    ),
-  );
-  
-  Future<ControlResult> registerControlResult(ControlObject object, {DCViolation violation}) async {
-    final result = ControlResult(
-      surveyDate: DateTime.now(),
-      violation: violation,
-      violationExists: violation != null,
+      dcObjectTypesIds: filtersState.dcObjectType?.id,
+      dcObjectKind: filtersState.dcObjectType?.name,
+      externalId: filtersState.externalId,
+      objectName: filtersState.objectName,
+      areaIds: filtersState.area?.id,
+      districtIds: filtersState.district?.id,
+      addressIds: filtersState.address?.id,
+      balanceOwner: filtersState.balanceOwner,
+      lastSurveyDateFrom: filtersState.lastSurveyDateFrom,
+      lastSurveyDateTo: filtersState.lastSurveyDateTo,
+      camerasExist: filtersState.camerasExist,
+      ignoreViolations: filtersState.ignoreViolations,
+      objectElementIds: filtersState.objectElement?.id,
+      violationNameIds: filtersState.violationName?.id,
+      violationStatusIds: filtersState.violationStatus?.id,
+      sourceId: filtersState.source?.id,
+      detectionDateFrom: filtersState.detectionDateFrom,
+      detectionDateTo: filtersState.detectionDateTo,
+      controlDateFrom: filtersState.controlDateFrom,
+      controlDateTo: filtersState.controlDateTo,
+      sort: sortState,
     );
-    final t  = await _apiClient.registerControlResult(object, result);
-    return t;
+    return location.when(
+      (longitude, latitude) => client.getControlObjects(
+        request.copyWith(
+          userPositionX: longitude,
+          userPositionY: latitude,
+        ),
+      ),
+      noLocationProvided: () => client.getControlObjects(request),
+    );
   }
 
-  Future<ControlResultsResponse> getControlResults(ControlObject object) async {
+  Future<ControlResult> registerControlResult(
+    ControlObject object,
+    ControlResult controlResult,
+    NetworkStatus networkStatus,
+  ) =>
+      _getClient(networkStatus).registerControlResult(
+        DepartmentControlRegisterControlRequest(
+          object,
+          controlResult,
+        ),
+      );
+
+  Future<ControlResultsResponse> getControlResults(
+    ControlObject object,
+    NetworkStatus networkStatus,
+  ) async {
     try {
-      final result = await _apiClient.getControlSearchResults(object.id);
-      if(result.isEmpty)
+      final result = await _getClient(networkStatus).getControlSearchResults(
+          DepartmentControlSearchResultsRequest(object.id));
+      if (result.isEmpty)
         return ControlResultsResponse.emptyResultsListResponse();
       return ControlResultsResponse.controlResultsListResponse(result);
     } on ApiException catch (e) {
@@ -102,25 +95,102 @@ class DepartmentControlService {
     }
   }
 
-  Future<ControlResultSearchResult> getControlResult(ControlObject object, ControlResultSearchResult result)
-    => _apiClient.getControlSearchResultByIds(object.id, result.id);
+  Future<ControlResultSearchResult> getControlResult(
+    ControlObject object,
+    ControlResultSearchResult result,
+    NetworkStatus networkStatus,
+  ) =>
+      _getClient(networkStatus).getControlSearchResultByIds(
+        DepartmentControlSearchResultByIdsRequest(
+          object.id,
+          result.id,
+        ),
+      );
 
-  Future<ControlResult> updateControlResult(ControlObject object, int dcControlResultId, DCViolation violation)
-    => _apiClient.updateControlResult(object, dcControlResultId, violation);
+  Future<ControlResult> updateControlResult(
+    ControlObject object,
+    int dcControlResultId,
+    DCViolation violation,
+    NetworkStatus networkStatus,
+  ) =>
+      _getClient(networkStatus).updateControlResult(
+        DepartmentControlUpdateControlRequest(
+          object,
+          dcControlResultId,
+          violation,
+        ),
+      );
 
-  Future<void> removeControlResult(ControlObject object, int resultId)
-    => _apiClient.removeControlResult(object, resultId);
+  Future<void> removeControlResult(
+    ControlObject object,
+    int resultId,
+    NetworkStatus networkStatus,
+  ) =>
+      _getClient(networkStatus).removeControlResult(
+        DepartmentControlRemoveControlRequest(
+          object,
+          resultId,
+        ),
+      );
 
-  Future<PerformControl> registerPerformControl(ControlObject object, int dcControlResultId, PerformControl performControl)
-    => _apiClient.registerPerformControl(object, dcControlResultId, performControl);
+  Future<PerformControl> registerPerformControl(
+    ControlObject object,
+    int dcControlResultId,
+    PerformControl performControl,
+    NetworkStatus networkStatus,
+  ) =>
+      _getClient(networkStatus).registerPerformControl(
+        DepartmentControlRegisterPerformControlRequest(
+          object,
+          dcControlResultId,
+          performControl,
+        ),
+      );
 
-  Future<PerformControl> updatePerformControl(ControlObject object, int dcControlResultId, PerformControl performControl)
-    => _apiClient.updatePerformControl(object, dcControlResultId, performControl);
+  Future<PerformControl> updatePerformControl(
+    ControlObject object,
+    int dcControlResultId,
+    PerformControl performControl,
+    NetworkStatus networkStatus,
+  ) =>
+      _getClient(networkStatus).updatePerformControl(
+        DepartmentControlUpdatePerformControlRequest(
+          object,
+          dcControlResultId,
+          performControl,
+        ),
+      );
 
-  Future<void> removePerformControl(ControlObject object, int dcControlResultId, PerformControl performControl)
-    => _apiClient.removePerformControl(object, dcControlResultId, performControl);
+  Future<void> removePerformControl(
+    ControlObject object,
+    int dcControlResultId,
+    PerformControl performControl,
+    NetworkStatus networkStatus,
+  ) =>
+      _getClient(networkStatus).removePerformControl(
+        DepartmentControlRemovePerformControlRequest(
+          object,
+          dcControlResultId,
+          performControl,
+        ),
+      );
 
-  Future<void> extendPeriod(ControlObject object, int dcControlResultId, ViolationExtensionPeriod violationExtensionPeriod)
-    => _apiClient.extendPeriod(object, dcControlResultId, violationExtensionPeriod);
+  Future<void> extendPeriod(
+    ControlObject object,
+    int dcControlResultId,
+    ViolationExtensionPeriod violationExtensionPeriod,
+    NetworkStatus networkStatus,
+  ) =>
+      _getClient(networkStatus).extendPeriod(
+        DepartmentControlExtendControlPeriodRequest(
+          object,
+          dcControlResultId,
+          violationExtensionPeriod,
+        ),
+      );
 
+  DepartmentControlServiceClient _getClient(NetworkStatus networkStatus) =>
+      networkStatus.connectionStatus == ConnectionStatus.online
+          ? _apiClient
+          : _localClient;
 }
