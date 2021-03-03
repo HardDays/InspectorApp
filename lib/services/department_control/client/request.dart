@@ -18,6 +18,7 @@ abstract class DepartmentControlObjectsRequest
     String objectName,
     int areaIds,
     int districtIds,
+    int streetIds,
     int addressIds,
     bool onlyNearObjects,
     double userPositionX,

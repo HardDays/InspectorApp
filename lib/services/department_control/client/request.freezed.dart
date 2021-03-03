@@ -25,6 +25,7 @@ class _$DepartmentControlObjectsRequestTearOff {
       String objectName,
       int areaIds,
       int districtIds,
+      int streetIds,
       int addressIds,
       bool onlyNearObjects,
       double userPositionX,
@@ -56,6 +57,7 @@ class _$DepartmentControlObjectsRequestTearOff {
       objectName: objectName,
       areaIds: areaIds,
       districtIds: districtIds,
+      streetIds: streetIds,
       addressIds: addressIds,
       onlyNearObjects: onlyNearObjects,
       userPositionX: userPositionX,
@@ -102,6 +104,7 @@ mixin _$DepartmentControlObjectsRequest {
   String get objectName;
   int get areaIds;
   int get districtIds;
+  int get streetIds;
   int get addressIds;
   bool get onlyNearObjects;
   double get userPositionX;
@@ -146,6 +149,7 @@ abstract class $DepartmentControlObjectsRequestCopyWith<$Res> {
       String objectName,
       int areaIds,
       int districtIds,
+      int streetIds,
       int addressIds,
       bool onlyNearObjects,
       double userPositionX,
@@ -189,6 +193,7 @@ class _$DepartmentControlObjectsRequestCopyWithImpl<$Res>
     Object objectName = freezed,
     Object areaIds = freezed,
     Object districtIds = freezed,
+    Object streetIds = freezed,
     Object addressIds = freezed,
     Object onlyNearObjects = freezed,
     Object userPositionX = freezed,
@@ -227,6 +232,7 @@ class _$DepartmentControlObjectsRequestCopyWithImpl<$Res>
       areaIds: areaIds == freezed ? _value.areaIds : areaIds as int,
       districtIds:
           districtIds == freezed ? _value.districtIds : districtIds as int,
+      streetIds: streetIds == freezed ? _value.streetIds : streetIds as int,
       addressIds: addressIds == freezed ? _value.addressIds : addressIds as int,
       onlyNearObjects: onlyNearObjects == freezed
           ? _value.onlyNearObjects
@@ -306,6 +312,7 @@ abstract class _$DepartmentControlObjectsRequestCopyWith<$Res>
       String objectName,
       int areaIds,
       int districtIds,
+      int streetIds,
       int addressIds,
       bool onlyNearObjects,
       double userPositionX,
@@ -353,6 +360,7 @@ class __$DepartmentControlObjectsRequestCopyWithImpl<$Res>
     Object objectName = freezed,
     Object areaIds = freezed,
     Object districtIds = freezed,
+    Object streetIds = freezed,
     Object addressIds = freezed,
     Object onlyNearObjects = freezed,
     Object userPositionX = freezed,
@@ -391,6 +399,7 @@ class __$DepartmentControlObjectsRequestCopyWithImpl<$Res>
       areaIds: areaIds == freezed ? _value.areaIds : areaIds as int,
       districtIds:
           districtIds == freezed ? _value.districtIds : districtIds as int,
+      streetIds: streetIds == freezed ? _value.streetIds : streetIds as int,
       addressIds: addressIds == freezed ? _value.addressIds : addressIds as int,
       onlyNearObjects: onlyNearObjects == freezed
           ? _value.onlyNearObjects
@@ -467,6 +476,7 @@ class _$_DepartmentControlObjectsRequest
       this.objectName,
       this.areaIds,
       this.districtIds,
+      this.streetIds,
       this.addressIds,
       this.onlyNearObjects,
       this.userPositionX,
@@ -508,6 +518,8 @@ class _$_DepartmentControlObjectsRequest
   final int areaIds;
   @override
   final int districtIds;
+  @override
+  final int streetIds;
   @override
   final int addressIds;
   @override
@@ -559,7 +571,7 @@ class _$_DepartmentControlObjectsRequest
 
   @override
   String toString() {
-    return 'DepartmentControlObjectsRequest(dcObjectTypesIds: $dcObjectTypesIds, dcObjectKind: $dcObjectKind, externalId: $externalId, objectName: $objectName, areaIds: $areaIds, districtIds: $districtIds, addressIds: $addressIds, onlyNearObjects: $onlyNearObjects, userPositionX: $userPositionX, userPositionY: $userPositionY, searchRadius: $searchRadius, balanceOwner: $balanceOwner, daysFromLastSurvey: $daysFromLastSurvey, lastSurveyDateFrom: $lastSurveyDateFrom, lastSurveyDateTo: $lastSurveyDateTo, camerasExist: $camerasExist, ignoreViolations: $ignoreViolations, forCurrentUser: $forCurrentUser, objectElementIds: $objectElementIds, violationNameIds: $violationNameIds, sourceId: $sourceId, violationNum: $violationNum, violationStatusIds: $violationStatusIds, detectionDateFrom: $detectionDateFrom, detectionDateTo: $detectionDateTo, controlDateFrom: $controlDateFrom, controlDateTo: $controlDateTo, from: $from, to: $to, sort: $sort)';
+    return 'DepartmentControlObjectsRequest(dcObjectTypesIds: $dcObjectTypesIds, dcObjectKind: $dcObjectKind, externalId: $externalId, objectName: $objectName, areaIds: $areaIds, districtIds: $districtIds, streetIds: $streetIds, addressIds: $addressIds, onlyNearObjects: $onlyNearObjects, userPositionX: $userPositionX, userPositionY: $userPositionY, searchRadius: $searchRadius, balanceOwner: $balanceOwner, daysFromLastSurvey: $daysFromLastSurvey, lastSurveyDateFrom: $lastSurveyDateFrom, lastSurveyDateTo: $lastSurveyDateTo, camerasExist: $camerasExist, ignoreViolations: $ignoreViolations, forCurrentUser: $forCurrentUser, objectElementIds: $objectElementIds, violationNameIds: $violationNameIds, sourceId: $sourceId, violationNum: $violationNum, violationStatusIds: $violationStatusIds, detectionDateFrom: $detectionDateFrom, detectionDateTo: $detectionDateTo, controlDateFrom: $controlDateFrom, controlDateTo: $controlDateTo, from: $from, to: $to, sort: $sort)';
   }
 
   @override
@@ -584,6 +596,9 @@ class _$_DepartmentControlObjectsRequest
             (identical(other.districtIds, districtIds) ||
                 const DeepCollectionEquality()
                     .equals(other.districtIds, districtIds)) &&
+            (identical(other.streetIds, streetIds) ||
+                const DeepCollectionEquality()
+                    .equals(other.streetIds, streetIds)) &&
             (identical(other.addressIds, addressIds) ||
                 const DeepCollectionEquality()
                     .equals(other.addressIds, addressIds)) &&
@@ -627,10 +642,8 @@ class _$_DepartmentControlObjectsRequest
                 const DeepCollectionEquality()
                     .equals(other.violationNameIds, violationNameIds)) &&
             (identical(other.sourceId, sourceId) ||
-                const DeepCollectionEquality()
-                    .equals(other.sourceId, sourceId)) &&
-            (identical(other.violationNum, violationNum) ||
-                const DeepCollectionEquality().equals(other.violationNum, violationNum)) &&
+                const DeepCollectionEquality().equals(other.sourceId, sourceId)) &&
+            (identical(other.violationNum, violationNum) || const DeepCollectionEquality().equals(other.violationNum, violationNum)) &&
             (identical(other.violationStatusIds, violationStatusIds) || const DeepCollectionEquality().equals(other.violationStatusIds, violationStatusIds)) &&
             (identical(other.detectionDateFrom, detectionDateFrom) || const DeepCollectionEquality().equals(other.detectionDateFrom, detectionDateFrom)) &&
             (identical(other.detectionDateTo, detectionDateTo) || const DeepCollectionEquality().equals(other.detectionDateTo, detectionDateTo)) &&
@@ -650,6 +663,7 @@ class _$_DepartmentControlObjectsRequest
       const DeepCollectionEquality().hash(objectName) ^
       const DeepCollectionEquality().hash(areaIds) ^
       const DeepCollectionEquality().hash(districtIds) ^
+      const DeepCollectionEquality().hash(streetIds) ^
       const DeepCollectionEquality().hash(addressIds) ^
       const DeepCollectionEquality().hash(onlyNearObjects) ^
       const DeepCollectionEquality().hash(userPositionX) ^
@@ -696,6 +710,7 @@ abstract class _DepartmentControlObjectsRequest
       String objectName,
       int areaIds,
       int districtIds,
+      int streetIds,
       int addressIds,
       bool onlyNearObjects,
       double userPositionX,
@@ -736,6 +751,8 @@ abstract class _DepartmentControlObjectsRequest
   int get areaIds;
   @override
   int get districtIds;
+  @override
+  int get streetIds;
   @override
   int get addressIds;
   @override

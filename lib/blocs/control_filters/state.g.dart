@@ -22,6 +22,9 @@ _$AllState _$_$AllStateFromJson(Map<String, dynamic> json) {
     district: json['district'] == null
         ? null
         : District.fromJson(json['district'] as Map<String, dynamic>),
+    street: json['street'] == null
+        ? null
+        : Street.fromJson(json['street'] as Map<String, dynamic>),
     address: json['address'] == null
         ? null
         : Address.fromJson(json['address'] as Map<String, dynamic>),
@@ -63,6 +66,7 @@ Map<String, dynamic> _$_$AllStateToJson(_$AllState instance) =>
       'objectName': instance.objectName,
       'area': instance.area,
       'district': instance.district,
+      'street': instance.street,
       'address': instance.address,
       'searchRadius': instance.searchRadius,
       'balanceOwner': instance.balanceOwner,

@@ -25,6 +25,7 @@ class _$ControlFiltersBlocStateTearOff {
       String objectName,
       Area area,
       District district,
+      Street street,
       Address address,
       int searchRadius,
       String balanceOwner,
@@ -45,6 +46,7 @@ class _$ControlFiltersBlocStateTearOff {
       objectName: objectName,
       area: area,
       district: district,
+      street: street,
       address: address,
       searchRadius: searchRadius,
       balanceOwner: balanceOwner,
@@ -79,6 +81,7 @@ mixin _$ControlFiltersBlocState {
   String get objectName;
   Area get area;
   District get district;
+  Street get street;
   Address get address;
   int get searchRadius;
   String get balanceOwner;
@@ -110,6 +113,7 @@ abstract class $ControlFiltersBlocStateCopyWith<$Res> {
       String objectName,
       Area area,
       District district,
+      Street street,
       Address address,
       int searchRadius,
       String balanceOwner,
@@ -149,6 +153,7 @@ class _$ControlFiltersBlocStateCopyWithImpl<$Res>
     Object objectName = freezed,
     Object area = freezed,
     Object district = freezed,
+    Object street = freezed,
     Object address = freezed,
     Object searchRadius = freezed,
     Object balanceOwner = freezed,
@@ -175,6 +180,7 @@ class _$ControlFiltersBlocStateCopyWithImpl<$Res>
           objectName == freezed ? _value.objectName : objectName as String,
       area: area == freezed ? _value.area : area as Area,
       district: district == freezed ? _value.district : district as District,
+      street: street == freezed ? _value.street : street as Street,
       address: address == freezed ? _value.address : address as Address,
       searchRadius:
           searchRadius == freezed ? _value.searchRadius : searchRadius as int,
@@ -285,6 +291,7 @@ abstract class $AllStateCopyWith<$Res>
       String objectName,
       Area area,
       District district,
+      Street street,
       Address address,
       int searchRadius,
       String balanceOwner,
@@ -331,6 +338,7 @@ class _$AllStateCopyWithImpl<$Res>
     Object objectName = freezed,
     Object area = freezed,
     Object district = freezed,
+    Object street = freezed,
     Object address = freezed,
     Object searchRadius = freezed,
     Object balanceOwner = freezed,
@@ -357,6 +365,7 @@ class _$AllStateCopyWithImpl<$Res>
           objectName == freezed ? _value.objectName : objectName as String,
       area: area == freezed ? _value.area : area as Area,
       district: district == freezed ? _value.district : district as District,
+      street: street == freezed ? _value.street : street as Street,
       address: address == freezed ? _value.address : address as Address,
       searchRadius:
           searchRadius == freezed ? _value.searchRadius : searchRadius as int,
@@ -405,6 +414,7 @@ class _$AllState extends AllState {
       this.objectName,
       this.area,
       this.district,
+      this.street,
       this.address,
       this.searchRadius,
       this.balanceOwner,
@@ -436,6 +446,8 @@ class _$AllState extends AllState {
   @override
   final District district;
   @override
+  final Street street;
+  @override
   final Address address;
   @override
   final int searchRadius;
@@ -464,7 +476,7 @@ class _$AllState extends AllState {
 
   @override
   String toString() {
-    return 'ControlFiltersBlocState(dcObjectType: $dcObjectType, dcObjectKind: $dcObjectKind, externalId: $externalId, objectName: $objectName, area: $area, district: $district, address: $address, searchRadius: $searchRadius, balanceOwner: $balanceOwner, daysFromLastSurvey: $daysFromLastSurvey, lastSurveyDates: $lastSurveyDates, camerasExist: $camerasExist, ignoreViolations: $ignoreViolations, objectElement: $objectElement, violationName: $violationName, violationStatus: $violationStatus, source: $source, controlDates: $controlDates, detectionDates: $detectionDates)';
+    return 'ControlFiltersBlocState(dcObjectType: $dcObjectType, dcObjectKind: $dcObjectKind, externalId: $externalId, objectName: $objectName, area: $area, district: $district, street: $street, address: $address, searchRadius: $searchRadius, balanceOwner: $balanceOwner, daysFromLastSurvey: $daysFromLastSurvey, lastSurveyDates: $lastSurveyDates, camerasExist: $camerasExist, ignoreViolations: $ignoreViolations, objectElement: $objectElement, violationName: $violationName, violationStatus: $violationStatus, source: $source, controlDates: $controlDates, detectionDates: $detectionDates)';
   }
 
   @override
@@ -488,6 +500,8 @@ class _$AllState extends AllState {
             (identical(other.district, district) ||
                 const DeepCollectionEquality()
                     .equals(other.district, district)) &&
+            (identical(other.street, street) ||
+                const DeepCollectionEquality().equals(other.street, street)) &&
             (identical(other.address, address) ||
                 const DeepCollectionEquality()
                     .equals(other.address, address)) &&
@@ -537,6 +551,7 @@ class _$AllState extends AllState {
       const DeepCollectionEquality().hash(objectName) ^
       const DeepCollectionEquality().hash(area) ^
       const DeepCollectionEquality().hash(district) ^
+      const DeepCollectionEquality().hash(street) ^
       const DeepCollectionEquality().hash(address) ^
       const DeepCollectionEquality().hash(searchRadius) ^
       const DeepCollectionEquality().hash(balanceOwner) ^
@@ -571,6 +586,7 @@ abstract class AllState extends ControlFiltersBlocState {
       String objectName,
       Area area,
       District district,
+      Street street,
       Address address,
       int searchRadius,
       String balanceOwner,
@@ -599,6 +615,8 @@ abstract class AllState extends ControlFiltersBlocState {
   Area get area;
   @override
   District get district;
+  @override
+  Street get street;
   @override
   Address get address;
   @override
