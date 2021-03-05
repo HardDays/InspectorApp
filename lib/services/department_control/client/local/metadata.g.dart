@@ -14,6 +14,7 @@ _$_DepartmentControlLocalServiceMetadata
         ? null
         : DateTime.parse(json['lastUpdatedDate'] as String),
     json['count'] as int,
+    json['loaded'] as bool,
   );
 }
 
@@ -22,4 +23,5 @@ Map<String, dynamic> _$_$_DepartmentControlLocalServiceMetadataToJson(
     <String, dynamic>{
       'lastUpdatedDate': instance.lastUpdatedDate?.toIso8601String(),
       'count': instance.count,
+      'loaded': instance.loaded,
     };

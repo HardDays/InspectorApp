@@ -8,6 +8,8 @@ import 'package:inspector/model/department_control/violation_extension_period.da
 import 'package:inspector/providers/exceptions/api_exception.dart';
 import 'package:inspector/services/department_control/client/api/department_control_api_client.dart';
 import 'package:inspector/services/department_control/client/department_control_service_client.dart';
+import 'package:inspector/services/department_control/client/local/department_control_local_service.dart';
+import 'package:inspector/services/department_control/client/local/metadata.dart';
 import 'package:inspector/services/department_control/client/request.dart';
 import 'package:inspector/services/department_control/client/response.dart';
 import 'package:inspector/services/location/location.dart';
@@ -17,7 +19,9 @@ class DepartmentControlService {
   DepartmentControlService(this._apiClient, this._localClient);
 
   final DepartmentControlApiClient _apiClient;
-  final DepartmentControlServiceClient _localClient;
+  final DepartmentControlLocalService _localClient;
+
+  bool canceled = false;
 
   Future<List<ControlObject>> find(
     Location location,
@@ -194,4 +198,61 @@ class DepartmentControlService {
       networkStatus.connectionStatus == ConnectionStatus.online
           ? _apiClient
           : _localClient;
+
+  Future<void> saveControlObjectsLocally(void Function(int) notifier) async {
+    canceled = false;
+    _localClient.saveMetadata(
+      DepartmentControlLocalServiceMetadata(
+        null,
+        0,
+        false,
+      ),
+    );
+    int start = 0;
+    int page = 500;
+    bool loaded = false;
+    while (!canceled && !loaded) {
+      await _apiClient
+          .getControlObjects(
+        DepartmentControlObjectsRequest(
+          from: start,
+          to: start + page,
+        ),
+      )
+          .then(
+        (x) {
+          if (x.isNotEmpty) {
+            _localClient.saveObjects(x);
+            _localClient.saveMetadata(
+              DepartmentControlLocalServiceMetadata(
+                null,
+                start + page,
+                false,
+              ),
+            );
+            notifier(start + page);
+          } else {
+            loaded = true;
+          }
+        },
+      );
+    }
+    if (loaded) {
+      _localClient.saveMetadata(
+        DepartmentControlLocalServiceMetadata(
+          DateTime.now(),
+          start + page,
+          true,
+        ),
+      );
+    }
+    canceled = false;
+  }
+
+  Future<DepartmentControlLocalServiceMetadata> get localMetadata =>
+      _localClient.metadata;
+
+  void cancelLoading() {
+    canceled = true;
+  }
 }

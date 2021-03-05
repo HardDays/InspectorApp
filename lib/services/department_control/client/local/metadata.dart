@@ -8,6 +8,7 @@ abstract class DepartmentControlLocalServiceMetadata with _$DepartmentControlLoc
   const factory DepartmentControlLocalServiceMetadata(
     DateTime lastUpdatedDate,
     int count,
+    bool loaded,
   ) = _DepartmentControlLocalServiceMetadata;
 
   factory DepartmentControlLocalServiceMetadata.fromJson(

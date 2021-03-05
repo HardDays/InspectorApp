@@ -7,4 +7,7 @@ abstract class DepartmentControlLocalService with DepartmentControlServiceClient
   Future<Iterable<DepartmentControlRegisterControlRequest>> get registerRequests;
   Future<void> saveObjects(Iterable<ControlObject> objects);
   Future<DepartmentControlLocalServiceMetadata> get metadata;
+  Future<void> saveMetadata(DepartmentControlLocalServiceMetadata metadata);
+  Future<bool> isLoaded();
+  Future<void> setLoaded(bool value);
 }

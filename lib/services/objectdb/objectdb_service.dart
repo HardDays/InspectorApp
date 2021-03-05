@@ -8,7 +8,7 @@ abstract class ObjectDBService {
 
   String get name;
 
-  Future init() async {
+  Future<ObjectDB> init() async {
     if (db == null) {
       final appDocDir = await getApplicationDocumentsDirectory();
 
@@ -16,5 +16,6 @@ abstract class ObjectDBService {
       db = ObjectDB(dbFilePath);
       await db.open();
     }
+    return db;
   }
 }
