@@ -14,7 +14,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   # cupertino_icons: ^1.0.0
-  google_fonts: ^2.0.0-nullsafety.0
+  google_fonts: ^2.0.0
   flutter_svg: ^0.21.0-nullsafety.0
   intl: ^0.17.0
   auto_route: ^0.6.7
@@ -26,14 +26,13 @@ dependencies:
   # git:
   #    url: https://github.com/ritikmishra/flutter_map.git
   #    ref: fix-listview-scrolling
-  image_picker: ^0.7.0-nullsafety
+  image_picker: ^0.7.2
   cached_network_image: ^3.0.0-nullsafety
   custom_switch_button: ^0.5.0
   provider: ^5.0.0-nullsafety.5
   dio: ^4.0.0-beta5
   objectdb: ^1.0.10+1
-  date_range_picker: ^1.0.6
-  local_auth: ^1.0.0-nullsafety.3
+  local_auth: ^1.1.0
   async: ^2.4.2
   synchronized: ^3.0.0
   sqflite: ^2.0.0
@@ -41,8 +40,8 @@ dependencies:
   url_launcher: ^6.0.2
   geolocator: ^7.0.1
   device_info: ^2.0.0
-  uuid: ^3.0.0-nullsafety.0
-  image: ^3.0.0-nullsafety.0
+  uuid: ^3.0.1
+  image: ^3.0.1
   connectivity: ^3.0.2
   flutter_webview_plugin: ^0.3.11
   json_annotation: ^4.0.0
