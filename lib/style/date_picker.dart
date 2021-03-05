@@ -1,4 +1,3 @@
-import 'package:date_range_picker/date_range_picker.dart' as dr;
 import 'package:flutter/material.dart';
 import 'package:inspector/style/icons.dart';
 import 'package:inspector/style/input_title.dart';
@@ -57,14 +56,13 @@ class ProjectDatePicker extends StatelessWidget {
           }
         }
 
-        final List<DateTime> picked = await dr.showDatePicker(
+        final List<DateTime> picked = await showDateRangePicker(
           context: context,
           locale: Locale('ru', 'RU'),
-          initialFirstDate: first,
-          initialLastDate: last,
+          initialDateRange: DateTimeRange(start: first, end: last),
           firstDate: DateTime(2018),
           lastDate: DateTime(2050)
-        );
+        ).then((value) => [value.start, value.end]);
         onChanged(picked);
       }
     }

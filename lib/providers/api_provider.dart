@@ -113,7 +113,7 @@ class ApiProvider {
       return res.data;
     } on DioError catch (ex) {
       print(ex);
-      if (ex.type == DioErrorType.RESPONSE) {
+      if (ex.type == DioErrorType.response) {
         if (ex.response.statusCode == 401)  {
           throw UnauthorizedException(
             ex.response.data?.toString()
@@ -125,7 +125,7 @@ class ApiProvider {
             ex.response.data?.toString(),
           );
         }
-      } else if (ex.type == DioErrorType.CONNECT_TIMEOUT || ex.type == DioErrorType.RECEIVE_TIMEOUT || ex.type == DioErrorType.SEND_TIMEOUT) {
+      } else if (ex.type == DioErrorType.connectTimeout || ex.type == DioErrorType.receiveTimeout || ex.type == DioErrorType.sendTimeout) {
         throw TimeoutException(ex.response.data?.toString());
       } else {
         if (ex.error is SocketException) {

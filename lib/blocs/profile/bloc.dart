@@ -91,7 +91,7 @@ class ProfileBloc extends Bloc<ProfileBlocEvent, ProfileBlocState> {
       if (connectivityResult == ConnectivityResult.none) {
         await showDialog(
           context: event.context,
-          child: AcceptDialog(
+          builder: (ctx) => AcceptDialog(
             cancelTitle: null,
             acceptTitle: 'Ок',
             message: 'Отсутствует интернет-соединение',
@@ -103,7 +103,7 @@ class ProfileBloc extends Bloc<ProfileBlocEvent, ProfileBlocState> {
           await _sendData();
           await showDialog(
             context: event.context,
-            child: AcceptDialog(
+            builder: (ctx) => AcceptDialog(
               acceptTitle: 'Ок',
               cancelTitle: null,
               message: 'Данные успешно переданы в ЕИС ОАТИ',
@@ -112,7 +112,7 @@ class ProfileBloc extends Bloc<ProfileBlocEvent, ProfileBlocState> {
         } catch (ex) {
           await showDialog(
             context: event.context,
-            child: AcceptDialog(
+            builder: (ctx) => AcceptDialog(
               cancelTitle: null,
               acceptTitle: 'Ок',
               message:

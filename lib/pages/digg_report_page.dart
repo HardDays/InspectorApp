@@ -93,7 +93,7 @@ class DiggReportPageState extends State<DiggReportPage> with SingleTickerProvide
       if (_photos.isNotEmpty) {
         final res = await showDialog(
           context: context, 
-          child: AcceptDialog(
+          builder: (ctx) => AcceptDialog(
             acceptTitle: 'Да',
             cancelTitle: 'Нет',
             message: status == ReportStatusIds.onApproval ? 'Вы подтверждаете передачу рапорта $number от ${DateFormat('dd.MM.yyyy').format(date)} на согласование?' : 'Сохранить рапорт?'
@@ -109,7 +109,7 @@ class DiggReportPageState extends State<DiggReportPage> with SingleTickerProvide
   }
 
   void _onDeleteReport(BuildContext context) async {
-    final res = await showDialog(context: context, child: AcceptDialog(message: 'Удалить рапорт?'));
+    final res = await showDialog(context: context, builder: (ctx) => AcceptDialog(message: 'Удалить рапорт?'));
     if (res != null) {
       BlocProvider.of<DiggReportBloc>(context).add(RemoveReportEvent());  
     }
@@ -136,7 +136,7 @@ class DiggReportPageState extends State<DiggReportPage> with SingleTickerProvide
         final title = '№${report.reportNum} от ${DateFormat('dd.MM.yyyy').format(report.reportDate)}';
         await showDialog(
           context: context, 
-          child: AcceptDialog(
+          builder: (ctx) => AcceptDialog(
             cancelTitle: null,
             acceptTitle: 'ОК',
             message: report.reportStatus?.id == ReportStatusIds.onApproval ? 'Зарегистрирован рапорт $title' : 'Сохранен рапорт $title'

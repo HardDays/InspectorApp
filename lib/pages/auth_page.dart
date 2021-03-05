@@ -32,7 +32,7 @@ class AuthPage extends StatelessWidget {
               final _persistenceService = Provider.of<PersistanceService>(context, listen: false);
               final useFingerprint = await showDialog(
                 context: context,
-                child: AcceptDialog(
+                builder: (ctx) => AcceptDialog(
                   message: 'Использовать Finger Touch/Touch ID/Face ID для входа в мобильное приложение?', 
                   acceptTitle: 'Да', 
                   cancelTitle: 'Нет',
@@ -41,7 +41,7 @@ class AuthPage extends StatelessWidget {
               await _persistenceService.saveFingerprintState(useFingerprint);
               final useWebVersionOfVK = await showDialog(
                 context: context,
-                child: AcceptDialog(
+                builder: (ctx) => AcceptDialog(
                   message: 'Использовать Web-версию раздела "Ведомственный контроль"?', 
                   acceptTitle: 'Да', 
                   cancelTitle: 'Нет',

@@ -62,7 +62,7 @@ class ProfilePage extends StatelessWidget {
                           onTap: () async {
                             if ((await showDialog(
                                     context: context,
-                                    child: AcceptDialog(
+                                    builder: (ctx) => AcceptDialog(
                                         message:
                                             'Вход в приложение будет осуществлен с помощью логина и пароля. Текущие настройки быстрого доступа будут сброшены. Продолжить?'))) !=
                                 null) {

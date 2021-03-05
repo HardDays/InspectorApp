@@ -146,10 +146,11 @@ class AuthBloc extends Bloc<AuthBlocEvent, AuthBlocStates> {
 
   Future<bool> _checkBiometric() async {
     final LocalAuthentication auth = LocalAuthentication();
-    return await auth.authenticateWithBiometrics(
+    return await auth.authenticate(
         localizedReason: 'Нажмите на сканер отпечатка пальца',
         useErrorDialogs: true,
         stickyAuth: false,
+        biometricOnly: true,
         androidAuthStrings: AndroidAuthMessages(
             signInTitle: "Войти с помощью отпечатка пальца"));
   }

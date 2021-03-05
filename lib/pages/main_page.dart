@@ -37,7 +37,7 @@ class MainPage extends StatelessWidget {
             state.maybeMap(
               okDialogNotificationState: (state) async => await showDialog(
                 context: context,
-                child: AcceptDialog(
+                builder: (ctx) => AcceptDialog(
                   acceptTitle: 'Ок',
                   cancelTitle: null,
                   message: 'Данные успешно переданы в ЕИС ОАТИ',

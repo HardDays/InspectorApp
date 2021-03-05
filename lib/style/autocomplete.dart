@@ -50,7 +50,7 @@ class ProjectAutocomplete<T> extends StatelessWidget {
             hideOnEmpty: true,
             hideOnError: true,
             //noItemsFoundBuilder: (c) => null,
-            textFieldConfiguration: TextFieldConfiguration<String>(
+            textFieldConfiguration: TextFieldConfiguration(
               autofocus: false,
               onChanged: onChanged,
               enabled: enabled,

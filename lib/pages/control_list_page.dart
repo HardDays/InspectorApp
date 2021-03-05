@@ -288,7 +288,7 @@ class _ControlListPageState extends State<ControlListPage> {
       (ControlObject object) async {
         if ((await showDialog(
                 context: context,
-                child: AcceptDialog(
+                builder: (ctx) => AcceptDialog(
                     message:
                         'Объект ${object.id} обследован. Нарушений не выявленно. ${DateFormat("dd.MM.yyyy hh:mm").format(DateTime.now())}'))) !=
             null) {

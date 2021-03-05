@@ -638,7 +638,7 @@ class InstructionPage extends StatelessWidget {
                   onPressed: () async {
                     final result = await showDialog(
                                     context: context,
-                                    child: AcceptDialog(
+                                    builder: (ctx) => AcceptDialog(
                                       message:
                                         'Вы действительно хотите отклонить поручение № ${_buildInstructionTitle(instruction)}?',
                                       responseHint: 'Причина отклонения',
