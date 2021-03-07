@@ -22,7 +22,7 @@ class ObjectDbPersistanceService extends ObjectDBService
         'key': key,
       });
       await db.insert({'key': key, 'value': value});
-      await db.tidy();
+      //await db.tidy();
     } catch (e) {
       print(e);
     }
@@ -54,7 +54,7 @@ class ObjectDbPersistanceService extends ObjectDBService
   Future<void> clearAllData() async {
     await init();
     await db.remove({});
-    await db.tidy();
+    //await db.tidy();
   }
 
   @override
@@ -65,7 +65,7 @@ class ObjectDbPersistanceService extends ObjectDBService
     await _removeKeyValue('token');
     await _removeKeyValue('usePin');
     await _removeKeyValue('dateForNextTry');
-    await db.tidy();
+    //await db.tidy();
   }
 
   @override
