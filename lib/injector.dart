@@ -104,6 +104,7 @@ class InjectorWidget extends StatelessWidget {
               notificationBloc: BlocProvider.of<NotificationBloc>(context),
               backgroundLoadingBloc: BlocProvider.of<BackgroundLoadingBloc>(context),
               departmentControlService: Provider.of<DepartmentControlService>(context, listen: false),
+              networkStatusService: Provider.of<NetworkStatusService>(context, listen: false),
             ),
           ),
         ],

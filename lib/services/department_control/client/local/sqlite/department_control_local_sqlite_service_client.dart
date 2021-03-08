@@ -1,3 +1,4 @@
+import 'package:inspector/model/department_control/object_type.dart';
 import 'package:inspector/model/department_control/perform_control.dart';
 import 'package:inspector/model/department_control/control_result_search_result.dart';
 import 'package:inspector/model/department_control/control_result.dart';
@@ -35,8 +36,7 @@ class _ControlObjectsSql {
 
   static const SELECT_QUERY = '''
     SELECT * FROM $TABLE_NAME 
-    INNER JOIN ${_ObjectTypesSql.TABLE_NAME} ON $TABLE_NAME.typeId = ${_ObjectTypesSql.TABLE_NAME}.id
-    INNER JOIN ${_ContractorsSql.TABLE_NAME} ON $TABLE_NAME.defaultContractorId = ${_ContractorsSql.TABLE_NAME}.id
+    INNER JOIN ${_ObjectTypesSql.TABLE_NAME} ON $TABLE_NAME.typeId = ${_ObjectTypesSql.TABLE_NAME}.typeId
     LIMIT ?
     OFFSET ?;
   ''';
@@ -68,14 +68,14 @@ class _ObjectTypesSql {
 
   static const CREATE_TABLE_QUERY = '''
     CREATE TABLE IF NOT EXISTS $TABLE_NAME(
-      id INTEGER PRIMARY KEY,
-      name TEXT,
-      code TEXT
+      typeId INTEGER PRIMARY KEY,
+      typeName TEXT,
+      typeCode TEXT
     );
   ''';
 
   static const INSERT_QUERY = '''
-    INSERT OR IGNORE INTO $TABLE_NAME (id, name, code) VALUES (?, ?, ?);
+    INSERT OR IGNORE INTO $TABLE_NAME (typeId, typeName, typeCode) VALUES (?, ?, ?);
   ''';
 }
 
@@ -153,7 +153,7 @@ class DepartmentControlLocalSqliteServiceClient extends ObjectDBService
       _db
           .then((db) => db.rawQuery(
               _ControlObjectsSql.SELECT_QUERY, [request.to, request.from]))
-          .then((x) => x.map((e) => ControlObject.fromJson(e)).toList());
+          .then((x) => x.map((e) => _fromSql(e)).toList());
 
   @override
   Future<ControlResultSearchResult> getControlSearchResultByIds(
@@ -305,4 +305,25 @@ class DepartmentControlLocalSqliteServiceClient extends ObjectDBService
   Future<void> setLoaded(bool value) => metadata
       .then((x) => x.copyWith(loaded: value))
       .then((m) => saveMetadata(m));
+
+  ControlObject _fromSql(Map<String, dynamic> json) 
+    => ControlObject(
+      id: json['id'],
+      address: json['address'],
+      area: json['area'],
+      balanceOwner: json['balanceOwner'],
+      cameraCount: json['cameraCount'],
+      district: json['district'],
+      externalId: json['externalId'],
+      kind: json['kind'],
+      lastSurveyDate: json['lastSurveyDate'] != null ? DateTime.parse(json['lastSurveyDate']) : null,
+      name: json['name'],
+      rowColor: json['rawColor'],
+      type: ObjectType(
+        id: json['typeId'],
+        name: json['typeName'],
+        code: json['typeCode'],
+      ),
+      violationsCount: json['violationsCount'],
+    );
 }

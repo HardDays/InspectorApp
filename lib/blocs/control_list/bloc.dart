@@ -26,7 +26,10 @@ class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
   final DepartmentControlService _departmentControlService;
   final NotificationBloc _notificationBloc;
 
-  NetworkStatus _networkStatus;
+  NetworkStatus _networkStatus = NetworkStatus(
+    ConnectionStatus.offline,
+    DataSendingMode.automatic,
+  );
 
   List<ControlObject> _objects;
   Location _location;

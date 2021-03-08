@@ -81,6 +81,7 @@ class ControlObjectCard extends StatelessWidget {
               ),
             ),
           ),
+          if(controlObject.violations != null)
           Column(
             children: controlObject.violations
                 .map(

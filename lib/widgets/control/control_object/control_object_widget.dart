@@ -32,7 +32,7 @@ class ControlObjectWidget extends StatelessWidget {
                   child: Row(
                     children: [
                       ControlStatusWidget(
-                        controlObject.type.name,
+                        controlObject?.type?.name ?? '',
                         controlObject.id.toString(),
                       ),
                       Flexible(

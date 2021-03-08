@@ -23,6 +23,7 @@ class ControlBackgroundServiceBloc extends Bloc<
     add(ControlBackgroundServiceBlocEvent.initEvent());
     _networkStatusStreamSubscription =
         networkStatusService.listenNetworkStatus.listen((value) {
+      add(ControlBackgroundServiceBlocEvent.initEvent());
       _networkStatus = value;
     });
   }
@@ -33,7 +34,11 @@ class ControlBackgroundServiceBloc extends Bloc<
   final NetworkStatusService networkStatusService;
 
   StreamSubscription<NetworkStatus> _networkStatusStreamSubscription;
-  NetworkStatus _networkStatus;
+  NetworkStatus _networkStatus = NetworkStatus(
+    ConnectionStatus.offline,
+    DataSendingMode.automatic,
+  );
+  bool showed = false;
 
   @override
   Stream<ControlBackgroundServiceBlocState> mapEventToState(
@@ -46,7 +51,8 @@ class ControlBackgroundServiceBloc extends Bloc<
 
   Stream<ControlBackgroundServiceBlocState> _onInitEvent(
       InitEvent event) async* {
-    if (_networkStatus?.connectionStatus == ConnectionStatus.online) {
+    if (_networkStatus?.connectionStatus == ConnectionStatus.online &&
+        !showed) {
       final metadata = await departmentControlService.localMetadata;
       if (metadata.loaded) {
         yield ControlBackgroundServiceBlocState.loaded(
@@ -54,6 +60,7 @@ class ControlBackgroundServiceBloc extends Bloc<
       } else {
         yield ControlBackgroundServiceBlocState.notLoaded();
       }
+      showed = true;
     }
   }
 
@@ -87,4 +94,10 @@ class ControlBackgroundServiceBloc extends Bloc<
         }),
         onCancel: departmentControlService.cancelLoading,
       );
+
+  @override
+  Future<void> close() async {
+    await _networkStatusStreamSubscription.cancel();
+    await super.close();
+  } 
 }
