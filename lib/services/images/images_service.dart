@@ -77,4 +77,7 @@ class ImagesService {
   static Future<Uint8List> readImage(String name) async
     => File('${(await getApplicationDocumentsDirectory()).path}/images//$name').readAsBytes();
 
+  static Future<void> removeImage(String name) async
+    => File('${(await getApplicationDocumentsDirectory()).path}/images//$name').delete();
+
 }
