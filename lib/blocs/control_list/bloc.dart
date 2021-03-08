@@ -62,158 +62,180 @@ class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
   }
 
   @override
-  Stream<ControlListBlocState> mapEventToState(
-      ControlListBlocEvent event) async* {
-    yield* (event.map(
-      loadControlListEvent: _onLoadControlListEvent,
-      cantWorkInThisModeEvent: _onCantWorkInThisModeEvent,
-      loadNextPageControlListEvent: _onLoadNextPageEvent,
-      selectControlObject: (event) async* {
-        yield (state.copyWith(
-          mapState: ControlObjectsMapState(selectedObject: event.object),
-        ));
-      },
-      changeFilters: (event) async* {
-        yield (state.copyWith(filtersState: event.state));
-        print('Filtering');
-        add(RefreshControlListEvent());
-      },
-      changeSort: (event) async* {
-        yield (state.copyWith(
-          sortState: event.state,
-        ));
-        print('Sorting');
-        add(RefreshControlListEvent());
-      },
-      refreshControlListEvent: (event) async* {
-        yield (state.copyWith(
-            listState: state.listState.maybeMap(
-          emptyListLoadedState: (emptyListLoadedState) =>
-              emptyListLoadedState.copyWith(refresh: true),
-          loadedAllListState: (loadedAllListState) =>
-              loadedAllListState.copyWith(refresh: true),
-          loadedListState: (loadedListState) =>
-              loadedListState.copyWith(refresh: true),
-          orElse: () => state.listState,
-        )));
-        print('Refreshing');
-        add(LoadControlListEvent());
-      },
-      changeShowMapEvent: (event) async* {
-        yield (state.copyWith(showMap: event.showMap));
-      },
-      openInMapEvent: (OpenInMapEvent event) async* {
-        if (event.object.geometry == null) {
-          _notificationBloc.add(SnackBarNotificationEvent(
-              'Просмотр этого объекта на карте недоступен'));
-        } else {
-          _notificationBloc.add(SnackBarNotificationEvent(
-              'Данный функционал пока не реализован'));
-        }
-      },
-      createViolationEvent: (event) async* {},
-      registerSearchResultEvent: (event) async* {
-        try {
-          _notificationBloc.add(
-              SnackBarNotificationEvent('Сохранение результата обследования'));
-          ControlResult result = ControlResult(
-            violation: event.violation,
-            surveyDate: DateTime.now(),
-          );
-          await _departmentControlService.registerControlResult(
-            event.object,
-            result,
-            _networkStatus,
-          );
-          _notificationBloc.add(OkDialogNotificationEvent('Сохранено успешно'));
-        } on ApiException catch (e) {
-          print(e.message);
-          print(e.details);
-          yield* (_onApiException(e));
-        }
-      },
-      removePerformControlEvent: (event) async* {
-        try {
-          _notificationBloc
-              .add(SnackBarNotificationEvent('Удаление контроля устранения'));
-          await _departmentControlService.removePerformControl(
-            event.object,
-            event.controlResultId,
-            event.performControl,
-            _networkStatus,
-          );
-          _notificationBloc.add(OkDialogNotificationEvent('Удалено успешно'));
-        } on ApiException catch (e) {
-          print(e.message);
-          print(e.details);
-          yield* (_onApiException(e));
-        }
-      },
-      registerPerformControlEvent: (event) async* {
-        try {
-          await _departmentControlService.registerPerformControl(
-            event.object,
-            event.controlResultId,
-            event.performControl,
-            _networkStatus,
-          );
-          _notificationBloc.add(OkDialogNotificationEvent('Сохранено успешно'));
-        } on ApiException catch (e) {
-          print(e.message);
-          print(e.details);
-          yield* (_onApiException(e));
-        }
-      },
-      updatePerformControlEvent: (event) async* {
-        try {
-          await _departmentControlService.updatePerformControl(
-            event.object,
-            event.controlResultId,
-            event.performControl,
-            _networkStatus,
-          );
-          _notificationBloc.add(OkDialogNotificationEvent('Обновлено успешно'));
-        } on ApiException catch (e) {
-          print(e.message);
-          print(e.details);
-          yield* (_onApiException(e));
-        }
-      },
-      updateResolveDateEvent: (event) async* {
-        _notificationBloc
-            .add(OkDialogNotificationEvent('Функционал в разработке'));
-      },
-      removeViolationEvent: (event) async* {
-        try {
-          await _departmentControlService.removeControlResult(
-            event.object,
-            event.violationId,
-            _networkStatus,
-          );
-          _notificationBloc.add(OkDialogNotificationEvent('Удалено успешно'));
-        } on ApiException catch (e) {
-          print(e.message);
-          print(e.details);
-          yield* (_onApiException(e));
-        }
-      },
-      updateControlResultEvent: (event) async* {
-        try {
-          _notificationBloc.add(
-              SnackBarNotificationEvent('Обновление результата обследования'));
-          await _departmentControlService.updateControlResult(
-            event.object,
-            event.controlResultId,
-            event.violation,
-            _networkStatus,
-          );
-          _notificationBloc.add(OkDialogNotificationEvent('Обновлено успешно'));
-        } on ApiException catch (e) {
-          print(e.message);
-          print(e.details);
-          yield* (_onApiException(e));
-        }
-      },
+  Stream<ControlListBlocState> mapEventToState(ControlListBlocEvent event) =>
+      event.map(
+        loadControlListEvent: _onLoadControlListEvent,
+        cantWorkInThisModeEvent: _onCantWorkInThisModeEvent,
+        loadNextPageControlListEvent: _onLoadNextPageEvent,
+        selectControlObject: _onSelectControlObject,
+        changeFilters: _onChangeFilters,
+        changeSort: _onChangeSort,
+        refreshControlListEvent: _onRefreshControlListEvent,
+        changeShowMapEvent: _onChangeShowMapEvent,
+        openInMapEvent: _onOpenInMapEvent,
+        registerSearchResultEvent: _onRegisterSearchResultEvent,
+        removePerformControlEvent: _onRemovePerformControlEvent,
+        registerPerformControlEvent: onRegisterPerformControlEvent,
+        updatePerformControlEvent: onUpdatePerformControlEvent,
+        updateResolveDateEvent: _onUpdateResolveDateEvent,
+        removeViolationEvent: _onRemoveViolationEvent,
+        updateControlResultEvent: _onUpdateControlResultEvent,
+      );
+
+  Stream<ControlListBlocState> _onUpdateControlResultEvent(event) async* {
+    try {
+      _notificationBloc
+          .add(SnackBarNotificationEvent('Обновление результата обследования'));
+      await _departmentControlService.updateControlResult(
+        event.object,
+        event.controlResultId,
+        event.violation,
+        _networkStatus,
+      );
+      _notificationBloc.add(OkDialogNotificationEvent('Обновлено успешно'));
+    } on ApiException catch (e) {
+      print(e.message);
+      print(e.details);
+      yield* (_onApiException(e));
+    }
+  }
+
+  Stream<ControlListBlocState> _onRemoveViolationEvent(event) async* {
+    try {
+      await _departmentControlService.removeControlResult(
+        event.object,
+        event.violationId,
+        _networkStatus,
+      );
+      _notificationBloc.add(OkDialogNotificationEvent('Удалено успешно'));
+    } on ApiException catch (e) {
+      print(e.message);
+      print(e.details);
+      yield* (_onApiException(e));
+    }
+  }
+
+  Stream<ControlListBlocState> _onUpdateResolveDateEvent(event) async* {
+    _notificationBloc.add(OkDialogNotificationEvent('Функционал в разработке'));
+  }
+
+  Stream<ControlListBlocState> onUpdatePerformControlEvent(event) async* {
+    try {
+      await _departmentControlService.updatePerformControl(
+        event.object,
+        event.controlResultId,
+        event.performControl,
+        _networkStatus,
+      );
+      _notificationBloc.add(OkDialogNotificationEvent('Обновлено успешно'));
+    } on ApiException catch (e) {
+      print(e.message);
+      print(e.details);
+      yield* (_onApiException(e));
+    }
+  }
+
+  Stream<ControlListBlocState> onRegisterPerformControlEvent(event) async* {
+    try {
+      await _departmentControlService.registerPerformControl(
+        event.object,
+        event.controlResultId,
+        event.performControl,
+        _networkStatus,
+      );
+      _notificationBloc.add(OkDialogNotificationEvent('Сохранено успешно'));
+    } on ApiException catch (e) {
+      print(e.message);
+      print(e.details);
+      yield* (_onApiException(e));
+    }
+  }
+
+  Stream<ControlListBlocState> _onRemovePerformControlEvent(event) async* {
+    try {
+      _notificationBloc
+          .add(SnackBarNotificationEvent('Удаление контроля устранения'));
+      await _departmentControlService.removePerformControl(
+        event.object,
+        event.controlResultId,
+        event.performControl,
+        _networkStatus,
+      );
+      _notificationBloc.add(OkDialogNotificationEvent('Удалено успешно'));
+    } on ApiException catch (e) {
+      print(e.message);
+      print(e.details);
+      yield* (_onApiException(e));
+    }
+  }
+
+  Stream<ControlListBlocState> _onRegisterSearchResultEvent(event) async* {
+    try {
+      _notificationBloc
+          .add(SnackBarNotificationEvent('Сохранение результата обследования'));
+      ControlResult result = ControlResult(
+        violation: event.violation,
+        surveyDate: DateTime.now(),
+      );
+      await _departmentControlService.registerControlResult(
+        event.object,
+        result,
+        _networkStatus,
+      );
+      _notificationBloc.add(OkDialogNotificationEvent('Сохранено успешно'));
+    } on ApiException catch (e) {
+      print(e.message);
+      print(e.details);
+      yield* (_onApiException(e));
+    }
+  }
+
+  Stream<ControlListBlocState> _onOpenInMapEvent(OpenInMapEvent event) async* {
+    if (event.object.geometry == null) {
+      _notificationBloc.add(SnackBarNotificationEvent(
+          'Просмотр этого объекта на карте недоступен'));
+    } else {
+      _notificationBloc.add(
+          SnackBarNotificationEvent('Данный функционал пока не реализован'));
+    }
+  }
+
+  Stream<ControlListBlocState> _onChangeShowMapEvent(event) async* {
+    yield (state.copyWith(showMap: event.showMap));
+  }
+
+  Stream<ControlListBlocState> _onRefreshControlListEvent(event) async* {
+    yield (state.copyWith(
+        listState: state.listState.maybeMap(
+      emptyListLoadedState: (emptyListLoadedState) =>
+          emptyListLoadedState.copyWith(refresh: true),
+      loadedAllListState: (loadedAllListState) =>
+          loadedAllListState.copyWith(refresh: true),
+      loadedListState: (loadedListState) =>
+          loadedListState.copyWith(refresh: true),
+      orElse: () => state.listState,
+    )));
+    print('Refreshing');
+    add(LoadControlListEvent());
+  }
+
+  Stream<ControlListBlocState> _onChangeSort(event) async* {
+    yield (state.copyWith(
+      sortState: event.state,
+    ));
+    print('Sorting');
+    add(RefreshControlListEvent());
+  }
+
+  Stream<ControlListBlocState> _onChangeFilters(event) async* {
+    yield (state.copyWith(filtersState: event.state));
+    print('Filtering');
+    add(RefreshControlListEvent());
+  }
+
+  Stream<ControlListBlocState> _onSelectControlObject(event) async* {
+    yield (state.copyWith(
+      mapState: ControlObjectsMapState(selectedObject: event.object),
     ));
   }
 
