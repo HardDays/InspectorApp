@@ -343,7 +343,7 @@ class ControlViolationPage extends StatelessWidget {
                                                   .violation.violationNum,
                                               performControl: PerformControl(
                                                 factDate: DateTime.now(),
-                                                photos: List<DCPhoto>(),
+                                                photos: <DCPhoto>[],
                                                 planDate: DateTime.now(),
                                                 resolved: true,
                                               ),
@@ -383,7 +383,7 @@ class ControlViolationPage extends StatelessWidget {
                                                   .violation.violationNum,
                                               performControl: PerformControl(
                                                 factDate: DateTime.now(),
-                                                photos: List<DCPhoto>(),
+                                                photos: <DCPhoto>[],
                                                 planDate: DateTime.now(),
                                                 resolved: false,
                                               ),

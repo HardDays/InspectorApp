@@ -31,10 +31,10 @@ class SqliteReportsService {
   }
   
    Future<List<Report>> withImages(List<Report> reports) async {
-     final res = List<Report>();
+     final res = <Report>[];
       
       for (final report in reports) {
-        final violations = List<Violation>();
+        final violations = <Violation>[];
         for (int i = 0; i < report.violations.length; i++) {
           final violation = report.violations[i];
           violations.add(

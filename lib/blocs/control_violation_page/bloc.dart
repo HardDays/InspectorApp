@@ -30,7 +30,7 @@ class ControlViolationPageBloc
           ),
         ) {
     _initialperformControls = searchResult.violation.performControls ??
-        List<PerformControlSearchResult>();
+        <PerformControlSearchResult>[];
     add(ControlViolationPageBlocEvent.refresh());
     _networkStatusStreamSubscription =
         networkStatusService.listenNetworkStatus.listen((value) {
@@ -48,9 +48,9 @@ class ControlViolationPageBloc
   List<PerformControlSearchResult> _initialperformControls;
 
   List<PerformControlSearchResult> _updatedperformControls =
-      List<PerformControlSearchResult>();
+      <PerformControlSearchResult>[];
   List<PerformControlSearchResult> _removedPerformCotronls =
-      List<PerformControlSearchResult>();
+      <PerformControlSearchResult>[];
 
   NetworkStatus _networkStatus;
   StreamSubscription<NetworkStatus> _networkStatusStreamSubscription;
@@ -82,8 +82,8 @@ class ControlViolationPageBloc
           }
         },
         discardChanges: (event) async* {
-          _updatedperformControls = List<PerformControlSearchResult>();
-          _removedPerformCotronls = List<PerformControlSearchResult>();
+          _updatedperformControls = <PerformControlSearchResult>[];
+          _removedPerformCotronls = <PerformControlSearchResult>[];
           yield ControlViolationPageBlocState.loadedState(
             controlObject: state.controlObject,
             searchResult: state.searchResult.copyWith
@@ -199,7 +199,7 @@ class ControlViolationPageBloc
         }
       },
     );
-    _updatedperformControls = List<PerformControlSearchResult>();
+    _updatedperformControls = <PerformControlSearchResult>[];
   }
 
   Future<void> sendRemoved() async {
@@ -220,7 +220,7 @@ class ControlViolationPageBloc
         }
       },
     );
-    _removedPerformCotronls = List<PerformControlSearchResult>();
+    _removedPerformCotronls = <PerformControlSearchResult>[];
   }
 
   PerformControl convert(PerformControlSearchResult performControl) =>

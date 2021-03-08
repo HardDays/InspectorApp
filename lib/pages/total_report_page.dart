@@ -643,7 +643,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
           );  
         } else {
           bool validViolators = true;
-          final resViolators = List<Violator>();
+          final resViolators = <Violator>[];
           final curViolators = report.violation(widget.violationIndex)?.violators ?? [];
           for (int i = 0; i < curViolators.length; i++) {
             final violator = curViolators[i];
@@ -1953,7 +1953,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
   }
 
   Widget _buildMap(BuildContext context, TotalReportBlocState state) {
-    final markers = List<Marker>();
+    final markers = <Marker>[];
     if (state.userLocation != null) {
       markers.add(
         Marker(

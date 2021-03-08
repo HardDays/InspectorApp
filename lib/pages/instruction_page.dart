@@ -531,8 +531,8 @@ class InstructionPage extends StatelessWidget {
   }
 
   Widget _buildCheckReports(BuildContext context,  InstructionCheck instructionCheck, List<Report> reports) {
-    final reportList = List<Report>();
-    final indexList = List<int>();
+    final reportList = <Report>[];
+    final indexList = <int>[];
     for (final report in reports) {
       if (report.diggRequestChecks.isEmpty) {
         if (report.violations.isNotEmpty) {

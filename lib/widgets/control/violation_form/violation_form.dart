@@ -64,7 +64,7 @@ class _ViolationFormWidgetState extends State<ViolationFormWidget> {
           description: widget.initialViolation?.description ?? '',
           objectElement:
               widget.initialViolation?.objectElement ?? ObjectElement(name: ''),
-          photos: widget.initialViolation?.photos ?? List<DCPhoto>(),
+          photos: widget.initialViolation?.photos ?? <DCPhoto>[],
           setAddressByGeoLocation: false,
           targetLandmark: widget.initialViolation?.address ?? '',
           violationAdditionalFeature:

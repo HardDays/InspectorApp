@@ -86,7 +86,7 @@ class Report {
       instructionId: instructionId,
       checkId: checkId,
       violationNotPresent: violationNotPresent,
-      violations:  violationNotPresent ? List<Violation>() : [Violation.empty()],
+      violations:  violationNotPresent ? <Violation>[] : [Violation.empty()],
       photos: [],
       diggRequestChecks: []
     );

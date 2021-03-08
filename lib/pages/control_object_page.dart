@@ -163,7 +163,7 @@ class ControlObjectPage extends StatelessWidget {
                             violationNum: searchResult.violation.violationNum,
                             performControl: PerformControl(
                               factDate: DateTime.now(),
-                              photos: List<DCPhoto>(),
+                              photos: <DCPhoto>[],
                               planDate: DateTime.now(),
                               resolved: true,
                             ),
@@ -193,7 +193,7 @@ class ControlObjectPage extends StatelessWidget {
                             violationNum: searchResult.violation.violationNum,
                             performControl: PerformControl(
                               factDate: DateTime.now(),
-                              photos: List<DCPhoto>(),
+                              photos: <DCPhoto>[],
                               planDate: DateTime.now(),
                               resolved: false,
                             ),
@@ -294,7 +294,7 @@ class ControlObjectPage extends StatelessWidget {
                         violationNum: violation.violationNum,
                         performControl: PerformControl(
                           factDate: DateTime.now(),
-                          photos: List<DCPhoto>(),
+                          photos: <DCPhoto>[],
                           planDate: DateTime.now(),
                           resolved: true,
                         ),
@@ -323,7 +323,7 @@ class ControlObjectPage extends StatelessWidget {
                         violationNum: violation.violationNum,
                         performControl: PerformControl(
                           factDate: DateTime.now(),
-                          photos: List<DCPhoto>(),
+                          photos: <DCPhoto>[],
                           planDate: DateTime.now(),
                           resolved: false,
                         ),
