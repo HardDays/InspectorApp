@@ -1,8 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:inspector/model/photo.dart';
 import 'package:inspector/model/report.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:uuid/uuid.dart';
 
 class ImagesService {
 
@@ -63,5 +65,16 @@ class ImagesService {
     }
   }
 
+  static Future<String> saveImage(Uint8List image) async {
+    String fileName = Uuid().v1();
+    final dir = '${(await getApplicationDocumentsDirectory()).path}/images/';
+    final file = File('$dir/$fileName');
+    file.create(recursive: true);
+    await file.writeAsBytes(image);
+    return fileName;
+  }
+
+  static Future<Uint8List> readImage(String name) async
+    => File('${(await getApplicationDocumentsDirectory()).path}/images//$name').readAsBytes();
 
 }
