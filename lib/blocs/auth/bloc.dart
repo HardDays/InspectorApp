@@ -1,6 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:inspector/blocs/auth/events.dart';
 import 'package:inspector/blocs/auth/states.dart';
+import 'package:inspector/blocs/dictionary/bloc.dart';
+import 'package:inspector/blocs/dictionary/event.dart';
 import 'package:inspector/services/auth_exception.dart';
 import 'package:inspector/services/auth_service.dart';
 import 'package:inspector/services/persistance_service.dart';
@@ -11,7 +13,7 @@ typedef Stream<S> Dispatcher<E, S>(E event);
 
 class AuthBloc extends Bloc<AuthBlocEvent, AuthBlocStates> {
   AuthBloc(
-      AuthBlocStates initialState, this._authService, this._persistanceService)
+      AuthBlocStates initialState, this._authService, this._persistanceService, this._dictionaryBloc)
       : super(initialState) {
     _dispatchersMap = {
       EnterAuthScreenEvent: (event) =>
@@ -28,6 +30,7 @@ class AuthBloc extends Bloc<AuthBlocEvent, AuthBlocStates> {
 
   final AuthService _authService;
   final PersistanceService _persistanceService;
+  final DictionaryBloc _dictionaryBloc;
   String pin;
   String login;
   String password;
@@ -59,9 +62,11 @@ class AuthBloc extends Bloc<AuthBlocEvent, AuthBlocStates> {
               await _persistanceService.getFingerprintState();
           if (useFingerPrint && await _checkBiometric()) {
             yield AutorizedState(false);
+            _dictionaryBloc.add(DictionaryBlocEvent.initEvent());
           }
         } else {
            yield AutorizedState(false);
+           _dictionaryBloc.add(DictionaryBlocEvent.initEvent());
         }
       } else {
         yield ShowSetPinScreen(true);
@@ -75,6 +80,7 @@ class AuthBloc extends Bloc<AuthBlocEvent, AuthBlocStates> {
     if (await _authService.isPinSetted()) {
       if (await _authService.isPinCorrect(event.pin)) {
         yield AutorizedState(false);
+        _dictionaryBloc.add(DictionaryBlocEvent.initEvent());
       } else if (event.pin.length >= 4) {
         if (wrongTries < 4) {
           yield IncorrencPinState();
@@ -98,6 +104,7 @@ class AuthBloc extends Bloc<AuthBlocEvent, AuthBlocStates> {
           if (event.pin == pin) {
             await _authService.setPin(event.pin);
             yield AutorizedState(await _canCheckBiometric());
+            _dictionaryBloc.add(DictionaryBlocEvent.initEvent());
           } else {
             yield IncorrencRepeatPinState();
           }

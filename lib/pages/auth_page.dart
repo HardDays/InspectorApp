@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:inspector/blocs/auth/bloc.dart';
 import 'package:inspector/blocs/auth/states.dart';
+import 'package:inspector/blocs/dictionary/bloc.dart';
 import 'package:inspector/navigation.gr.dart';
 import 'package:inspector/services/auth_service.dart';
 import 'package:inspector/services/persistance_service.dart';
@@ -17,6 +18,7 @@ class AuthPage extends StatelessWidget {
         InitialAuthBlocState(),
         Provider.of<AuthService>(context, listen: false),
         Provider.of<PersistanceService>(context, listen: false),
+        BlocProvider.of<DictionaryBloc>(context, listen: false),
       ),
       child: BlocListener<AuthBloc, AuthBlocStates>(
         child: ExtendedNavigator(name: 'authNavigator'),

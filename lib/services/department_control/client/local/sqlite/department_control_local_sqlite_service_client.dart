@@ -117,7 +117,7 @@ class DepartmentControlLocalSqliteServiceClient extends ObjectDBService
   }
 
   @override
-  String get name => 'dc_local_service_cliend.db';
+  String get name => 'dc_local_service_client.db';
 
   Future<ObjectDB> get objectDb => init();
 

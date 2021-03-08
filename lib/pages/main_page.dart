@@ -8,7 +8,7 @@ import 'package:inspector/blocs/navigation_bloc/states.dart';
 import 'package:inspector/blocs/notification_bloc/bloc.dart';
 import 'package:inspector/blocs/notification_bloc/states.dart';
 import 'package:inspector/navigation.gr.dart';
-import 'package:inspector/pages/dictionary_loading_page.dart';
+import 'package:inspector/pages/background_loading_page.dart';
 import 'package:inspector/services/persistance_service.dart';
 import 'package:inspector/style/accept_dialog.dart';
 import 'package:inspector/style/colors.dart';
@@ -76,7 +76,7 @@ class MainPage extends StatelessWidget {
                     .replace(_pagesMap[state.currentScreen]);
               }
             },
-            child: DictionaryLoadingPage(
+            child: BackgroundLoadingPage(
                 child: ExtendedNavigator(name: 'mainPageNavigator')),
           ),
         ),

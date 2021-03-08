@@ -1,7 +1,9 @@
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:inspector/blocs/background_loading/bloc.dart';
 import 'package:inspector/blocs/control_list/bloc.dart';
+import 'package:inspector/blocs/dictionary/bloc.dart';
 import 'package:inspector/blocs/notification_bloc/bloc.dart';
 import 'package:inspector/blocs/profile/bloc.dart';
 import 'package:inspector/blocs/profile/state.dart';
@@ -57,7 +59,7 @@ class InjectorWidget extends StatelessWidget {
         Provider(
           create: (context) => DepartmentControlService(
             Provider.of<DepartmentControlApiClient>(context, listen: false),
-            Provider.of<DepartmentControlLocalService>(context, listen: false),
+            Provider.of<DepartmentControlLocalSqliteServiceClient>(context, listen: false),
           ),
         ),
         Provider<LocationService>(
@@ -68,6 +70,9 @@ class InjectorWidget extends StatelessWidget {
         providers: [
           BlocProvider(
             create: (_) => NotificationBloc(),
+          ),
+          BlocProvider(
+            create: (_) => BackgroundLoadingBloc(),
           ),
           BlocProvider<ProfileBloc>(
             create: (BuildContext context) => ProfileBloc(
@@ -84,6 +89,14 @@ class InjectorWidget extends StatelessWidget {
               Provider.of<LocationService>(context, listen: false),
               BlocProvider.of<NotificationBloc>(context),
             ),
+          ),
+          BlocProvider(
+            create: (context) => DictionaryBloc(
+              dictionaryService: Provider.of<DictionaryService>(context, listen: false),
+              notificationBloc: BlocProvider.of<NotificationBloc>(context),
+              backgroundLoadingBloc: BlocProvider.of<BackgroundLoadingBloc>(context),
+            ),
+            lazy: false,
           ),
         ],
         child: child,
