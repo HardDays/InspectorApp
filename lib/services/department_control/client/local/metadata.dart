@@ -4,12 +4,13 @@ part 'metadata.freezed.dart';
 part 'metadata.g.dart';
 
 @freezed
-abstract class DepartmentControlLocalServiceMetadata with _$DepartmentControlLocalServiceMetadata {
+abstract class DepartmentControlLocalServiceMetadata
+    with _$DepartmentControlLocalServiceMetadata {
   const factory DepartmentControlLocalServiceMetadata(
+    bool loaded, {
     DateTime lastUpdatedDate,
     int count,
-    bool loaded,
-  ) = _DepartmentControlLocalServiceMetadata;
+  }) = _DepartmentControlLocalServiceMetadata;
 
   factory DepartmentControlLocalServiceMetadata.fromJson(
           Map<String, dynamic> json) =>

@@ -18,12 +18,12 @@ class _$DepartmentControlLocalServiceMetadataTearOff {
   const _$DepartmentControlLocalServiceMetadataTearOff();
 
 // ignore: unused_element
-  _DepartmentControlLocalServiceMetadata call(
-      DateTime lastUpdatedDate, int count, bool loaded) {
+  _DepartmentControlLocalServiceMetadata call(bool loaded,
+      {DateTime lastUpdatedDate, int count}) {
     return _DepartmentControlLocalServiceMetadata(
-      lastUpdatedDate,
-      count,
       loaded,
+      lastUpdatedDate: lastUpdatedDate,
+      count: count,
     );
   }
 
@@ -40,9 +40,9 @@ const $DepartmentControlLocalServiceMetadata =
 
 /// @nodoc
 mixin _$DepartmentControlLocalServiceMetadata {
+  bool get loaded;
   DateTime get lastUpdatedDate;
   int get count;
-  bool get loaded;
 
   Map<String, dynamic> toJson();
   @JsonKey(ignore: true)
@@ -56,7 +56,7 @@ abstract class $DepartmentControlLocalServiceMetadataCopyWith<$Res> {
           DepartmentControlLocalServiceMetadata value,
           $Res Function(DepartmentControlLocalServiceMetadata) then) =
       _$DepartmentControlLocalServiceMetadataCopyWithImpl<$Res>;
-  $Res call({DateTime lastUpdatedDate, int count, bool loaded});
+  $Res call({bool loaded, DateTime lastUpdatedDate, int count});
 }
 
 /// @nodoc
@@ -70,16 +70,16 @@ class _$DepartmentControlLocalServiceMetadataCopyWithImpl<$Res>
 
   @override
   $Res call({
+    Object loaded = freezed,
     Object lastUpdatedDate = freezed,
     Object count = freezed,
-    Object loaded = freezed,
   }) {
     return _then(_value.copyWith(
+      loaded: loaded == freezed ? _value.loaded : loaded as bool,
       lastUpdatedDate: lastUpdatedDate == freezed
           ? _value.lastUpdatedDate
           : lastUpdatedDate as DateTime,
       count: count == freezed ? _value.count : count as int,
-      loaded: loaded == freezed ? _value.loaded : loaded as bool,
     ));
   }
 }
@@ -92,7 +92,7 @@ abstract class _$DepartmentControlLocalServiceMetadataCopyWith<$Res>
           $Res Function(_DepartmentControlLocalServiceMetadata) then) =
       __$DepartmentControlLocalServiceMetadataCopyWithImpl<$Res>;
   @override
-  $Res call({DateTime lastUpdatedDate, int count, bool loaded});
+  $Res call({bool loaded, DateTime lastUpdatedDate, int count});
 }
 
 /// @nodoc
@@ -111,16 +111,16 @@ class __$DepartmentControlLocalServiceMetadataCopyWithImpl<$Res>
 
   @override
   $Res call({
+    Object loaded = freezed,
     Object lastUpdatedDate = freezed,
     Object count = freezed,
-    Object loaded = freezed,
   }) {
     return _then(_DepartmentControlLocalServiceMetadata(
-      lastUpdatedDate == freezed
+      loaded == freezed ? _value.loaded : loaded as bool,
+      lastUpdatedDate: lastUpdatedDate == freezed
           ? _value.lastUpdatedDate
           : lastUpdatedDate as DateTime,
-      count == freezed ? _value.count : count as int,
-      loaded == freezed ? _value.loaded : loaded as bool,
+      count: count == freezed ? _value.count : count as int,
     ));
   }
 }
@@ -130,47 +130,45 @@ class __$DepartmentControlLocalServiceMetadataCopyWithImpl<$Res>
 /// @nodoc
 class _$_DepartmentControlLocalServiceMetadata
     implements _DepartmentControlLocalServiceMetadata {
-  const _$_DepartmentControlLocalServiceMetadata(
-      this.lastUpdatedDate, this.count, this.loaded)
-      : assert(lastUpdatedDate != null),
-        assert(count != null),
-        assert(loaded != null);
+  const _$_DepartmentControlLocalServiceMetadata(this.loaded,
+      {this.lastUpdatedDate, this.count})
+      : assert(loaded != null);
 
   factory _$_DepartmentControlLocalServiceMetadata.fromJson(
           Map<String, dynamic> json) =>
       _$_$_DepartmentControlLocalServiceMetadataFromJson(json);
 
   @override
+  final bool loaded;
+  @override
   final DateTime lastUpdatedDate;
   @override
   final int count;
-  @override
-  final bool loaded;
 
   @override
   String toString() {
-    return 'DepartmentControlLocalServiceMetadata(lastUpdatedDate: $lastUpdatedDate, count: $count, loaded: $loaded)';
+    return 'DepartmentControlLocalServiceMetadata(loaded: $loaded, lastUpdatedDate: $lastUpdatedDate, count: $count)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other is _DepartmentControlLocalServiceMetadata &&
+            (identical(other.loaded, loaded) ||
+                const DeepCollectionEquality().equals(other.loaded, loaded)) &&
             (identical(other.lastUpdatedDate, lastUpdatedDate) ||
                 const DeepCollectionEquality()
                     .equals(other.lastUpdatedDate, lastUpdatedDate)) &&
             (identical(other.count, count) ||
-                const DeepCollectionEquality().equals(other.count, count)) &&
-            (identical(other.loaded, loaded) ||
-                const DeepCollectionEquality().equals(other.loaded, loaded)));
+                const DeepCollectionEquality().equals(other.count, count)));
   }
 
   @override
   int get hashCode =>
       runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(loaded) ^
       const DeepCollectionEquality().hash(lastUpdatedDate) ^
-      const DeepCollectionEquality().hash(count) ^
-      const DeepCollectionEquality().hash(loaded);
+      const DeepCollectionEquality().hash(count);
 
   @JsonKey(ignore: true)
   @override
@@ -187,20 +185,20 @@ class _$_DepartmentControlLocalServiceMetadata
 
 abstract class _DepartmentControlLocalServiceMetadata
     implements DepartmentControlLocalServiceMetadata {
-  const factory _DepartmentControlLocalServiceMetadata(
-          DateTime lastUpdatedDate, int count, bool loaded) =
-      _$_DepartmentControlLocalServiceMetadata;
+  const factory _DepartmentControlLocalServiceMetadata(bool loaded,
+      {DateTime lastUpdatedDate,
+      int count}) = _$_DepartmentControlLocalServiceMetadata;
 
   factory _DepartmentControlLocalServiceMetadata.fromJson(
           Map<String, dynamic> json) =
       _$_DepartmentControlLocalServiceMetadata.fromJson;
 
   @override
+  bool get loaded;
+  @override
   DateTime get lastUpdatedDate;
   @override
   int get count;
-  @override
-  bool get loaded;
   @override
   @JsonKey(ignore: true)
   _$DepartmentControlLocalServiceMetadataCopyWith<

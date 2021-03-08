@@ -2,6 +2,7 @@ import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:inspector/blocs/background_loading/bloc.dart';
+import 'package:inspector/blocs/control_background_service/bloc.dart';
 import 'package:inspector/blocs/control_list/bloc.dart';
 import 'package:inspector/blocs/dictionary/bloc.dart';
 import 'package:inspector/blocs/notification_bloc/bloc.dart';
@@ -97,6 +98,13 @@ class InjectorWidget extends StatelessWidget {
               backgroundLoadingBloc: BlocProvider.of<BackgroundLoadingBloc>(context),
             ),
             lazy: false,
+          ),
+          BlocProvider(
+            create: (context) => ControlBackgroundServiceBloc(
+              notificationBloc: BlocProvider.of<NotificationBloc>(context),
+              backgroundLoadingBloc: BlocProvider.of<BackgroundLoadingBloc>(context),
+              departmentControlService: Provider.of<DepartmentControlService>(context, listen: false),
+            ),
           ),
         ],
         child: child,

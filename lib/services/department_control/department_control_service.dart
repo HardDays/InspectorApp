@@ -21,7 +21,7 @@ class DepartmentControlService {
   final DepartmentControlApiClient _apiClient;
   final DepartmentControlLocalService _localClient;
 
-  bool canceled = false;
+  bool _canceled = false;
 
   Future<List<ControlObject>> find(
     Location location,
@@ -200,59 +200,57 @@ class DepartmentControlService {
           : _localClient;
 
   Future<void> saveControlObjectsLocally(void Function(int) notifier) async {
-    canceled = false;
-    _localClient.saveMetadata(
+    _canceled = false;
+    await _localClient.saveMetadata(
       DepartmentControlLocalServiceMetadata(
-        null,
-        0,
         false,
       ),
     );
     int start = 0;
     int page = 500;
     bool loaded = false;
-    while (!canceled && !loaded) {
+    while (!_canceled && !loaded) {
       await _apiClient
           .getControlObjects(
         DepartmentControlObjectsRequest(
           from: start,
           to: start + page,
+          ignoreViolations: true,
         ),
       )
           .then(
-        (x) {
+        (x) async {
           if (x.isNotEmpty) {
-            _localClient.saveObjects(x);
-            _localClient.saveMetadata(
+            await _localClient.saveObjects(x);
+            await _localClient.saveMetadata(
               DepartmentControlLocalServiceMetadata(
-                null,
-                start + page,
                 false,
               ),
             );
-            notifier(start + page);
+            start += x.length;
+            notifier(start);
+            print(start);
           } else {
             loaded = true;
+            await _localClient.saveMetadata(
+              DepartmentControlLocalServiceMetadata(
+                true,
+                lastUpdatedDate: DateTime.now(),
+                count: start + page,
+              ),
+            );
+            print(await _localClient.metadata);
           }
         },
       );
     }
-    if (loaded) {
-      _localClient.saveMetadata(
-        DepartmentControlLocalServiceMetadata(
-          DateTime.now(),
-          start + page,
-          true,
-        ),
-      );
-    }
-    canceled = false;
+    _canceled = false;
   }
 
   Future<DepartmentControlLocalServiceMetadata> get localMetadata =>
       _localClient.metadata;
 
   void cancelLoading() {
-    canceled = true;
+    _canceled = true;
   }
 }

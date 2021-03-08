@@ -3,6 +3,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:inspector/blocs/control_background_service/bloc.dart';
+import 'package:inspector/blocs/control_background_service/event.dart';
+import 'package:inspector/blocs/control_background_service/state.dart';
 import 'package:inspector/blocs/control_list/bloc.dart';
 import 'package:inspector/blocs/control_list/event.dart';
 import 'package:inspector/blocs/control_list/sort_state.dart';
@@ -40,6 +43,47 @@ class _ControlListPageState extends State<ControlListPage> {
 
   @override
   Widget build(BuildContext context) {
+    return BlocListener<ControlBackgroundServiceBloc,
+        ControlBackgroundServiceBlocState>(
+      child: _buildControlObjectsList(),
+      listener: (context, state) {
+        state.maybeMap(
+          loaded: (state) async {
+            if(await showDialog(
+              context: context,
+              builder: (ctx) => AcceptDialog(
+                message: 'В последний раз объекты ведомстенного контроля были загружены ${DateFormat("dd.MM.yyyy").format(state.lastUpdatedDate)} в ${DateFormat("mm:hh").format(state.lastUpdatedDate)}, желаете обновить?',
+                acceptTitle: 'Да',
+                cancelTitle: 'Нет',
+              ),
+            ) != null) {
+              BlocProvider.of<ControlBackgroundServiceBloc>(context).add(ControlBackgroundServiceBlocEvent.acceptLoadingEvent());
+            } else {
+              BlocProvider.of<ControlBackgroundServiceBloc>(context).add(ControlBackgroundServiceBlocEvent.cancelLoadingEvent());
+            }
+          },
+          notLoaded: (state) async {
+            if(await showDialog(
+              context: context,
+              builder: (ctx) => AcceptDialog(
+                message: 'Желаете загрузить объекты ведомственного контроля для использования оффлайн?',
+                acceptTitle: 'Да',
+                cancelTitle: 'Нет',
+              ),
+            ) != null) {
+              BlocProvider.of<ControlBackgroundServiceBloc>(context).add(ControlBackgroundServiceBlocEvent.acceptLoadingEvent());
+            } else {
+              BlocProvider.of<ControlBackgroundServiceBloc>(context).add(ControlBackgroundServiceBlocEvent.cancelLoadingEvent());
+            }
+          },
+          orElse: () {},
+        );
+      },
+    );
+  }
+
+  BlocBuilder<ControlListBloc, ControlListBlocState>
+      _buildControlObjectsList() {
     return BlocBuilder<ControlListBloc, ControlListBlocState>(
       builder: (context, state) {
         return Scaffold(

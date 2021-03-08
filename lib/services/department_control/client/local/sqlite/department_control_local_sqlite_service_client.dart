@@ -42,7 +42,7 @@ class _ControlObjectsSql {
   ''';
 
   static const INSERT_QUERY = '''
-    INSERT INTO $TABLE_NAME(
+    INSERT OR REPLACE INTO $TABLE_NAME(
       id, 
       externalId, 
       typeId, 
@@ -59,7 +59,7 @@ class _ControlObjectsSql {
       rowColor,
       x,
       y
-    ) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+    ) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
   ''';
 }
 
@@ -151,7 +151,8 @@ class DepartmentControlLocalSqliteServiceClient extends ObjectDBService
     DepartmentControlObjectsRequest request,
   ) =>
       _db
-          .then((db) => db.rawQuery(_ControlObjectsSql.SELECT_QUERY, [request.to, request.from]))
+          .then((db) => db.rawQuery(
+              _ControlObjectsSql.SELECT_QUERY, [request.to, request.from]))
           .then((x) => x.map((e) => ControlObject.fromJson(e)).toList());
 
   @override
@@ -254,7 +255,7 @@ class DepartmentControlLocalSqliteServiceClient extends ObjectDBService
           object.contractor?.id,
           object.cameraCount,
           object.violationsCount,
-          object.lastSurveyDate,
+          object.lastSurveyDate?.toIso8601String(),
           object.rowColor,
           object.geometry?.first?.points?.first?.x,
           object.geometry?.first?.points?.first?.y,
@@ -266,29 +267,35 @@ class DepartmentControlLocalSqliteServiceClient extends ObjectDBService
 
   @override
   Future<DepartmentControlLocalServiceMetadata> get metadata => objectDb.then(
-        (db) => db.first(
-          {
-            'key': 'metadata',
-          },
-        ).then(
-          (x) => DepartmentControlLocalServiceMetadata.fromJson(x['value']),
-          onError: () => DepartmentControlLocalServiceMetadata(
-            null,
-            0,
-            false,
-          ),
-        ),
+        (db) => db
+            .first(
+              {
+                'key': 'metadata',
+              },
+            )
+            .then(
+              (x) => DepartmentControlLocalServiceMetadata.fromJson(x['value']),
+            )
+            .then(
+              (value) => value,
+              onError: (error) => DepartmentControlLocalServiceMetadata(
+                false,
+              ),
+            ),
       );
 
   @override
   Future<void> saveMetadata(DepartmentControlLocalServiceMetadata metadata) =>
       objectDb.then(
-        (db) => db.insert(
-          {
-            'key': 'metadata',
-            'value': metadata.toJson(),
-          },
-        ),
+        (db) async {
+          await db.remove({'key': 'metadata'});
+          await db.insert(
+            {
+              'key': 'metadata',
+              'value': metadata.toJson(),
+            },
+          );
+        },
       );
 
   @override
