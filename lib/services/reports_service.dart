@@ -38,14 +38,17 @@ class ReportsService {
     return ready.where((element) => element.isReady).toList();
   }
 
+  void updateLastNumber() async {
+    final number = await _persistanceService.getReportNumber();
+    await _persistanceService.setReportNumber(number + 1);
+  }
+
   Future<Report> create(Report report, {String error, bool local = false}) async {
     // для тестирования
     if ((local || !(await _persistanceService.getDataSendingState()))) {
-      //await _reportsDbService.save({'instructionId': report.instructionId, 'checkId': report.checkId}, report);
       await _reportsDbService.save(report, error: error);
-      final number = await _persistanceService.getReportNumber();
-      await _persistanceService.setReportNumber(number + 1);
-      return report;
+      return (await _reportsDbService.all(query: {'localId': '"${report.localId}"'})).first;
+      
     } else {
       return await send(report);
     }
@@ -59,17 +62,20 @@ class ReportsService {
     } else {
       res = await _apiService.updateReport(report);
     }
-    await removeLocal(report);
+     await _reportsDbService.removeLocal(report);
     return res;
   }
 
-  Future removeLocal(Report report) async {
+  Future remove(Report report) async {
+    if (report.id != null) {
+      await _apiService.removeReport(report);
+    }
     await _reportsDbService.removeLocal(report);
   }
 
-  Future<List<Report>> reportErrors() async {
+  Future<List<Report>> reportErrors(int userId) async {
    //return [];
-    return await _reportsDbService.errors();
+    return await _reportsDbService.errors(userId);
   }
 
   Future<ReportStatusInfo> getReportStatusInfo(Report report) async 

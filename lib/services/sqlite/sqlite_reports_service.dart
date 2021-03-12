@@ -15,9 +15,10 @@ class SqliteReportsService {
   Future init() async {
     if (_database == null) {
       _database = await openDatabase(
-        join(await getDatabasesPath(), 'reports6.db'),
+        join(await getDatabasesPath(), 'reports7.db'),
         onCreate: (db, version) async {
-          await db.execute('''CREATE TABLE reports(dbId INTEGER PRIMARY KEY, localId TEXT,
+          await db.execute('''CREATE TABLE reports(
+            dbId INTEGER PRIMARY KEY, localId TEXT, userId INTEGER,
             id INTEGER, instructionId INTEGER, checkId INTEGER, 
             violationNotPresent INTEGER, reportNum TEXT, reportDate TEXT, error TEXT,
             reportStatus TEXT, reportAuthor TEXT, violations TEXT, diggRequestChecks TEXT, photos TEXT
@@ -68,10 +69,10 @@ class SqliteReportsService {
     }
   }
 
-  Future<List<Report>> errors() async {
+  Future<List<Report>> errors(int userId) async {
     try {
       await init();
-      final data = await _database.query(_tableName, where: 'error is NOT NULL');
+      final data = await _database.query(_tableName, where: '(userId = $userId OR userId IS NULL) AND (error is NOT NULL)');
       final reports = List<Report>.from(data.map((e) => Report.fromJson(e, stringified: true)));
       return await withImages(reports);
     } catch (ex) {

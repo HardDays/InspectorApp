@@ -143,7 +143,7 @@ class ProfileBloc extends Bloc<ProfileBlocEvent, ProfileBlocState> {
     bool useFingerPrint = await _persistanceService.getFingerprintState();
     bool dataSendingMode =
         false; //await _persistanceService.getDataSendingState();
-    bool hasErrorReports = (await _reportsService.reportErrors()).isNotEmpty;
+    bool hasErrorReports = (await _reportsService.reportErrors(user?.id)).isNotEmpty;
     bool canBeSended = (await _reportsService.readyToSend()).isNotEmpty ||
         (await _instructionRequestService.all()).isNotEmpty;
     bool usePin = await _persistanceService.getUsePinState();

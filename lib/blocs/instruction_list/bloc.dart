@@ -19,13 +19,13 @@ class InstructionListBloc extends Bloc<InstructionListBlocEvent, InstructionList
 
       final sort = await _service.sort();
       final order = await _service.sortOrder();
-      final filtersFromService = await _service.filters();
-      final filters = InstructionFilters(
-        instructionNum: filtersFromService.instructionNum,
-        instructionStatus: filtersFromService.instructionStatus,
-        minDate: filtersFromService.minDate ?? DateTime(DateTime.now().year),
-        maxDate: filtersFromService.maxDate ?? DateTime.now(),
-      );
+      final filters = await _service.filters();
+      // final filters = InstructionFilters(
+      //   instructionNum: filtersFromService.instructionNum,
+      //   instructionStatus: filtersFromService.instructionStatus,
+      //   // minDate: filtersFromService.minDate ?? DateTime(DateTime.now().year),
+      //   // maxDate: filtersFromService.maxDate ?? DateTime.now(),
+      // );
 
       try {
         final date = await _service.date();
@@ -104,7 +104,20 @@ class InstructionListBloc extends Bloc<InstructionListBlocEvent, InstructionList
       if (filters.instructionNum != null) {
         result = result.where((e) => e.instructionNum.toLowerCase().contains(filters.instructionNum.toLowerCase())).toList();
       }
-      result = result.where((e) => e.checkDate.isAfter(filters.minDate) && e.checkDate.isBefore(filters.maxDate.add(Duration(days: 1)))).toList();
+      if (filters.instructionDateFrom != null) {
+        result = result.where((e) => e.instructionDate.isAfter(filters.instructionDateFrom)).toList();
+      }
+      if (filters.instructionDateTo != null) {
+        result = result.where((e) => e.instructionDate.isBefore(filters.instructionDateTo.add(Duration(days: 1)))).toList();
+      } 
+      if (filters.checkDateFrom != null) {
+        result = result.where((e) => e.checkDate.isAfter(filters.checkDateFrom)).toList();
+      }
+      if (filters.checkDateTo != null) {
+        result = result.where((e) => e.checkDate.isBefore(filters.checkDateTo.add(Duration(days: 1)))).toList();
+      } 
+      
+      // result = result.where((e) => e.checkDate.isAfter(filters.minDate) && e.checkDate.isBefore(filters.maxDate.add(Duration(days: 1)))).toList();
     }
     result.sort((c1, c2) => c1.instructionNum.compareTo(c2.instructionNum));
     if (sort == InstructionSortStrings.instructionNum) {

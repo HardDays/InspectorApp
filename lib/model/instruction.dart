@@ -26,31 +26,57 @@ abstract class SortOrder {
 class InstructionFilters {
   final String instructionNum;
   final int instructionStatus;
-  final DateTime minDate;
-  final DateTime maxDate;
+  final DateTime instructionDateFrom;
+  final DateTime instructionDateTo;
+  final DateTime checkDateFrom;
+  final DateTime checkDateTo;
 
   InstructionFilters({
     this.instructionNum,
     this.instructionStatus,
-    this.minDate,
-    this.maxDate,
-  });
+    this.instructionDateFrom,
+    this.instructionDateTo,
+    this.checkDateFrom,
+    this.checkDateTo
+  }); 
 
   factory InstructionFilters.fromJson(Map<String, dynamic> json) {
     return InstructionFilters(
-      instructionNum: json['instructionNum'],
-      instructionStatus: json['instructionStatus'],
-      minDate: json['minDate'],
-      maxDate: json['maxDate'],
+      instructionNum: json['instructionNum'], 
+      instructionStatus: json['instructionStatus'], 
+      instructionDateFrom: json['instructionDateFrom'] != null ?  DateTime.parse(json['instructionDateFrom']) : DateTime(DateTime.now().year), 
+      instructionDateTo: json['instructionDateTo'] != null ?  DateTime.parse(json['instructionDateTo']) : DateTime.now(), 
+      checkDateFrom: json['checkDateFrom'] != null ? DateTime.parse(json['checkDateFrom']) : DateTime(DateTime.now().year), 
+      checkDateTo: json['checkDateTo'] != null ?  DateTime.tryParse(json['checkDateTo']) : DateTime.now(),  
     );
   }
 
-   Map<String, dynamic> toJson() {
+  InstructionFilters copyWith({
+    String instructionNum,
+    int instructionStatus,
+    DateTime instructionDateFrom,
+    DateTime instructionDateTo,
+    DateTime checkDateFrom,
+    DateTime checkDateTo
+  }) {
+    return InstructionFilters(
+      instructionNum: instructionNum ?? this.instructionNum,
+      instructionStatus: instructionStatus ?? this.instructionStatus,
+      instructionDateFrom: instructionDateFrom,
+      instructionDateTo: instructionDateTo,
+      checkDateFrom: checkDateFrom,
+      checkDateTo: checkDateTo
+    );
+  }
+
+  Map<String, dynamic> toJson() {
     return {
       'instructionStatus': instructionStatus,
       'instructionNum': instructionNum,
-      'minDate': minDate,
-      'maxDate': maxDate,
+      'instructionDateFrom': instructionDateFrom?.toIso8601String(),
+      'instructionDateTo': instructionDateTo?.toIso8601String(),
+      'checkDateFrom': checkDateFrom?.toIso8601String(),
+      'checkDateTo': checkDateTo?.toIso8601String()
     };
   }
 }

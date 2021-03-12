@@ -280,6 +280,12 @@ class ApiProvider {
     );
   }
 
+  Future removeReport(Report report) async {
+    return _request(
+      ()=> dio.delete(_reportsPath + '/${report.id}', )
+    );
+  }
+
   Future<dynamic> getReportStatusInfo(Report report) async {
     return _request(
       () => dio.get('$_reportsPath/${report.id}/status'),

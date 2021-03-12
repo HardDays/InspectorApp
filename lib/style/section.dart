@@ -32,10 +32,12 @@ class ProjectSection extends StatelessWidget {
                 child: Row(
                   children: [
                     if(description != null)
-                      Text(
+                      Flexible(
+                        child: Text(
                         description,
                         style: ProjectTextStyles.base
                             .apply(color: ProjectColors.black),
+                      ),
                       ),
                     if(child != null)
                       child,

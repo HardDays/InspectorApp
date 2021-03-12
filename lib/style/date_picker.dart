@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:inspector/style/colors.dart';
 import 'package:inspector/style/icons.dart';
 import 'package:inspector/style/input_title.dart';
 import 'package:inspector/style/text_field.dart';
@@ -8,6 +9,7 @@ class ProjectDatePicker extends StatelessWidget {
 
   final bool singleDate;
   final bool enabled;
+  final bool clearEnabled;
   final String title;
   final String hintText;
   final Function(String) validator;
@@ -22,11 +24,14 @@ class ProjectDatePicker extends StatelessWidget {
     this.values,
     this.onChanged,
     this.validator,
+    this.clearEnabled = false,
     this.enabled = true,
     this.singleDate = false,
   }) {
-    controller.text = values != null ? values.map((e) => DateFormat('dd.MM.yyyy').format(e)).join(' - ') : '';
+    controller.text = values != null ? _correctValues.map((e) => DateFormat('dd.MM.yyyy').format(e)).join(' - ') : '';
   }
+
+  List<DateTime> get _correctValues => values != null ? values.where((e)=> e != null).toList() : [];
 
   void _onTap(BuildContext context) async {
     if (enabled) {
@@ -60,11 +65,17 @@ class ProjectDatePicker extends StatelessWidget {
           context: context,
           locale: Locale('ru', 'RU'),
           initialDateRange: DateTimeRange(start: first, end: last),
-          firstDate: DateTime(2018),
+          firstDate: DateTime(1910),
           lastDate: DateTime(2050)
         ).then((value) => [value.start, value.end]);
-        onChanged(picked);
+          onChanged(picked);
       }
+    }
+  }
+
+  void _onClear() {
+    if (clearEnabled) {
+      onChanged([]);
     }
   }
 
@@ -100,9 +111,12 @@ class ProjectDatePicker extends StatelessWidget {
                   validator: validator,
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 13, right: 15),
-                child: ProjectIcons.calendarIcon(),
+              InkWell(
+                onTap: _onClear,
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 13, right: 15),
+                  child: (_correctValues.isNotEmpty && clearEnabled) ? Icon(Icons.close, color: ProjectColors.black,) : ProjectIcons.calendarIcon(),
+                ),
               ),
             ]
           ),

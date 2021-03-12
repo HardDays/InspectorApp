@@ -63,6 +63,10 @@ class ApiService {
     );
   }
 
+   Future removeReport(Report report) async {
+    await api.removeReport(report);
+  }
+
   Future<ReportStatusInfo> getReportStatusInfo(Report report) async => await _parse(
     () async => ReportStatusInfo.fromJson(await api.getReportStatusInfo(report)),
   );

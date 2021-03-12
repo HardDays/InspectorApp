@@ -443,12 +443,12 @@ class InstructionPage extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(top: 15), 
                       child: _buildReport(context, report, check, instruction, ()=> _onDiggReport(context, diggRequestCheck, report))
-                     ) : Container(),
-                    divider ? ProjectDivider() : Container(),
+                     ) : const SizedBox(),
+                    divider ? ProjectDivider() : const SizedBox(),
                   ],
                 ),
               ),
-              Align(
+              diggRequestCheck.checked ? Align(
                 alignment: Alignment.topRight,
                 child: Padding(
                   padding: const EdgeInsets.only(top: 18, right: 18),
@@ -458,7 +458,7 @@ class InstructionPage extends StatelessWidget {
                     rounded: false,
                   ),
                 ),
-              ),
+              ) : const SizedBox(),
             ],
           ),
           enabled: enabled,

@@ -42,7 +42,7 @@ abstract class ReportStatusIds {
 class Report {
 
   final int id;
-  // final int dbId;
+  final int userId;
   final String localId;
   final String error;
   final int instructionId;
@@ -63,7 +63,7 @@ class Report {
     this.id,
     this.localId,
     this.error,
-    //this.dbId,
+    this.userId,
     this.instructionId,
     this.checkId,
     this.violationNotPresent,
@@ -93,6 +93,7 @@ class Report {
   }
 
   Report copyWith({
+    int userId,
     bool violationNotPresent,
     String localId,
     String reportNum,
@@ -107,6 +108,7 @@ class Report {
       id: id,
       instructionId: instructionId, 
       checkId: checkId,
+      userId: userId ?? this.userId,
       localId: localId ?? this.localId,
       violationNotPresent: violationNotPresent ?? this.violationNotPresent,
       reportNum: reportNum ?? this.reportNum,
@@ -138,7 +140,7 @@ class Report {
     return Report(
       id: json['id'], 
       localId: json['localId'],
-      //dbId: json['dbId'],
+      userId: json['userId'],
       instructionId: json['instructionId'], 
       checkId: json['checkId'],
       reportNum: json['reportNum'] ?? 'Проект рапорта от ${DateFormat('dd.MM.yyyy').format(date)}',
@@ -160,7 +162,7 @@ class Report {
     final json = {
       'id': id,
       'localId': localId,
-      //'dbId': dbId,
+      'userId': userId,
       'instructionId': instructionId,
       'checkId': checkId,
       'violationNotPresent': stringified ? ((violationNotPresent ?? false) ? 1 : 0) : violationNotPresent,

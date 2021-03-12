@@ -43,6 +43,7 @@ class ProjectTextField extends StatelessWidget {
       keyboardType: inputType,
       onChanged: onChanged,
       decoration: InputDecoration(
+        errorMaxLines: 2,
         filled: !enabled,
         fillColor: enabled ? null : ProjectColors.grey,
         hintText: hintText,

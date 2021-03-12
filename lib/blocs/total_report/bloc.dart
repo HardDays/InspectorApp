@@ -91,6 +91,8 @@ class TotalReportDialogBloc extends Bloc<TotalReportDialogBlocEvent, TotalReport
 }
 
 class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {
+  static const tinaoAreas = {3496271, 3496272};
+
   TotalReportBloc(initialState) : super(initialState);
 
   int violationIndex = 0;
@@ -108,24 +110,28 @@ class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {
     return await _geoService.geocode(name);
   }
 
-  Future<Iterable<Area>> getAreas(String name) async {
-   // if (name.isNotEmpty) {
-      return await _dictionaryService.getAreas(name: name);
-    //}
+  Future<Iterable<Area>> getAreas(String name, bool tinao) async {
+    final areas = await _dictionaryService.getAreas(name: name);
+    if (tinao) {
+      return areas.where((e) => tinaoAreas.contains(e.id));
+    } else {
+      return areas;
+    }
   }
 
-  Future<Iterable<District>> getDistricts(String name) async {
+  Future<Iterable<District>> getDistricts(String name, bool tinao) async {
     final address = state.report.violation(violationIndex)?.violationAddress;
-    //if (address?.area?.id != null) {
-      return await _dictionaryService.getDitricts(name: name, areaId: address?.area?.id);
-    //}
+    final districts = await _dictionaryService.getDitricts(name: name, areaId: address?.area?.id);
+    if (tinao) {
+      return districts.where((e) => tinaoAreas.contains(e.areaId));
+    } else {
+      return districts;
+    }
   }
 
   Future<Iterable<Street>> getStreets(String name) async {
     final address = state.report.violation(violationIndex)?.violationAddress;
-   // if (address?.district?.id != null) {
-      return await _dictionaryService.getStreets(name: name, districtId: address?.district?.id);
-   // }
+    return await _dictionaryService.getStreets(name: name, districtId: address?.district?.id);
   }
 
   Future<Iterable<Address>> getAddresses(String houseNum) async {
@@ -313,21 +319,21 @@ class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {
           ),
         );
       } else if (event is SetViolationDistrictEvent) {
-        final area = await getArea(event.district?.areaId);
+        final area = event.district != null ? await getArea(event.district?.areaId) : violation.violationAddress.area;
         violation = violation.copyWith(
           violationAddress: Address(
             district: event.district,
-            area: area ?? violation.violationAddress.area
+            area: area
           ),
         );
       } else if (event is SetViolationStreetEvent) {
-        final area = await getArea(event.street?.areaId);
-        final district = await getDistrict(event.street?.districtId);
+        final area =  event.street != null ? await getArea(event.street?.areaId) : violation.violationAddress.area;
+        final district = event.street != null ? await getDistrict(event.street.districtId) : violation.violationAddress.district;
         violation = violation.copyWith(
           violationAddress: Address(
             street: event.street,
-            area: area ?? violation.violationAddress.area,
-            district: district ?? violation.violationAddress.district,
+            area: area,
+            district: district,
           ),
         );
       } else if (event is SetViolationAddressEvent) {
@@ -525,12 +531,16 @@ class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {
       final date = state.report.reportDate ?? DateTime.now();
       final lastNum = await _reportsService.lastNumber();
       // final number = state.report.reportNum ?? '$lastNum ${DateFormat('dd.MM.yyyy').format(date)}';
+      if (state.report.reportNum == null) {
+        await _reportsService.updateLastNumber();
+      }
       final number = state.report.reportNum ?? '$lastNum';
       final localId = state.report.localId ?? Uuid().v1();
 
       Report report = state.report;
       if (state.report.violationNotPresent) {
         report = report.copyWith(
+          userId: user?.id,
           localId: localId,
           reportStatus: status,
           reportDate: date,
@@ -565,24 +575,13 @@ class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {
         );
 
         report = report.copyWith(
+          userId: user?.id,
           localId: localId,
           reportStatus: status,
           reportDate: date,
           reportNum: number,
           reportAuthor: user,
           violations: violations,
-          // violation: violation.copyWith(
-          //   violators: event.violators,
-          //   photos: photos,
-          //   codexArticle: event.codexArticle,
-          //   violationDescription: event.violationDescription,
-          //   violationDate: violation.violationDate ?? date..subtract(Duration(minutes: 5)),
-          //   violationAddress: violation.violationAddress.copyWith(
-          //     specifiedAddress: event.specifiedAddress ,
-          //     latitude: location?.latitude,
-          //     longitude: location?.longitude
-          //   ),
-          // ),
         );
       }
       try {
@@ -590,13 +589,13 @@ class TotalReportBloc extends Bloc<TotalReportBlocEvent, TotalReportBlocState> {
         yield SuccessState(res, state.userLocation, state.violationLocation, reportStatusInfo: state.reportStatusInfo);
       } on ApiException catch (ex) {
         //final status = await _dictionaryService.getReportStatuses(id: ReportStatusIds.new_);
-        await _reportsService.create(report, error: '${ex.message} ${ex.details}', local: true);
-        yield ErrorState(ex, state.report, state.userLocation, state.violationLocation, reportStatusInfo: state.reportStatusInfo);
+        final res = await _reportsService.create(report, error: '${ex.message} ${ex.details}', local: true);
+        yield ErrorState(ex, res, state.userLocation, state.violationLocation, reportStatusInfo: state.reportStatusInfo);
       } catch (ex) {
         yield ErrorState(UnhandledException(ex.toString()), state.report, state.userLocation, state.violationLocation, reportStatusInfo: state.reportStatusInfo);
       }
     } else if (event is RemoveReportEvent) {
-      await _reportsService.removeLocal(state.report);
+      await _reportsService.remove(state.report);
          DeletedState(state.report, state.userLocation, state.violationLocation, reportStatusInfo: state.reportStatusInfo); 
     } else if (event is SetViolationLocationEvent) {
       yield TotalReportBlocState(state.report, state.userLocation, event.location, reportStatusInfo: state.reportStatusInfo);

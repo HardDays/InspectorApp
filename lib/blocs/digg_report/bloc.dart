@@ -34,10 +34,15 @@ class DiggReportBloc extends Bloc<DiggReportBlocEvent, DiggReportBlocState> {
       final photos = List.generate(photosBase64.length, (i) => Photo(data: photosBase64[i], name: event.photoNames[i]));
       final date = state.report.reportDate ?? DateTime.now();
       final lastNum = await _persistanceService.getReportNumber();
+      if (state.report.reportNum == null) {
+        await _reportsService.updateLastNumber();
+      }
       final number = state.report.reportNum ?? '$lastNum';
       final localId = state.report.localId ?? Uuid().v1();
+      final user = await _persistanceService.getUser();
 
       report = report.copyWith(
+        userId: user?.id,
         localId: localId,
         reportStatus: status,
         photos: photos,
@@ -78,8 +83,13 @@ class DiggReportBloc extends Bloc<DiggReportBlocEvent, DiggReportBlocState> {
         yield ErrorState(UnhandledException(ex.toString()), state.status, state.report);
       }
     } else if (event is RemoveReportEvent) {
-      await _reportsService.removeLocal(state.report);
-      yield DeletedState(state.status, state.report); 
+      try {
+        await _reportsService.remove(state.report);
+        yield DeletedState(state.status, state.report); 
+      } on ApiException catch (ex) {
+        yield ErrorState(ex, state.status, state.report);
+      } catch (ex) {
+      }
     } else if (event is FlushEvent) {
       yield DiggReportBlocState(state.status, state.report);
     }

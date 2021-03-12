@@ -6,16 +6,28 @@ class LoadEvent extends InstructionFiltersBlocEvent {
 
 }
 
-class SetMinDateEvent extends InstructionFiltersBlocEvent {
+class SetInstructionDateFromEvent extends InstructionFiltersBlocEvent {
   final DateTime date;
 
-  SetMinDateEvent(this.date);
+  SetInstructionDateFromEvent(this.date);
 }
 
-class SetMaxDateEvent extends InstructionFiltersBlocEvent {
+class SetInstructionDateToEvent extends InstructionFiltersBlocEvent {
   final DateTime date;
 
-  SetMaxDateEvent(this.date);
+  SetInstructionDateToEvent(this.date);
+}
+
+class SetCheckDateFromEvent extends InstructionFiltersBlocEvent {
+  final DateTime date;
+
+  SetCheckDateFromEvent(this.date);
+}
+
+class SetCheckDateToEvent extends InstructionFiltersBlocEvent {
+  final DateTime date;
+
+  SetCheckDateToEvent(this.date);
 }
 
 class SetInstructionNumEvent extends InstructionFiltersBlocEvent {
