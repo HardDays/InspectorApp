@@ -267,7 +267,7 @@ class DepartmentControlLocalSqliteServiceClient extends ObjectDBService
           object.contractor?.id,
           object.cameraCount,
           object.violationsCount,
-          object.lastSurveyDate?.toIso8601String(),
+          object.lastSurveyDate?.millisecondsSinceEpoch,
           object.rowColor,
           object.geometry?.first?.points?.first?.x,
           object.geometry?.first?.points?.first?.y,
@@ -328,7 +328,7 @@ class DepartmentControlLocalSqliteServiceClient extends ObjectDBService
       district: json['district'],
       externalId: json['externalId'],
       kind: json['kind'],
-      lastSurveyDate: json['lastSurveyDate'] != null ? DateTime.parse(json['lastSurveyDate']) : null,
+      lastSurveyDate: json['lastSurveyDate'] != null ? DateTime.fromMillisecondsSinceEpoch(json['lastSurveyDate']) : null,
       name: json['controlObjectName'],
       rowColor: json['rawColor'],
       type: ObjectType(
