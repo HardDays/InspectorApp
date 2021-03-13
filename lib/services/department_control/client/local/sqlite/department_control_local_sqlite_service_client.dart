@@ -1,3 +1,4 @@
+import 'package:inspector/model/department_control/contractor.dart';
 import 'package:inspector/model/department_control/object_type.dart';
 import 'package:inspector/model/department_control/perform_control.dart';
 import 'package:inspector/model/department_control/control_result_search_result.dart';
@@ -35,8 +36,19 @@ class _ControlObjectsSql {
   ''';
 
   static const SELECT_QUERY = '''
-    SELECT * FROM $TABLE_NAME 
-    INNER JOIN ${_ObjectTypesSql.TABLE_NAME} ON $TABLE_NAME.typeId = ${_ObjectTypesSql.TABLE_NAME}.typeId
+    SELECT 
+      *,
+      $TABLE_NAME.id AS controlObjectId,
+      $TABLE_NAME.name AS controlObjectName,
+      ${_ObjectTypesSql.TABLE_NAME}.id AS typeId, 
+      ${_ObjectTypesSql.TABLE_NAME}.name AS typeName, 
+      ${_ObjectTypesSql.TABLE_NAME}.code AS typeCode,
+      ${_ContractorsSql.TABLE_NAME}.id AS defaultContractorId,
+      ${_ContractorsSql.TABLE_NAME}.name AS contractorName,
+      ${_ContractorsSql.TABLE_NAME}.inn AS contractorInn
+    FROM $TABLE_NAME 
+    LEFT JOIN ${_ObjectTypesSql.TABLE_NAME} ON $TABLE_NAME.typeId = ${_ObjectTypesSql.TABLE_NAME}.id
+    LEFT JOIN ${_ContractorsSql.TABLE_NAME} ON $TABLE_NAME.defaultContractorId = ${_ContractorsSql.TABLE_NAME}.id
     LIMIT ?
     OFFSET ?;
   ''';
@@ -68,14 +80,14 @@ class _ObjectTypesSql {
 
   static const CREATE_TABLE_QUERY = '''
     CREATE TABLE IF NOT EXISTS $TABLE_NAME(
-      typeId INTEGER PRIMARY KEY,
-      typeName TEXT,
-      typeCode TEXT
+      id INTEGER PRIMARY KEY,
+      name TEXT,
+      code TEXT
     );
   ''';
 
   static const INSERT_QUERY = '''
-    INSERT OR IGNORE INTO $TABLE_NAME (typeId, typeName, typeCode) VALUES (?, ?, ?);
+    INSERT OR IGNORE INTO $TABLE_NAME (id, name, code) VALUES (?, ?, ?);
   ''';
 }
 
@@ -308,7 +320,7 @@ class DepartmentControlLocalSqliteServiceClient extends ObjectDBService
 
   ControlObject _fromSql(Map<String, dynamic> json) 
     => ControlObject(
-      id: json['id'],
+      id: json['controlObjectId'],
       address: json['address'],
       area: json['area'],
       balanceOwner: json['balanceOwner'],
@@ -317,12 +329,17 @@ class DepartmentControlLocalSqliteServiceClient extends ObjectDBService
       externalId: json['externalId'],
       kind: json['kind'],
       lastSurveyDate: json['lastSurveyDate'] != null ? DateTime.parse(json['lastSurveyDate']) : null,
-      name: json['name'],
+      name: json['controlObjectName'],
       rowColor: json['rawColor'],
       type: ObjectType(
         id: json['typeId'],
         name: json['typeName'],
         code: json['typeCode'],
+      ),
+      contractor: Contractor(
+        id: json['defaultContractorId'],
+        name: json['contractorName'],
+        inn: json['contractorInn'],
       ),
       violationsCount: json['violationsCount'],
     );
