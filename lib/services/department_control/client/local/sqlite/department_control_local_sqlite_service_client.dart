@@ -10,6 +10,7 @@ import 'package:inspector/services/department_control/client/request.dart';
 import 'package:inspector/services/objectdb/objectdb_service.dart';
 import 'package:objectdb/objectdb.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:inspector/extensions.dart';
 
 class _ControlObjectsSql {
   static const TABLE_NAME = 'ControlObjects';
@@ -37,18 +38,30 @@ class _ControlObjectsSql {
 
   static const SELECT_QUERY = '''
     SELECT 
-      *,
-      $TABLE_NAME.id AS controlObjectId,
-      $TABLE_NAME.name AS controlObjectName,
+      $TABLE_NAME.id, 
+      $TABLE_NAME.name,
+      $TABLE_NAME.address,
+      $TABLE_NAME.area,
+      $TABLE_NAME.balanceOwner,
+      $TABLE_NAME.cameraCount,
+      $TABLE_NAME.district,
+      $TABLE_NAME.externalId,
+      $TABLE_NAME.kind,
+      $TABLE_NAME.lastSurveyDate,
+      $TABLE_NAME.rowColor,
+      $TABLE_NAME.violationsCount,
       ${_ObjectTypesSql.TABLE_NAME}.id AS typeId, 
       ${_ObjectTypesSql.TABLE_NAME}.name AS typeName, 
       ${_ObjectTypesSql.TABLE_NAME}.code AS typeCode,
       ${_ContractorsSql.TABLE_NAME}.id AS defaultContractorId,
       ${_ContractorsSql.TABLE_NAME}.name AS contractorName,
-      ${_ContractorsSql.TABLE_NAME}.inn AS contractorInn
+      ${_ContractorsSql.TABLE_NAME}.inn AS contractorInn,
+      ABS(? - x) + ABS(? - y) AS distance
     FROM $TABLE_NAME 
     LEFT JOIN ${_ObjectTypesSql.TABLE_NAME} ON $TABLE_NAME.typeId = ${_ObjectTypesSql.TABLE_NAME}.id
     LEFT JOIN ${_ContractorsSql.TABLE_NAME} ON $TABLE_NAME.defaultContractorId = ${_ContractorsSql.TABLE_NAME}.id
+    _where_
+    _order_by_
     LIMIT ?
     OFFSET ?;
   ''';
@@ -162,10 +175,19 @@ class DepartmentControlLocalSqliteServiceClient extends ObjectDBService
   Future<List<ControlObject>> getControlObjects(
     DepartmentControlObjectsRequest request,
   ) =>
-      _db
-          .then((db) => db.rawQuery(
-              _ControlObjectsSql.SELECT_QUERY, [request.to, request.from]))
-          .then((x) => x.map((e) => _fromSql(e)).toList());
+      _db.then((db) =>  db.rawQuery(
+            _ControlObjectsSql.SELECT_QUERY
+                .replaceAll(
+                  '_where_',
+                  _generateWhereStatement(request),
+                )
+                .replaceAll(
+                  '_order_by_',
+                  _generateOrderByStatement(request),
+                ).println(),
+            [request.userPositionX, request.userPositionY, request.to, request.from].println()),
+          )
+          .then((x) => x.map((e) => _fromSql(e.println())).toList());
 
   @override
   Future<ControlResultSearchResult> getControlSearchResultByIds(
@@ -318,29 +340,75 @@ class DepartmentControlLocalSqliteServiceClient extends ObjectDBService
       .then((x) => x.copyWith(loaded: value))
       .then((m) => saveMetadata(m));
 
-  ControlObject _fromSql(Map<String, dynamic> json) 
-    => ControlObject(
-      id: json['controlObjectId'],
-      address: json['address'],
-      area: json['area'],
-      balanceOwner: json['balanceOwner'],
-      cameraCount: json['cameraCount'],
-      district: json['district'],
-      externalId: json['externalId'],
-      kind: json['kind'],
-      lastSurveyDate: json['lastSurveyDate'] != null ? DateTime.fromMillisecondsSinceEpoch(json['lastSurveyDate']) : null,
-      name: json['controlObjectName'],
-      rowColor: json['rawColor'],
-      type: ObjectType(
-        id: json['typeId'],
-        name: json['typeName'],
-        code: json['typeCode'],
-      ),
-      contractor: Contractor(
-        id: json['defaultContractorId'],
-        name: json['contractorName'],
-        inn: json['contractorInn'],
-      ),
-      violationsCount: json['violationsCount'],
-    );
+  ControlObject _fromSql(Map<String, dynamic> json) => ControlObject(
+        id: json['id'],
+        address: json['address'],
+        area: json['area'],
+        balanceOwner: json['balanceOwner'],
+        cameraCount: json['cameraCount'],
+        district: json['district'],
+        externalId: json['externalId'],
+        kind: json['kind'],
+        lastSurveyDate: json['lastSurveyDate'] != null
+            ? DateTime.fromMillisecondsSinceEpoch(json['lastSurveyDate'])
+            : null,
+        name: json['name'],
+        rowColor: json['rowColor'],
+        type: ObjectType(
+          id: json['typeId'],
+          name: json['typeName'],
+          code: json['typeCode'],
+        ),
+        contractor: Contractor(
+          id: json['defaultContractorId'],
+          name: json['contractorName'],
+          inn: json['contractorInn'],
+        ),
+        violationsCount: json['violationsCount'],
+        geometry: [],
+        violations: [],
+      );
+
+  String _generateWhereStatement(DepartmentControlObjectsRequest request) {
+    List<String> params = <String>[
+      if (request.camerasExist != null)
+        request.camerasExist ? 'cameraCount > 0' : 'cameraCount = 0',
+      if (request.userPositionX != null &&
+          request.userPositionY != null &&
+          request.searchRadius != null &&
+          request.onlyNearObjects == true)
+        '(distance < ${request.searchRadius / 11111} OR distance IS NULL)',
+      if (request.dcObjectTypesIds != null)
+        'typeId = ${request.dcObjectTypesIds}',
+      if (request.dcObjectKind != null) 'kind = "${request.dcObjectKind}"',
+      if (request.balanceOwner != null)
+        'balanceOwner LIKE "${request.balanceOwner}%"',
+      if(request.objectName != null)
+        'name LIKE "${request.objectName}%"',
+      if(request.externalId != null)
+        'externalId = ${request.externalId}',
+      if(request.daysFromLastSurvey != null && request.daysFromLastSurvey != 0)
+        '${DateTime.now().millisecondsSinceEpoch} - lastSurveyDate >= ${request.daysFromLastSurvey * Duration.millisecondsPerDay}',
+      if(request.lastSurveyDateFrom != null)
+        '${request.lastSurveyDateFrom.millisecondsSinceEpoch} < lastSurveyDate',
+      if(request.lastSurveyDateTo != null)
+        '${request.lastSurveyDateTo.millisecondsSinceEpoch + Duration.millisecondsPerDay} > lastSurveyDate',
+    ];
+    return params.isNotEmpty ? 'WHERE ${params.join(" AND ")}' : '';
+  }
+
+  String _generateOrderByStatement(DepartmentControlObjectsRequest request) {
+    final sortStrings = <String>[
+      if(request.sort == 'type')
+        'typeId ASC',
+      if (['name', 'address', 'lastSurveyDate'].contains(request.sort))
+        '${_ControlObjectsSql.TABLE_NAME}.${request.sort} ASC',
+      if(request.userPositionX != null &&
+          request.userPositionY != null &&
+          request.searchRadius != null &&
+          request.onlyNearObjects == true)
+          'distance ASC',
+    ];
+    return sortStrings.isNotEmpty ? 'ORDER BY ${sortStrings.join(" , ")}' : '';
+  }
 }

@@ -14,6 +14,7 @@ import 'package:inspector/services/department_control/client/request.dart';
 import 'package:inspector/services/department_control/client/response.dart';
 import 'package:inspector/services/location/location.dart';
 import 'package:inspector/services/network_status_service/network_status.dart';
+import 'package:inspector/extensions.dart';
 
 class DepartmentControlService {
   DepartmentControlService(this._apiClient, this._localClient);
@@ -40,7 +41,7 @@ class DepartmentControlService {
       searchRadius: filtersState.searchRadius,
       daysFromLastSurvey: filtersState.daysFromLastSurvey,
       dcObjectTypesIds: filtersState.dcObjectType?.id,
-      dcObjectKind: filtersState.dcObjectType?.name,
+      dcObjectKind: filtersState.dcObjectKind?.name,
       externalId: filtersState.externalId,
       objectName: filtersState.objectName,
       areaIds: filtersState.area?.id,
@@ -65,8 +66,9 @@ class DepartmentControlService {
     return location.when(
       (longitude, latitude) => client.getControlObjects(
         request.copyWith(
-          userPositionX: longitude,
-          userPositionY: latitude,
+          userPositionX: latitude,
+          userPositionY: longitude,
+          onlyNearObjects: true,
         ),
       ),
       noLocationProvided: () => client.getControlObjects(request),
