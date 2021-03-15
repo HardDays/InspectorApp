@@ -166,28 +166,48 @@ class DepartmentControlLocalSqliteServiceClient extends ObjectDBService
   }
 
   @override
-  Future<ControlObject> getControlObjectById(int dcObjectId) {
-    // TODO: implement getControlObjectById
-    throw UnimplementedError();
-  }
+  Future<ControlObject> getControlObjectById(int dcObjectId) => _db
+      .then(
+        (db) => db.rawQuery(
+          _ControlObjectsSql.SELECT_QUERY
+              .replaceAll(
+                '_where_',
+                'id = ?',
+              )
+              .replaceAll(
+                '_order_by_',
+                '',
+              ),
+          [null, null, dcObjectId, 0, 1],
+        ),
+      )
+      .then((results) => results.first)
+      .then(_fromSql);
 
   @override
   Future<List<ControlObject>> getControlObjects(
     DepartmentControlObjectsRequest request,
   ) =>
-      _db.then((db) =>  db.rawQuery(
-            _ControlObjectsSql.SELECT_QUERY
-                .replaceAll(
-                  '_where_',
-                  _generateWhereStatement(request),
-                )
-                .replaceAll(
-                  '_order_by_',
-                  _generateOrderByStatement(request),
-                ).println(),
-            [request.userPositionX, request.userPositionY, request.to, request.from].println()),
+      _db
+          .then(
+            (db) => db.rawQuery(
+                _ControlObjectsSql.SELECT_QUERY
+                    .replaceAll(
+                      '_where_',
+                      _generateWhereStatement(request),
+                    )
+                    .replaceAll(
+                      '_order_by_',
+                      _generateOrderByStatement(request),
+                    ),
+                [
+                  request.userPositionX,
+                  request.userPositionY,
+                  request.to,
+                  request.from,
+                ]),
           )
-          .then((x) => x.map((e) => _fromSql(e.println())).toList());
+          .then((x) => x.map((e) => _fromSql(e)).toList());
 
   @override
   Future<ControlResultSearchResult> getControlSearchResultByIds(
@@ -383,15 +403,13 @@ class DepartmentControlLocalSqliteServiceClient extends ObjectDBService
       if (request.dcObjectKind != null) 'kind = "${request.dcObjectKind}"',
       if (request.balanceOwner != null)
         'balanceOwner LIKE "${request.balanceOwner}%"',
-      if(request.objectName != null)
-        'name LIKE "${request.objectName}%"',
-      if(request.externalId != null)
-        'externalId = ${request.externalId}',
-      if(request.daysFromLastSurvey != null && request.daysFromLastSurvey != 0)
+      if (request.objectName != null) 'name LIKE "${request.objectName}%"',
+      if (request.externalId != null) 'externalId = ${request.externalId}',
+      if (request.daysFromLastSurvey != null && request.daysFromLastSurvey != 0)
         '${DateTime.now().millisecondsSinceEpoch} - lastSurveyDate >= ${request.daysFromLastSurvey * Duration.millisecondsPerDay}',
-      if(request.lastSurveyDateFrom != null)
+      if (request.lastSurveyDateFrom != null)
         '${request.lastSurveyDateFrom.millisecondsSinceEpoch} < lastSurveyDate',
-      if(request.lastSurveyDateTo != null)
+      if (request.lastSurveyDateTo != null)
         '${request.lastSurveyDateTo.millisecondsSinceEpoch + Duration.millisecondsPerDay} > lastSurveyDate',
     ];
     return params.isNotEmpty ? 'WHERE ${params.join(" AND ")}' : '';
@@ -399,15 +417,14 @@ class DepartmentControlLocalSqliteServiceClient extends ObjectDBService
 
   String _generateOrderByStatement(DepartmentControlObjectsRequest request) {
     final sortStrings = <String>[
-      if(request.sort == 'type')
-        'typeId ASC',
+      if (request.sort == 'type') 'typeId ASC',
       if (['name', 'address', 'lastSurveyDate'].contains(request.sort))
         '${_ControlObjectsSql.TABLE_NAME}.${request.sort} ASC',
-      if(request.userPositionX != null &&
+      if (request.userPositionX != null &&
           request.userPositionY != null &&
           request.searchRadius != null &&
           request.onlyNearObjects == true)
-          'distance ASC',
+        'distance ASC',
     ];
     return sortStrings.isNotEmpty ? 'ORDER BY ${sortStrings.join(" , ")}' : '';
   }
