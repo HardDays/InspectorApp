@@ -62,6 +62,16 @@ class ControlBackgroundServiceBloc extends Bloc<
       }
       showed = true;
     }
+    if (_networkStatus?.connectionStatus == ConnectionStatus.online) {
+      final operation = departmentControlService.getUploadOperation((e) async => notificationBloc.add(SnackBarNotificationEvent(
+              'Ошибка ${e.message}: ${e.details}')));
+      backgroundLoadingBloc.add(
+        BackgroundLoadingBlocEvent.updateStatusTextEvent(
+          'Синхронизация результатов обследования',
+        ),
+      );
+      backgroundLoadingBloc.add(BackgroundLoadingBlocEvent.addOperationToQueueEvent(operation));
+    }
   }
 
   Stream<ControlBackgroundServiceBlocState> _onAcceptLoadingEvent(

@@ -220,12 +220,14 @@ class DepartmentControlLocalSqliteServiceClient extends ObjectDBService
       DepartmentControlSearchResultByIdsRequest request)
         => objectDb
           .then(
-            (db) => db.first(
+            (db) async {
+              return db.first(
               {
                 'id': request.dcControlResultId,
                 'type': 'registerControlRequest',
               },
-            ),
+            );
+            },
           )
           .then(
             (value) {
@@ -246,38 +248,9 @@ class DepartmentControlLocalSqliteServiceClient extends ObjectDBService
   @override
   Future<List<ControlResultSearchResult>> getControlSearchResults(
           DepartmentControlSearchResultsRequest request) =>
-      objectDb
-          .then(
-            (db) => db.find(
-              {
-                'type': 'registerControlRequest',
-              },
-            ),
-          )
-          .then(
-            (value) => value
-                .map(
-                  (e) {
-                    DepartmentControlRegisterControlRequest request;
-                    try { // TODO: lmao, no comments
-                      request = DepartmentControlRegisterControlRequest.fromJson(e['request']);
-                    } catch (ex) {
-                      request = DepartmentControlRegisterControlRequest(e['request']['object'], e['request']['controlResult']);
-                    }
-                    return request
-                      .copyWith
-                      .controlResult(id: e['id']);
-                  },
-                )
-                .toList(),
-          )
+      registerRequests
           .then((value) =>
               value.where((element) => element.object.id == request.dcObjectId))
-          .then((value) => value
-              .map((e) =>
-                  _readDepartmentControlRegisterControlRequest(e))
-              .toList())
-          .then(Future.wait)
           .then(
             (value) => value
                 .map(_fromDepartmentControlRegisterControlRequest)
@@ -306,10 +279,103 @@ class DepartmentControlLocalSqliteServiceClient extends ObjectDBService
     throw UnimplementedError();
   }
 
+  Future<Iterable<DepartmentControlRegisterControlRequest>> get _registerRequests
+    =>  objectDb
+          .then(
+            (db) async {
+              //await db.remove({});
+              return db.find(
+              {
+                'type': 'registerControlRequest',
+              },
+            );
+            },
+          )
+          .then(
+            (value) => value
+                .map(
+                  (e) {
+                    DepartmentControlRegisterControlRequest request;
+                    try { // TODO: lmao, no comments
+                      request = DepartmentControlRegisterControlRequest.fromJson(e['request']);
+                    } catch (ex) {
+                      e.println();
+                      request = DepartmentControlRegisterControlRequest(e['request']['object'], e['request']['controlResult']);
+                    }
+                    return request
+                      .copyWith
+                      .controlResult(id: e['id']);
+                  },
+                )
+                .toList(),
+          );
+
+  Future<Iterable<DepartmentControlUpdateControlRequest>> get updateRequests
+    => _updateRequests.then((value) => value
+              .map((e) =>
+                  _readDepartmentControlUpdateControlRequest(e))
+              .toList())
+              .then((value) => Future.wait(value));
+
+  Future<Iterable<DepartmentControlUpdateControlRequest>> get _updateRequests
+    =>  objectDb
+          .then(
+            (db) => db.find(
+              {
+                'type': 'updateControlRequest',
+              },
+            ),
+          )
+          .then(
+            (value) => value
+                .map(
+                  (e) {
+                    DepartmentControlUpdateControlRequest request;
+                    try { // TODO: lmao, no comments
+                      request = DepartmentControlUpdateControlRequest.fromJson(e['request']);
+                    } catch (ex) {
+                      request = DepartmentControlUpdateControlRequest(e['request']['object'], e['request']['dcControlResultId'], e['request']['violation']);
+                    }
+                    return request;
+                  },
+                )
+                .toList(),
+          );
+
   @override
-  // TODO: implement registerRequests
   Future<Iterable<DepartmentControlRegisterControlRequest>>
-      get registerRequests => throw UnimplementedError();
+      get registerRequests => _registerRequests
+          .then((value) => value
+              .map((e) =>
+                  _readDepartmentControlRegisterControlRequest(e))
+              .toList())
+              .then((value) => Future.wait(value));
+
+  @override
+  Future<Iterable<DepartmentControlRemoveControlRequest>>
+      get removeRequests => objectDb
+          .then(
+            (db) => db.find(
+              {
+                'type': 'removeControlRequest',
+              },
+            ),
+          )
+          .then(
+            (value) => value
+                .map(
+                  (e) {
+                    DepartmentControlRemoveControlRequest request;
+                    try { // TODO: lmao, no comments
+                      request = DepartmentControlRemoveControlRequest.fromJson(e['request']);
+                    } catch (ex) {
+                      request = DepartmentControlRemoveControlRequest(e['request']['object'], e['request']['resultId']);
+                    }
+                    return request;
+                  },
+                )
+                .toList(),
+          );
 
   @override
   Future<void> removeControlResult(
@@ -554,10 +620,16 @@ class DepartmentControlLocalSqliteServiceClient extends ObjectDBService
 
   Future<int> get _nextControlResultId => objectDb.then((db) async {
         final metadata = await this.metadata;
-        saveMetadata(metadata.copyWith(
+        await saveMetadata(metadata.copyWith(
             nextControlResultId: metadata.nextControlResultId + 1));
         return metadata.nextControlResultId;
       });
+  
+  Future<void> _clearId() async {
+    final metadata = await this.metadata;
+    await saveMetadata(metadata.copyWith(
+            nextControlResultId: 0));
+  }
 
   Future<DCPhoto> _savePhoto(DCPhoto photo) async {
     final fileName = await ImagesService.saveImage(base64Decode(photo.data));
@@ -676,4 +748,30 @@ class DepartmentControlLocalSqliteServiceClient extends ObjectDBService
                               photos: it.photos,
                             )),
                   );
+
+  @override
+  Future<void> removeLocalRequests() async { 
+    await _registerRequests.then((value) => value.forEach((element) async { 
+      if(element.controlResult.violation != null) {
+        element.controlResult.violation.photos.forEach((photo) async {
+          await ImagesService.removeImage(photo.data);
+        });
+      }
+    }));
+    await _updateRequests.then((value) => value.forEach((element) async { 
+      if(element.violation != null) {
+        element.violation.photos.forEach((photo) async {
+          await ImagesService.removeImage(photo.data);
+        });
+      }
+    }));
+    await objectDb.then((db) async {
+      ['registerControlRequest', 'removeControlRequest', 'updateControlRequest'].forEach((type) async {
+        await db.remove({
+          'type': type,
+        });
+      });
+    });
+    await _clearId();
+  }
 }

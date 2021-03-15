@@ -1,3 +1,4 @@
+import 'package:async/async.dart';
 import 'package:inspector/blocs/control_filters/state.dart';
 import 'package:inspector/model/department_control/control_object.dart';
 import 'package:inspector/model/department_control/control_result.dart';
@@ -255,4 +256,48 @@ class DepartmentControlService {
   void cancelLoading() {
     _canceled = true;
   }
+
+  CancelableOperation getUploadOperation(Future<void> Function(ApiException) exceptionHandler) => CancelableOperation.fromFuture(Future(() async {
+    (await _localClient.registerRequests).let((Iterable<DepartmentControlRegisterControlRequest> registerRequests) async {
+      print('registerRequests: ${registerRequests.length}');
+      final it = registerRequests.iterator;
+      int t = 0;
+      while(!_canceled && it.moveNext()) {
+        try {
+          print('registerRequests: $t/${registerRequests.length}');
+          _apiClient.registerControlResult(it.current);
+          t++;
+        } on ApiException catch (e) {
+          await exceptionHandler(e);
+        }
+      }
+    });
+    (await _localClient.removeRequests).let((removeRequests) async {
+      final it = removeRequests.iterator;
+      int t = 0;
+      while(!_canceled && it.moveNext()) {
+        try {
+          print('registerRequests: $t/${removeRequests.length}');
+          _apiClient.removeControlResult(it.current);
+          t++;
+        } on ApiException catch (e) {
+          await exceptionHandler(e);
+        }
+      }
+    });
+    (await _localClient.updateRequests).let((updateRequests) async {
+      final it = updateRequests.iterator;
+      int t = 0;
+      while(!_canceled && it.moveNext()) {
+        try {
+          print('registerRequests: $t/${updateRequests.length}');
+          _apiClient.updateControlResult(it.current);
+          t++;
+        } on ApiException catch (e) {
+          await exceptionHandler(e);
+        }
+      }
+    });
+    await _localClient.removeLocalRequests();
+  }));
 }
