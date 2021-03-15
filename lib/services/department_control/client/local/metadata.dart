@@ -10,6 +10,7 @@ abstract class DepartmentControlLocalServiceMetadata
     bool loaded, {
     DateTime lastUpdatedDate,
     int count,
+    int nextControlResultId,
   }) = _DepartmentControlLocalServiceMetadata;
 
   factory DepartmentControlLocalServiceMetadata.fromJson(

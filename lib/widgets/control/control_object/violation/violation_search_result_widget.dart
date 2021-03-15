@@ -36,16 +36,17 @@ class ViolationSearchResultWidget extends StatelessWidget {
       onCompleted: _canCreatePerformControl ? onCompleted : null,
       onNotCompleted: _canCreatePerformControl ? onNotCompleted : null,
       onRemove: _canBeDeleted ? onRemove : null,
-      onEdit: _canBeDeleted ? onEdit : null,
+      onEdit: _canBeUpdated ? onEdit : null,
     );
   }
 
   bool get _canCreatePerformControl =>
       !['Новый', 'Снят с контроля']
-          .contains(searchResult.violation.violationStatus.name) &&
-      (['ОАТИ', 'АК'].contains(searchResult.violation.source.name) ||
-          (searchResult.violation.source.name == 'ЦАФАП' &&
+          .contains(searchResult.violation.violationStatus?.name) &&
+      (['ОАТИ', 'АК'].contains(searchResult.violation?.source?.name) ||
+          (searchResult.violation?.source?.name == 'ЦАФАП' &&
               searchResult.violation.cafapViolationConfirmed));
 
-  bool get _canBeDeleted => searchResult.violation.violationStatus.name == 'Новое';
+  bool get _canBeDeleted => _canBeUpdated || searchResult.violation?.violationStatus == null;
+  bool get _canBeUpdated => searchResult.violation?.violationStatus?.name == 'Новое';
 }

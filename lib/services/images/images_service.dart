@@ -67,7 +67,7 @@ class ImagesService {
 
   static Future<String> saveImage(Uint8List image) async {
     String fileName = Uuid().v1();
-    final dir = '${(await getApplicationDocumentsDirectory()).path}/images/';
+    final dir = '${(await getApplicationDocumentsDirectory()).path}/images';
     final file = File('$dir/$fileName');
     file.create(recursive: true);
     await file.writeAsBytes(image);
@@ -75,9 +75,9 @@ class ImagesService {
   }
 
   static Future<Uint8List> readImage(String name) async
-    => File('${(await getApplicationDocumentsDirectory()).path}/images//$name').readAsBytes();
+    => File('${(await getApplicationDocumentsDirectory()).path}/images/$name').readAsBytes();
 
   static Future<void> removeImage(String name) async
-    => File('${(await getApplicationDocumentsDirectory()).path}/images//$name').delete();
+    => File('${(await getApplicationDocumentsDirectory()).path}/images/$name').delete();
 
 }

@@ -83,6 +83,7 @@ class ControlViolationWidgetState extends State<ControlViolationWidget> {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              if(widget.source != null)
               Container(
                 padding: const EdgeInsets.only(left: 7, right: 7),
                 alignment: Alignment.center,
@@ -133,7 +134,7 @@ class ControlViolationWidgetState extends State<ControlViolationWidget> {
                                     ),
                                   ),
                                   Text(
-                                    widget.violationName.name,
+                                    widget.violationName?.name ?? '',
                                     style: ProjectTextStyles.base
                                         .apply(color: ProjectColors.black),
                                   ),
@@ -190,7 +191,7 @@ class ControlViolationWidgetState extends State<ControlViolationWidget> {
                                   margin: EdgeInsets.only(
                                       top: 15, right: _actions ? 15 : 0),
                                   child: Text(
-                                    widget.violationStatus.name,
+                                    widget.violationStatus?.name ?? 'Создано локально',
                                     style: ProjectTextStyles.smallBold
                                         .apply(color: ProjectColors.cyan),
                                   ),

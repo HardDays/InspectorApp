@@ -1,12 +1,18 @@
+import 'dart:convert';
+
 import 'package:inspector/model/department_control/contractor.dart';
+import 'package:inspector/model/department_control/dcphoto.dart';
+import 'package:inspector/model/department_control/dcviolation.dart';
 import 'package:inspector/model/department_control/object_type.dart';
 import 'package:inspector/model/department_control/perform_control.dart';
 import 'package:inspector/model/department_control/control_result_search_result.dart';
 import 'package:inspector/model/department_control/control_result.dart';
 import 'package:inspector/model/department_control/control_object.dart';
+import 'package:inspector/model/department_control/violation_search_result.dart';
 import 'package:inspector/services/department_control/client/local/department_control_local_service.dart';
 import 'package:inspector/services/department_control/client/local/metadata.dart';
 import 'package:inspector/services/department_control/client/request.dart';
+import 'package:inspector/services/images/images_service.dart';
 import 'package:inspector/services/objectdb/objectdb_service.dart';
 import 'package:objectdb/objectdb.dart';
 import 'package:sqflite/sqflite.dart';
@@ -211,23 +217,86 @@ class DepartmentControlLocalSqliteServiceClient extends ObjectDBService
 
   @override
   Future<ControlResultSearchResult> getControlSearchResultByIds(
-      DepartmentControlSearchResultByIdsRequest request) {
-    // TODO: implement getControlSearchResultByIds
-    throw UnimplementedError();
-  }
+      DepartmentControlSearchResultByIdsRequest request)
+        => objectDb
+          .then(
+            (db) => db.first(
+              {
+                'id': request.dcControlResultId,
+                'type': 'registerControlRequest',
+              },
+            ),
+          )
+          .then(
+            (value) {
+              DepartmentControlRegisterControlRequest request;
+              try { // TODO: lmao, no comments
+                request = DepartmentControlRegisterControlRequest.fromJson(value['request']);
+              } catch (ex) {
+                request = DepartmentControlRegisterControlRequest(value['request']['object'], value['request']['controlResult']);
+              }
+              return request
+                .copyWith
+                .controlResult(id: value['id']);
+            },
+          )
+          .then(_readDepartmentControlRegisterControlRequest)
+          .then(_fromDepartmentControlRegisterControlRequest);
 
   @override
   Future<List<ControlResultSearchResult>> getControlSearchResults(
-      DepartmentControlSearchResultsRequest request) {
-    // TODO: implement getControlSearchResults
-    throw UnimplementedError();
-  }
+          DepartmentControlSearchResultsRequest request) =>
+      objectDb
+          .then(
+            (db) => db.find(
+              {
+                'type': 'registerControlRequest',
+              },
+            ),
+          )
+          .then(
+            (value) => value
+                .map(
+                  (e) {
+                    DepartmentControlRegisterControlRequest request;
+                    try { // TODO: lmao, no comments
+                      request = DepartmentControlRegisterControlRequest.fromJson(e['request']);
+                    } catch (ex) {
+                      request = DepartmentControlRegisterControlRequest(e['request']['object'], e['request']['controlResult']);
+                    }
+                    return request
+                      .copyWith
+                      .controlResult(id: e['id']);
+                  },
+                )
+                .toList(),
+          )
+          .then((value) =>
+              value.where((element) => element.object.id == request.dcObjectId))
+          .then((value) => value
+              .map((e) =>
+                  _readDepartmentControlRegisterControlRequest(e))
+              .toList())
+          .then(Future.wait)
+          .then(
+            (value) => value
+                .map(_fromDepartmentControlRegisterControlRequest)
+                .toList(),
+          );
 
   @override
   Future<ControlResult> registerControlResult(
-      DepartmentControlRegisterControlRequest request) {
-    // TODO: implement registerControlResult
-    throw UnimplementedError();
+      DepartmentControlRegisterControlRequest request) async {
+    final id = await _nextControlResultId;
+    await objectDb.then((db) async {
+      db.insert({
+        'id': id,
+        'type': 'registerControlRequest',
+        'request': (await _saveDepartmentControlRegisterControlRequest(request))
+            .toJson(),
+      });
+    });
+    return fromRegisterControlResultRequest(request, id);
   }
 
   @override
@@ -244,10 +313,25 @@ class DepartmentControlLocalSqliteServiceClient extends ObjectDBService
 
   @override
   Future<void> removeControlResult(
-      DepartmentControlRemoveControlRequest request) {
-    // TODO: implement removeControlResult
-    throw UnimplementedError();
-  }
+          DepartmentControlRemoveControlRequest request) =>
+      objectDb.then((db) async {
+        if (await db.first({
+              'id': request.resultId,
+              'type': 'registerControlRequest',
+            }) !=
+            null) {
+          await db.remove({
+            'id': request.resultId,
+            'type': 'registerControlRequest',
+          });
+        } else {
+          await db.insert({
+            'id': await _nextControlResultId,
+            'type': 'removeControlRequest',
+            'request': request.toJson(),
+          });
+        }
+      });
 
   @override
   Future<void> removePerformControl(
@@ -259,8 +343,40 @@ class DepartmentControlLocalSqliteServiceClient extends ObjectDBService
   @override
   Future<ControlResult> updateControlResult(
       DepartmentControlUpdateControlRequest request) {
-    // TODO: implement updateControlResult
-    throw UnimplementedError();
+    objectDb.then((db) async {
+      final saved = await db.first({
+        'id': request.dcControlResultId,
+        'type': 'registerControlRequest',
+      });
+      if (saved != null) {
+        await db.update({
+          'id': request.dcControlResultId,
+          'type': 'registerControlRequest',
+        }, {
+          'id': request.dcControlResultId,
+          'type': 'registerControlRequest',
+          'request': (await _saveDepartmentControlRegisterControlRequest(
+            DepartmentControlRegisterControlRequest.fromJson(saved['request'])
+                .copyWith
+                .controlResult(
+                  violation: request.violation,
+                ),
+          )).toJson(),
+        });
+      } else {
+        await db.insert({
+          'id': await _nextControlResultId,
+          'type': 'updateControlRequest',
+          'request': (await _saveDepartmentControlUpdateControlRequest(request)).toJson(),
+        });
+      }
+      return ControlResult(
+        id: request.dcControlResultId,
+        violationExists: true,
+        violation: request.violation,
+        surveyDate: DateTime.now(),
+      );
+    });
   }
 
   @override
@@ -334,6 +450,7 @@ class DepartmentControlLocalSqliteServiceClient extends ObjectDBService
               (value) => value,
               onError: (error) => DepartmentControlLocalServiceMetadata(
                 false,
+                nextControlResultId: 0,
               ),
             ),
       );
@@ -428,4 +545,135 @@ class DepartmentControlLocalSqliteServiceClient extends ObjectDBService
     ];
     return sortStrings.isNotEmpty ? 'ORDER BY ${sortStrings.join(" , ")}' : '';
   }
+
+  ControlResult fromRegisterControlResultRequest(
+    DepartmentControlRegisterControlRequest request,
+    int id,
+  ) =>
+      request.controlResult.copyWith(id: id);
+
+  Future<int> get _nextControlResultId => objectDb.then((db) async {
+        final metadata = await this.metadata;
+        saveMetadata(metadata.copyWith(
+            nextControlResultId: metadata.nextControlResultId + 1));
+        return metadata.nextControlResultId;
+      });
+
+  Future<DCPhoto> _savePhoto(DCPhoto photo) async {
+    final fileName = await ImagesService.saveImage(base64Decode(photo.data));
+    return photo.copyWith(data: fileName);
+  }
+
+  Future<DCPhoto> _readPhoto(DCPhoto photo) async {
+    final bytes = await ImagesService.readImage(photo.data);
+    return photo.copyWith(data: base64Encode(bytes));
+  }
+
+  Future<DepartmentControlRegisterControlRequest>
+      _saveDepartmentControlRegisterControlRequest(
+    DepartmentControlRegisterControlRequest request,
+  ) =>
+          _processPhotosInDepartmentControlRegisterControlRequest(
+            request,
+            _savePhoto,
+          );
+
+  Future<DepartmentControlRegisterControlRequest>
+      _readDepartmentControlRegisterControlRequest(
+    DepartmentControlRegisterControlRequest request,
+  ) =>
+          _processPhotosInDepartmentControlRegisterControlRequest(
+            request,
+            _readPhoto,
+          );
+
+  Future<DepartmentControlRegisterControlRequest>
+      _processPhotosInDepartmentControlRegisterControlRequest(
+    DepartmentControlRegisterControlRequest request,
+    Future<DCPhoto> Function(DCPhoto) processFunction,
+  ) async {
+    if (request.controlResult.violation != null) {
+      return request.copyWith.controlResult.violation(
+        photos: await Future.wait(
+          request.controlResult.violation.photos.map(
+            (e) => processFunction(
+              e,
+            ),
+          ),
+        ),
+      );
+    } else {
+      return request;
+    }
+  }
+
+
+  Future<DepartmentControlUpdateControlRequest>
+      _saveDepartmentControlUpdateControlRequest(
+    DepartmentControlUpdateControlRequest request,
+  ) =>
+          _processPhotosInDepartmentControlUpdateControlRequest(
+            request,
+            _savePhoto,
+          );
+
+  Future<DepartmentControlUpdateControlRequest>
+      _readDepartmentControlUpdateControlRequest(
+    DepartmentControlUpdateControlRequest request,
+  ) =>
+          _processPhotosInDepartmentControlUpdateControlRequest(
+            request,
+            _readPhoto,
+          );
+
+  Future<DepartmentControlUpdateControlRequest>
+      _processPhotosInDepartmentControlUpdateControlRequest(
+    DepartmentControlUpdateControlRequest request,
+    Future<DCPhoto> Function(DCPhoto) processFunction,
+  ) async {
+    if (request.violation != null) {
+      return request.copyWith.violation(
+        photos: await Future.wait(
+          request.violation.photos.map(
+            (e) => processFunction(
+              e,
+            ),
+          ),
+        ),
+      );
+    } else {
+      return request;
+    }
+  }
+
+  ControlResultSearchResult _fromDepartmentControlRegisterControlRequest(DepartmentControlRegisterControlRequest e) => ControlResultSearchResult(
+                    id: e.controlResult.id,
+                    closureSentToCafap: false,
+                    creationSentToCafap: false,
+                    violationExists: e.controlResult.violationExists ??
+                        e.controlResult.violation != null,
+                    geometryX: e.controlResult.geometryX,
+                    geometryY: e.controlResult.geometryY,
+                    surveyDate: e.controlResult.surveyDate,
+                    violation: e.controlResult.violation
+                        ?.let((DCViolation it) => ViolationSearchResult(
+                              additionalFeatures: it.additionalFeatures,
+                              address: it.address,
+                              btiAddress: it.btiAddress,
+                              critical: it.critical,
+                              id: it.id,
+                              detectionDate: it.detectionDate,
+                              description: it.description,
+                              eknViolationClassification:
+                                  it.eknViolationClassification,
+                              otherViolationClassification:
+                                  it.otherViolationClassification,
+                              refAddressTinao: it.refAddressTinao,
+                              objectElement: it.objectElement,
+                              violator: it.violator,
+                              resolveDate: it.resolveDate,
+                              controlDate: it.controlDate,
+                              photos: it.photos,
+                            )),
+                  );
 }

@@ -26,17 +26,15 @@ class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
   final DepartmentControlService _departmentControlService;
   final NotificationBloc _notificationBloc;
 
-  NetworkStatus _networkStatus = NetworkStatus(
-    ConnectionStatus.offline,
-    DataSendingMode.automatic,
-  );
+  NetworkStatus _networkStatus;
+  final NetworkStatusService networkStatusService;
 
   List<ControlObject> _objects;
   Location _location;
 
   ControlListBloc(
     this._departmentControlService,
-    NetworkStatusService networkStatusService,
+    this.networkStatusService,
     this._locationService,
     this._notificationBloc,
   ) : super(
@@ -245,6 +243,9 @@ class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
   Stream<ControlListBlocState> _onLoadControlListEvent(
       LoadControlListEvent event) async* {
     print('Loading');
+    if(_networkStatus == null) {
+      _networkStatus = await networkStatusService.actual;
+    }
     _location = await _locationService.actualLocation;
     _objects = await _departmentControlService.find(
         //Location(latitude: 55.74, longitude: 37.63),

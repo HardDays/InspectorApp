@@ -19,11 +19,12 @@ class _$DepartmentControlLocalServiceMetadataTearOff {
 
 // ignore: unused_element
   _DepartmentControlLocalServiceMetadata call(bool loaded,
-      {DateTime lastUpdatedDate, int count}) {
+      {DateTime lastUpdatedDate, int count, int nextControlResultId}) {
     return _DepartmentControlLocalServiceMetadata(
       loaded,
       lastUpdatedDate: lastUpdatedDate,
       count: count,
+      nextControlResultId: nextControlResultId,
     );
   }
 
@@ -43,6 +44,7 @@ mixin _$DepartmentControlLocalServiceMetadata {
   bool get loaded;
   DateTime get lastUpdatedDate;
   int get count;
+  int get nextControlResultId;
 
   Map<String, dynamic> toJson();
   @JsonKey(ignore: true)
@@ -56,7 +58,11 @@ abstract class $DepartmentControlLocalServiceMetadataCopyWith<$Res> {
           DepartmentControlLocalServiceMetadata value,
           $Res Function(DepartmentControlLocalServiceMetadata) then) =
       _$DepartmentControlLocalServiceMetadataCopyWithImpl<$Res>;
-  $Res call({bool loaded, DateTime lastUpdatedDate, int count});
+  $Res call(
+      {bool loaded,
+      DateTime lastUpdatedDate,
+      int count,
+      int nextControlResultId});
 }
 
 /// @nodoc
@@ -73,6 +79,7 @@ class _$DepartmentControlLocalServiceMetadataCopyWithImpl<$Res>
     Object loaded = freezed,
     Object lastUpdatedDate = freezed,
     Object count = freezed,
+    Object nextControlResultId = freezed,
   }) {
     return _then(_value.copyWith(
       loaded: loaded == freezed ? _value.loaded : loaded as bool,
@@ -80,6 +87,9 @@ class _$DepartmentControlLocalServiceMetadataCopyWithImpl<$Res>
           ? _value.lastUpdatedDate
           : lastUpdatedDate as DateTime,
       count: count == freezed ? _value.count : count as int,
+      nextControlResultId: nextControlResultId == freezed
+          ? _value.nextControlResultId
+          : nextControlResultId as int,
     ));
   }
 }
@@ -92,7 +102,11 @@ abstract class _$DepartmentControlLocalServiceMetadataCopyWith<$Res>
           $Res Function(_DepartmentControlLocalServiceMetadata) then) =
       __$DepartmentControlLocalServiceMetadataCopyWithImpl<$Res>;
   @override
-  $Res call({bool loaded, DateTime lastUpdatedDate, int count});
+  $Res call(
+      {bool loaded,
+      DateTime lastUpdatedDate,
+      int count,
+      int nextControlResultId});
 }
 
 /// @nodoc
@@ -114,6 +128,7 @@ class __$DepartmentControlLocalServiceMetadataCopyWithImpl<$Res>
     Object loaded = freezed,
     Object lastUpdatedDate = freezed,
     Object count = freezed,
+    Object nextControlResultId = freezed,
   }) {
     return _then(_DepartmentControlLocalServiceMetadata(
       loaded == freezed ? _value.loaded : loaded as bool,
@@ -121,6 +136,9 @@ class __$DepartmentControlLocalServiceMetadataCopyWithImpl<$Res>
           ? _value.lastUpdatedDate
           : lastUpdatedDate as DateTime,
       count: count == freezed ? _value.count : count as int,
+      nextControlResultId: nextControlResultId == freezed
+          ? _value.nextControlResultId
+          : nextControlResultId as int,
     ));
   }
 }
@@ -131,7 +149,7 @@ class __$DepartmentControlLocalServiceMetadataCopyWithImpl<$Res>
 class _$_DepartmentControlLocalServiceMetadata
     implements _DepartmentControlLocalServiceMetadata {
   const _$_DepartmentControlLocalServiceMetadata(this.loaded,
-      {this.lastUpdatedDate, this.count})
+      {this.lastUpdatedDate, this.count, this.nextControlResultId})
       : assert(loaded != null);
 
   factory _$_DepartmentControlLocalServiceMetadata.fromJson(
@@ -144,10 +162,12 @@ class _$_DepartmentControlLocalServiceMetadata
   final DateTime lastUpdatedDate;
   @override
   final int count;
+  @override
+  final int nextControlResultId;
 
   @override
   String toString() {
-    return 'DepartmentControlLocalServiceMetadata(loaded: $loaded, lastUpdatedDate: $lastUpdatedDate, count: $count)';
+    return 'DepartmentControlLocalServiceMetadata(loaded: $loaded, lastUpdatedDate: $lastUpdatedDate, count: $count, nextControlResultId: $nextControlResultId)';
   }
 
   @override
@@ -160,7 +180,10 @@ class _$_DepartmentControlLocalServiceMetadata
                 const DeepCollectionEquality()
                     .equals(other.lastUpdatedDate, lastUpdatedDate)) &&
             (identical(other.count, count) ||
-                const DeepCollectionEquality().equals(other.count, count)));
+                const DeepCollectionEquality().equals(other.count, count)) &&
+            (identical(other.nextControlResultId, nextControlResultId) ||
+                const DeepCollectionEquality()
+                    .equals(other.nextControlResultId, nextControlResultId)));
   }
 
   @override
@@ -168,7 +191,8 @@ class _$_DepartmentControlLocalServiceMetadata
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(loaded) ^
       const DeepCollectionEquality().hash(lastUpdatedDate) ^
-      const DeepCollectionEquality().hash(count);
+      const DeepCollectionEquality().hash(count) ^
+      const DeepCollectionEquality().hash(nextControlResultId);
 
   @JsonKey(ignore: true)
   @override
@@ -187,7 +211,8 @@ abstract class _DepartmentControlLocalServiceMetadata
     implements DepartmentControlLocalServiceMetadata {
   const factory _DepartmentControlLocalServiceMetadata(bool loaded,
       {DateTime lastUpdatedDate,
-      int count}) = _$_DepartmentControlLocalServiceMetadata;
+      int count,
+      int nextControlResultId}) = _$_DepartmentControlLocalServiceMetadata;
 
   factory _DepartmentControlLocalServiceMetadata.fromJson(
           Map<String, dynamic> json) =
@@ -199,6 +224,8 @@ abstract class _DepartmentControlLocalServiceMetadata
   DateTime get lastUpdatedDate;
   @override
   int get count;
+  @override
+  int get nextControlResultId;
   @override
   @JsonKey(ignore: true)
   _$DepartmentControlLocalServiceMetadataCopyWith<

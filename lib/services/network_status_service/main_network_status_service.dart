@@ -30,6 +30,9 @@ class MainNetworkStatusService with NetworkStatusService {
   @override
   Stream<NetworkStatus> get listenNetworkStatus => _controller.stream;
 
+  @override
+  Future<NetworkStatus> get actual async => NetworkStatus(await _connectionStatusService.actual, _dataSendingModeStatusService.actual ?? DataSendingMode.automatic);
+
   void close() {
     _controller.close();
     _connectionStatusStreamSubscription.cancel();

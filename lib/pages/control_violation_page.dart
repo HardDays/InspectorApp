@@ -100,7 +100,7 @@ class ControlViolationPage extends StatelessWidget {
                           padding: const EdgeInsets.only(
                               left: 10, right: 10, top: 2, bottom: 4),
                           child: Text(
-                            searchResult.violation.violationStatus.name,
+                            searchResult.violation.violationStatus?.name ?? 'Сохранено локально',
                             style: ProjectTextStyles.smallBold
                                 .apply(color: ProjectColors.cyan),
                           ),
@@ -165,7 +165,7 @@ class ControlViolationPage extends StatelessWidget {
                     ),
                     ProjectSection(
                       'Элемент объекта',
-                      description: searchResult.violation.objectElement.name,
+                      description: searchResult.violation.objectElement.name ?? '',
                     ),
                     _buildDivider(),
                     ProjectSection(
@@ -179,7 +179,7 @@ class ControlViolationPage extends StatelessWidget {
                           searchResult.violation.additionalFeatures.isEmpty
                               ? ''
                               : searchResult
-                                  .violation.additionalFeatures.first.name,
+                                  .violation.additionalFeatures?.first?.name ?? '',
                     ),
                     _buildDivider(),
                     if (searchResult.violation.photos != null &&
@@ -250,7 +250,7 @@ class ControlViolationPage extends StatelessWidget {
             ? Row(
                 children: [
                   Text(
-                    title,
+                    title ?? '',
                     style: ProjectTextStyles.subTitle
                         .apply(color: ProjectColors.black),
                   ),
@@ -259,7 +259,7 @@ class ControlViolationPage extends StatelessWidget {
                 ],
               )
             : Text(
-                title,
+                title ?? '',
                 style: ProjectTextStyles.subTitle
                     .apply(color: ProjectColors.black),
               ),

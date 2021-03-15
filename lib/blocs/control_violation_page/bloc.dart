@@ -89,7 +89,7 @@ class ControlViolationPageBloc
             searchResult: state.searchResult.copyWith
                 .violation(performControls: _initialperformControls),
             hasUnsavedChanges: false,
-            editable: true,
+            editable: _networkStatus.connectionStatus == ConnectionStatus.online,
           );
         },
         editPerformControl: (event) async* {
@@ -112,7 +112,7 @@ class ControlViolationPageBloc
                     .toList(),
               ),
               hasUnsavedChanges: true,
-              editable: true,
+              editable: _networkStatus.connectionStatus == ConnectionStatus.online,
             );
           } else {
             notificationBloc.add(SnackBarNotificationEvent(
@@ -136,9 +136,15 @@ class ControlViolationPageBloc
             print(e.details);
             notificationBloc.add(SnackBarNotificationEvent(
                 'Произошла ошибка: ${e.message}, ${e.details}'));
+          } on UnimplementedError catch (e) {
+            notificationBloc.add(SnackBarNotificationEvent(
+                'Недоступно в оффлайн версии'));
           }
         },
         refresh: (event) async* {
+          if(_networkStatus == null) {
+            _networkStatus = await networkStatusService.actual;
+          }
           yield state.copyWith(refresh: true);
           yield ControlViolationPageBlocState.loadedState(
             controlObject: state.controlObject,
@@ -147,7 +153,7 @@ class ControlViolationPageBloc
               state.searchResult,
               _networkStatus,
             ),
-            editable: true,
+            editable: _networkStatus.connectionStatus == ConnectionStatus.online,
           );
         },
         removePerformControl: (event) async* {
@@ -160,7 +166,7 @@ class ControlViolationPageBloc
               controlObject: state.controlObject,
               searchResult: state.searchResult,
               hasUnsavedChanges: true,
-              editable: true,
+              editable: _networkStatus.connectionStatus == ConnectionStatus.online,
             );
           } else {
             notificationBloc.add(SnackBarNotificationEvent(

@@ -42,6 +42,9 @@ class ControlObjectBloc
       event.map(
         loadEvent: (event) async* {
           yield (ControlObjectBlocState.loadingState(object: object));
+          if(_networkStatus == null) {
+            _networkStatus = await networkStatusService.actual;
+          }
           final results = await departmentControlService.getControlResults(
               object, _networkStatus);
           yield* (results.map(
