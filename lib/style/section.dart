@@ -33,11 +33,14 @@ class ProjectSection extends StatelessWidget {
                   children: [
                     if(description != null)
                       Flexible(
-                        child: Text(
-                        description,
-                        style: ProjectTextStyles.base
-                            .apply(color: ProjectColors.black),
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Text(
+                          description,
+                          style: ProjectTextStyles.base
+                              .apply(color: ProjectColors.black),
                       ),
+                        ),
                       ),
                     if(child != null)
                       child,
