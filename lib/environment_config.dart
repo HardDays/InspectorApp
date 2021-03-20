@@ -6,6 +6,6 @@ class EnvironmentConfig {
 
   static const API_URL = String.fromEnvironment(
     'DEFINEAPI_URL',
-    defaultValue: 'http://212.46.14.26:9930',
+    defaultValue: 'https://oati-app.fors.ru',
   );
 }
