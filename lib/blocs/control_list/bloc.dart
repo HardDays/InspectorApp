@@ -172,7 +172,7 @@ class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
 
   Stream<ControlListBlocState> _onRegisterSearchResultEvent(
       RegisterSearchResultEvent event) async* {
-    try {
+    
       yield* _checkIfThereAreViolations(
         () async* {
           _notificationBloc.add(
@@ -180,24 +180,26 @@ class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
         ControlResult result = ControlResult(
           violation: event.violation,
           surveyDate: DateTime.now(),
+          violationExists: event.violation != null,
         );
-        await _departmentControlService.registerControlResult(
-          event.object,
-          result,
-          _networkStatus,
-        );
-        final resultString = event.violation == null ? 'Нарушений не выявлено' : 'Выявлено нарушение';
-        _notificationBloc.add(OkDialogNotificationEvent(
-            'Результат обследования "$resultString" сохранен успешно'));
+          try {
+            await _departmentControlService.registerControlResult(
+              event.object,
+              result,
+              _networkStatus,
+            );
+            final resultString = event.violation == null ? 'Нарушений не выявлено' : 'Выявлено нарушение';
+            _notificationBloc.add(OkDialogNotificationEvent(
+              'Результат обследования "$resultString" сохранен успешно'));
+          } on ApiException catch (e) {
+              print(e.message);
+              print(e.details);
+              yield* (_onApiException(e));
+          }
         },
         event.object,
-        violationExists: event.violation == null,
+        violationExists: event.violation != null,
       );
-    } on ApiException catch (e) {
-      print(e.message);
-      print(e.details);
-      yield* (_onApiException(e));
-    }
   }
 
   Stream<ControlListBlocState> _onOpenInMapEvent(OpenInMapEvent event) async* {
