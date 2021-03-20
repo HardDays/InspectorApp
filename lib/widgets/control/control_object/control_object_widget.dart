@@ -105,7 +105,7 @@ class ControlObjectWidget extends StatelessWidget {
       children: [
         _buildIcon(
           ProjectIcons.calendarIcon(),
-          '${DateFormat("dd.MM.yyyy").format(date)} ($daysText)',
+          '${DateFormat("dd.MM.yyyy").format(date)} ${daysText.isEmpty ? "" : "($daysText)"}',
         ), 
       ],
     );
