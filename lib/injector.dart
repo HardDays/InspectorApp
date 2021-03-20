@@ -61,6 +61,7 @@ class InjectorWidget extends StatelessWidget {
           create: (context) => DepartmentControlService(
             Provider.of<DepartmentControlApiClient>(context, listen: false),
             Provider.of<DepartmentControlLocalSqliteServiceClient>(context, listen: false),
+            Provider.of<DictionaryService>(context, listen: false),
           ),
         ),
         Provider<LocationService>(

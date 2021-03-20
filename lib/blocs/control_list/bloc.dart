@@ -170,20 +170,29 @@ class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
     }
   }
 
-  Stream<ControlListBlocState> _onRegisterSearchResultEvent(event) async* {
+  Stream<ControlListBlocState> _onRegisterSearchResultEvent(
+      RegisterSearchResultEvent event) async* {
     try {
-      _notificationBloc
-          .add(SnackBarNotificationEvent('Сохранение результата обследования'));
-      ControlResult result = ControlResult(
-        violation: event.violation,
-        surveyDate: DateTime.now(),
-      );
-      await _departmentControlService.registerControlResult(
+      yield* _checkIfThereAreViolations(
+        () async* {
+          _notificationBloc.add(
+            SnackBarNotificationEvent('Сохранение результата обследования'));
+        ControlResult result = ControlResult(
+          violation: event.violation,
+          surveyDate: DateTime.now(),
+        );
+        await _departmentControlService.registerControlResult(
+          event.object,
+          result,
+          _networkStatus,
+        );
+        final resultString = event.violation == null ? 'Нарушений не выявлено' : 'Выявлено нарушение';
+        _notificationBloc.add(OkDialogNotificationEvent(
+            'Результат обследования "$resultString" сохранен успешно'));
+        },
         event.object,
-        result,
-        _networkStatus,
+        violationExists: event.violation == null,
       );
-      _notificationBloc.add(OkDialogNotificationEvent('Сохранено успешно'));
     } on ApiException catch (e) {
       print(e.message);
       print(e.details);
@@ -243,7 +252,7 @@ class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
   Stream<ControlListBlocState> _onLoadControlListEvent(
       LoadControlListEvent event) async* {
     print('Loading');
-    if(_networkStatus == null) {
+    if (_networkStatus == null) {
       _networkStatus = await networkStatusService.actual;
     }
     _location = await _locationService.actualLocation;
@@ -338,6 +347,26 @@ class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
   }
 
   Location get location => _location;
+
+  Stream<ControlListBlocState> _checkIfThereAreViolations(
+    Stream<ControlListBlocState> Function() f,
+    ControlObject object, {
+    bool violationExists,
+  }) async* { 
+    _notificationBloc.add(
+          SnackBarNotificationEvent('Проверка на наличие связанных нарушений'));
+    final checkResult = await _departmentControlService.checkIfViolationsExists(
+      object,
+      _networkStatus,
+      violationExists: violationExists,
+    );
+    if (!checkResult) {
+      yield* f();
+    } else {
+      _notificationBloc.add(OkDialogNotificationEvent(
+          'У объекта присутствует связанное нарушение на текущую дату'));
+    }
+  }
 
   @override
   Future<void> close() async {

@@ -13,15 +13,18 @@ import 'package:inspector/services/department_control/client/local/department_co
 import 'package:inspector/services/department_control/client/local/metadata.dart';
 import 'package:inspector/services/department_control/client/request.dart';
 import 'package:inspector/services/department_control/client/response.dart';
+import 'package:inspector/services/dictionary_service.dart';
 import 'package:inspector/services/location/location.dart';
 import 'package:inspector/services/network_status_service/network_status.dart';
 import 'package:inspector/extensions.dart';
 
 class DepartmentControlService {
-  DepartmentControlService(this._apiClient, this._localClient);
+  DepartmentControlService(
+      this._apiClient, this._localClient, this._dictionaryService);
 
   final DepartmentControlApiClient _apiClient;
   final DepartmentControlLocalService _localClient;
+  final DictionaryService _dictionaryService;
 
   bool _canceled = false;
 
@@ -100,6 +103,34 @@ class DepartmentControlService {
       return ControlResultsResponse.controlResultsListResponse(result);
     } on ApiException catch (e) {
       return ControlResultsResponse.exceptionResponse(e);
+    }
+  }
+
+  Future<bool> checkIfViolationsExists(
+    ControlObject object,
+    NetworkStatus networkStatus, {
+    bool violationExists,
+  }) async {
+    if (networkStatus.connectionStatus == ConnectionStatus.online) {
+      final results = await _getClient(networkStatus)
+          .getControlSearchResults(DepartmentControlSearchResultsRequest(
+        object.id,
+        dcViolationStatusIds: (await _dictionaryService.getViolationTypes())
+            .where((element) => [
+                  'Новое',
+                  'На контроле инспектора',
+                  'На устранении',
+                  'Снят с контроля',
+                ].contains(element))
+            .map((e) => e.id)
+            .toList(),
+        surveyDateFrom: DateTime.now(),
+        surveyDateTo: DateTime.now(),
+        violationExists: violationExists,
+      ));
+      return results.isNotEmpty;
+    } else {
+      return false;
     }
   }
 
@@ -257,47 +288,51 @@ class DepartmentControlService {
     _canceled = true;
   }
 
-  CancelableOperation getUploadOperation(Future<void> Function(ApiException) exceptionHandler) => CancelableOperation.fromFuture(Future(() async {
-    (await _localClient.registerRequests).let((Iterable<DepartmentControlRegisterControlRequest> registerRequests) async {
-      print('registerRequests: ${registerRequests.length}');
-      final it = registerRequests.iterator;
-      int t = 0;
-      while(!_canceled && it.moveNext()) {
-        try {
-          print('registerRequests: $t/${registerRequests.length}');
-          _apiClient.registerControlResult(it.current);
-          t++;
-        } on ApiException catch (e) {
-          await exceptionHandler(e);
-        }
-      }
-    });
-    (await _localClient.removeRequests).let((removeRequests) async {
-      final it = removeRequests.iterator;
-      int t = 0;
-      while(!_canceled && it.moveNext()) {
-        try {
-          print('registerRequests: $t/${removeRequests.length}');
-          _apiClient.removeControlResult(it.current);
-          t++;
-        } on ApiException catch (e) {
-          await exceptionHandler(e);
-        }
-      }
-    });
-    (await _localClient.updateRequests).let((updateRequests) async {
-      final it = updateRequests.iterator;
-      int t = 0;
-      while(!_canceled && it.moveNext()) {
-        try {
-          print('registerRequests: $t/${updateRequests.length}');
-          _apiClient.updateControlResult(it.current);
-          t++;
-        } on ApiException catch (e) {
-          await exceptionHandler(e);
-        }
-      }
-    });
-    await _localClient.removeLocalRequests();
-  }));
+  CancelableOperation getUploadOperation(
+          Future<void> Function(ApiException) exceptionHandler) =>
+      CancelableOperation.fromFuture(Future(() async {
+        (await _localClient.registerRequests).let(
+            (Iterable<DepartmentControlRegisterControlRequest>
+                registerRequests) async {
+          print('registerRequests: ${registerRequests.length}');
+          final it = registerRequests.iterator;
+          int t = 0;
+          while (!_canceled && it.moveNext()) {
+            try {
+              print('registerRequests: $t/${registerRequests.length}');
+              _apiClient.registerControlResult(it.current);
+              t++;
+            } on ApiException catch (e) {
+              await exceptionHandler(e);
+            }
+          }
+        });
+        (await _localClient.removeRequests).let((removeRequests) async {
+          final it = removeRequests.iterator;
+          int t = 0;
+          while (!_canceled && it.moveNext()) {
+            try {
+              print('registerRequests: $t/${removeRequests.length}');
+              _apiClient.removeControlResult(it.current);
+              t++;
+            } on ApiException catch (e) {
+              await exceptionHandler(e);
+            }
+          }
+        });
+        (await _localClient.updateRequests).let((updateRequests) async {
+          final it = updateRequests.iterator;
+          int t = 0;
+          while (!_canceled && it.moveNext()) {
+            try {
+              print('registerRequests: $t/${updateRequests.length}');
+              _apiClient.updateControlResult(it.current);
+              t++;
+            } on ApiException catch (e) {
+              await exceptionHandler(e);
+            }
+          }
+        });
+        await _localClient.removeLocalRequests();
+      }));
 }
