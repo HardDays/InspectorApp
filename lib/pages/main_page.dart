@@ -40,7 +40,7 @@ class MainPage extends StatelessWidget {
                 builder: (ctx) => AcceptDialog(
                   acceptTitle: 'Ок',
                   cancelTitle: null,
-                  message: 'Данные успешно переданы в ЕИС ОАТИ',
+                  message: state.message,
                 ),
               ),
               snackBarNotificationState: (state) =>
