@@ -49,6 +49,7 @@ class ProjectAutocomplete<T> extends StatelessWidget {
             hideOnLoading: true,
             hideOnEmpty: true,
             hideOnError: true,
+            autovalidateMode: AutovalidateMode.always,
             //noItemsFoundBuilder: (c) => null,
             textFieldConfiguration: TextFieldConfiguration(
               autofocus: false,

@@ -42,6 +42,7 @@ class ProjectTextField extends StatelessWidget {
       enabled: enabled,
       keyboardType: inputType,
       onChanged: onChanged,
+      autovalidateMode: AutovalidateMode.always,
       decoration: InputDecoration(
         errorMaxLines: 2,
         filled: !enabled,
