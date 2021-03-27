@@ -5,8 +5,10 @@ import 'package:inspector/blocs/control_violation_form_bloc/event.dart';
 import 'package:inspector/blocs/control_violation_form_bloc/state.dart';
 import 'package:inspector/blocs/notification_bloc/bloc.dart';
 import 'package:inspector/blocs/notification_bloc/events.dart';
+import 'package:inspector/model/address.dart';
 import 'package:inspector/model/department_control/contractor.dart';
 import 'package:inspector/model/department_control/dcphoto.dart';
+import 'package:inspector/model/department_control/dcviolation.dart';
 import 'package:inspector/model/department_control/object_element.dart';
 import 'package:inspector/model/department_control/violation_additional_feature.dart';
 import 'package:inspector/model/department_control/violation_classification.dart';
@@ -14,11 +16,38 @@ import 'package:inspector/model/department_control/violation_name.dart';
 
 class ControlViolationFormBloc
     extends Bloc<ControlViolationFormEvent, CotnrolViolationFormState> {
-  ControlViolationFormBloc(CotnrolViolationFormState initialState,
+  ControlViolationFormBloc(DCViolation initialViolation, this.onConfirm,
       {this.notificationBloc})
-      : super(initialState);
-
+      : super(
+          CotnrolViolationFormState(
+            address: initialViolation?.btiAddress ?? Address(),
+            contractor: initialViolation?.violator ?? Contractor(name: ''),
+            critical: initialViolation?.critical ?? false,
+            description: initialViolation?.description ?? '',
+            objectElement:
+                initialViolation?.objectElement ?? ObjectElement(name: ''),
+            photos: initialViolation?.photos ?? <DCPhoto>[],
+            setAddressByGeoLocation: false,
+            targetLandmark: initialViolation?.address ?? '',
+            violationAdditionalFeature:
+                initialViolation?.additionalFeatures?.first ??
+                    ViolationAdditionalFeature(name: ''),
+            showClassificationField: initialViolation == null,
+            violationClassification:
+                initialViolation?.eknViolationClassification ??
+                    initialViolation?.otherViolationClassification ??
+                    ViolationClassification(
+                      violationName: ViolationName(
+                        name: '',
+                      ),
+                    ),
+          ),
+        ) {
+    _violation = initialViolation ?? DCViolation();
+  }
   final NotificationBloc notificationBloc;
+  final void Function(DCViolation) onConfirm;
+  DCViolation _violation;
 
   @override
   Stream<CotnrolViolationFormState> mapEventToState(
@@ -85,6 +114,26 @@ class ControlViolationFormBloc
               ),
             ),
           ));
+        },
+        saveEvent: (event) async* {
+          final newState = _validate(state);
+          if (newState.isValid()) {
+            onConfirm(
+              _violation.copyWith(
+                btiAddress: state.address,
+                address: state.targetLandmark,
+                objectElement: state.objectElement,
+                description: state.description,
+                eknViolationClassification: state.violationClassification,
+                violator: state.contractor,
+                critical: state.critical,
+                additionalFeatures: [state.violationAdditionalFeature],
+                photos: state.photos,
+              ),
+            );
+          } else {
+            yield newState;
+          }
         },
       );
 
@@ -164,4 +213,40 @@ class ControlViolationFormBloc
       ),
     ));
   }
+
+  CotnrolViolationFormState _validate(CotnrolViolationFormState state) =>
+      state.copyWith(
+        adressErrorString: _validateAddress(state),
+        objectElementErrorString: _validateObjectElemet(state),
+        descriptionErrorString: _validateDescription(state),
+      );
+
+  String _validateAddress(CotnrolViolationFormState state) {
+    if (state.address.toLongString().isEmpty) {
+      return 'Введите адрес';
+    }
+    return null;
+  }
+
+  String _validateDescription(CotnrolViolationFormState state) {
+    if (state.description.isEmpty) {
+      return 'Введите описание нарушения';
+    }
+    return null;
+  }
+
+  String _validateObjectElemet(CotnrolViolationFormState state) {
+    if (state.objectElement.name.isEmpty) {
+      return 'Введите элемент объекта';
+    }
+    return null;
+  }
+
+  //   adressErrorString == null &&
+  //   targetLandmarkErrorString == null &&
+  //   objectElementErrorString == null &&
+  //   descriptionErrorString == null &&
+  //   violationAdditionalFeatureErrorString == null &&
+  //   contractorErrorString == null &&
+  //   violationClassificationErrorString == null;
 }

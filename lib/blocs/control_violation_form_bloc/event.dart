@@ -63,12 +63,12 @@ abstract class ControlViolationFormEvent with _$ControlViolationFormEvent {
   const factory ControlViolationFormEvent.removePhotoEvent(
     int index,
   ) = RemovePhotoEvent;
-  
+
   const factory ControlViolationFormEvent.rotatePhotoEvent(
     int index,
     Uint8List photo,
   ) = RotatePhotoEvent;
-  
+
   const factory ControlViolationFormEvent.setViolationClassificationString(
     String classification,
   ) = SetViolationClassificationString;
@@ -77,4 +77,5 @@ abstract class ControlViolationFormEvent with _$ControlViolationFormEvent {
     ViolationClassificationSearchResult classification,
   ) = SetViolationClassification;
 
+  const factory ControlViolationFormEvent.saveEvent() = SaveControlViolation;
 }

@@ -6,15 +6,11 @@ import 'package:inspector/blocs/control_violation_form_bloc/bloc.dart';
 import 'package:inspector/blocs/control_violation_form_bloc/event.dart';
 import 'package:inspector/blocs/control_violation_form_bloc/state.dart';
 import 'package:inspector/blocs/notification_bloc/bloc.dart';
-import 'package:inspector/model/address.dart';
 import 'package:inspector/model/department_control/contractor.dart';
-import 'package:inspector/model/department_control/dcphoto.dart';
 import 'package:inspector/model/department_control/dcviolation.dart';
 import 'package:inspector/model/department_control/object_element.dart';
 import 'package:inspector/model/department_control/violation_additional_feature.dart';
-import 'package:inspector/model/department_control/violation_classification.dart';
 import 'package:inspector/model/department_control/violation_classification_search_result.dart';
-import 'package:inspector/model/department_control/violation_name.dart';
 import 'package:inspector/services/dictionary_service.dart';
 import 'package:inspector/style/autocomplete.dart';
 import 'package:inspector/style/button.dart';
@@ -57,105 +53,47 @@ class _ViolationFormWidgetState extends State<ViolationFormWidget> {
   Widget build(BuildContext context) {
     return BlocProvider<ControlViolationFormBloc>(
       create: (context) => ControlViolationFormBloc(
-        CotnrolViolationFormState(
-          address: widget.initialViolation?.btiAddress ?? Address(),
-          contractor: widget.initialViolation?.violator ?? Contractor(name: ''),
-          critical: widget.initialViolation?.critical ?? false,
-          description: widget.initialViolation?.description ?? '',
-          objectElement:
-              widget.initialViolation?.objectElement ?? ObjectElement(name: ''),
-          photos: widget.initialViolation?.photos ?? <DCPhoto>[],
-          setAddressByGeoLocation: false,
-          targetLandmark: widget.initialViolation?.address ?? '',
-          violationAdditionalFeature:
-              widget.initialViolation?.additionalFeatures?.first ??
-                  ViolationAdditionalFeature(name: ''),
-          showClassificationField: widget.initialViolation == null,
-          violationClassification:
-              widget.initialViolation?.eknViolationClassification ??
-                  widget.initialViolation?.otherViolationClassification ??
-                  ViolationClassification(
-                    violationName: ViolationName(
-                      name: '',
-                    ),
-                  ),
-        ),
+        widget.initialViolation,
+        widget.onConfirm,
         notificationBloc: BlocProvider.of<NotificationBloc>(context),
       ),
       child: BlocConsumer<ControlViolationFormBloc, CotnrolViolationFormState>(
         listener: (context, state) {
-          if (_addressController.text != state.address.toLongString())
-            _addressController.text = state.address.toLongString();
-          if (_targetMarkController.text != state.targetLandmark)
-            _targetMarkController.text = state.targetLandmark;
-          if (_objectElementController.text != state.objectElement.name)
-            _objectElementController.text = state.objectElement.name;
-          if (_descriptionController.text != state.description)
-            _descriptionController.text = state.description;
-          if (_additionalFeatureController.text !=
-              state.violationAdditionalFeature.name)
-            _additionalFeatureController.text =
-                state.violationAdditionalFeature.name;
-          if (_contractorController.text != state.contractor.name)
-            _contractorController.text = state.contractor.name;
-          if (_violationClassificationController.text !=
-              state.violationClassification.violationName.name)
-            _violationClassificationController.text =
-                state.violationClassification.violationName.name;
+          _fillControllers(state);
         },
         builder: (context, state) {
-          if (_addressController.text != state.address.toLongString())
-            _addressController.text = state.address.toLongString();
-          if (_targetMarkController.text != state.targetLandmark)
-            _targetMarkController.text = state.targetLandmark;
-          if (_objectElementController.text != state.objectElement.name)
-            _objectElementController.text = state.objectElement.name;
-          if (_descriptionController.text != state.description)
-            _descriptionController.text = state.description;
-          if (_additionalFeatureController.text !=
-              state.violationAdditionalFeature.name)
-            _additionalFeatureController.text =
-                state.violationAdditionalFeature.name;
-          if (_contractorController.text != state.contractor.name)
-            _contractorController.text = state.contractor.name;
-          if (_violationClassificationController.text !=
-              state.violationClassification.violationName.name)
-            _violationClassificationController.text =
-                state.violationClassification.violationName.name;
+          _fillControllers(state);
           return Column(
             children: [
-              Form(
-                child: Row(
-                  children: [
-                    Checkbox(
-                      value: state.setAddressByGeoLocation,
-                      onChanged: (value) =>
-                          BlocProvider.of<ControlViolationFormBloc>(context)
-                              .add(ControlViolationFormEvent
-                                  .setUseGeoLocationForAddressEvent(value)),
+              Row(
+                children: [
+                  Checkbox(
+                    value: state.setAddressByGeoLocation,
+                    onChanged: (value) =>
+                        BlocProvider.of<ControlViolationFormBloc>(context).add(
+                            ControlViolationFormEvent
+                                .setUseGeoLocationForAddressEvent(value)),
+                  ),
+                  Text(
+                    'Определить адрес по местоположению',
+                    style: ProjectTextStyles.base.apply(
+                      color: ProjectColors.black,
                     ),
-                    Text(
-                      'Определить адрес по местоположению',
-                      style: ProjectTextStyles.base.apply(
-                        color: ProjectColors.black,
-                      ),
+                  ),
+                  Spacer(),
+                  Checkbox(
+                    value: state.critical,
+                    onChanged: (value) =>
+                        BlocProvider.of<ControlViolationFormBloc>(context).add(
+                            ControlViolationFormEvent.setCriticalEvent(value)),
+                  ),
+                  Text(
+                    'Критичность',
+                    style: ProjectTextStyles.base.apply(
+                      color: ProjectColors.black,
                     ),
-                    Spacer(),
-                    Checkbox(
-                      value: state.critical,
-                      onChanged: (value) =>
-                          BlocProvider.of<ControlViolationFormBloc>(context)
-                              .add(ControlViolationFormEvent.setCriticalEvent(
-                                  value)),
-                    ),
-                    Text(
-                      'Критичность',
-                      style: ProjectTextStyles.base.apply(
-                        color: ProjectColors.black,
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
               InkWell(
                 onTap: !state.setAddressByGeoLocation
@@ -192,6 +130,7 @@ class _ViolationFormWidgetState extends State<ViolationFormWidget> {
                     title: 'Адрес',
                     hintText: 'Выберите значение',
                     controller: _addressController,
+                    validator: (_) => state.adressErrorString,
                   ),
                 ),
               ),
@@ -201,6 +140,7 @@ class _ViolationFormWidgetState extends State<ViolationFormWidget> {
               ProjectTextField(
                 title: 'Адресный ориентир',
                 controller: _targetMarkController,
+                validator: (_) => state.targetLandmarkErrorString,
                 hintText: 'Введите данные',
                 onChanged: (value) =>
                     BlocProvider.of<ControlViolationFormBloc>(context).add(
@@ -214,6 +154,7 @@ class _ViolationFormWidgetState extends State<ViolationFormWidget> {
                 controller: _objectElementController,
                 hintText: 'Выберите значение',
                 enabled: true,
+                validator: (_) => state.objectElementErrorString,
                 formatter: (objectElement) => objectElement.name,
                 onChanged: (value) =>
                     BlocProvider.of<ControlViolationFormBloc>(context).add(
@@ -235,6 +176,7 @@ class _ViolationFormWidgetState extends State<ViolationFormWidget> {
                     hintText: 'Введите данные',
                     enabled: true,
                     formatter: (value) => value.violationName.name,
+                    validator: (_) => state.violationClassificationErrorString,
                     onChanged: (value) =>
                         BlocProvider.of<ControlViolationFormBloc>(context).add(
                             ControlViolationFormEvent
@@ -255,6 +197,7 @@ class _ViolationFormWidgetState extends State<ViolationFormWidget> {
                 title: 'Описание нарушения',
                 controller: _descriptionController,
                 hintText: 'Введите данные',
+                validator: (_) => state.descriptionErrorString,
                 onChanged: (value) =>
                     BlocProvider.of<ControlViolationFormBloc>(context).add(
                         ControlViolationFormEvent.setDescriptionEvent(value)),
@@ -267,6 +210,7 @@ class _ViolationFormWidgetState extends State<ViolationFormWidget> {
                 controller: _additionalFeatureController,
                 hintText: 'Введите данные',
                 enabled: true,
+                validator: (_) => state.violationAdditionalFeatureErrorString,
                 formatter: (additionalFeature) => additionalFeature.name,
                 onChanged: (value) =>
                     BlocProvider.of<ControlViolationFormBloc>(context).add(
@@ -287,6 +231,7 @@ class _ViolationFormWidgetState extends State<ViolationFormWidget> {
                 controller: _contractorController,
                 hintText: 'Выберите значение',
                 enabled: true,
+                validator: (_) => state.contractorErrorString,
                 formatter: (contractor) => contractor.name,
                 onChanged: (value) =>
                     BlocProvider.of<ControlViolationFormBloc>(context).add(
@@ -337,20 +282,8 @@ class _ViolationFormWidgetState extends State<ViolationFormWidget> {
                   ProjectButton.builtFlatButton(
                     'Сохранить',
                     onPressed: () {
-                      final violation =
-                          (widget.initialViolation ?? DCViolation()).copyWith(
-                        btiAddress: state.address,
-                        address: state.targetLandmark,
-                        objectElement: state.objectElement,
-                        description: state.description,
-                        eknViolationClassification:
-                            state.violationClassification,
-                        violator: state.contractor,
-                        critical: state.critical,
-                        additionalFeatures: [state.violationAdditionalFeature],
-                        photos: state.photos,
-                      );
-                      widget.onConfirm(violation);
+                      BlocProvider.of<ControlViolationFormBloc>(context)
+                          .add(ControlViolationFormEvent.saveEvent());
                     },
                   ),
                 ],
@@ -371,5 +304,25 @@ class _ViolationFormWidgetState extends State<ViolationFormWidget> {
     _descriptionController.dispose();
     _additionalFeatureController.dispose();
     _contractorController.dispose();
+  }
+
+  void _fillControllers(CotnrolViolationFormState state) {
+    if (_addressController.text != state.address.toLongString())
+      _addressController.text = state.address.toLongString();
+    if (_targetMarkController.text != state.targetLandmark)
+      _targetMarkController.text = state.targetLandmark;
+    if (_objectElementController.text != state.objectElement.name)
+      _objectElementController.text = state.objectElement.name;
+    if (_descriptionController.text != state.description)
+      _descriptionController.text = state.description;
+    if (_additionalFeatureController.text !=
+        state.violationAdditionalFeature.name)
+      _additionalFeatureController.text = state.violationAdditionalFeature.name;
+    if (_contractorController.text != state.contractor.name)
+      _contractorController.text = state.contractor.name;
+    if (_violationClassificationController.text !=
+        state.violationClassification.violationName.name)
+      _violationClassificationController.text =
+          state.violationClassification.violationName.name;
   }
 }
