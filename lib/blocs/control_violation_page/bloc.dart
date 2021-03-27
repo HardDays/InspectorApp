@@ -89,7 +89,7 @@ class ControlViolationPageBloc
             searchResult: state.searchResult.copyWith
                 .violation(performControls: _initialperformControls),
             hasUnsavedChanges: false,
-            editable: _networkStatus.connectionStatus == ConnectionStatus.online,
+            editable: _checkIfEditable(),
           );
         },
         editPerformControl: (event) async* {
@@ -112,7 +112,7 @@ class ControlViolationPageBloc
                     .toList(),
               ),
               hasUnsavedChanges: true,
-              editable: _networkStatus.connectionStatus == ConnectionStatus.online,
+              editable: _checkIfEditable(),
             );
           } else {
             notificationBloc.add(SnackBarNotificationEvent(
@@ -137,12 +137,12 @@ class ControlViolationPageBloc
             notificationBloc.add(SnackBarNotificationEvent(
                 'Произошла ошибка: ${e.message}, ${e.details}'));
           } on UnimplementedError catch (e) {
-            notificationBloc.add(SnackBarNotificationEvent(
-                'Недоступно в оффлайн версии'));
+            notificationBloc
+                .add(SnackBarNotificationEvent('Недоступно в оффлайн версии'));
           }
         },
         refresh: (event) async* {
-          if(_networkStatus == null) {
+          if (_networkStatus == null) {
             _networkStatus = await networkStatusService.actual;
           }
           yield state.copyWith(refresh: true);
@@ -153,7 +153,7 @@ class ControlViolationPageBloc
               state.searchResult,
               _networkStatus,
             ),
-            editable: _networkStatus.connectionStatus == ConnectionStatus.online,
+            editable: _checkIfEditable(),
           );
         },
         removePerformControl: (event) async* {
@@ -166,7 +166,7 @@ class ControlViolationPageBloc
               controlObject: state.controlObject,
               searchResult: state.searchResult,
               hasUnsavedChanges: true,
-              editable: _networkStatus.connectionStatus == ConnectionStatus.online,
+              editable: _checkIfEditable(),
             );
           } else {
             notificationBloc.add(SnackBarNotificationEvent(
@@ -237,6 +237,23 @@ class ControlViolationPageBloc
         planDate: performControl.planDate,
         resolved: performControl.resolved,
       );
+
+  bool _checkIfEditable() {
+    if (_networkStatus.connectionStatus != ConnectionStatus.online) {
+      return false;
+    }
+    if (state is LoadedControlViolationPageBlocState) {
+      if (state.searchResult.violation.performControls
+          .contains((e) => e.factDate.difference(DateTime.now()).inDays < 1)) {
+        return false;
+      }
+      if (state.searchResult.violation.performMarks.contains(
+          (e) => e.resolveDate.difference(DateTime.now()).inDays < 1)) {
+        return false;
+      }
+    }
+    return true;
+  }
 
   @override
   Future<void> close() async {
