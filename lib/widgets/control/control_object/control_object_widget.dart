@@ -36,12 +36,18 @@ class ControlObjectWidget extends StatelessWidget {
                         controlObject.id.toString(),
                       ),
                       Flexible(
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 10, right: 10),
-                          child: Text(
-                            controlObject.address ?? '',
-                            style: ProjectTextStyles.base
-                                .apply(color: ProjectColors.black),
+                        child: Container(
+                          height: 60,
+                          alignment: Alignment.center,
+                          child: SingleChildScrollView(
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 10, right: 10),
+                              child: Text(
+                                controlObject.address ?? '',
+                                style: ProjectTextStyles.base
+                                    .apply(color: ProjectColors.black),
+                              ),
+                            ),
                           ),
                         ),
                       ),
