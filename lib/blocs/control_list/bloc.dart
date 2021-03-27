@@ -207,8 +207,12 @@ class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
       _notificationBloc.add(SnackBarNotificationEvent(
           'Просмотр этого объекта на карте недоступен'));
     } else {
-      _notificationBloc.add(
-          SnackBarNotificationEvent('Данный функционал пока не реализован'));
+      yield state.copyWith(
+        showMap: true,
+        mapState: ControlObjectsMapState(
+          selectedObject: event.object,
+        ),
+      );
     }
   }
 
