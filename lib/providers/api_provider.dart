@@ -426,4 +426,34 @@ class ApiProvider {
   Future<dynamic> extendPeriod(int dcObjectId, int dcControlResultId, ViolationExtensionPeriod violationExtensionPeriod) {
     return _request(() => dio.post('/dc-objects/${dcObjectId}/control-results/${dcControlResultId}/op/extend-resolution-period', data: violationExtensionPeriod.toJson()));
   }
+
+  Future<dynamic> getControlResults({
+    int dcObjectId,
+    bool forCurrentUser,
+    DateTime surveyDateFrom,
+    DateTime surveyDateTo,
+    bool violationExists,
+    String violationNum,
+    List<int> dcViolationStatusIds,
+    int dcViolationTypeId,
+    int dcViolationKindId,
+    int sourceId,
+    int from,
+    int to,
+    List<String> sort,
+  }) => _request(() => dio.get('/dc-objects/control-results', queryParameters: _removeJsonNulls({
+    "dcObjectId": dcObjectId,
+    "forCurrentUser": forCurrentUser,
+    "surveyDateFrom": surveyDateFrom,
+    "surveyDateTo": surveyDateTo,
+    "violationExists": violationExists,
+    "violationNum": violationNum,
+    "dcViolationStatusIds": dcViolationStatusIds,
+    "dcViolationTypeId": dcViolationTypeId,
+    "dcViolationKindId": dcViolationKindId,
+    "sourceId": sourceId,
+    "from": from,
+    "to": to,
+    "sort": sort,
+  })));
 }

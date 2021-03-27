@@ -181,3 +181,26 @@ abstract class DepartmentControlExtendControlPeriodRequest
           Map<String, dynamic> json) =>
       _$DepartmentControlExtendControlPeriodRequestFromJson(json);
 }
+
+@freezed
+abstract class DepartmentControlControlResultsRequest with _$DepartmentControlControlResultsRequest {
+  const factory DepartmentControlControlResultsRequest({
+    int dcObjectId,
+    bool forCurrentUser,
+    DateTime surveyDateFrom,
+    DateTime surveyDateTo,
+    bool violationExists,
+    String violationNum,
+    List<int> dcViolationStatusIds,
+    int dcViolationTypeId,
+    int dcViolationKindId,
+    int sourceId,
+    int from,
+    int to,
+    List<String> sort,
+  }) = _DepartmentControlControlResultsRequest;
+
+  factory DepartmentControlControlResultsRequest.fromJson(
+          Map<String, dynamic> json) =>
+      _$DepartmentControlControlResultsRequestFromJson(json);  
+}

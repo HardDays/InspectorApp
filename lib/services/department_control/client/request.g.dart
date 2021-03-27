@@ -301,3 +301,46 @@ Map<String, dynamic> _$_$_DepartmentControlExtendControlPeriodRequestToJson(
       'dcControlResultId': instance.dcControlResultId,
       'violationExtensionPeriod': instance.violationExtensionPeriod,
     };
+
+_$_DepartmentControlControlResultsRequest
+    _$_$_DepartmentControlControlResultsRequestFromJson(
+        Map<String, dynamic> json) {
+  return _$_DepartmentControlControlResultsRequest(
+    dcObjectId: json['dcObjectId'] as int,
+    forCurrentUser: json['forCurrentUser'] as bool,
+    surveyDateFrom: json['surveyDateFrom'] == null
+        ? null
+        : DateTime.parse(json['surveyDateFrom'] as String),
+    surveyDateTo: json['surveyDateTo'] == null
+        ? null
+        : DateTime.parse(json['surveyDateTo'] as String),
+    violationExists: json['violationExists'] as bool,
+    violationNum: json['violationNum'] as String,
+    dcViolationStatusIds:
+        (json['dcViolationStatusIds'] as List)?.map((e) => e as int)?.toList(),
+    dcViolationTypeId: json['dcViolationTypeId'] as int,
+    dcViolationKindId: json['dcViolationKindId'] as int,
+    sourceId: json['sourceId'] as int,
+    from: json['from'] as int,
+    to: json['to'] as int,
+    sort: (json['sort'] as List)?.map((e) => e as String)?.toList(),
+  );
+}
+
+Map<String, dynamic> _$_$_DepartmentControlControlResultsRequestToJson(
+        _$_DepartmentControlControlResultsRequest instance) =>
+    <String, dynamic>{
+      'dcObjectId': instance.dcObjectId,
+      'forCurrentUser': instance.forCurrentUser,
+      'surveyDateFrom': instance.surveyDateFrom?.toIso8601String(),
+      'surveyDateTo': instance.surveyDateTo?.toIso8601String(),
+      'violationExists': instance.violationExists,
+      'violationNum': instance.violationNum,
+      'dcViolationStatusIds': instance.dcViolationStatusIds,
+      'dcViolationTypeId': instance.dcViolationTypeId,
+      'dcViolationKindId': instance.dcViolationKindId,
+      'sourceId': instance.sourceId,
+      'from': instance.from,
+      'to': instance.to,
+      'sort': instance.sort,
+    };
