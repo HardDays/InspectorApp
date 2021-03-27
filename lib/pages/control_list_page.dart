@@ -11,6 +11,7 @@ import 'package:inspector/blocs/control_list/event.dart';
 import 'package:inspector/blocs/control_list/sort_state.dart';
 import 'package:inspector/blocs/control_list/state.dart';
 import 'package:inspector/model/department_control/control_object.dart';
+import 'package:inspector/model/instruction.dart';
 import 'package:inspector/pages/control_object_page.dart';
 import 'package:inspector/pages/control_violation_form_page.dart';
 import 'package:inspector/providers/exceptions/api_exception.dart';
@@ -91,7 +92,7 @@ class _ControlListPageState extends State<ControlListPage> {
             'Ведомственный контроль',
             '',
             'Сортировка',
-            'Фильтры',
+            SortOrder.asc,
             onUpdate: () {
               _refreshIndicatorKey.currentState?.show();
             },
