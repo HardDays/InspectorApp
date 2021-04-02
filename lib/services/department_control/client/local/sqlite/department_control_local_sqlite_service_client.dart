@@ -255,7 +255,14 @@ class DepartmentControlLocalSqliteServiceClient extends ObjectDBService
             (value) => value
                 .map(_fromDepartmentControlRegisterControlRequest)
                 .toList(),
-          );
+          ).then((list) async {
+            final db = await objectDb;
+            final searchResults = await db.find({
+              "type": "searchResult",
+              "violation": {"objectId": request.dcObjectId}
+            }).then((value) => value.map((e) => ControlResultSearchResult.fromJson(e)));
+            return list + searchResults;
+          });
 
   @override
   Future<ControlResult> registerControlResult(
@@ -774,4 +781,13 @@ class DepartmentControlLocalSqliteServiceClient extends ObjectDBService
     });
     await _clearId();
   }
+
+  Future<void> saveSearchResults(Iterable<ViolationSearchResult> searchResults)
+      => objectDb.then((db) async =>
+        db.insertMany(
+          searchResults
+            .map((e) => e.toJson().apply((it) => it["type"] = "searchResult"))
+            .map((e) => e.apply((it) => it["photos"] = Future.wait(e["photos"].map(_savePhoto))))
+            .toList()),
+        );
 }
