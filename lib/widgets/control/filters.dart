@@ -378,7 +378,7 @@ class ControlFiltersWidget extends StatelessWidget {
                         Flexible(
                           child: ProjectDatePicker(
                             title: 'Дата последней проверки',
-                            hintText: 'Выберите дату или период',
+                            hintText: 'Выберите дату',
                             values: state.lastSurveyDates,
                             onChanged: (value)=> _onLastSurveyDate(bloc, value ?? []),
                           ),
@@ -484,7 +484,7 @@ class ControlFiltersWidget extends StatelessWidget {
                         Flexible(
                           child: ProjectDatePicker(
                             title: 'Дата обследования',
-                            hintText: 'Выберите дату или период',
+                            hintText: 'Выберите дату',
                             values: state.detectionDates,
                             onChanged: (value)=> _onDetectionDate(bloc, value ?? []),
                           ),
@@ -493,7 +493,7 @@ class ControlFiltersWidget extends StatelessWidget {
                         Flexible(
                           child: ProjectDatePicker(
                             title: 'Контрольный срок устранения',
-                            hintText: 'Выберите дату или период',
+                            hintText: 'Выберите дату',
                             values: state.controlDates,
                             onChanged: (value)=> _onControlDate(bloc, value ?? []),
                           ),
