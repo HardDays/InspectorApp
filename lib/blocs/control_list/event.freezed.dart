@@ -147,6 +147,14 @@ class _$ControlListBlocEventTearOff {
       violation,
     );
   }
+
+// ignore: unused_element
+  ChangeNetworkStatusEvent changeNetworkStatusEvent(
+      NetworkStatus networkStatus) {
+    return ChangeNetworkStatusEvent(
+      networkStatus,
+    );
+  }
 }
 
 /// @nodoc
@@ -190,6 +198,7 @@ mixin _$ControlListBlocEvent {
     @required
         TResult updateControlResultEvent(
             ControlObject object, int controlResultId, DCViolation violation),
+    @required TResult changeNetworkStatusEvent(NetworkStatus networkStatus),
   });
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object>({
@@ -215,6 +224,7 @@ mixin _$ControlListBlocEvent {
     TResult changeShowMapEvent(bool showMap),
     TResult updateControlResultEvent(
         ControlObject object, int controlResultId, DCViolation violation),
+    TResult changeNetworkStatusEvent(NetworkStatus networkStatus),
     @required TResult orElse(),
   });
   @optionalTypeArgs
@@ -241,6 +251,7 @@ mixin _$ControlListBlocEvent {
     @required TResult updateResolveDateEvent(UpdateResolveDateEvent value),
     @required TResult changeShowMapEvent(ChangeShowMapEvent value),
     @required TResult updateControlResultEvent(UpdateControlResultEvent value),
+    @required TResult changeNetworkStatusEvent(ChangeNetworkStatusEvent value),
   });
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object>({
@@ -260,6 +271,7 @@ mixin _$ControlListBlocEvent {
     TResult updateResolveDateEvent(UpdateResolveDateEvent value),
     TResult changeShowMapEvent(ChangeShowMapEvent value),
     TResult updateControlResultEvent(UpdateControlResultEvent value),
+    TResult changeNetworkStatusEvent(ChangeNetworkStatusEvent value),
     @required TResult orElse(),
   });
 }
@@ -353,6 +365,7 @@ class _$LoadControlListEvent implements LoadControlListEvent {
     @required
         TResult updateControlResultEvent(
             ControlObject object, int controlResultId, DCViolation violation),
+    @required TResult changeNetworkStatusEvent(NetworkStatus networkStatus),
   }) {
     assert(loadControlListEvent != null);
     assert(cantWorkInThisModeEvent != null);
@@ -370,6 +383,7 @@ class _$LoadControlListEvent implements LoadControlListEvent {
     assert(updateResolveDateEvent != null);
     assert(changeShowMapEvent != null);
     assert(updateControlResultEvent != null);
+    assert(changeNetworkStatusEvent != null);
     return loadControlListEvent();
   }
 
@@ -398,6 +412,7 @@ class _$LoadControlListEvent implements LoadControlListEvent {
     TResult changeShowMapEvent(bool showMap),
     TResult updateControlResultEvent(
         ControlObject object, int controlResultId, DCViolation violation),
+    TResult changeNetworkStatusEvent(NetworkStatus networkStatus),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -432,6 +447,7 @@ class _$LoadControlListEvent implements LoadControlListEvent {
     @required TResult updateResolveDateEvent(UpdateResolveDateEvent value),
     @required TResult changeShowMapEvent(ChangeShowMapEvent value),
     @required TResult updateControlResultEvent(UpdateControlResultEvent value),
+    @required TResult changeNetworkStatusEvent(ChangeNetworkStatusEvent value),
   }) {
     assert(loadControlListEvent != null);
     assert(cantWorkInThisModeEvent != null);
@@ -449,6 +465,7 @@ class _$LoadControlListEvent implements LoadControlListEvent {
     assert(updateResolveDateEvent != null);
     assert(changeShowMapEvent != null);
     assert(updateControlResultEvent != null);
+    assert(changeNetworkStatusEvent != null);
     return loadControlListEvent(this);
   }
 
@@ -471,6 +488,7 @@ class _$LoadControlListEvent implements LoadControlListEvent {
     TResult updateResolveDateEvent(UpdateResolveDateEvent value),
     TResult changeShowMapEvent(ChangeShowMapEvent value),
     TResult updateControlResultEvent(UpdateControlResultEvent value),
+    TResult changeNetworkStatusEvent(ChangeNetworkStatusEvent value),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -557,6 +575,7 @@ class _$CantWorkInThisModeEvent implements CantWorkInThisModeEvent {
     @required
         TResult updateControlResultEvent(
             ControlObject object, int controlResultId, DCViolation violation),
+    @required TResult changeNetworkStatusEvent(NetworkStatus networkStatus),
   }) {
     assert(loadControlListEvent != null);
     assert(cantWorkInThisModeEvent != null);
@@ -574,6 +593,7 @@ class _$CantWorkInThisModeEvent implements CantWorkInThisModeEvent {
     assert(updateResolveDateEvent != null);
     assert(changeShowMapEvent != null);
     assert(updateControlResultEvent != null);
+    assert(changeNetworkStatusEvent != null);
     return cantWorkInThisModeEvent();
   }
 
@@ -602,6 +622,7 @@ class _$CantWorkInThisModeEvent implements CantWorkInThisModeEvent {
     TResult changeShowMapEvent(bool showMap),
     TResult updateControlResultEvent(
         ControlObject object, int controlResultId, DCViolation violation),
+    TResult changeNetworkStatusEvent(NetworkStatus networkStatus),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -636,6 +657,7 @@ class _$CantWorkInThisModeEvent implements CantWorkInThisModeEvent {
     @required TResult updateResolveDateEvent(UpdateResolveDateEvent value),
     @required TResult changeShowMapEvent(ChangeShowMapEvent value),
     @required TResult updateControlResultEvent(UpdateControlResultEvent value),
+    @required TResult changeNetworkStatusEvent(ChangeNetworkStatusEvent value),
   }) {
     assert(loadControlListEvent != null);
     assert(cantWorkInThisModeEvent != null);
@@ -653,6 +675,7 @@ class _$CantWorkInThisModeEvent implements CantWorkInThisModeEvent {
     assert(updateResolveDateEvent != null);
     assert(changeShowMapEvent != null);
     assert(updateControlResultEvent != null);
+    assert(changeNetworkStatusEvent != null);
     return cantWorkInThisModeEvent(this);
   }
 
@@ -675,6 +698,7 @@ class _$CantWorkInThisModeEvent implements CantWorkInThisModeEvent {
     TResult updateResolveDateEvent(UpdateResolveDateEvent value),
     TResult changeShowMapEvent(ChangeShowMapEvent value),
     TResult updateControlResultEvent(UpdateControlResultEvent value),
+    TResult changeNetworkStatusEvent(ChangeNetworkStatusEvent value),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -761,6 +785,7 @@ class _$RefreshControlListEvent implements RefreshControlListEvent {
     @required
         TResult updateControlResultEvent(
             ControlObject object, int controlResultId, DCViolation violation),
+    @required TResult changeNetworkStatusEvent(NetworkStatus networkStatus),
   }) {
     assert(loadControlListEvent != null);
     assert(cantWorkInThisModeEvent != null);
@@ -778,6 +803,7 @@ class _$RefreshControlListEvent implements RefreshControlListEvent {
     assert(updateResolveDateEvent != null);
     assert(changeShowMapEvent != null);
     assert(updateControlResultEvent != null);
+    assert(changeNetworkStatusEvent != null);
     return refreshControlListEvent();
   }
 
@@ -806,6 +832,7 @@ class _$RefreshControlListEvent implements RefreshControlListEvent {
     TResult changeShowMapEvent(bool showMap),
     TResult updateControlResultEvent(
         ControlObject object, int controlResultId, DCViolation violation),
+    TResult changeNetworkStatusEvent(NetworkStatus networkStatus),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -840,6 +867,7 @@ class _$RefreshControlListEvent implements RefreshControlListEvent {
     @required TResult updateResolveDateEvent(UpdateResolveDateEvent value),
     @required TResult changeShowMapEvent(ChangeShowMapEvent value),
     @required TResult updateControlResultEvent(UpdateControlResultEvent value),
+    @required TResult changeNetworkStatusEvent(ChangeNetworkStatusEvent value),
   }) {
     assert(loadControlListEvent != null);
     assert(cantWorkInThisModeEvent != null);
@@ -857,6 +885,7 @@ class _$RefreshControlListEvent implements RefreshControlListEvent {
     assert(updateResolveDateEvent != null);
     assert(changeShowMapEvent != null);
     assert(updateControlResultEvent != null);
+    assert(changeNetworkStatusEvent != null);
     return refreshControlListEvent(this);
   }
 
@@ -879,6 +908,7 @@ class _$RefreshControlListEvent implements RefreshControlListEvent {
     TResult updateResolveDateEvent(UpdateResolveDateEvent value),
     TResult changeShowMapEvent(ChangeShowMapEvent value),
     TResult updateControlResultEvent(UpdateControlResultEvent value),
+    TResult changeNetworkStatusEvent(ChangeNetworkStatusEvent value),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -968,6 +998,7 @@ class _$LoadNextPageControlListEvent implements LoadNextPageControlListEvent {
     @required
         TResult updateControlResultEvent(
             ControlObject object, int controlResultId, DCViolation violation),
+    @required TResult changeNetworkStatusEvent(NetworkStatus networkStatus),
   }) {
     assert(loadControlListEvent != null);
     assert(cantWorkInThisModeEvent != null);
@@ -985,6 +1016,7 @@ class _$LoadNextPageControlListEvent implements LoadNextPageControlListEvent {
     assert(updateResolveDateEvent != null);
     assert(changeShowMapEvent != null);
     assert(updateControlResultEvent != null);
+    assert(changeNetworkStatusEvent != null);
     return loadNextPageControlListEvent();
   }
 
@@ -1013,6 +1045,7 @@ class _$LoadNextPageControlListEvent implements LoadNextPageControlListEvent {
     TResult changeShowMapEvent(bool showMap),
     TResult updateControlResultEvent(
         ControlObject object, int controlResultId, DCViolation violation),
+    TResult changeNetworkStatusEvent(NetworkStatus networkStatus),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -1047,6 +1080,7 @@ class _$LoadNextPageControlListEvent implements LoadNextPageControlListEvent {
     @required TResult updateResolveDateEvent(UpdateResolveDateEvent value),
     @required TResult changeShowMapEvent(ChangeShowMapEvent value),
     @required TResult updateControlResultEvent(UpdateControlResultEvent value),
+    @required TResult changeNetworkStatusEvent(ChangeNetworkStatusEvent value),
   }) {
     assert(loadControlListEvent != null);
     assert(cantWorkInThisModeEvent != null);
@@ -1064,6 +1098,7 @@ class _$LoadNextPageControlListEvent implements LoadNextPageControlListEvent {
     assert(updateResolveDateEvent != null);
     assert(changeShowMapEvent != null);
     assert(updateControlResultEvent != null);
+    assert(changeNetworkStatusEvent != null);
     return loadNextPageControlListEvent(this);
   }
 
@@ -1086,6 +1121,7 @@ class _$LoadNextPageControlListEvent implements LoadNextPageControlListEvent {
     TResult updateResolveDateEvent(UpdateResolveDateEvent value),
     TResult changeShowMapEvent(ChangeShowMapEvent value),
     TResult updateControlResultEvent(UpdateControlResultEvent value),
+    TResult changeNetworkStatusEvent(ChangeNetworkStatusEvent value),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -1206,6 +1242,7 @@ class _$ChangeFiltersEvent implements ChangeFiltersEvent {
     @required
         TResult updateControlResultEvent(
             ControlObject object, int controlResultId, DCViolation violation),
+    @required TResult changeNetworkStatusEvent(NetworkStatus networkStatus),
   }) {
     assert(loadControlListEvent != null);
     assert(cantWorkInThisModeEvent != null);
@@ -1223,6 +1260,7 @@ class _$ChangeFiltersEvent implements ChangeFiltersEvent {
     assert(updateResolveDateEvent != null);
     assert(changeShowMapEvent != null);
     assert(updateControlResultEvent != null);
+    assert(changeNetworkStatusEvent != null);
     return changeFilters(state);
   }
 
@@ -1251,6 +1289,7 @@ class _$ChangeFiltersEvent implements ChangeFiltersEvent {
     TResult changeShowMapEvent(bool showMap),
     TResult updateControlResultEvent(
         ControlObject object, int controlResultId, DCViolation violation),
+    TResult changeNetworkStatusEvent(NetworkStatus networkStatus),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -1285,6 +1324,7 @@ class _$ChangeFiltersEvent implements ChangeFiltersEvent {
     @required TResult updateResolveDateEvent(UpdateResolveDateEvent value),
     @required TResult changeShowMapEvent(ChangeShowMapEvent value),
     @required TResult updateControlResultEvent(UpdateControlResultEvent value),
+    @required TResult changeNetworkStatusEvent(ChangeNetworkStatusEvent value),
   }) {
     assert(loadControlListEvent != null);
     assert(cantWorkInThisModeEvent != null);
@@ -1302,6 +1342,7 @@ class _$ChangeFiltersEvent implements ChangeFiltersEvent {
     assert(updateResolveDateEvent != null);
     assert(changeShowMapEvent != null);
     assert(updateControlResultEvent != null);
+    assert(changeNetworkStatusEvent != null);
     return changeFilters(this);
   }
 
@@ -1324,6 +1365,7 @@ class _$ChangeFiltersEvent implements ChangeFiltersEvent {
     TResult updateResolveDateEvent(UpdateResolveDateEvent value),
     TResult changeShowMapEvent(ChangeShowMapEvent value),
     TResult updateControlResultEvent(UpdateControlResultEvent value),
+    TResult changeNetworkStatusEvent(ChangeNetworkStatusEvent value),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -1437,6 +1479,7 @@ class _$ChangeSortEvent implements ChangeSortEvent {
     @required
         TResult updateControlResultEvent(
             ControlObject object, int controlResultId, DCViolation violation),
+    @required TResult changeNetworkStatusEvent(NetworkStatus networkStatus),
   }) {
     assert(loadControlListEvent != null);
     assert(cantWorkInThisModeEvent != null);
@@ -1454,6 +1497,7 @@ class _$ChangeSortEvent implements ChangeSortEvent {
     assert(updateResolveDateEvent != null);
     assert(changeShowMapEvent != null);
     assert(updateControlResultEvent != null);
+    assert(changeNetworkStatusEvent != null);
     return changeSort(state);
   }
 
@@ -1482,6 +1526,7 @@ class _$ChangeSortEvent implements ChangeSortEvent {
     TResult changeShowMapEvent(bool showMap),
     TResult updateControlResultEvent(
         ControlObject object, int controlResultId, DCViolation violation),
+    TResult changeNetworkStatusEvent(NetworkStatus networkStatus),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -1516,6 +1561,7 @@ class _$ChangeSortEvent implements ChangeSortEvent {
     @required TResult updateResolveDateEvent(UpdateResolveDateEvent value),
     @required TResult changeShowMapEvent(ChangeShowMapEvent value),
     @required TResult updateControlResultEvent(UpdateControlResultEvent value),
+    @required TResult changeNetworkStatusEvent(ChangeNetworkStatusEvent value),
   }) {
     assert(loadControlListEvent != null);
     assert(cantWorkInThisModeEvent != null);
@@ -1533,6 +1579,7 @@ class _$ChangeSortEvent implements ChangeSortEvent {
     assert(updateResolveDateEvent != null);
     assert(changeShowMapEvent != null);
     assert(updateControlResultEvent != null);
+    assert(changeNetworkStatusEvent != null);
     return changeSort(this);
   }
 
@@ -1555,6 +1602,7 @@ class _$ChangeSortEvent implements ChangeSortEvent {
     TResult updateResolveDateEvent(UpdateResolveDateEvent value),
     TResult changeShowMapEvent(ChangeShowMapEvent value),
     TResult updateControlResultEvent(UpdateControlResultEvent value),
+    TResult changeNetworkStatusEvent(ChangeNetworkStatusEvent value),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -1679,6 +1727,7 @@ class _$OpenInMapEvent implements OpenInMapEvent {
     @required
         TResult updateControlResultEvent(
             ControlObject object, int controlResultId, DCViolation violation),
+    @required TResult changeNetworkStatusEvent(NetworkStatus networkStatus),
   }) {
     assert(loadControlListEvent != null);
     assert(cantWorkInThisModeEvent != null);
@@ -1696,6 +1745,7 @@ class _$OpenInMapEvent implements OpenInMapEvent {
     assert(updateResolveDateEvent != null);
     assert(changeShowMapEvent != null);
     assert(updateControlResultEvent != null);
+    assert(changeNetworkStatusEvent != null);
     return openInMapEvent(object);
   }
 
@@ -1724,6 +1774,7 @@ class _$OpenInMapEvent implements OpenInMapEvent {
     TResult changeShowMapEvent(bool showMap),
     TResult updateControlResultEvent(
         ControlObject object, int controlResultId, DCViolation violation),
+    TResult changeNetworkStatusEvent(NetworkStatus networkStatus),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -1758,6 +1809,7 @@ class _$OpenInMapEvent implements OpenInMapEvent {
     @required TResult updateResolveDateEvent(UpdateResolveDateEvent value),
     @required TResult changeShowMapEvent(ChangeShowMapEvent value),
     @required TResult updateControlResultEvent(UpdateControlResultEvent value),
+    @required TResult changeNetworkStatusEvent(ChangeNetworkStatusEvent value),
   }) {
     assert(loadControlListEvent != null);
     assert(cantWorkInThisModeEvent != null);
@@ -1775,6 +1827,7 @@ class _$OpenInMapEvent implements OpenInMapEvent {
     assert(updateResolveDateEvent != null);
     assert(changeShowMapEvent != null);
     assert(updateControlResultEvent != null);
+    assert(changeNetworkStatusEvent != null);
     return openInMapEvent(this);
   }
 
@@ -1797,6 +1850,7 @@ class _$OpenInMapEvent implements OpenInMapEvent {
     TResult updateResolveDateEvent(UpdateResolveDateEvent value),
     TResult changeShowMapEvent(ChangeShowMapEvent value),
     TResult updateControlResultEvent(UpdateControlResultEvent value),
+    TResult changeNetworkStatusEvent(ChangeNetworkStatusEvent value),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -1923,6 +1977,7 @@ class _$SelectControlObjectEvent implements SelectControlObjectEvent {
     @required
         TResult updateControlResultEvent(
             ControlObject object, int controlResultId, DCViolation violation),
+    @required TResult changeNetworkStatusEvent(NetworkStatus networkStatus),
   }) {
     assert(loadControlListEvent != null);
     assert(cantWorkInThisModeEvent != null);
@@ -1940,6 +1995,7 @@ class _$SelectControlObjectEvent implements SelectControlObjectEvent {
     assert(updateResolveDateEvent != null);
     assert(changeShowMapEvent != null);
     assert(updateControlResultEvent != null);
+    assert(changeNetworkStatusEvent != null);
     return selectControlObject(object);
   }
 
@@ -1968,6 +2024,7 @@ class _$SelectControlObjectEvent implements SelectControlObjectEvent {
     TResult changeShowMapEvent(bool showMap),
     TResult updateControlResultEvent(
         ControlObject object, int controlResultId, DCViolation violation),
+    TResult changeNetworkStatusEvent(NetworkStatus networkStatus),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -2002,6 +2059,7 @@ class _$SelectControlObjectEvent implements SelectControlObjectEvent {
     @required TResult updateResolveDateEvent(UpdateResolveDateEvent value),
     @required TResult changeShowMapEvent(ChangeShowMapEvent value),
     @required TResult updateControlResultEvent(UpdateControlResultEvent value),
+    @required TResult changeNetworkStatusEvent(ChangeNetworkStatusEvent value),
   }) {
     assert(loadControlListEvent != null);
     assert(cantWorkInThisModeEvent != null);
@@ -2019,6 +2077,7 @@ class _$SelectControlObjectEvent implements SelectControlObjectEvent {
     assert(updateResolveDateEvent != null);
     assert(changeShowMapEvent != null);
     assert(updateControlResultEvent != null);
+    assert(changeNetworkStatusEvent != null);
     return selectControlObject(this);
   }
 
@@ -2041,6 +2100,7 @@ class _$SelectControlObjectEvent implements SelectControlObjectEvent {
     TResult updateResolveDateEvent(UpdateResolveDateEvent value),
     TResult changeShowMapEvent(ChangeShowMapEvent value),
     TResult updateControlResultEvent(UpdateControlResultEvent value),
+    TResult changeNetworkStatusEvent(ChangeNetworkStatusEvent value),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -2190,6 +2250,7 @@ class _$RegisterSearchResultEvent implements RegisterSearchResultEvent {
     @required
         TResult updateControlResultEvent(
             ControlObject object, int controlResultId, DCViolation violation),
+    @required TResult changeNetworkStatusEvent(NetworkStatus networkStatus),
   }) {
     assert(loadControlListEvent != null);
     assert(cantWorkInThisModeEvent != null);
@@ -2207,6 +2268,7 @@ class _$RegisterSearchResultEvent implements RegisterSearchResultEvent {
     assert(updateResolveDateEvent != null);
     assert(changeShowMapEvent != null);
     assert(updateControlResultEvent != null);
+    assert(changeNetworkStatusEvent != null);
     return registerSearchResultEvent(object, violation);
   }
 
@@ -2235,6 +2297,7 @@ class _$RegisterSearchResultEvent implements RegisterSearchResultEvent {
     TResult changeShowMapEvent(bool showMap),
     TResult updateControlResultEvent(
         ControlObject object, int controlResultId, DCViolation violation),
+    TResult changeNetworkStatusEvent(NetworkStatus networkStatus),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -2269,6 +2332,7 @@ class _$RegisterSearchResultEvent implements RegisterSearchResultEvent {
     @required TResult updateResolveDateEvent(UpdateResolveDateEvent value),
     @required TResult changeShowMapEvent(ChangeShowMapEvent value),
     @required TResult updateControlResultEvent(UpdateControlResultEvent value),
+    @required TResult changeNetworkStatusEvent(ChangeNetworkStatusEvent value),
   }) {
     assert(loadControlListEvent != null);
     assert(cantWorkInThisModeEvent != null);
@@ -2286,6 +2350,7 @@ class _$RegisterSearchResultEvent implements RegisterSearchResultEvent {
     assert(updateResolveDateEvent != null);
     assert(changeShowMapEvent != null);
     assert(updateControlResultEvent != null);
+    assert(changeNetworkStatusEvent != null);
     return registerSearchResultEvent(this);
   }
 
@@ -2308,6 +2373,7 @@ class _$RegisterSearchResultEvent implements RegisterSearchResultEvent {
     TResult updateResolveDateEvent(UpdateResolveDateEvent value),
     TResult changeShowMapEvent(ChangeShowMapEvent value),
     TResult updateControlResultEvent(UpdateControlResultEvent value),
+    TResult changeNetworkStatusEvent(ChangeNetworkStatusEvent value),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -2446,6 +2512,7 @@ class _$RemoveViolationEvent implements RemoveViolationEvent {
     @required
         TResult updateControlResultEvent(
             ControlObject object, int controlResultId, DCViolation violation),
+    @required TResult changeNetworkStatusEvent(NetworkStatus networkStatus),
   }) {
     assert(loadControlListEvent != null);
     assert(cantWorkInThisModeEvent != null);
@@ -2463,6 +2530,7 @@ class _$RemoveViolationEvent implements RemoveViolationEvent {
     assert(updateResolveDateEvent != null);
     assert(changeShowMapEvent != null);
     assert(updateControlResultEvent != null);
+    assert(changeNetworkStatusEvent != null);
     return removeViolationEvent(object, violationId);
   }
 
@@ -2491,6 +2559,7 @@ class _$RemoveViolationEvent implements RemoveViolationEvent {
     TResult changeShowMapEvent(bool showMap),
     TResult updateControlResultEvent(
         ControlObject object, int controlResultId, DCViolation violation),
+    TResult changeNetworkStatusEvent(NetworkStatus networkStatus),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -2525,6 +2594,7 @@ class _$RemoveViolationEvent implements RemoveViolationEvent {
     @required TResult updateResolveDateEvent(UpdateResolveDateEvent value),
     @required TResult changeShowMapEvent(ChangeShowMapEvent value),
     @required TResult updateControlResultEvent(UpdateControlResultEvent value),
+    @required TResult changeNetworkStatusEvent(ChangeNetworkStatusEvent value),
   }) {
     assert(loadControlListEvent != null);
     assert(cantWorkInThisModeEvent != null);
@@ -2542,6 +2612,7 @@ class _$RemoveViolationEvent implements RemoveViolationEvent {
     assert(updateResolveDateEvent != null);
     assert(changeShowMapEvent != null);
     assert(updateControlResultEvent != null);
+    assert(changeNetworkStatusEvent != null);
     return removeViolationEvent(this);
   }
 
@@ -2564,6 +2635,7 @@ class _$RemoveViolationEvent implements RemoveViolationEvent {
     TResult updateResolveDateEvent(UpdateResolveDateEvent value),
     TResult changeShowMapEvent(ChangeShowMapEvent value),
     TResult updateControlResultEvent(UpdateControlResultEvent value),
+    TResult changeNetworkStatusEvent(ChangeNetworkStatusEvent value),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -2732,6 +2804,7 @@ class _$RegisterPerformControlEvent implements RegisterPerformControlEvent {
     @required
         TResult updateControlResultEvent(
             ControlObject object, int controlResultId, DCViolation violation),
+    @required TResult changeNetworkStatusEvent(NetworkStatus networkStatus),
   }) {
     assert(loadControlListEvent != null);
     assert(cantWorkInThisModeEvent != null);
@@ -2749,6 +2822,7 @@ class _$RegisterPerformControlEvent implements RegisterPerformControlEvent {
     assert(updateResolveDateEvent != null);
     assert(changeShowMapEvent != null);
     assert(updateControlResultEvent != null);
+    assert(changeNetworkStatusEvent != null);
     return registerPerformControlEvent(performControl, object, controlResultId);
   }
 
@@ -2777,6 +2851,7 @@ class _$RegisterPerformControlEvent implements RegisterPerformControlEvent {
     TResult changeShowMapEvent(bool showMap),
     TResult updateControlResultEvent(
         ControlObject object, int controlResultId, DCViolation violation),
+    TResult changeNetworkStatusEvent(NetworkStatus networkStatus),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -2812,6 +2887,7 @@ class _$RegisterPerformControlEvent implements RegisterPerformControlEvent {
     @required TResult updateResolveDateEvent(UpdateResolveDateEvent value),
     @required TResult changeShowMapEvent(ChangeShowMapEvent value),
     @required TResult updateControlResultEvent(UpdateControlResultEvent value),
+    @required TResult changeNetworkStatusEvent(ChangeNetworkStatusEvent value),
   }) {
     assert(loadControlListEvent != null);
     assert(cantWorkInThisModeEvent != null);
@@ -2829,6 +2905,7 @@ class _$RegisterPerformControlEvent implements RegisterPerformControlEvent {
     assert(updateResolveDateEvent != null);
     assert(changeShowMapEvent != null);
     assert(updateControlResultEvent != null);
+    assert(changeNetworkStatusEvent != null);
     return registerPerformControlEvent(this);
   }
 
@@ -2851,6 +2928,7 @@ class _$RegisterPerformControlEvent implements RegisterPerformControlEvent {
     TResult updateResolveDateEvent(UpdateResolveDateEvent value),
     TResult changeShowMapEvent(ChangeShowMapEvent value),
     TResult updateControlResultEvent(UpdateControlResultEvent value),
+    TResult changeNetworkStatusEvent(ChangeNetworkStatusEvent value),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -3022,6 +3100,7 @@ class _$RemovePerformControlEvent implements RemovePerformControlEvent {
     @required
         TResult updateControlResultEvent(
             ControlObject object, int controlResultId, DCViolation violation),
+    @required TResult changeNetworkStatusEvent(NetworkStatus networkStatus),
   }) {
     assert(loadControlListEvent != null);
     assert(cantWorkInThisModeEvent != null);
@@ -3039,6 +3118,7 @@ class _$RemovePerformControlEvent implements RemovePerformControlEvent {
     assert(updateResolveDateEvent != null);
     assert(changeShowMapEvent != null);
     assert(updateControlResultEvent != null);
+    assert(changeNetworkStatusEvent != null);
     return removePerformControlEvent(performControl, object, controlResultId);
   }
 
@@ -3067,6 +3147,7 @@ class _$RemovePerformControlEvent implements RemovePerformControlEvent {
     TResult changeShowMapEvent(bool showMap),
     TResult updateControlResultEvent(
         ControlObject object, int controlResultId, DCViolation violation),
+    TResult changeNetworkStatusEvent(NetworkStatus networkStatus),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -3101,6 +3182,7 @@ class _$RemovePerformControlEvent implements RemovePerformControlEvent {
     @required TResult updateResolveDateEvent(UpdateResolveDateEvent value),
     @required TResult changeShowMapEvent(ChangeShowMapEvent value),
     @required TResult updateControlResultEvent(UpdateControlResultEvent value),
+    @required TResult changeNetworkStatusEvent(ChangeNetworkStatusEvent value),
   }) {
     assert(loadControlListEvent != null);
     assert(cantWorkInThisModeEvent != null);
@@ -3118,6 +3200,7 @@ class _$RemovePerformControlEvent implements RemovePerformControlEvent {
     assert(updateResolveDateEvent != null);
     assert(changeShowMapEvent != null);
     assert(updateControlResultEvent != null);
+    assert(changeNetworkStatusEvent != null);
     return removePerformControlEvent(this);
   }
 
@@ -3140,6 +3223,7 @@ class _$RemovePerformControlEvent implements RemovePerformControlEvent {
     TResult updateResolveDateEvent(UpdateResolveDateEvent value),
     TResult changeShowMapEvent(ChangeShowMapEvent value),
     TResult updateControlResultEvent(UpdateControlResultEvent value),
+    TResult changeNetworkStatusEvent(ChangeNetworkStatusEvent value),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -3308,6 +3392,7 @@ class _$UpdatePerformControlEvent implements UpdatePerformControlEvent {
     @required
         TResult updateControlResultEvent(
             ControlObject object, int controlResultId, DCViolation violation),
+    @required TResult changeNetworkStatusEvent(NetworkStatus networkStatus),
   }) {
     assert(loadControlListEvent != null);
     assert(cantWorkInThisModeEvent != null);
@@ -3325,6 +3410,7 @@ class _$UpdatePerformControlEvent implements UpdatePerformControlEvent {
     assert(updateResolveDateEvent != null);
     assert(changeShowMapEvent != null);
     assert(updateControlResultEvent != null);
+    assert(changeNetworkStatusEvent != null);
     return updatePerformControlEvent(performControl, object, controlResultId);
   }
 
@@ -3353,6 +3439,7 @@ class _$UpdatePerformControlEvent implements UpdatePerformControlEvent {
     TResult changeShowMapEvent(bool showMap),
     TResult updateControlResultEvent(
         ControlObject object, int controlResultId, DCViolation violation),
+    TResult changeNetworkStatusEvent(NetworkStatus networkStatus),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -3387,6 +3474,7 @@ class _$UpdatePerformControlEvent implements UpdatePerformControlEvent {
     @required TResult updateResolveDateEvent(UpdateResolveDateEvent value),
     @required TResult changeShowMapEvent(ChangeShowMapEvent value),
     @required TResult updateControlResultEvent(UpdateControlResultEvent value),
+    @required TResult changeNetworkStatusEvent(ChangeNetworkStatusEvent value),
   }) {
     assert(loadControlListEvent != null);
     assert(cantWorkInThisModeEvent != null);
@@ -3404,6 +3492,7 @@ class _$UpdatePerformControlEvent implements UpdatePerformControlEvent {
     assert(updateResolveDateEvent != null);
     assert(changeShowMapEvent != null);
     assert(updateControlResultEvent != null);
+    assert(changeNetworkStatusEvent != null);
     return updatePerformControlEvent(this);
   }
 
@@ -3426,6 +3515,7 @@ class _$UpdatePerformControlEvent implements UpdatePerformControlEvent {
     TResult updateResolveDateEvent(UpdateResolveDateEvent value),
     TResult changeShowMapEvent(ChangeShowMapEvent value),
     TResult updateControlResultEvent(UpdateControlResultEvent value),
+    TResult changeNetworkStatusEvent(ChangeNetworkStatusEvent value),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -3610,6 +3700,7 @@ class _$UpdateResolveDateEvent implements UpdateResolveDateEvent {
     @required
         TResult updateControlResultEvent(
             ControlObject object, int controlResultId, DCViolation violation),
+    @required TResult changeNetworkStatusEvent(NetworkStatus networkStatus),
   }) {
     assert(loadControlListEvent != null);
     assert(cantWorkInThisModeEvent != null);
@@ -3627,6 +3718,7 @@ class _$UpdateResolveDateEvent implements UpdateResolveDateEvent {
     assert(updateResolveDateEvent != null);
     assert(changeShowMapEvent != null);
     assert(updateControlResultEvent != null);
+    assert(changeNetworkStatusEvent != null);
     return updateResolveDateEvent(
         object, controlResultId, resolveDate, reason, comments);
   }
@@ -3656,6 +3748,7 @@ class _$UpdateResolveDateEvent implements UpdateResolveDateEvent {
     TResult changeShowMapEvent(bool showMap),
     TResult updateControlResultEvent(
         ControlObject object, int controlResultId, DCViolation violation),
+    TResult changeNetworkStatusEvent(NetworkStatus networkStatus),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -3691,6 +3784,7 @@ class _$UpdateResolveDateEvent implements UpdateResolveDateEvent {
     @required TResult updateResolveDateEvent(UpdateResolveDateEvent value),
     @required TResult changeShowMapEvent(ChangeShowMapEvent value),
     @required TResult updateControlResultEvent(UpdateControlResultEvent value),
+    @required TResult changeNetworkStatusEvent(ChangeNetworkStatusEvent value),
   }) {
     assert(loadControlListEvent != null);
     assert(cantWorkInThisModeEvent != null);
@@ -3708,6 +3802,7 @@ class _$UpdateResolveDateEvent implements UpdateResolveDateEvent {
     assert(updateResolveDateEvent != null);
     assert(changeShowMapEvent != null);
     assert(updateControlResultEvent != null);
+    assert(changeNetworkStatusEvent != null);
     return updateResolveDateEvent(this);
   }
 
@@ -3730,6 +3825,7 @@ class _$UpdateResolveDateEvent implements UpdateResolveDateEvent {
     TResult updateResolveDateEvent(UpdateResolveDateEvent value),
     TResult changeShowMapEvent(ChangeShowMapEvent value),
     TResult updateControlResultEvent(UpdateControlResultEvent value),
+    TResult changeNetworkStatusEvent(ChangeNetworkStatusEvent value),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -3851,6 +3947,7 @@ class _$ChangeShowMapEvent implements ChangeShowMapEvent {
     @required
         TResult updateControlResultEvent(
             ControlObject object, int controlResultId, DCViolation violation),
+    @required TResult changeNetworkStatusEvent(NetworkStatus networkStatus),
   }) {
     assert(loadControlListEvent != null);
     assert(cantWorkInThisModeEvent != null);
@@ -3868,6 +3965,7 @@ class _$ChangeShowMapEvent implements ChangeShowMapEvent {
     assert(updateResolveDateEvent != null);
     assert(changeShowMapEvent != null);
     assert(updateControlResultEvent != null);
+    assert(changeNetworkStatusEvent != null);
     return changeShowMapEvent(showMap);
   }
 
@@ -3896,6 +3994,7 @@ class _$ChangeShowMapEvent implements ChangeShowMapEvent {
     TResult changeShowMapEvent(bool showMap),
     TResult updateControlResultEvent(
         ControlObject object, int controlResultId, DCViolation violation),
+    TResult changeNetworkStatusEvent(NetworkStatus networkStatus),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -3930,6 +4029,7 @@ class _$ChangeShowMapEvent implements ChangeShowMapEvent {
     @required TResult updateResolveDateEvent(UpdateResolveDateEvent value),
     @required TResult changeShowMapEvent(ChangeShowMapEvent value),
     @required TResult updateControlResultEvent(UpdateControlResultEvent value),
+    @required TResult changeNetworkStatusEvent(ChangeNetworkStatusEvent value),
   }) {
     assert(loadControlListEvent != null);
     assert(cantWorkInThisModeEvent != null);
@@ -3947,6 +4047,7 @@ class _$ChangeShowMapEvent implements ChangeShowMapEvent {
     assert(updateResolveDateEvent != null);
     assert(changeShowMapEvent != null);
     assert(updateControlResultEvent != null);
+    assert(changeNetworkStatusEvent != null);
     return changeShowMapEvent(this);
   }
 
@@ -3969,6 +4070,7 @@ class _$ChangeShowMapEvent implements ChangeShowMapEvent {
     TResult updateResolveDateEvent(UpdateResolveDateEvent value),
     TResult changeShowMapEvent(ChangeShowMapEvent value),
     TResult updateControlResultEvent(UpdateControlResultEvent value),
+    TResult changeNetworkStatusEvent(ChangeNetworkStatusEvent value),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -4129,6 +4231,7 @@ class _$UpdateControlResultEvent implements UpdateControlResultEvent {
     @required
         TResult updateControlResultEvent(
             ControlObject object, int controlResultId, DCViolation violation),
+    @required TResult changeNetworkStatusEvent(NetworkStatus networkStatus),
   }) {
     assert(loadControlListEvent != null);
     assert(cantWorkInThisModeEvent != null);
@@ -4146,6 +4249,7 @@ class _$UpdateControlResultEvent implements UpdateControlResultEvent {
     assert(updateResolveDateEvent != null);
     assert(changeShowMapEvent != null);
     assert(updateControlResultEvent != null);
+    assert(changeNetworkStatusEvent != null);
     return updateControlResultEvent(object, controlResultId, violation);
   }
 
@@ -4174,6 +4278,7 @@ class _$UpdateControlResultEvent implements UpdateControlResultEvent {
     TResult changeShowMapEvent(bool showMap),
     TResult updateControlResultEvent(
         ControlObject object, int controlResultId, DCViolation violation),
+    TResult changeNetworkStatusEvent(NetworkStatus networkStatus),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -4208,6 +4313,7 @@ class _$UpdateControlResultEvent implements UpdateControlResultEvent {
     @required TResult updateResolveDateEvent(UpdateResolveDateEvent value),
     @required TResult changeShowMapEvent(ChangeShowMapEvent value),
     @required TResult updateControlResultEvent(UpdateControlResultEvent value),
+    @required TResult changeNetworkStatusEvent(ChangeNetworkStatusEvent value),
   }) {
     assert(loadControlListEvent != null);
     assert(cantWorkInThisModeEvent != null);
@@ -4225,6 +4331,7 @@ class _$UpdateControlResultEvent implements UpdateControlResultEvent {
     assert(updateResolveDateEvent != null);
     assert(changeShowMapEvent != null);
     assert(updateControlResultEvent != null);
+    assert(changeNetworkStatusEvent != null);
     return updateControlResultEvent(this);
   }
 
@@ -4247,6 +4354,7 @@ class _$UpdateControlResultEvent implements UpdateControlResultEvent {
     TResult updateResolveDateEvent(UpdateResolveDateEvent value),
     TResult changeShowMapEvent(ChangeShowMapEvent value),
     TResult updateControlResultEvent(UpdateControlResultEvent value),
+    TResult changeNetworkStatusEvent(ChangeNetworkStatusEvent value),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -4267,4 +4375,247 @@ abstract class UpdateControlResultEvent implements ControlListBlocEvent {
   DCViolation get violation;
   @JsonKey(ignore: true)
   $UpdateControlResultEventCopyWith<UpdateControlResultEvent> get copyWith;
+}
+
+/// @nodoc
+abstract class $ChangeNetworkStatusEventCopyWith<$Res> {
+  factory $ChangeNetworkStatusEventCopyWith(ChangeNetworkStatusEvent value,
+          $Res Function(ChangeNetworkStatusEvent) then) =
+      _$ChangeNetworkStatusEventCopyWithImpl<$Res>;
+  $Res call({NetworkStatus networkStatus});
+}
+
+/// @nodoc
+class _$ChangeNetworkStatusEventCopyWithImpl<$Res>
+    extends _$ControlListBlocEventCopyWithImpl<$Res>
+    implements $ChangeNetworkStatusEventCopyWith<$Res> {
+  _$ChangeNetworkStatusEventCopyWithImpl(ChangeNetworkStatusEvent _value,
+      $Res Function(ChangeNetworkStatusEvent) _then)
+      : super(_value, (v) => _then(v as ChangeNetworkStatusEvent));
+
+  @override
+  ChangeNetworkStatusEvent get _value =>
+      super._value as ChangeNetworkStatusEvent;
+
+  @override
+  $Res call({
+    Object networkStatus = freezed,
+  }) {
+    return _then(ChangeNetworkStatusEvent(
+      networkStatus == freezed
+          ? _value.networkStatus
+          : networkStatus as NetworkStatus,
+    ));
+  }
+}
+
+/// @nodoc
+class _$ChangeNetworkStatusEvent implements ChangeNetworkStatusEvent {
+  const _$ChangeNetworkStatusEvent(this.networkStatus)
+      : assert(networkStatus != null);
+
+  @override
+  final NetworkStatus networkStatus;
+
+  @override
+  String toString() {
+    return 'ControlListBlocEvent.changeNetworkStatusEvent(networkStatus: $networkStatus)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is ChangeNetworkStatusEvent &&
+            (identical(other.networkStatus, networkStatus) ||
+                const DeepCollectionEquality()
+                    .equals(other.networkStatus, networkStatus)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^ const DeepCollectionEquality().hash(networkStatus);
+
+  @JsonKey(ignore: true)
+  @override
+  $ChangeNetworkStatusEventCopyWith<ChangeNetworkStatusEvent> get copyWith =>
+      _$ChangeNetworkStatusEventCopyWithImpl<ChangeNetworkStatusEvent>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object>({
+    @required TResult loadControlListEvent(),
+    @required TResult cantWorkInThisModeEvent(),
+    @required TResult refreshControlListEvent(),
+    @required TResult loadNextPageControlListEvent(),
+    @required TResult changeFilters(ControlFiltersBlocState state),
+    @required TResult changeSort(String state),
+    @required TResult openInMapEvent(ControlObject object),
+    @required TResult selectControlObject(ControlObject object),
+    @required
+        TResult registerSearchResultEvent(
+            ControlObject object, DCViolation violation),
+    @required
+        TResult removeViolationEvent(ControlObject object, int violationId),
+    @required
+        TResult registerPerformControlEvent(PerformControl performControl,
+            ControlObject object, int controlResultId),
+    @required
+        TResult removePerformControlEvent(PerformControl performControl,
+            ControlObject object, int controlResultId),
+    @required
+        TResult updatePerformControlEvent(PerformControl performControl,
+            ControlObject object, int controlResultId),
+    @required
+        TResult updateResolveDateEvent(
+            ControlObject object,
+            int controlResultId,
+            DateTime resolveDate,
+            ViolationExtensionReason reason,
+            String comments),
+    @required TResult changeShowMapEvent(bool showMap),
+    @required
+        TResult updateControlResultEvent(
+            ControlObject object, int controlResultId, DCViolation violation),
+    @required TResult changeNetworkStatusEvent(NetworkStatus networkStatus),
+  }) {
+    assert(loadControlListEvent != null);
+    assert(cantWorkInThisModeEvent != null);
+    assert(refreshControlListEvent != null);
+    assert(loadNextPageControlListEvent != null);
+    assert(changeFilters != null);
+    assert(changeSort != null);
+    assert(openInMapEvent != null);
+    assert(selectControlObject != null);
+    assert(registerSearchResultEvent != null);
+    assert(removeViolationEvent != null);
+    assert(registerPerformControlEvent != null);
+    assert(removePerformControlEvent != null);
+    assert(updatePerformControlEvent != null);
+    assert(updateResolveDateEvent != null);
+    assert(changeShowMapEvent != null);
+    assert(updateControlResultEvent != null);
+    assert(changeNetworkStatusEvent != null);
+    return changeNetworkStatusEvent(networkStatus);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object>({
+    TResult loadControlListEvent(),
+    TResult cantWorkInThisModeEvent(),
+    TResult refreshControlListEvent(),
+    TResult loadNextPageControlListEvent(),
+    TResult changeFilters(ControlFiltersBlocState state),
+    TResult changeSort(String state),
+    TResult openInMapEvent(ControlObject object),
+    TResult selectControlObject(ControlObject object),
+    TResult registerSearchResultEvent(
+        ControlObject object, DCViolation violation),
+    TResult removeViolationEvent(ControlObject object, int violationId),
+    TResult registerPerformControlEvent(PerformControl performControl,
+        ControlObject object, int controlResultId),
+    TResult removePerformControlEvent(PerformControl performControl,
+        ControlObject object, int controlResultId),
+    TResult updatePerformControlEvent(PerformControl performControl,
+        ControlObject object, int controlResultId),
+    TResult updateResolveDateEvent(ControlObject object, int controlResultId,
+        DateTime resolveDate, ViolationExtensionReason reason, String comments),
+    TResult changeShowMapEvent(bool showMap),
+    TResult updateControlResultEvent(
+        ControlObject object, int controlResultId, DCViolation violation),
+    TResult changeNetworkStatusEvent(NetworkStatus networkStatus),
+    @required TResult orElse(),
+  }) {
+    assert(orElse != null);
+    if (changeNetworkStatusEvent != null) {
+      return changeNetworkStatusEvent(networkStatus);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object>({
+    @required TResult loadControlListEvent(LoadControlListEvent value),
+    @required TResult cantWorkInThisModeEvent(CantWorkInThisModeEvent value),
+    @required TResult refreshControlListEvent(RefreshControlListEvent value),
+    @required
+        TResult loadNextPageControlListEvent(
+            LoadNextPageControlListEvent value),
+    @required TResult changeFilters(ChangeFiltersEvent value),
+    @required TResult changeSort(ChangeSortEvent value),
+    @required TResult openInMapEvent(OpenInMapEvent value),
+    @required TResult selectControlObject(SelectControlObjectEvent value),
+    @required
+        TResult registerSearchResultEvent(RegisterSearchResultEvent value),
+    @required TResult removeViolationEvent(RemoveViolationEvent value),
+    @required
+        TResult registerPerformControlEvent(RegisterPerformControlEvent value),
+    @required
+        TResult removePerformControlEvent(RemovePerformControlEvent value),
+    @required
+        TResult updatePerformControlEvent(UpdatePerformControlEvent value),
+    @required TResult updateResolveDateEvent(UpdateResolveDateEvent value),
+    @required TResult changeShowMapEvent(ChangeShowMapEvent value),
+    @required TResult updateControlResultEvent(UpdateControlResultEvent value),
+    @required TResult changeNetworkStatusEvent(ChangeNetworkStatusEvent value),
+  }) {
+    assert(loadControlListEvent != null);
+    assert(cantWorkInThisModeEvent != null);
+    assert(refreshControlListEvent != null);
+    assert(loadNextPageControlListEvent != null);
+    assert(changeFilters != null);
+    assert(changeSort != null);
+    assert(openInMapEvent != null);
+    assert(selectControlObject != null);
+    assert(registerSearchResultEvent != null);
+    assert(removeViolationEvent != null);
+    assert(registerPerformControlEvent != null);
+    assert(removePerformControlEvent != null);
+    assert(updatePerformControlEvent != null);
+    assert(updateResolveDateEvent != null);
+    assert(changeShowMapEvent != null);
+    assert(updateControlResultEvent != null);
+    assert(changeNetworkStatusEvent != null);
+    return changeNetworkStatusEvent(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object>({
+    TResult loadControlListEvent(LoadControlListEvent value),
+    TResult cantWorkInThisModeEvent(CantWorkInThisModeEvent value),
+    TResult refreshControlListEvent(RefreshControlListEvent value),
+    TResult loadNextPageControlListEvent(LoadNextPageControlListEvent value),
+    TResult changeFilters(ChangeFiltersEvent value),
+    TResult changeSort(ChangeSortEvent value),
+    TResult openInMapEvent(OpenInMapEvent value),
+    TResult selectControlObject(SelectControlObjectEvent value),
+    TResult registerSearchResultEvent(RegisterSearchResultEvent value),
+    TResult removeViolationEvent(RemoveViolationEvent value),
+    TResult registerPerformControlEvent(RegisterPerformControlEvent value),
+    TResult removePerformControlEvent(RemovePerformControlEvent value),
+    TResult updatePerformControlEvent(UpdatePerformControlEvent value),
+    TResult updateResolveDateEvent(UpdateResolveDateEvent value),
+    TResult changeShowMapEvent(ChangeShowMapEvent value),
+    TResult updateControlResultEvent(UpdateControlResultEvent value),
+    TResult changeNetworkStatusEvent(ChangeNetworkStatusEvent value),
+    @required TResult orElse(),
+  }) {
+    assert(orElse != null);
+    if (changeNetworkStatusEvent != null) {
+      return changeNetworkStatusEvent(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class ChangeNetworkStatusEvent implements ControlListBlocEvent {
+  const factory ChangeNetworkStatusEvent(NetworkStatus networkStatus) =
+      _$ChangeNetworkStatusEvent;
+
+  NetworkStatus get networkStatus;
+  @JsonKey(ignore: true)
+  $ChangeNetworkStatusEventCopyWith<ChangeNetworkStatusEvent> get copyWith;
 }

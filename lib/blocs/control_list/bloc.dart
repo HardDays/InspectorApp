@@ -56,11 +56,7 @@ class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
     _networkStatusStreamSubscription =
         networkStatusService.listenNetworkStatus.listen((value) {
       _networkStatus = value;
-      if (value.connectionStatus == ConnectionStatus.offline) {
-        add(ControlListBlocEvent.cantWorkInThisModeEvent());
-      } else {
-        add(ControlListBlocEvent.loadControlListEvent());
-      }
+      add(ControlListBlocEvent.changeNetworkStatusEvent(value));
     });
   }
 
@@ -83,6 +79,7 @@ class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
         updateResolveDateEvent: _onUpdateResolveDateEvent,
         removeViolationEvent: _onRemoveViolationEvent,
         updateControlResultEvent: _onUpdateControlResultEvent,
+        changeNetworkStatusEvent: (event) async* {},
       );
 
   Stream<ControlListBlocState> _onUpdateControlResultEvent(event) async* {
