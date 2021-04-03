@@ -221,7 +221,7 @@ class ControlFiltersWidget extends StatelessWidget {
         builder: (context, state) {
           final bloc = BlocProvider.of<ControlFiltersBloc>(context);
           return SizedBox(
-            height: MediaQuery.of(context).size.height * 0.75,
+            height: MediaQuery.of(context).size.height * 0.5,
             child: SingleChildScrollView(
               child: Column(
                 children: [
