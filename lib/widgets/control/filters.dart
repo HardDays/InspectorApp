@@ -44,8 +44,9 @@ class ControlFiltersWidget extends StatelessWidget {
   final _dcViolationSourceController = TextEditingController();
 
   final ControlFiltersBlocState state;
+  final bool showInMap;
 
-  ControlFiltersWidget(this.state) {
+  ControlFiltersWidget(this.state, this.showInMap) {
     _initControllers(state);
   }
 
@@ -216,7 +217,7 @@ class ControlFiltersWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context)=> ControlFiltersBloc(state),
+      create: (context)=> ControlFiltersBloc(state, showInMap),
       child: BlocBuilder<ControlFiltersBloc, ControlFiltersBlocState>(
         builder: (context, state) {
           final bloc = BlocProvider.of<ControlFiltersBloc>(context);

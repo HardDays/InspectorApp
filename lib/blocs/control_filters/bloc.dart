@@ -18,11 +18,17 @@ import 'package:inspector/services/dictionary_service.dart';
 class ControlFiltersBloc extends Bloc<ControlFiltersBlocEvent, ControlFiltersBlocState> {
 
   final _dictionarySevice = DictionaryService();
+  final bool _showInMap;
 
-  ControlFiltersBloc(ControlFiltersBlocState state)  : super(state);
+  ControlFiltersBloc(ControlFiltersBlocState state, this._showInMap)  : super(state);
 
   Future<List<ObjectType>> getDCObjectTypes(String name) async {
-    return await _dictionarySevice.getDCObjectTypes(name: name);
+    return await _dictionarySevice.getDCObjectTypes(name: name).then((types) {
+      if(_showInMap) {
+        return types.where((element) => ['ОДХ', 'ДТ', 'КП'].contains(element.code)).toList();
+      }
+      return types;
+    });
   }
 
   Future<List<ObjectKind>> getDCObjectKinds(String name) async {

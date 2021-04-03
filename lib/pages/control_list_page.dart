@@ -280,7 +280,10 @@ class _ControlListPageState extends State<ControlListPage> {
       barrierColor: Colors.transparent,
       pageBuilder: (context, animation1, animation2) {
         return ProjectTopDialog(
-          child: ControlFiltersWidget(bloc.state.filtersState),
+          child: ControlFiltersWidget(
+            bloc.state.filtersState,
+            bloc.state.showMap,
+          ),
         );
       },
     );
