@@ -76,10 +76,12 @@ class ProjectAutocomplete<T> extends StatelessWidget {
             },
             suggestionsCallback: suggestionsCallback,
           ),
-          controller?.text?.isEmpty ?? false ? Padding(
-            padding: const EdgeInsets.only(top: 13, right: 10),
-            child: Icon(Icons.keyboard_arrow_down, 
-              color: ProjectColors.darkBlue,
+          controller?.text?.isEmpty ?? false ? IgnorePointer(
+            child: Padding(
+              padding: const EdgeInsets.only(top: 13, right: 10),
+              child: Icon(Icons.keyboard_arrow_down, 
+                color: ProjectColors.darkBlue,
+              ),
             ),
           ) : InkWell(
             onTap: () {
