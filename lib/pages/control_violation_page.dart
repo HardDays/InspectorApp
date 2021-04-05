@@ -438,6 +438,7 @@ class ControlViolationPage extends StatelessWidget {
       ControlResultSearchResult searchResult, BuildContext context) {
     return ListView(
       shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
       children: <HasDate>[
         if (searchResult.violation.performControls != null &&
             searchResult.violation.performControls.isNotEmpty)
