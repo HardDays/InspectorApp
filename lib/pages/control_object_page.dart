@@ -73,7 +73,7 @@ class ControlObjectPage extends StatelessWidget {
                         controlObject: _controlObject,
                       ),
                       Padding(
-                        padding: EdgeInsets.all(20),
+                        padding: EdgeInsets.symmetric(vertical: 30),
                         child: state.maybeMap(
                           loadedWithListState: (state) => _buildSearchResults(
                               state.controlSearchResults, context),
