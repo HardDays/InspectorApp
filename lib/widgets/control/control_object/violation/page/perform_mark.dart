@@ -124,7 +124,9 @@ class PerformMarkWidget extends HasDate {
               height: 140,
               child: Image(
                 image: MemoryImage(
-                    base64.decode(performMark.photos.first.data)),
+                    base64.decode(performMark.photos.first.data),
+                ),
+                fit: BoxFit.contain,
               ),
             ),
         ],
