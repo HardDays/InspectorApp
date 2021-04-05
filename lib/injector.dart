@@ -8,6 +8,7 @@ import 'package:inspector/blocs/dictionary/bloc.dart';
 import 'package:inspector/blocs/notification_bloc/bloc.dart';
 import 'package:inspector/blocs/profile/bloc.dart';
 import 'package:inspector/blocs/profile/state.dart';
+import 'package:inspector/environment_config.dart';
 import 'package:inspector/providers/api_provider.dart';
 import 'package:inspector/services/auth_service.dart';
 import 'package:inspector/services/department_control/client/api/department_control_api_client.dart';
@@ -20,6 +21,7 @@ import 'package:inspector/services/location/location_service.dart';
 import 'package:inspector/services/network_status_service/connection_status_service.dart';
 import 'package:inspector/services/network_status_service/data_sending_mode_service.dart';
 import 'package:inspector/services/network_status_service/main_network_status_service.dart';
+import 'package:inspector/services/network_status_service/mock_network_status_service.dart';
 import 'package:inspector/services/network_status_service/network_status_service.dart';
 import 'package:inspector/services/objectdb/objectdb_persistance_service.dart';
 import 'package:inspector/services/persistance_service.dart';
@@ -49,13 +51,23 @@ class InjectorWidget extends StatelessWidget {
         Provider(
             create: (context) => AuthService(
                 Provider.of<PersistanceService>(context, listen: false))),
-        Provider<NetworkStatusService>(
-          create: (context) => MainNetworkStatusService(
-            ConnectionStatusService(
-              Provider.of<Connectivity>(context, listen: false),
-            ),
-            Provider.of<DataSendingModeStatusService>(context, listen: false),
+        Provider<ConnectionStatusService>(
+          create: (context) => ConnectionStatusService(
+            Provider.of<Connectivity>(context, listen: false),
           ),
+        ),
+        Provider<NetworkStatusService>(
+          create: (context) {
+            if(EnvironmentConfig.NETWORK_SERVICE_TO_USE == 'Mock')
+              return MockNetworkStatusService(
+                Provider.of<DataSendingModeStatusService>(context, listen: false),
+              );
+            else 
+              return MainNetworkStatusService(
+                Provider.of<ConnectionStatusService>(context, listen: false), 
+                Provider.of<DataSendingModeStatusService>(context, listen: false),
+              );
+          },
         ),
         Provider(
           create: (context) => DepartmentControlService(

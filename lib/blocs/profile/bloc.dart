@@ -9,6 +9,7 @@ import 'package:inspector/blocs/notification_bloc/bloc.dart';
 import 'package:inspector/blocs/notification_bloc/events.dart';
 import 'package:inspector/blocs/profile/event.dart';
 import 'package:inspector/blocs/profile/state.dart';
+import 'package:inspector/environment_config.dart';
 import 'package:inspector/model/user.dart';
 import 'package:inspector/providers/api_provider.dart';
 import 'package:inspector/services/instruction_request_service.dart';
@@ -52,14 +53,17 @@ class ProfileBloc extends Bloc<ProfileBlocEvent, ProfileBlocState> {
       FilledBlocState prev = state as FilledBlocState;
       yield (_copyFilledBlocState(prev, useFingerPrint: event.useFingerPrint));
     } else if (event is SetDataSendingMode) {
-      //FilledBlocState prev = state as FilledBlocState;
-      //await _persistanceService.saveDataSendingState(event.dataSendingMode);
-      // yield (_copyFilledBlocState(
-      //   prev,
-      //   dataSendingMode: event.dataSendingMode,
-      // ));
-      //_dataSendingModeStatusService.add(event.dataSendingMode);
-      _notificationBloc.add(SnackBarNotificationEvent('Автоматический режим отправки данных недоступен.'));
+      if(EnvironmentConfig.CAN_CHANGE_DATA_SENDING_MODE) {
+        FilledBlocState prev = state as FilledBlocState;
+        await _persistanceService.saveDataSendingState(event.dataSendingMode);
+        yield (_copyFilledBlocState(
+          prev,
+          dataSendingMode: event.dataSendingMode,
+        ));
+        _dataSendingModeStatusService.add(event.dataSendingMode);
+      } else {
+        _notificationBloc.add(SnackBarNotificationEvent('Автоматический режим отправки данных недоступен.'));
+      }
     } else if (event is SetUsingPinMode) {
       FilledBlocState prev = state as FilledBlocState;
       await _persistanceService.saveUsePinState(event.usingPinMode);

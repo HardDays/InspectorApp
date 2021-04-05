@@ -11,7 +11,9 @@
             "flutterMode": "debug",
             "args": [
                 "--dart-define=DEFINEENV=test",
-                "--dart-define=DEFINEAPI_URL=https://oati-app.fors.ru"
+                "--dart-define=DEFINEAPI_URL=https://oati-app.fors.ru",
+                "--dart-define=NETWORK_SERVICE_TO_USE=Mock",
+                "--dart-define=CAN_CHANGE_DATA_SENDING_MODE=true"
             ]
         },
         {
