@@ -267,7 +267,7 @@ class DepartmentControlLocalSqliteServiceClient extends ObjectDBService
             final searchResults = await db.find({
               "type": "searchResult",
               "violation": {"objectId": request.dcObjectId}
-            }).then((value) => value.map((e) => ControlResultSearchResult.fromJson(e)));
+            }).then((value) => value.println().map((e) => ControlResultSearchResult.fromJson(e)).cast<ControlResultSearchResult>().toList());
             return list + searchResults;
           });
 
