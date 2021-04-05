@@ -48,5 +48,5 @@ class ViolationSearchResultWidget extends StatelessWidget {
               searchResult.violation.cafapViolationConfirmed));
 
   bool get _canBeDeleted => _canBeUpdated || searchResult.violation?.violationStatus == null;
-  bool get _canBeUpdated => searchResult.violation?.violationStatus?.name == 'Новое';
+  bool get _canBeUpdated => ['Снят с контроля', 'На устранении', 'На контроле инспектора', 'Новое'].contains(searchResult.violation?.violationStatus?.name);
 }
