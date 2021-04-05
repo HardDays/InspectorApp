@@ -18,6 +18,7 @@ import 'package:inspector/style/colors.dart';
 import 'package:inspector/style/image_picker.dart';
 import 'package:inspector/style/text_field.dart';
 import 'package:inspector/style/text_style.dart';
+import 'package:inspector/style/title.dart';
 import 'package:inspector/widgets/common/address_form.dart';
 import 'package:provider/provider.dart';
 
@@ -243,10 +244,9 @@ class _ViolationFormWidgetState extends State<ViolationFormWidget> {
                 suggestionsCallback: (value) =>
                     widget.dictionaryService.getContractors(name: value),
               ),
-              SizedBox(
-                height: 20,
-              ),
+              ProjectTitle('Подтверждающие материалы'),
               ImagePicker(
+                buttonTitle: 'Добавить фото нарушения',
                 images: state.photos.map((e) => base64.decode(e.data)).toList(),
                 names: state.photos.map((e) => e.name ?? '').toList(),
                 enabled: true,

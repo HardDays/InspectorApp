@@ -30,6 +30,7 @@ class ImagePicker extends StatelessWidget {
   final Function(File) onPicked;
   final Function(int) onRemoved;
   final Function(int, Uint8List) onRotated;
+  final String buttonTitle;
 
   final picker = p.ImagePicker();
 
@@ -40,7 +41,8 @@ class ImagePicker extends StatelessWidget {
     this.names,
     this.enabled = true,
     this.images = const [],
-    this.margin = const EdgeInsets.only(top: 20)
+    this.margin = const EdgeInsets.only(top: 20),
+    this.buttonTitle = 'Добавить фото',
   });
 
 
@@ -174,7 +176,7 @@ class ImagePicker extends StatelessWidget {
     return Container(
       alignment: Alignment.topLeft,
       padding: const EdgeInsets.only(bottom: 2),
-      child: ProjectButton.buildOutlineButton('Добавить фото',
+      child: ProjectButton.buildOutlineButton(buttonTitle,
         icon: ProjectIcons.camera2Icon(
           color: enabled ? ProjectColors.blue : ProjectColors.lightBlue
         ),
