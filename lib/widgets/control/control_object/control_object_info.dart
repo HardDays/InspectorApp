@@ -22,9 +22,11 @@ class ControlObjectInfo extends StatelessWidget {
                 controlObject.id.toString())),
         _buildDivider(),
         ProjectSection('Адрес', description: controlObject.address),
-        _buildDivider(),
-        ProjectSection('Вид объекта',
-            description: controlObject.kind),
+        if(controlObject.kind != null && controlObject.kind.isNotEmpty)
+          _buildDivider(),
+        if(controlObject.kind != null && controlObject.kind.isNotEmpty)
+          ProjectSection('Вид объекта',
+              description: controlObject.kind),
         _buildDivider(),
         ProjectSection('Балансодержатель',
             description: controlObject.balanceOwner),

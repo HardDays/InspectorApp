@@ -20,7 +20,7 @@ class ProjectSection extends StatelessWidget {
               width: MediaQuery.of(context).size.width * 0.3,
               margin: const EdgeInsets.all(16),
               child: Text(
-                title,
+                '$title:',
                 style:
                     ProjectTextStyles.baseBold.apply(color: ProjectColors.blue),
               ),
