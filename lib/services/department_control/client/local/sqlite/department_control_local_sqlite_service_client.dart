@@ -61,8 +61,8 @@ class _ControlObjectsSql {
       ${_ObjectTypesSql.TABLE_NAME}.code AS typeCode,
       ${_ContractorsSql.TABLE_NAME}.id AS defaultContractorId,
       ${_ContractorsSql.TABLE_NAME}.name AS contractorName,
-      ${_ContractorsSql.TABLE_NAME}.inn AS contractorInn,
-      ABS(? - x) + ABS(? - y) AS distance
+      ${_ContractorsSql.TABLE_NAME}.inn AS contractorInn
+      _dist_
     FROM $TABLE_NAME 
     LEFT JOIN ${_ObjectTypesSql.TABLE_NAME} ON $TABLE_NAME.typeId = ${_ObjectTypesSql.TABLE_NAME}.id
     LEFT JOIN ${_ContractorsSql.TABLE_NAME} ON $TABLE_NAME.defaultContractorId = ${_ContractorsSql.TABLE_NAME}.id
@@ -205,10 +205,17 @@ class DepartmentControlLocalSqliteServiceClient extends ObjectDBService
                     .replaceAll(
                       '_order_by_',
                       _generateOrderByStatement(request),
-                    ),
+                    ).let((String sql) { 
+                      if(_usePositionInRequest(request))
+                        return sql.replaceAll('_dist_', ',ABS(? - x) + ABS(? - y) AS distance');
+                      else
+                        return sql.replaceAll('_dist_', '');
+                    }),
                 [
-                  request.userPositionX,
-                  request.userPositionY,
+                  if(_usePositionInRequest(request))
+                    request.userPositionX,
+                  if(_usePositionInRequest(request))
+                    request.userPositionY,
                   request.to,
                   request.from,
                 ]),
@@ -582,25 +589,22 @@ class DepartmentControlLocalSqliteServiceClient extends ObjectDBService
   String _generateWhereStatement(DepartmentControlObjectsRequest request) {
     List<String> params = <String>[
       if (request.camerasExist != null)
-        request.camerasExist ? 'cameraCount > 0' : 'cameraCount = 0',
-      if (request.userPositionX != null &&
-          request.userPositionY != null &&
-          request.searchRadius != null &&
-          request.onlyNearObjects == true)
+        request.camerasExist ? '${_ControlObjectsSql.TABLE_NAME}.cameraCount > 0' : '${_ControlObjectsSql.TABLE_NAME}.cameraCount = 0',
+      if (_usePositionInRequest(request))
         '(distance < ${request.searchRadius / 11111} OR distance IS NULL)',
       if (request.dcObjectTypesIds != null)
         'typeId = ${request.dcObjectTypesIds}',
-      if (request.dcObjectKind != null) 'kind = "${request.dcObjectKind}"',
+      if (request.dcObjectKind != null) '${_ControlObjectsSql.TABLE_NAME}.kind = "${request.dcObjectKind}"',
       if (request.balanceOwner != null)
-        'balanceOwner LIKE "${request.balanceOwner}%"',
-      if (request.objectName != null) 'name LIKE "${request.objectName}%"',
-      if (request.externalId != null) 'externalId = ${request.externalId}',
+        '${_ControlObjectsSql.TABLE_NAME}.balanceOwner LIKE "${request.balanceOwner}%"',
+      if (request.objectName != null) '${_ControlObjectsSql.TABLE_NAME}.name LIKE "${request.objectName}%"',
+      if (request.externalId != null) '${_ControlObjectsSql.TABLE_NAME}.externalId = ${request.externalId}',
       if (request.daysFromLastSurvey != null && request.daysFromLastSurvey != 0)
-        '${DateTime.now().millisecondsSinceEpoch} - lastSurveyDate >= ${request.daysFromLastSurvey * Duration.millisecondsPerDay}',
+        '${DateTime.now().millisecondsSinceEpoch} - ${_ControlObjectsSql.TABLE_NAME}.lastSurveyDate >= ${request.daysFromLastSurvey * Duration.millisecondsPerDay}',
       if (request.lastSurveyDateFrom != null)
-        '${request.lastSurveyDateFrom.millisecondsSinceEpoch} < lastSurveyDate',
+        '${request.lastSurveyDateFrom.millisecondsSinceEpoch} < ${_ControlObjectsSql.TABLE_NAME}.lastSurveyDate',
       if (request.lastSurveyDateTo != null)
-        '${request.lastSurveyDateTo.millisecondsSinceEpoch + Duration.millisecondsPerDay} > lastSurveyDate',
+        '${request.lastSurveyDateTo.millisecondsSinceEpoch + Duration.millisecondsPerDay} > ${_ControlObjectsSql.TABLE_NAME}.lastSurveyDate',
     ];
     return params.isNotEmpty ? 'WHERE ${params.join(" AND ")}' : '';
   }
@@ -610,10 +614,7 @@ class DepartmentControlLocalSqliteServiceClient extends ObjectDBService
       if (request.sort == 'type') 'typeId ASC',
       if (['name', 'address', 'lastSurveyDate'].contains(request.sort))
         '${_ControlObjectsSql.TABLE_NAME}.${request.sort} ASC',
-      if (request.userPositionX != null &&
-          request.userPositionY != null &&
-          request.searchRadius != null &&
-          request.onlyNearObjects == true)
+      if (_usePositionInRequest(request))
         'distance ASC',
     ];
     return sortStrings.isNotEmpty ? 'ORDER BY ${sortStrings.join(" , ")}' : '';
@@ -790,4 +791,10 @@ class DepartmentControlLocalSqliteServiceClient extends ObjectDBService
             .map((e) => e.apply((it) => it["photos"] = Future.wait(e["photos"].map(_savePhoto))))
             .toList()),
         );
+
+  bool _usePositionInRequest(DepartmentControlObjectsRequest request)
+    => request.userPositionX != null &&
+          request.userPositionY != null &&
+          request.searchRadius != null &&
+          request.onlyNearObjects == true;
 }
