@@ -55,7 +55,7 @@ class _ExtensionPeriodFormState extends State<ExtensionPeriodForm> {
           height: 20,
         ),
         ProjectAutocomplete<ViolationExtensionReason>(
-          'Причина продления срока устранения нарушения',
+          'Основание продления срока устранения нарушения',
           controller: _reasonController,
           enabled: true,
           formatter: (a) => a.name,
@@ -72,8 +72,8 @@ class _ExtensionPeriodFormState extends State<ExtensionPeriodForm> {
           height: 20,
         ),
         ProjectDatePicker(
-          title: 'Дата последней проверки',
-          hintText: 'Выберите дату или период',
+          title: 'Новый срок устранения',
+          hintText: 'Выберите дату',
           values: [_newResolveDate],
           onChanged: (value) => setState(() {
             _newResolveDate = value.first;
