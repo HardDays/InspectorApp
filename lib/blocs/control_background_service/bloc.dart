@@ -78,13 +78,13 @@ class ControlBackgroundServiceBloc extends Bloc<
       AcceptLoadingEvent event) async* {
     backgroundLoadingBloc.add(
         BackgroundLoadingBlocEvent.addOperationToQueueEvent(
-            _cancelableOperation));
+            _cancelableOperation(event.loadSearchResults)));
   }
 
   Stream<ControlBackgroundServiceBlocState> _onCancelLoadingEvent(
       CancelLoadingEvent event) async* {}
 
-  CancelableOperation get _cancelableOperation =>
+  CancelableOperation _cancelableOperation(bool loadSearchResults) =>
       CancelableOperation.fromFuture(
         Future(() async {
           backgroundLoadingBloc.add(
@@ -101,6 +101,22 @@ class ControlBackgroundServiceBloc extends Bloc<
           });
           notificationBloc.add(SnackBarNotificationEvent(
               'Объекты ведомстенного контроля загружены'));
+          if(loadSearchResults) {
+            backgroundLoadingBloc.add(
+              BackgroundLoadingBlocEvent.updateStatusTextEvent(
+                'Идет загрузка нарушений',
+              ),
+            );
+            await departmentControlService.saveSearchResultsLocally((count) {
+              backgroundLoadingBloc.add(
+                BackgroundLoadingBlocEvent.updateStatusTextEvent(
+                  'Загружено $count нарушений',
+                ),
+              );
+            });
+            notificationBloc.add(SnackBarNotificationEvent(
+                'Нарушения загружены'));
+          }
         }),
         onCancel: departmentControlService.cancelLoading,
       );

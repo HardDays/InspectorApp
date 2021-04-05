@@ -132,7 +132,7 @@ class DepartmentControlApiClient with DepartmentControlServiceClient {
         request.violationExtensionPeriod);
   }
 
-  Future<ViolationSearchResult> getControlResults(DepartmentControlControlResultsRequest request) =>
+  Future<List<ControlResultSearchResult>> getControlResults(DepartmentControlControlResultsRequest request) =>
       apiProvider.getControlResults(
         dcObjectId: request.dcObjectId,
         forCurrentUser: request.forCurrentUser,
@@ -147,5 +147,5 @@ class DepartmentControlApiClient with DepartmentControlServiceClient {
         from: request.from,
         to: request.to,
         sort: request.sort,
-      ).then((value) => ViolationSearchResult.fromJson(value));
+      ).then((value) => value['data'].map((e) => ControlResultSearchResult.fromJson(e)).cast<ControlResultSearchResult>().toList());
 }

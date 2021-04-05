@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:inspector/model/department_control/contractor.dart';
@@ -266,9 +267,31 @@ class DepartmentControlLocalSqliteServiceClient extends ObjectDBService
             final db = await objectDb;
             final searchResults = await db.find({
               "type": "searchResult",
-              "violation": {"objectId": request.dcObjectId}
-            }).then((value) => value.println().map((e) => ControlResultSearchResult.fromJson(e)).cast<ControlResultSearchResult>().toList());
-            return list + searchResults;
+              "violationExists": true,
+              "violation.objectId": request.dcObjectId
+            }).then((value) => value
+              .println()
+              .map((e) { // TODO: LMAO
+                if(e['violation'] is ViolationSearchResult) {
+                  final violation = e['violation'];
+                  e.remove('violation');
+                  return ControlResultSearchResult.fromJson(e).copyWith(violation: violation);
+                } else {
+                  return ControlResultSearchResult.fromJson(e);
+                }
+              })
+              .cast<ControlResultSearchResult>()
+              .where((e) => e.violation != null)
+              .map((ControlResultSearchResult e) async {
+                if(e.violation.photos != null)
+                  return e.copyWith.violation(photos: await Future.wait(e.violation.photos.map(_readPhoto)));
+                else
+                  return e;
+              })
+              .toList()
+              .cast<Future<ControlResultSearchResult>>()
+            );
+            return list + await Future.wait(searchResults);
           });
 
   @override
@@ -783,14 +806,26 @@ class DepartmentControlLocalSqliteServiceClient extends ObjectDBService
     await _clearId();
   }
 
-  Future<void> saveSearchResults(Iterable<ViolationSearchResult> searchResults)
-      => objectDb.then((db) async =>
-        db.insertMany(
-          searchResults
-            .map((e) => e.toJson().apply((it) => it["type"] = "searchResult"))
-            .map((e) => e.apply((it) => it["photos"] = Future.wait(e["photos"].map(_savePhoto))))
-            .toList()),
+  Future<void> saveSearchResults(Iterable<ControlResultSearchResult> searchResults)
+      => objectDb.then((db) {
+        db.remove({'type': 'searchResult'}); //TODO: fix it!!!
+        return db;
+      }).then((db) async {
+        final l = await Future.wait(searchResults
+          .map((e) async => e.let((ControlResultSearchResult it) async {
+            if(it.violation?.photos != null)
+              return it.copyWith.violation(photos: await Future.wait(it.violation?.photos?.map(_savePhoto)));
+            else 
+              return it;
+          })));
+        return db.insertMany(
+          l.map((e) => e.toJson())
+          .map((e) {
+            e['type'] = 'searchResult';
+            return e;
+          }).toList(),
         );
+      });
 
   bool _usePositionInRequest(DepartmentControlObjectsRequest request)
     => request.userPositionX != null &&

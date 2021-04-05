@@ -281,6 +281,26 @@ class DepartmentControlService {
     _canceled = false;
   }
 
+  Future<void> saveSearchResultsLocally(void Function(int) notifier) async {
+    _canceled = false;
+    int start = 0;
+    int page = 500;
+    bool loaded = false;
+    while (!_canceled && !loaded) {
+      await _apiClient.getControlResults(DepartmentControlControlResultsRequest(from: start, to: start + page, forCurrentUser: true))
+        .then((list) { 
+          if(list.isNotEmpty) {
+            _localClient.saveSearchResults(list);
+            start += list.length;
+            notifier(start);
+          } else {
+            loaded = true;
+          }
+        });
+    }
+    _canceled = false;
+  }
+
   Future<DepartmentControlLocalServiceMetadata> get localMetadata =>
       _localClient.metadata;
 

@@ -58,7 +58,7 @@ class _ControlListPageState extends State<ControlListPage> {
                 cancelTitle: 'Нет',
               ),
             ) != null) {
-              BlocProvider.of<ControlBackgroundServiceBloc>(context).add(ControlBackgroundServiceBlocEvent.acceptLoadingEvent());
+              BlocProvider.of<ControlBackgroundServiceBloc>(context).add(ControlBackgroundServiceBlocEvent.acceptLoadingEvent(true));
             } else {
               BlocProvider.of<ControlBackgroundServiceBloc>(context).add(ControlBackgroundServiceBlocEvent.cancelLoadingEvent());
             }
@@ -72,7 +72,7 @@ class _ControlListPageState extends State<ControlListPage> {
                 cancelTitle: 'Нет',
               ),
             ) != null) {
-              BlocProvider.of<ControlBackgroundServiceBloc>(context).add(ControlBackgroundServiceBlocEvent.acceptLoadingEvent());
+              BlocProvider.of<ControlBackgroundServiceBloc>(context).add(ControlBackgroundServiceBlocEvent.acceptLoadingEvent(true));
             } else {
               BlocProvider.of<ControlBackgroundServiceBloc>(context).add(ControlBackgroundServiceBlocEvent.cancelLoadingEvent());
             }

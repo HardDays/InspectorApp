@@ -85,6 +85,8 @@ _$_ViolationSearchResult _$_$_ViolationSearchResultFromJson(
         ?.toList(),
     creationSentToCafap: json['creationSentToCafap'] as bool,
     closureSentToCafap: json['closureSentToCafap'] as bool,
+    objectId: json['objectId'] as int,
+    objectName: json['objectName'] as String,
   );
 }
 
@@ -120,4 +122,6 @@ Map<String, dynamic> _$_$_ViolationSearchResultToJson(
       'extensionPeriods': instance.extensionPeriods,
       'creationSentToCafap': instance.creationSentToCafap,
       'closureSentToCafap': instance.closureSentToCafap,
+      'objectId': instance.objectId,
+      'objectName': instance.objectName,
     };

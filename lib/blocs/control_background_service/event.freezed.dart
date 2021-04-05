@@ -19,8 +19,10 @@ class _$ControlBackgroundServiceBlocEventTearOff {
   }
 
 // ignore: unused_element
-  AcceptLoadingEvent acceptLoadingEvent() {
-    return const AcceptLoadingEvent();
+  AcceptLoadingEvent acceptLoadingEvent(bool loadSearchResults) {
+    return AcceptLoadingEvent(
+      loadSearchResults,
+    );
   }
 
 // ignore: unused_element
@@ -39,13 +41,13 @@ mixin _$ControlBackgroundServiceBlocEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object>({
     @required TResult initEvent(),
-    @required TResult acceptLoadingEvent(),
+    @required TResult acceptLoadingEvent(bool loadSearchResults),
     @required TResult cancelLoadingEvent(),
   });
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object>({
     TResult initEvent(),
-    TResult acceptLoadingEvent(),
+    TResult acceptLoadingEvent(bool loadSearchResults),
     TResult cancelLoadingEvent(),
     @required TResult orElse(),
   });
@@ -120,7 +122,7 @@ class _$InitEvent implements InitEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object>({
     @required TResult initEvent(),
-    @required TResult acceptLoadingEvent(),
+    @required TResult acceptLoadingEvent(bool loadSearchResults),
     @required TResult cancelLoadingEvent(),
   }) {
     assert(initEvent != null);
@@ -133,7 +135,7 @@ class _$InitEvent implements InitEvent {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object>({
     TResult initEvent(),
-    TResult acceptLoadingEvent(),
+    TResult acceptLoadingEvent(bool loadSearchResults),
     TResult cancelLoadingEvent(),
     @required TResult orElse(),
   }) {
@@ -182,6 +184,7 @@ abstract class $AcceptLoadingEventCopyWith<$Res> {
   factory $AcceptLoadingEventCopyWith(
           AcceptLoadingEvent value, $Res Function(AcceptLoadingEvent) then) =
       _$AcceptLoadingEventCopyWithImpl<$Res>;
+  $Res call({bool loadSearchResults});
 }
 
 /// @nodoc
@@ -194,49 +197,75 @@ class _$AcceptLoadingEventCopyWithImpl<$Res>
 
   @override
   AcceptLoadingEvent get _value => super._value as AcceptLoadingEvent;
+
+  @override
+  $Res call({
+    Object loadSearchResults = freezed,
+  }) {
+    return _then(AcceptLoadingEvent(
+      loadSearchResults == freezed
+          ? _value.loadSearchResults
+          : loadSearchResults as bool,
+    ));
+  }
 }
 
 /// @nodoc
 class _$AcceptLoadingEvent implements AcceptLoadingEvent {
-  const _$AcceptLoadingEvent();
+  const _$AcceptLoadingEvent(this.loadSearchResults)
+      : assert(loadSearchResults != null);
+
+  @override
+  final bool loadSearchResults;
 
   @override
   String toString() {
-    return 'ControlBackgroundServiceBlocEvent.acceptLoadingEvent()';
+    return 'ControlBackgroundServiceBlocEvent.acceptLoadingEvent(loadSearchResults: $loadSearchResults)';
   }
 
   @override
   bool operator ==(dynamic other) {
-    return identical(this, other) || (other is AcceptLoadingEvent);
+    return identical(this, other) ||
+        (other is AcceptLoadingEvent &&
+            (identical(other.loadSearchResults, loadSearchResults) ||
+                const DeepCollectionEquality()
+                    .equals(other.loadSearchResults, loadSearchResults)));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode =>
+      runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(loadSearchResults);
+
+  @JsonKey(ignore: true)
+  @override
+  $AcceptLoadingEventCopyWith<AcceptLoadingEvent> get copyWith =>
+      _$AcceptLoadingEventCopyWithImpl<AcceptLoadingEvent>(this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object>({
     @required TResult initEvent(),
-    @required TResult acceptLoadingEvent(),
+    @required TResult acceptLoadingEvent(bool loadSearchResults),
     @required TResult cancelLoadingEvent(),
   }) {
     assert(initEvent != null);
     assert(acceptLoadingEvent != null);
     assert(cancelLoadingEvent != null);
-    return acceptLoadingEvent();
+    return acceptLoadingEvent(loadSearchResults);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object>({
     TResult initEvent(),
-    TResult acceptLoadingEvent(),
+    TResult acceptLoadingEvent(bool loadSearchResults),
     TResult cancelLoadingEvent(),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
     if (acceptLoadingEvent != null) {
-      return acceptLoadingEvent();
+      return acceptLoadingEvent(loadSearchResults);
     }
     return orElse();
   }
@@ -271,7 +300,12 @@ class _$AcceptLoadingEvent implements AcceptLoadingEvent {
 }
 
 abstract class AcceptLoadingEvent implements ControlBackgroundServiceBlocEvent {
-  const factory AcceptLoadingEvent() = _$AcceptLoadingEvent;
+  const factory AcceptLoadingEvent(bool loadSearchResults) =
+      _$AcceptLoadingEvent;
+
+  bool get loadSearchResults;
+  @JsonKey(ignore: true)
+  $AcceptLoadingEventCopyWith<AcceptLoadingEvent> get copyWith;
 }
 
 /// @nodoc
@@ -314,7 +348,7 @@ class _$CancelLoadingEvent implements CancelLoadingEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object>({
     @required TResult initEvent(),
-    @required TResult acceptLoadingEvent(),
+    @required TResult acceptLoadingEvent(bool loadSearchResults),
     @required TResult cancelLoadingEvent(),
   }) {
     assert(initEvent != null);
@@ -327,7 +361,7 @@ class _$CancelLoadingEvent implements CancelLoadingEvent {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object>({
     TResult initEvent(),
-    TResult acceptLoadingEvent(),
+    TResult acceptLoadingEvent(bool loadSearchResults),
     TResult cancelLoadingEvent(),
     @required TResult orElse(),
   }) {
