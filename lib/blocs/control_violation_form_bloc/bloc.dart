@@ -13,10 +13,13 @@ import 'package:inspector/model/department_control/object_element.dart';
 import 'package:inspector/model/department_control/violation_additional_feature.dart';
 import 'package:inspector/model/department_control/violation_classification.dart';
 import 'package:inspector/model/department_control/violation_name.dart';
+import 'package:inspector/services/location/location_service.dart';
+import 'package:inspector/extensions.dart';
 
 class ControlViolationFormBloc
     extends Bloc<ControlViolationFormEvent, CotnrolViolationFormState> {
-  ControlViolationFormBloc(DCViolation initialViolation, this.onConfirm,
+  ControlViolationFormBloc(
+      DCViolation initialViolation, this.onConfirm, this.locationService,
       {this.notificationBloc})
       : super(
           CotnrolViolationFormState(
@@ -46,6 +49,7 @@ class ControlViolationFormBloc
     _violation = initialViolation ?? DCViolation();
   }
   final NotificationBloc notificationBloc;
+  final LocationService locationService;
   final void Function(DCViolation) onConfirm;
   DCViolation _violation;
 
@@ -67,14 +71,22 @@ class ControlViolationFormBloc
             _onSetViolationAdditionalFeatureStringEvent,
         setUseGeoLocationForAddressEvent: _onSetUseGeoLocationForAddressEvent,
         addPhotoEvent: (event) async* {
+          final location = await locationService.actualLocation;
           yield (state.copyWith(
             photos: List.from(state.photos)
               ..add(
-                DCPhoto(
-                  data: base64.encode(
-                    event.photo,
+                  DCPhoto(
+                    data: base64.encode(
+                      event.photo,
+                    ),
+                    name: event.name,
+                  ).let((DCPhoto photo) => location.map(
+                    (value) => photo.copyWith(
+                      geometryX: value.latitude,
+                      geometryY: value.longitude,
+                    ),
+                    noLocationProvided: (value) => photo,
                   ),
-                  name: event.name,
                 ),
               ),
           ));
@@ -85,16 +97,13 @@ class ControlViolationFormBloc
           ));
         },
         rotatePhotoEvent: (event) async* {
+          final photo = state.photos[event.index];
           yield (state.copyWith(
             photos: List.from(state.photos)
               ..removeAt(event.index)
               ..insert(
                 event.index,
-                DCPhoto(
-                  data: base64.encode(
-                    event.photo,
-                  ),
-                ),
+                photo.copyWith(data: base64.encode(event.photo)),
               ),
           ));
         },

@@ -11,8 +11,8 @@ abstract class DCPhoto with _$DCPhoto {
     String name,
     String data,
     String loadDate,
-    int geometryX,
-    int geometryY,
+    double geometryX,
+    double geometryY,
   }) = _DCPhoto;
 
   factory DCPhoto.fromJson(Map<String, dynamic> json) =>

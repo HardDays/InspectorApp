@@ -12,6 +12,7 @@ import 'package:inspector/model/department_control/object_element.dart';
 import 'package:inspector/model/department_control/violation_additional_feature.dart';
 import 'package:inspector/model/department_control/violation_classification_search_result.dart';
 import 'package:inspector/services/dictionary_service.dart';
+import 'package:inspector/services/location/location_service.dart';
 import 'package:inspector/style/autocomplete.dart';
 import 'package:inspector/style/button.dart';
 import 'package:inspector/style/colors.dart';
@@ -56,6 +57,7 @@ class _ViolationFormWidgetState extends State<ViolationFormWidget> {
       create: (context) => ControlViolationFormBloc(
         widget.initialViolation,
         widget.onConfirm,
+        Provider.of<LocationService>(context, listen: false),
         notificationBloc: BlocProvider.of<NotificationBloc>(context),
       ),
       child: BlocConsumer<ControlViolationFormBloc, CotnrolViolationFormState>(

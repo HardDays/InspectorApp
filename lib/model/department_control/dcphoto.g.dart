@@ -12,8 +12,8 @@ _$_DCPhoto _$_$_DCPhotoFromJson(Map<String, dynamic> json) {
     name: json['name'] as String,
     data: json['data'] as String,
     loadDate: json['loadDate'] as String,
-    geometryX: json['geometryX'] as int,
-    geometryY: json['geometryY'] as int,
+    geometryX: (json['geometryX'] as num)?.toDouble(),
+    geometryY: (json['geometryY'] as num)?.toDouble(),
   );
 }
 
