@@ -27,10 +27,10 @@ ReportStatusInfo _$ReportStatusInfoFromJson(Map<String, dynamic> json) {
 Map<String, dynamic> _$ReportStatusInfoToJson(ReportStatusInfo instance) =>
     <String, dynamic>{
       'reportNum': instance.reportNum,
-      'reportStatus': instance.reportStatus,
+      'reportStatus': instance.reportStatus?.toJson(),
       'rejectReason': instance.rejectReason,
-      'respEmployee': instance.respEmployee,
-      'violators': instance.violators,
+      'respEmployee': instance.respEmployee?.toJson(),
+      'violators': instance.violators?.map((e) => e?.toJson())?.toList(),
     };
 
 EmployeeShort _$EmployeeShortFromJson(Map<String, dynamic> json) {
@@ -67,9 +67,9 @@ ViolatorResolution _$ViolatorResolutionFromJson(Map<String, dynamic> json) {
 Map<String, dynamic> _$ViolatorResolutionToJson(ViolatorResolution instance) =>
     <String, dynamic>{
       'violatorId': instance.violatorId,
-      'resolutionType': instance.resolutionType,
+      'resolutionType': instance.resolutionType?.toJson(),
       'resolutionDate': instance.resolutionDate,
       'resolutionText': instance.resolutionText,
-      'executor': instance.executor,
-      'author': instance.author,
+      'executor': instance.executor?.toJson(),
+      'author': instance.author?.toJson(),
     };

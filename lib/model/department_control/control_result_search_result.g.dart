@@ -33,7 +33,7 @@ Map<String, dynamic> _$_$_ControlResultSearchResultToJson(
       'geometryX': instance.geometryX,
       'geometryY': instance.geometryY,
       'violationExists': instance.violationExists,
-      'violation': instance.violation,
+      'violation': instance.violation?.toJson(),
       'creationSentToCafap': instance.creationSentToCafap,
       'closureSentToCafap': instance.closureSentToCafap,
     };

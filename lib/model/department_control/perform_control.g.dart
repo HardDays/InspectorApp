@@ -29,5 +29,5 @@ Map<String, dynamic> _$_$_PerformControlToJson(_$_PerformControl instance) =>
       'planDate': instance.planDate?.toIso8601String(),
       'factDate': instance.factDate?.toIso8601String(),
       'resolved': instance.resolved,
-      'photos': instance.photos,
+      'photos': instance.photos?.map((e) => e?.toJson())?.toList(),
     };

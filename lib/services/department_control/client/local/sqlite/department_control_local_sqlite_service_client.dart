@@ -225,8 +225,9 @@ class DepartmentControlLocalSqliteServiceClient extends ObjectDBService
 
   @override
   Future<ControlResultSearchResult> getControlSearchResultByIds(
-      DepartmentControlSearchResultByIdsRequest request)
-        => objectDb
+      DepartmentControlSearchResultByIdsRequest request) async
+        {
+    final r = await objectDb
           .then(
             (db) async {
               return db.first(
@@ -239,19 +240,22 @@ class DepartmentControlLocalSqliteServiceClient extends ObjectDBService
           )
           .then(
             (value) {
-              DepartmentControlRegisterControlRequest request;
-              try { // TODO: lmao, no comments
-                request = DepartmentControlRegisterControlRequest.fromJson(value['request']);
-              } catch (ex) {
-                request = DepartmentControlRegisterControlRequest(value['request']['object'], value['request']['controlResult']);
+              if(value != null) {
+                return DepartmentControlRegisterControlRequest.fromJson(value['request'])
+                  .copyWith
+                  .controlResult(id: value['id']); 
               }
-              return request
-                .copyWith
-                .controlResult(id: value['id']);
+              return null;
             },
-          )
-          .then(_readDepartmentControlRegisterControlRequest)
-          .then(_fromDepartmentControlRegisterControlRequest);
+          );
+        if(r != null) {
+          return _readDepartmentControlRegisterControlRequest(r)
+                .then(_fromDepartmentControlRegisterControlRequest);
+        } else {
+          return getControlSearchResults(DepartmentControlSearchResultsRequest(request.dcObjectId))
+          .then((value) => value.firstWhere((element) => element.id == request.dcControlResultId));
+        }
+  }
 
   @override
   Future<List<ControlResultSearchResult>> getControlSearchResults(
@@ -271,15 +275,7 @@ class DepartmentControlLocalSqliteServiceClient extends ObjectDBService
               "violation.objectId": request.dcObjectId
             }).then((value) => value
               .println()
-              .map((e) { // TODO: LMAO
-                if(e['violation'] is ViolationSearchResult) {
-                  final violation = e['violation'];
-                  e.remove('violation');
-                  return ControlResultSearchResult.fromJson(e).copyWith(violation: violation);
-                } else {
-                  return ControlResultSearchResult.fromJson(e);
-                }
-              })
+              .map((e) => ControlResultSearchResult.fromJson(e))
               .cast<ControlResultSearchResult>()
               .where((e) => e.violation != null)
               .map((ControlResultSearchResult e) async {
@@ -331,18 +327,9 @@ class DepartmentControlLocalSqliteServiceClient extends ObjectDBService
           .then(
             (value) => value
                 .map(
-                  (e) {
-                    DepartmentControlRegisterControlRequest request;
-                    try { // TODO: lmao, no comments
-                      request = DepartmentControlRegisterControlRequest.fromJson(e['request']);
-                    } catch (ex) {
-                      e.println();
-                      request = DepartmentControlRegisterControlRequest(e['request']['object'], e['request']['controlResult']);
-                    }
-                    return request
+                  (e) => DepartmentControlRegisterControlRequest.fromJson(e['request'])
                       .copyWith
-                      .controlResult(id: e['id']);
-                  },
+                      .controlResult(id: e['id']),
                 )
                 .toList(),
           );
@@ -365,17 +352,7 @@ class DepartmentControlLocalSqliteServiceClient extends ObjectDBService
           )
           .then(
             (value) => value
-                .map(
-                  (e) {
-                    DepartmentControlUpdateControlRequest request;
-                    try { // TODO: lmao, no comments
-                      request = DepartmentControlUpdateControlRequest.fromJson(e['request']);
-                    } catch (ex) {
-                      request = DepartmentControlUpdateControlRequest(e['request']['object'], e['request']['dcControlResultId'], e['request']['violation']);
-                    }
-                    return request;
-                  },
-                )
+                .map((e) => DepartmentControlUpdateControlRequest.fromJson(e['request']))
                 .toList(),
           );
 
@@ -400,17 +377,7 @@ class DepartmentControlLocalSqliteServiceClient extends ObjectDBService
           )
           .then(
             (value) => value
-                .map(
-                  (e) {
-                    DepartmentControlRemoveControlRequest request;
-                    try { // TODO: lmao, no comments
-                      request = DepartmentControlRemoveControlRequest.fromJson(e['request']);
-                    } catch (ex) {
-                      request = DepartmentControlRemoveControlRequest(e['request']['object'], e['request']['resultId']);
-                    }
-                    return request;
-                  },
-                )
+                .map((e) => DepartmentControlRemoveControlRequest.fromJson(e['request']))
                 .toList(),
           );
 
@@ -695,7 +662,7 @@ class DepartmentControlLocalSqliteServiceClient extends ObjectDBService
     DepartmentControlRegisterControlRequest request,
     Future<DCPhoto> Function(DCPhoto) processFunction,
   ) async {
-    if (request.controlResult.violation != null) {
+    if (request?.controlResult?.violation != null) {
       return request.copyWith.controlResult.violation(
         photos: await Future.wait(
           request.controlResult.violation.photos.map(

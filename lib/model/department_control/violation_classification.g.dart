@@ -20,5 +20,5 @@ Map<String, dynamic> _$_$_ViolationClassificationToJson(
         _$_ViolationClassification instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'violationName': instance.violationName,
+      'violationName': instance.violationName?.toJson(),
     };

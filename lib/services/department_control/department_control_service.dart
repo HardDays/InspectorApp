@@ -320,7 +320,7 @@ class DepartmentControlService {
           while (!_canceled && it.moveNext()) {
             try {
               print('registerRequests: $t/${registerRequests.length}');
-              _apiClient.registerControlResult(it.current);
+              await _apiClient.registerControlResult(it.current);
               t++;
             } on ApiException catch (e) {
               await exceptionHandler(e);
@@ -333,7 +333,7 @@ class DepartmentControlService {
           while (!_canceled && it.moveNext()) {
             try {
               print('registerRequests: $t/${removeRequests.length}');
-              _apiClient.removeControlResult(it.current);
+              await _apiClient.removeControlResult(it.current);
               t++;
             } on ApiException catch (e) {
               await exceptionHandler(e);
@@ -346,7 +346,7 @@ class DepartmentControlService {
           while (!_canceled && it.moveNext()) {
             try {
               print('registerRequests: $t/${updateRequests.length}');
-              _apiClient.updateControlResult(it.current);
+              await _apiClient.updateControlResult(it.current);
               t++;
             } on ApiException catch (e) {
               await exceptionHandler(e);

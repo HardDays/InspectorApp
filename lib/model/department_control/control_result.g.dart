@@ -28,5 +28,5 @@ Map<String, dynamic> _$_$_ControlResultToJson(_$_ControlResult instance) =>
       'geometryX': instance.geometryX,
       'geometryY': instance.geometryY,
       'violationExists': instance.violationExists,
-      'violation': instance.violation,
+      'violation': instance.violation?.toJson(),
     };

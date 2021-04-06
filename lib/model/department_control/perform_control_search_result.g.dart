@@ -33,7 +33,7 @@ Map<String, dynamic> _$_$_PerformControlSearchResultToJson(
       'planDate': instance.planDate?.toIso8601String(),
       'factDate': instance.factDate?.toIso8601String(),
       'resolved': instance.resolved,
-      'photos': instance.photos,
+      'photos': instance.photos?.map((e) => e?.toJson())?.toList(),
       'creatorShortFio': instance.creatorShortFio,
       'sentToCafap': instance.sentToCafap,
     };

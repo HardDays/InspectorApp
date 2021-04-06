@@ -25,7 +25,7 @@ Map<String, dynamic> _$_$_MapGeometricObjectToJson(
       'type': _$MapGeometricObjectTypeEnumMap[instance.type],
       'color': instance.color,
       'label': instance.label,
-      'points': instance.points,
+      'points': instance.points?.map((e) => e?.toJson())?.toList(),
     };
 
 T _$enumDecode<T>(

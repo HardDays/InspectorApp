@@ -166,8 +166,8 @@ _$_DepartmentControlRegisterControlRequest
 Map<String, dynamic> _$_$_DepartmentControlRegisterControlRequestToJson(
         _$_DepartmentControlRegisterControlRequest instance) =>
     <String, dynamic>{
-      'object': instance.object,
-      'controlResult': instance.controlResult,
+      'object': instance.object?.toJson(),
+      'controlResult': instance.controlResult?.toJson(),
     };
 
 _$_DepartmentControlUpdateControlRequest
@@ -187,9 +187,9 @@ _$_DepartmentControlUpdateControlRequest
 Map<String, dynamic> _$_$_DepartmentControlUpdateControlRequestToJson(
         _$_DepartmentControlUpdateControlRequest instance) =>
     <String, dynamic>{
-      'object': instance.object,
+      'object': instance.object?.toJson(),
       'dcControlResultId': instance.dcControlResultId,
-      'violation': instance.violation,
+      'violation': instance.violation?.toJson(),
     };
 
 _$_DepartmentControlRemoveControlRequest
@@ -206,7 +206,7 @@ _$_DepartmentControlRemoveControlRequest
 Map<String, dynamic> _$_$_DepartmentControlRemoveControlRequestToJson(
         _$_DepartmentControlRemoveControlRequest instance) =>
     <String, dynamic>{
-      'object': instance.object,
+      'object': instance.object?.toJson(),
       'resultId': instance.resultId,
     };
 
@@ -228,9 +228,9 @@ _$_DepartmentControlRegisterPerformControlRequest
 Map<String, dynamic> _$_$_DepartmentControlRegisterPerformControlRequestToJson(
         _$_DepartmentControlRegisterPerformControlRequest instance) =>
     <String, dynamic>{
-      'object': instance.object,
+      'object': instance.object?.toJson(),
       'dcControlResultId': instance.dcControlResultId,
-      'performControl': instance.performControl,
+      'performControl': instance.performControl?.toJson(),
     };
 
 _$_DepartmentControlUpdatePerformControlRequest
@@ -251,9 +251,9 @@ _$_DepartmentControlUpdatePerformControlRequest
 Map<String, dynamic> _$_$_DepartmentControlUpdatePerformControlRequestToJson(
         _$_DepartmentControlUpdatePerformControlRequest instance) =>
     <String, dynamic>{
-      'object': instance.object,
+      'object': instance.object?.toJson(),
       'dcControlResultId': instance.dcControlResultId,
-      'performControl': instance.performControl,
+      'performControl': instance.performControl?.toJson(),
     };
 
 _$_DepartmentControlRemovePerformControlRequest
@@ -274,9 +274,9 @@ _$_DepartmentControlRemovePerformControlRequest
 Map<String, dynamic> _$_$_DepartmentControlRemovePerformControlRequestToJson(
         _$_DepartmentControlRemovePerformControlRequest instance) =>
     <String, dynamic>{
-      'object': instance.object,
+      'object': instance.object?.toJson(),
       'dcControlResultId': instance.dcControlResultId,
-      'performControl': instance.performControl,
+      'performControl': instance.performControl?.toJson(),
     };
 
 _$_DepartmentControlExtendControlPeriodRequest
@@ -297,9 +297,9 @@ _$_DepartmentControlExtendControlPeriodRequest
 Map<String, dynamic> _$_$_DepartmentControlExtendControlPeriodRequestToJson(
         _$_DepartmentControlExtendControlPeriodRequest instance) =>
     <String, dynamic>{
-      'object': instance.object,
+      'object': instance.object?.toJson(),
       'dcControlResultId': instance.dcControlResultId,
-      'violationExtensionPeriod': instance.violationExtensionPeriod,
+      'violationExtensionPeriod': instance.violationExtensionPeriod?.toJson(),
     };
 
 _$_DepartmentControlControlResultsRequest

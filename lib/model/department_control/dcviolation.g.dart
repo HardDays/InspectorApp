@@ -55,17 +55,20 @@ Map<String, dynamic> _$_$_DCViolationToJson(_$_DCViolation instance) =>
     <String, dynamic>{
       'id': instance.id,
       'detectionDate': instance.detectionDate?.toIso8601String(),
-      'eknViolationClassification': instance.eknViolationClassification,
-      'otherViolationClassification': instance.otherViolationClassification,
-      'btiAddress': instance.btiAddress,
+      'eknViolationClassification':
+          instance.eknViolationClassification?.toJson(),
+      'otherViolationClassification':
+          instance.otherViolationClassification?.toJson(),
+      'btiAddress': instance.btiAddress?.toJson(),
       'address': instance.address,
       'refAddressTinao': instance.refAddressTinao,
-      'objectElement': instance.objectElement,
+      'objectElement': instance.objectElement?.toJson(),
       'description': instance.description,
-      'violator': instance.violator,
+      'violator': instance.violator?.toJson(),
       'critical': instance.critical,
       'resolveDate': instance.resolveDate?.toIso8601String(),
       'controlDate': instance.controlDate?.toIso8601String(),
-      'additionalFeatures': instance.additionalFeatures,
-      'photos': instance.photos,
+      'additionalFeatures':
+          instance.additionalFeatures?.map((e) => e?.toJson())?.toList(),
+      'photos': instance.photos?.map((e) => e?.toJson())?.toList(),
     };
