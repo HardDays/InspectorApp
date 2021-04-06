@@ -50,6 +50,8 @@ class _ViolationFormWidgetState extends State<ViolationFormWidget> {
   TextEditingController _contractorController = TextEditingController();
   TextEditingController _violationClassificationController =
       TextEditingController();
+  TextEditingController _violationClassificationControllerNoEkn =
+      TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -178,19 +180,54 @@ class _ViolationFormWidgetState extends State<ViolationFormWidget> {
                     controller: _violationClassificationController,
                     hintText: 'Введите данные',
                     enabled: true,
-                    formatter: (value) => value.violationName.name,
+                    formatter: (value) =>
+                        '${value.id?.toString()} ${value.violationName.name} ${value.violationType?.name} ${value.violationKind?.name}',
                     validator: (_) => state.violationClassificationErrorString,
                     onChanged: (value) =>
                         BlocProvider.of<ControlViolationFormBloc>(context).add(
-                            ControlViolationFormEvent
-                                .setViolationClassificationString(value)),
+                      ControlViolationFormEvent
+                          .setViolationClassificationString(value),
+                    ),
                     onSuggestionSelected: (value) =>
                         BlocProvider.of<ControlViolationFormBloc>(context).add(
-                            ControlViolationFormEvent
-                                .setViolationClassifications(value)),
+                      ControlViolationFormEvent.setViolationClassifications(
+                          value),
+                    ),
                     suggestionsCallback: (value) => widget.dictionaryService
                         .getViolationClassificationSearchResults(
-                            name: value, objectElement: state.objectElement),
+                      name: value,
+                      objectElement: state.objectElement,
+                      ekn: true,
+                    ),
+                  ),
+                ),
+              Padding(
+                  padding: EdgeInsets.only(top: 20),
+                  child:
+                      ProjectAutocomplete<ViolationClassificationSearchResult>(
+                    'Нарушения, не входящие в ЕКН',
+                    controller: _violationClassificationControllerNoEkn,
+                    hintText: 'Введите данные',
+                    enabled: true,
+                    formatter: (value) =>
+                        '${value.id?.toString()} ${value.violationName.name} ${value.violationType?.name} ${value.violationKind?.name}',
+                    validator: (_) => state.violationClassificationErrorStringNoEkn,
+                    onChanged: (value) =>
+                        BlocProvider.of<ControlViolationFormBloc>(context).add(
+                      ControlViolationFormEvent
+                          .setViolationClassificationNoEknString(value),
+                    ),
+                    onSuggestionSelected: (value) =>
+                        BlocProvider.of<ControlViolationFormBloc>(context).add(
+                      ControlViolationFormEvent.setViolationClassificationsNoEkn(
+                          value),
+                    ),
+                    suggestionsCallback: (value) => widget.dictionaryService
+                        .getViolationClassificationSearchResults(
+                      name: value,
+                      objectElement: state.objectElement,
+                      ekn: false,
+                    ),
                   ),
                 ),
               SizedBox(
@@ -326,5 +363,9 @@ class _ViolationFormWidgetState extends State<ViolationFormWidget> {
         state.violationClassification.violationName.name)
       _violationClassificationController.text =
           state.violationClassification.violationName.name;
+    if (_violationClassificationControllerNoEkn.text !=
+        state.violationClassificationNoEkn.violationName.name)
+      _violationClassificationControllerNoEkn.text =
+          state.violationClassificationNoEkn.violationName.name;
   }
 }

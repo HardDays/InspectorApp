@@ -38,7 +38,13 @@ class ControlViolationFormBloc
             showClassificationField: initialViolation == null,
             violationClassification:
                 initialViolation?.eknViolationClassification ??
-                    initialViolation?.otherViolationClassification ??
+                    ViolationClassification(
+                      violationName: ViolationName(
+                        name: '',
+                      ),
+                    ),
+            violationClassificationNoEkn:
+                initialViolation?.otherViolationClassification ??
                     ViolationClassification(
                       violationName: ViolationName(
                         name: '',
@@ -75,12 +81,13 @@ class ControlViolationFormBloc
           yield (state.copyWith(
             photos: List.from(state.photos)
               ..add(
-                  DCPhoto(
-                    data: base64.encode(
-                      event.photo,
-                    ),
-                    name: event.name,
-                  ).let((DCPhoto photo) => location.map(
+                DCPhoto(
+                  data: base64.encode(
+                    event.photo,
+                  ),
+                  name: event.name,
+                ).let(
+                  (DCPhoto photo) => location.map(
                     (value) => photo.copyWith(
                       geometryX: value.latitude,
                       geometryY: value.longitude,
@@ -108,16 +115,41 @@ class ControlViolationFormBloc
           ));
         },
         setViolationClassifications: (event) async* {
-          yield (state.copyWith(
-            violationClassification: ViolationClassification(
-              id: event.classification.id,
-              violationName: event.classification.violationName,
-            ),
-          ));
+          if (event.classification != null) {
+            yield (state.copyWith(
+              violationClassification: ViolationClassification(
+                id: event.classification.id,
+                violationName: event.classification.violationName,
+              ),
+            ));
+          } else {
+            add(SetViolationClassificationString(''));
+          }
         },
         setViolationClassificationString: (event) async* {
           yield (state.copyWith(
             violationClassification: ViolationClassification(
+              violationName: ViolationName(
+                name: event.classification,
+              ),
+            ),
+          ));
+        },
+        setViolationClassificationsNoEkn: (event) async* {
+          if (event.classification != null) {
+            yield (state.copyWith(
+              violationClassificationNoEkn: ViolationClassification(
+                id: event.classification.id,
+                violationName: event.classification.violationName,
+              ),
+            ));
+          } else {
+            add(SetViolationClassificationStringNoEkn(''));
+          }
+        },
+        setViolationClassificationNoEknString: (event) async* {
+          yield (state.copyWith(
+            violationClassificationNoEkn: ViolationClassification(
               violationName: ViolationName(
                 name: event.classification,
               ),
@@ -133,7 +165,8 @@ class ControlViolationFormBloc
                 address: state.targetLandmark,
                 objectElement: state.objectElement,
                 description: state.description,
-                eknViolationClassification: state.violationClassification,
+                eknViolationClassification: state.violationClassification.violationName.name.isNotEmpty ? state.violationClassification : null,
+                otherViolationClassification: state.violationClassificationNoEkn.violationName.name.isNotEmpty ? state.violationClassificationNoEkn : null,
                 violator: state.contractor,
                 critical: state.critical,
                 additionalFeatures: [state.violationAdditionalFeature],
@@ -155,9 +188,13 @@ class ControlViolationFormBloc
 
   Stream<CotnrolViolationFormState> _onSetContractorEvent(
       SetContractorEvent event) async* {
-    yield (state.copyWith(
-      contractor: event.contractor,
-    ));
+    if (event.contractor != null) {
+      yield (state.copyWith(
+        contractor: event.contractor,
+      ));
+    } else {
+      add(SetContractorStringEvent(''));
+    }
   }
 
   Stream<CotnrolViolationFormState> _onSetContractorStringEvent(
@@ -186,9 +223,13 @@ class ControlViolationFormBloc
 
   Stream<CotnrolViolationFormState> _onSetObjectElement(
       SetObjectElement event) async* {
-    yield (state.copyWith(
-      objectElement: event.objectElement,
-    ));
+    if (event.objectElement != null) {
+      yield (state.copyWith(
+        objectElement: event.objectElement,
+      ));
+    } else {
+      add(SetObjectElementString(''));
+    }
   }
 
   Stream<CotnrolViolationFormState> _onSetObjectElementString(
@@ -209,9 +250,13 @@ class ControlViolationFormBloc
 
   Stream<CotnrolViolationFormState> _onSetViolationAdditionalFeatureEvent(
       SetViolationAdditionalFeatureEvent event) async* {
-    yield (state.copyWith(
-      violationAdditionalFeature: event.violationAdditionalFeature,
-    ));
+    if (event.violationAdditionalFeature != null) {
+      yield (state.copyWith(
+        violationAdditionalFeature: event.violationAdditionalFeature,
+      ));
+    } else {
+      add(SetViolationAdditionalFeatureStringEvent(''));
+    }
   }
 
   Stream<CotnrolViolationFormState> _onSetViolationAdditionalFeatureStringEvent(
@@ -228,6 +273,10 @@ class ControlViolationFormBloc
         adressErrorString: _validateAddress(state),
         objectElementErrorString: _validateObjectElemet(state),
         descriptionErrorString: _validateDescription(state),
+        violationClassificationErrorString:
+            _validateViolationClassification(state),
+        violationClassificationErrorStringNoEkn:
+            _validateViolationClassification(state),
       );
 
   String _validateAddress(CotnrolViolationFormState state) {
@@ -247,6 +296,14 @@ class ControlViolationFormBloc
   String _validateObjectElemet(CotnrolViolationFormState state) {
     if (state.objectElement.name.isEmpty) {
       return 'Введите элемент объекта';
+    }
+    return null;
+  }
+
+  String _validateViolationClassification(CotnrolViolationFormState state) {
+    if (state.violationClassification.violationName.name.isEmpty &&
+        state.violationClassificationNoEkn.violationName.name.isEmpty) {
+      return 'Должно быть заполнено хотя бы одно поле классификации нарушения';
     }
     return null;
   }

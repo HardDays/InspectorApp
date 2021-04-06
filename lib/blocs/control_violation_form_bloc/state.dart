@@ -32,6 +32,8 @@ abstract class CotnrolViolationFormState implements _$CotnrolViolationFormState 
     bool showClassificationField,
     ViolationClassification violationClassification,
     String violationClassificationErrorString,
+    ViolationClassification violationClassificationNoEkn,
+    String violationClassificationErrorStringNoEkn,
   }) = _CotnrolViolationFormState;
 
   bool isValid() =>
@@ -41,5 +43,6 @@ abstract class CotnrolViolationFormState implements _$CotnrolViolationFormState 
     descriptionErrorString == null &&
     violationAdditionalFeatureErrorString == null &&
     contractorErrorString == null &&
-    violationClassificationErrorString == null;
+    violationClassificationErrorString == null && 
+    violationClassificationErrorStringNoEkn == null;
 }

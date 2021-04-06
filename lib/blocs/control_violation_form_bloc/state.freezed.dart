@@ -32,7 +32,9 @@ class _$CotnrolViolationFormStateTearOff {
       List<DCPhoto> photos,
       bool showClassificationField,
       ViolationClassification violationClassification,
-      String violationClassificationErrorString}) {
+      String violationClassificationErrorString,
+      ViolationClassification violationClassificationNoEkn,
+      String violationClassificationErrorStringNoEkn}) {
     return _CotnrolViolationFormState(
       setAddressByGeoLocation: setAddressByGeoLocation,
       critical: critical,
@@ -53,6 +55,9 @@ class _$CotnrolViolationFormStateTearOff {
       showClassificationField: showClassificationField,
       violationClassification: violationClassification,
       violationClassificationErrorString: violationClassificationErrorString,
+      violationClassificationNoEkn: violationClassificationNoEkn,
+      violationClassificationErrorStringNoEkn:
+          violationClassificationErrorStringNoEkn,
     );
   }
 }
@@ -81,6 +86,8 @@ mixin _$CotnrolViolationFormState {
   bool get showClassificationField;
   ViolationClassification get violationClassification;
   String get violationClassificationErrorString;
+  ViolationClassification get violationClassificationNoEkn;
+  String get violationClassificationErrorStringNoEkn;
 
   @JsonKey(ignore: true)
   $CotnrolViolationFormStateCopyWith<CotnrolViolationFormState> get copyWith;
@@ -109,12 +116,15 @@ abstract class $CotnrolViolationFormStateCopyWith<$Res> {
       List<DCPhoto> photos,
       bool showClassificationField,
       ViolationClassification violationClassification,
-      String violationClassificationErrorString});
+      String violationClassificationErrorString,
+      ViolationClassification violationClassificationNoEkn,
+      String violationClassificationErrorStringNoEkn});
 
   $ObjectElementCopyWith<$Res> get objectElement;
   $ViolationAdditionalFeatureCopyWith<$Res> get violationAdditionalFeature;
   $ContractorCopyWith<$Res> get contractor;
   $ViolationClassificationCopyWith<$Res> get violationClassification;
+  $ViolationClassificationCopyWith<$Res> get violationClassificationNoEkn;
 }
 
 /// @nodoc
@@ -146,6 +156,8 @@ class _$CotnrolViolationFormStateCopyWithImpl<$Res>
     Object showClassificationField = freezed,
     Object violationClassification = freezed,
     Object violationClassificationErrorString = freezed,
+    Object violationClassificationNoEkn = freezed,
+    Object violationClassificationErrorStringNoEkn = freezed,
   }) {
     return _then(_value.copyWith(
       setAddressByGeoLocation: setAddressByGeoLocation == freezed
@@ -196,6 +208,13 @@ class _$CotnrolViolationFormStateCopyWithImpl<$Res>
           violationClassificationErrorString == freezed
               ? _value.violationClassificationErrorString
               : violationClassificationErrorString as String,
+      violationClassificationNoEkn: violationClassificationNoEkn == freezed
+          ? _value.violationClassificationNoEkn
+          : violationClassificationNoEkn as ViolationClassification,
+      violationClassificationErrorStringNoEkn:
+          violationClassificationErrorStringNoEkn == freezed
+              ? _value.violationClassificationErrorStringNoEkn
+              : violationClassificationErrorStringNoEkn as String,
     ));
   }
 
@@ -240,6 +259,17 @@ class _$CotnrolViolationFormStateCopyWithImpl<$Res>
       return _then(_value.copyWith(violationClassification: value));
     });
   }
+
+  @override
+  $ViolationClassificationCopyWith<$Res> get violationClassificationNoEkn {
+    if (_value.violationClassificationNoEkn == null) {
+      return null;
+    }
+    return $ViolationClassificationCopyWith<$Res>(
+        _value.violationClassificationNoEkn, (value) {
+      return _then(_value.copyWith(violationClassificationNoEkn: value));
+    });
+  }
 }
 
 /// @nodoc
@@ -267,7 +297,9 @@ abstract class _$CotnrolViolationFormStateCopyWith<$Res>
       List<DCPhoto> photos,
       bool showClassificationField,
       ViolationClassification violationClassification,
-      String violationClassificationErrorString});
+      String violationClassificationErrorString,
+      ViolationClassification violationClassificationNoEkn,
+      String violationClassificationErrorStringNoEkn});
 
   @override
   $ObjectElementCopyWith<$Res> get objectElement;
@@ -277,6 +309,8 @@ abstract class _$CotnrolViolationFormStateCopyWith<$Res>
   $ContractorCopyWith<$Res> get contractor;
   @override
   $ViolationClassificationCopyWith<$Res> get violationClassification;
+  @override
+  $ViolationClassificationCopyWith<$Res> get violationClassificationNoEkn;
 }
 
 /// @nodoc
@@ -311,6 +345,8 @@ class __$CotnrolViolationFormStateCopyWithImpl<$Res>
     Object showClassificationField = freezed,
     Object violationClassification = freezed,
     Object violationClassificationErrorString = freezed,
+    Object violationClassificationNoEkn = freezed,
+    Object violationClassificationErrorStringNoEkn = freezed,
   }) {
     return _then(_CotnrolViolationFormState(
       setAddressByGeoLocation: setAddressByGeoLocation == freezed
@@ -361,6 +397,13 @@ class __$CotnrolViolationFormStateCopyWithImpl<$Res>
           violationClassificationErrorString == freezed
               ? _value.violationClassificationErrorString
               : violationClassificationErrorString as String,
+      violationClassificationNoEkn: violationClassificationNoEkn == freezed
+          ? _value.violationClassificationNoEkn
+          : violationClassificationNoEkn as ViolationClassification,
+      violationClassificationErrorStringNoEkn:
+          violationClassificationErrorStringNoEkn == freezed
+              ? _value.violationClassificationErrorStringNoEkn
+              : violationClassificationErrorStringNoEkn as String,
     ));
   }
 }
@@ -385,7 +428,9 @@ class _$_CotnrolViolationFormState extends _CotnrolViolationFormState {
       this.photos,
       this.showClassificationField,
       this.violationClassification,
-      this.violationClassificationErrorString})
+      this.violationClassificationErrorString,
+      this.violationClassificationNoEkn,
+      this.violationClassificationErrorStringNoEkn})
       : super._();
 
   @override
@@ -424,10 +469,14 @@ class _$_CotnrolViolationFormState extends _CotnrolViolationFormState {
   final ViolationClassification violationClassification;
   @override
   final String violationClassificationErrorString;
+  @override
+  final ViolationClassification violationClassificationNoEkn;
+  @override
+  final String violationClassificationErrorStringNoEkn;
 
   @override
   String toString() {
-    return 'CotnrolViolationFormState(setAddressByGeoLocation: $setAddressByGeoLocation, critical: $critical, address: $address, adressErrorString: $adressErrorString, targetLandmark: $targetLandmark, targetLandmarkErrorString: $targetLandmarkErrorString, objectElement: $objectElement, objectElementErrorString: $objectElementErrorString, description: $description, descriptionErrorString: $descriptionErrorString, violationAdditionalFeature: $violationAdditionalFeature, violationAdditionalFeatureErrorString: $violationAdditionalFeatureErrorString, contractor: $contractor, contractorErrorString: $contractorErrorString, photos: $photos, showClassificationField: $showClassificationField, violationClassification: $violationClassification, violationClassificationErrorString: $violationClassificationErrorString)';
+    return 'CotnrolViolationFormState(setAddressByGeoLocation: $setAddressByGeoLocation, critical: $critical, address: $address, adressErrorString: $adressErrorString, targetLandmark: $targetLandmark, targetLandmarkErrorString: $targetLandmarkErrorString, objectElement: $objectElement, objectElementErrorString: $objectElementErrorString, description: $description, descriptionErrorString: $descriptionErrorString, violationAdditionalFeature: $violationAdditionalFeature, violationAdditionalFeatureErrorString: $violationAdditionalFeatureErrorString, contractor: $contractor, contractorErrorString: $contractorErrorString, photos: $photos, showClassificationField: $showClassificationField, violationClassification: $violationClassification, violationClassificationErrorString: $violationClassificationErrorString, violationClassificationNoEkn: $violationClassificationNoEkn, violationClassificationErrorStringNoEkn: $violationClassificationErrorStringNoEkn)';
   }
 
   @override
@@ -477,7 +526,9 @@ class _$_CotnrolViolationFormState extends _CotnrolViolationFormState {
             (identical(other.photos, photos) || const DeepCollectionEquality().equals(other.photos, photos)) &&
             (identical(other.showClassificationField, showClassificationField) || const DeepCollectionEquality().equals(other.showClassificationField, showClassificationField)) &&
             (identical(other.violationClassification, violationClassification) || const DeepCollectionEquality().equals(other.violationClassification, violationClassification)) &&
-            (identical(other.violationClassificationErrorString, violationClassificationErrorString) || const DeepCollectionEquality().equals(other.violationClassificationErrorString, violationClassificationErrorString)));
+            (identical(other.violationClassificationErrorString, violationClassificationErrorString) || const DeepCollectionEquality().equals(other.violationClassificationErrorString, violationClassificationErrorString)) &&
+            (identical(other.violationClassificationNoEkn, violationClassificationNoEkn) || const DeepCollectionEquality().equals(other.violationClassificationNoEkn, violationClassificationNoEkn)) &&
+            (identical(other.violationClassificationErrorStringNoEkn, violationClassificationErrorStringNoEkn) || const DeepCollectionEquality().equals(other.violationClassificationErrorStringNoEkn, violationClassificationErrorStringNoEkn)));
   }
 
   @override
@@ -501,7 +552,10 @@ class _$_CotnrolViolationFormState extends _CotnrolViolationFormState {
       const DeepCollectionEquality().hash(photos) ^
       const DeepCollectionEquality().hash(showClassificationField) ^
       const DeepCollectionEquality().hash(violationClassification) ^
-      const DeepCollectionEquality().hash(violationClassificationErrorString);
+      const DeepCollectionEquality().hash(violationClassificationErrorString) ^
+      const DeepCollectionEquality().hash(violationClassificationNoEkn) ^
+      const DeepCollectionEquality()
+          .hash(violationClassificationErrorStringNoEkn);
 
   @JsonKey(ignore: true)
   @override
@@ -531,7 +585,9 @@ abstract class _CotnrolViolationFormState extends CotnrolViolationFormState {
           List<DCPhoto> photos,
           bool showClassificationField,
           ViolationClassification violationClassification,
-          String violationClassificationErrorString}) =
+          String violationClassificationErrorString,
+          ViolationClassification violationClassificationNoEkn,
+          String violationClassificationErrorStringNoEkn}) =
       _$_CotnrolViolationFormState;
 
   @override
@@ -570,6 +626,10 @@ abstract class _CotnrolViolationFormState extends CotnrolViolationFormState {
   ViolationClassification get violationClassification;
   @override
   String get violationClassificationErrorString;
+  @override
+  ViolationClassification get violationClassificationNoEkn;
+  @override
+  String get violationClassificationErrorStringNoEkn;
   @override
   @JsonKey(ignore: true)
   _$CotnrolViolationFormStateCopyWith<_CotnrolViolationFormState> get copyWith;

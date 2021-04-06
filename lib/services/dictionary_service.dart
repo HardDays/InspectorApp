@@ -556,7 +556,7 @@ class DictionaryService {
     );
   }
 
-   Future<List<ViolationClassificationSearchResult>> getViolationClassificationSearchResults({String name, ObjectElement objectElement}) async {
+   Future<List<ViolationClassificationSearchResult>> getViolationClassificationSearchResults({String name, ObjectElement objectElement, bool ekn}) async {
     return await _getData<ViolationClassificationSearchResult>(DictionaryNames.dcViolationClassificationSearchResults, 
       queries: [
         Query({
@@ -566,6 +566,8 @@ class DictionaryService {
               'objectElementId = ?': objectElement.id
             else
               'objectElementName LIKE ?': '${objectElement.name}%',
+          if(ekn != null)
+            'ekn = ?': ekn ? 1 : 0,
         }),
       ],
       limit: 50
