@@ -100,7 +100,8 @@ class ControlViolationPage extends StatelessWidget {
                           padding: const EdgeInsets.only(
                               left: 10, right: 10, top: 2, bottom: 4),
                           child: Text(
-                            searchResult.violation.violationStatus?.name ?? 'Сохранено локально',
+                            searchResult.violation.violationStatus?.name ??
+                                'Сохранено локально',
                             style: ProjectTextStyles.smallBold
                                 .apply(color: ProjectColors.cyan),
                           ),
@@ -110,84 +111,11 @@ class ControlViolationPage extends StatelessWidget {
                     ControlObjectInfo(
                       controlObject: controlObject,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 35, bottom: 10),
-                      child: _buildTitle('Реквизиты нарушения'),
-                    ),
-                    ProjectSection(
-                      'Номер ЦАФАП',
-                      description: searchResult.violation.cafapPrescriptionNum
-                          ?.toString(),
-                    ),
-                    _buildDivider(),
-                    ProjectSection(
-                      'Срок устранения',
-                      description: searchResult.violation.resolveDate != null
-                          ? DateFormat("dd.MM.yyyy")
-                              .format(searchResult.violation.resolveDate)
-                          : '',
-                      child: Builder(
-                        builder: (context) => IconButton(
-                          icon: ProjectIcons.editIcon(),
-                          onPressed: () async {
-                            await showDialog(
-                              context: context,
-                              builder: (ctx) => ProjectDialog(
-                                child: ExtensionPeriodForm(
-                                  onCancel: () {
-                                    Navigator.of(ctx).pop();
-                                  },
-                                  onConfirm: (value) {
-                                    BlocProvider.of<ControlViolationPageBloc>(context).add(ControlViolationPageBlocEvent.extendPeriod(extensionPeriod: value));
-                                    Navigator.of(ctx).pop();
-                                  },
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                    ),
-                    _buildDivider(),
-                    ProjectSection(
-                      'Адрес нарушения',
-                      description:
-                          searchResult.violation.btiAddress?.toLongString(),
-                    ),
-                    _buildDivider(),
-                    ProjectSection(
-                      'Адресный ориентир',
-                      description: searchResult.violation.address,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 35, bottom: 10),
-                      child: _buildTitle('Описание нарушения'),
-                    ),
-                    ProjectSection(
-                      'Элемент объекта',
-                      description: searchResult.violation.objectElement.name ?? '',
-                    ),
-                    _buildDivider(),
-                    ProjectSection(
-                      'Описание нарушения',
-                      description: searchResult.violation.description,
-                    ),
-                    _buildDivider(),
-                    ProjectSection(
-                      'Дополнительный признак',
-                      description:
-                          searchResult.violation.additionalFeatures.isEmpty
-                              ? ''
-                              : searchResult
-                                  .violation.additionalFeatures?.first?.name ?? '',
-                    ),
-                    _buildDivider(),
+                    _buildPropsSection(),
+                    _buildDescriptionSection(),
                     if (searchResult.violation.photos != null &&
                         searchResult.violation.photos.isNotEmpty)
-                      Padding(
-                        padding: const EdgeInsets.only(top: 35, bottom: 5),
-                        child: _buildTitle('Фотоматериалы'),
-                      ),
+                      ..._buildSectionTitle('Фотоматериалы'),
                     if (searchResult.violation.photos != null &&
                         searchResult.violation.photos.isNotEmpty)
                       Container(
@@ -476,4 +404,100 @@ class ControlViolationPage extends StatelessWidget {
       ]..sort((a, b) => a.date.compareTo(b.date)),
     );
   }
+
+  List<Widget> _buildEknClassification() {
+    return _buildNullableField(
+      'Наименование нарушения по ЕКН',
+      searchResult.violation.eknViolationClassification?.violationName?.name,
+    );
+  }
+
+  List<Widget> _buildNullableField(String title, String value,
+      {Widget widget}) {
+    if (value != null && value.isNotEmpty) {
+      return [
+        ProjectSection(
+          title,
+          description: value,
+          child: widget,
+        ),
+        _buildDivider(),
+      ];
+    } else {
+      return [];
+    }
+  }
+
+  Widget _buildExtensionButton() {
+    return Builder(
+      builder: (context) => IconButton(
+        icon: ProjectIcons.editIcon(),
+        onPressed: () async {
+          await showDialog(
+            context: context,
+            builder: (ctx) => ProjectDialog(
+              child: ExtensionPeriodForm(
+                onCancel: () {
+                  Navigator.of(ctx).pop();
+                },
+                onConfirm: (value) {
+                  BlocProvider.of<ControlViolationPageBloc>(context).add(
+                      ControlViolationPageBlocEvent.extendPeriod(
+                          extensionPeriod: value));
+                  Navigator.of(ctx).pop();
+                },
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  List<Widget> _buildSectionTitle(String title) {
+    return [
+      Padding(
+        padding: const EdgeInsets.only(top: 35, bottom: 10),
+        child: _buildTitle(title),
+      ),
+    ];
+  }
+
+  Widget _buildSection({String title, Map<String, String> fields}) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        _buildSectionTitle(title),
+        ...fields.entries
+            .map((field) => _buildNullableField(field.key, field.value))
+            .toList(),
+      ].expand((element) => element).toList(),
+    );
+  }
+
+  String get _resolveDate => searchResult.violation.resolveDate != null
+      ? DateFormat("dd.MM.yyyy").format(searchResult.violation.resolveDate)
+      : '';
+
+  Widget _buildPropsSection() => _buildSection(
+        title: 'Реквизиты нарушения',
+        fields: {
+          'Номер ЦАФАП': searchResult.violation.cafapPrescriptionNum?.toString(),
+          'Срок устранения': _resolveDate,
+          'Адрес нарушения': searchResult.violation.btiAddress?.toLongString(),
+          'Адресный ориентир': searchResult.violation.address,
+        },
+      );
+  
+  Widget _buildDescriptionSection() => _buildSection(
+    title: 'Описание нарушения',
+    fields: {
+      'Элемент объекта': searchResult.violation.objectElement.name,
+      'Наименование нарушения по ЕКН': searchResult.violation.eknViolationClassification?.violationName?.name,
+      'Нарушение, не входящее в ЕКН': searchResult.violation.otherViolationClassification?.violationName?.name,
+      'Описание нарушения': searchResult.violation.description,
+      'Критичность': searchResult.violation.critical ? 'Критично' : '',
+      'Дополнительный признак': searchResult.violation.additionalFeatures.map((e) => e.name).join(', '),
+    },
+  );
 }
