@@ -12,6 +12,7 @@ import 'package:inspector/model/department_control/control_result_search_result.
 import 'package:inspector/model/department_control/dcphoto.dart';
 import 'package:inspector/model/department_control/perform_control.dart';
 import 'package:inspector/services/department_control/department_control_service.dart';
+import 'package:inspector/services/dictionary_service.dart';
 import 'package:inspector/services/network_status_service/network_status_service.dart';
 import 'package:inspector/style/button.dart';
 import 'package:inspector/style/colors.dart';
@@ -113,8 +114,8 @@ class ControlViolationPage extends StatelessWidget {
                     ),
                     _buildPropsSection(),
                     ProjectSection(
-                      _resolveDate,
-                      description: 'Срок устранения',
+                      'Срок устранения',
+                      description: _resolveDate,
                       child: _buildExtensionButton(),
                     ),
                     _buildDivider(),
@@ -452,6 +453,10 @@ class ControlViolationPage extends StatelessWidget {
                           extensionPeriod: value));
                   Navigator.of(ctx).pop();
                 },
+                dictionaryService: Provider.of<DictionaryService>(
+                  context,
+                  listen: false,
+                ),
               ),
             ),
           );
@@ -488,21 +493,27 @@ class ControlViolationPage extends StatelessWidget {
   Widget _buildPropsSection() => _buildSection(
         title: 'Реквизиты нарушения',
         fields: {
-          'Номер ЦАФАП': searchResult.violation.cafapPrescriptionNum?.toString(),
+          'Номер ЦАФАП':
+              searchResult.violation.cafapPrescriptionNum?.toString(),
           'Адрес нарушения': searchResult.violation.btiAddress?.toLongString(),
           'Адресный ориентир': searchResult.violation.address,
         },
       );
-  
+
   Widget _buildDescriptionSection() => _buildSection(
-    title: 'Описание нарушения',
-    fields: {
-      'Элемент объекта': searchResult.violation.objectElement.name,
-      'Наименование нарушения по ЕКН': searchResult.violation.eknViolationClassification?.violationName?.name,
-      'Нарушение, не входящее в ЕКН': searchResult.violation.otherViolationClassification?.violationName?.name,
-      'Описание нарушения': searchResult.violation.description,
-      'Критичность': searchResult.violation.critical ? 'Критично' : '',
-      'Дополнительный признак': searchResult.violation.additionalFeatures.map((e) => e.name).join(', '),
-    },
-  );
+        title: 'Описание нарушения',
+        fields: {
+          'Элемент объекта': searchResult.violation.objectElement.name,
+          'Наименование нарушения по ЕКН': searchResult
+              .violation.eknViolationClassification?.violationName?.name,
+          'Нарушение, не входящее в ЕКН': searchResult
+              .violation.otherViolationClassification?.violationName?.name,
+          'Описание нарушения': searchResult.violation.description,
+          'Критичность':
+              searchResult.violation.critical ?? false ? 'Критично' : '',
+          'Дополнительный признак': searchResult.violation.additionalFeatures
+              .map((e) => e.name)
+              .join(', '),
+        },
+      );
 }

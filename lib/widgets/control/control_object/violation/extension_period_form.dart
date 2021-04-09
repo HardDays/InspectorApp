@@ -14,12 +14,14 @@ class ExtensionPeriodForm extends StatefulWidget {
     Key key,
     this.onConfirm,
     this.onCancel,
+    this.dictionaryService,
   }) : super(key: key);
 
   final void Function(
     ViolationExtensionPeriod violationExtensionPeriod,
   ) onConfirm;
   final void Function() onCancel;
+  final DictionaryService dictionaryService;
 
   @override
   _ExtensionPeriodFormState createState() => _ExtensionPeriodFormState();
@@ -34,6 +36,9 @@ class _ExtensionPeriodFormState extends State<ExtensionPeriodForm> {
 
   @override
   Widget build(BuildContext context) {
+    if(_reasonController.text != _extensionReason.name) {
+      _reasonController.text = _extensionReason.name;
+    }
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -63,10 +68,13 @@ class _ExtensionPeriodFormState extends State<ExtensionPeriodForm> {
             _extensionReason = reason;
           }),
           suggestionsCallback: (value) async {
-            final t = await Provider.of<DictionaryService>(context, listen: false)
+            final t = await widget.dictionaryService
                 .getViolationExtensionReasons(name: value);
             return t;
           },
+          onChanged: (value) => setState(() {
+            _extensionReason = ViolationExtensionReason(name: value);
+          }),
         ),
         SizedBox(
           height: 20,
