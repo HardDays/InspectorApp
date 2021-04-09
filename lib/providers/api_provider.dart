@@ -109,7 +109,7 @@ class ApiProvider {
   Future<dynamic> _request(Function request) async {
     try {
       final res = (await request());  
-      print(res.request.queryParameters);
+      //print(res.request.queryParameters);
       return res.data;
     } on DioError catch (ex) {
       print(ex);

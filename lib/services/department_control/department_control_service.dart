@@ -1,5 +1,6 @@
 import 'package:async/async.dart';
 import 'package:inspector/blocs/control_filters/state.dart';
+import 'package:inspector/blocs/control_object_filters/state.dart';
 import 'package:inspector/model/department_control/control_object.dart';
 import 'package:inspector/model/department_control/control_result.dart';
 import 'package:inspector/model/department_control/control_result_search_result.dart';
@@ -94,10 +95,22 @@ class DepartmentControlService {
   Future<ControlResultsResponse> getControlResults(
     ControlObject object,
     NetworkStatus networkStatus,
+    ControlObjectFilters filters,
   ) async {
     try {
       final result = await _getClient(networkStatus).getControlSearchResults(
-          DepartmentControlSearchResultsRequest(object.id));
+        DepartmentControlSearchResultsRequest(
+          object.id,
+          dcViolationKindId: filters?.dcViolationKind?.id,
+          dcViolationStatusIds: [filters?.violationStatus?.id],
+          dcViolationTypeId: filters?.dcViolationType?.id,
+          sourceId: filters?.source?.id,
+          violationExists: filters?.violationExists,
+          violationNum: filters?.violationNum,
+          surveyDateFrom: filters?.surveyDateFrom,
+          surveyDateTo: filters?.surveyDateTo,
+        ),
+      );
       if (result.isEmpty)
         return ControlResultsResponse.emptyResultsListResponse();
       return ControlResultsResponse.controlResultsListResponse(result);
@@ -287,16 +300,18 @@ class DepartmentControlService {
     int page = 500;
     bool loaded = false;
     while (!_canceled && !loaded) {
-      await _apiClient.getControlResults(DepartmentControlControlResultsRequest(from: start, to: start + page, forCurrentUser: true))
-        .then((list) { 
-          if(list.isNotEmpty) {
-            _localClient.saveSearchResults(list);
-            start += list.length;
-            notifier(start);
-          } else {
-            loaded = true;
-          }
-        });
+      await _apiClient
+          .getControlResults(DepartmentControlControlResultsRequest(
+              from: start, to: start + page, forCurrentUser: true))
+          .then((list) {
+        if (list.isNotEmpty) {
+          _localClient.saveSearchResults(list);
+          start += list.length;
+          notifier(start);
+        } else {
+          loaded = true;
+        }
+      });
     }
     _canceled = false;
   }

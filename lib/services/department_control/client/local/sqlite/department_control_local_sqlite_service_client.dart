@@ -271,8 +271,19 @@ class DepartmentControlLocalSqliteServiceClient extends ObjectDBService
             final db = await objectDb;
             final searchResults = await db.find({
               "type": "searchResult",
-              "violationExists": true,
-              "violation.objectId": request.dcObjectId
+              "violation.objectId": request.dcObjectId,
+              if(request.violationExists != null)
+                "violationExists": request.violationExists,
+              if(request.dcViolationKindId != null)
+                "violation.violationKind.id": request.dcViolationKindId,
+              if(request.dcViolationTypeId != null)
+                "violation.violationType.id": request.dcViolationTypeId,
+              if(request.sourceId != null)
+                "violation.source.id": request.sourceId,
+              if(request.violationNum != null)
+                "violation.violationNum": request.violationNum,
+              if(request.dcViolationStatusIds != null && request.dcViolationStatusIds.length > 0 && request.dcViolationStatusIds[0] != null)
+                "violation.violationStatus.id": request.dcViolationStatusIds[0],
             }).then((value) => value
               .println()
               .map((e) => ControlResultSearchResult.fromJson(e))

@@ -494,7 +494,8 @@ class DictionaryService {
     return await _getData<ViolationStatus>(DictionaryNames.dcViolationStatuses, 
       queries: [
         Query({
-          'name LIKE ?': '$name%',
+          if(name != null && name.isNotEmpty)
+            'name LIKE ?': '$name%',
         }),
       ],
       limit: 50
@@ -538,7 +539,8 @@ class DictionaryService {
     return await _getData<Source>(DictionaryNames.dcSources, 
       queries: [
         Query({
-          'name LIKE ?': '$name%',
+          if(name != null)
+            'name LIKE ?': '$name%',
         }),
       ],
       limit: 50

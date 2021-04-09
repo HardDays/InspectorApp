@@ -179,7 +179,7 @@ class _ViolationFormWidgetState extends State<ViolationFormWidget> {
                     'Наименование нарушения по ЕКН',
                     controller: _violationClassificationController,
                     hintText: 'Введите данные',
-                    enabled: true,
+                    enabled: state.objectElement.id != null,
                     formatter: (value) =>
                         '${value.id?.toString()} ${value.violationName.name} ${value.violationType?.name} ${value.violationKind?.name}',
                     validator: (_) => state.violationClassificationErrorString,
@@ -208,7 +208,7 @@ class _ViolationFormWidgetState extends State<ViolationFormWidget> {
                     'Нарушения, не входящие в ЕКН',
                     controller: _violationClassificationControllerNoEkn,
                     hintText: 'Введите данные',
-                    enabled: true,
+                    enabled: state.objectElement.id != null,
                     formatter: (value) =>
                         '${value.id?.toString()} ${value.violationName.name} ${value.violationType?.name} ${value.violationKind?.name}',
                     validator: (_) => state.violationClassificationErrorStringNoEkn,

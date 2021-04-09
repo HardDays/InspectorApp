@@ -14,27 +14,33 @@ class _$ControlObjectBlocStateTearOff {
   const _$ControlObjectBlocStateTearOff();
 
 // ignore: unused_element
-  LoadingState loadingState({ControlObject object}) {
+  LoadingState loadingState(
+      {ControlObject object, ControlObjectFilters filters}) {
     return LoadingState(
       object: object,
+      filters: filters,
     );
   }
 
 // ignore: unused_element
   LoadedWithListState loadedWithListState(
       {ControlObject object,
-      List<ControlResultSearchResult> controlSearchResults}) {
+      List<ControlResultSearchResult> controlSearchResults,
+      ControlObjectFilters filters}) {
     return LoadedWithListState(
       object: object,
       controlSearchResults: controlSearchResults,
+      filters: filters,
     );
   }
 
 // ignore: unused_element
-  LoadedState loadedState({ControlObject object, bool needRefresh}) {
+  LoadedState loadedState(
+      {ControlObject object, bool needRefresh, ControlObjectFilters filters}) {
     return LoadedState(
       object: object,
       needRefresh: needRefresh,
+      filters: filters,
     );
   }
 }
@@ -46,21 +52,31 @@ const $ControlObjectBlocState = _$ControlObjectBlocStateTearOff();
 /// @nodoc
 mixin _$ControlObjectBlocState {
   ControlObject get object;
+  ControlObjectFilters get filters;
 
   @optionalTypeArgs
   TResult when<TResult extends Object>({
-    @required TResult loadingState(ControlObject object),
     @required
-        TResult loadedWithListState(ControlObject object,
-            List<ControlResultSearchResult> controlSearchResults),
-    @required TResult loadedState(ControlObject object, bool needRefresh),
+        TResult loadingState(
+            ControlObject object, ControlObjectFilters filters),
+    @required
+        TResult loadedWithListState(
+            ControlObject object,
+            List<ControlResultSearchResult> controlSearchResults,
+            ControlObjectFilters filters),
+    @required
+        TResult loadedState(ControlObject object, bool needRefresh,
+            ControlObjectFilters filters),
   });
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object>({
-    TResult loadingState(ControlObject object),
-    TResult loadedWithListState(ControlObject object,
-        List<ControlResultSearchResult> controlSearchResults),
-    TResult loadedState(ControlObject object, bool needRefresh),
+    TResult loadingState(ControlObject object, ControlObjectFilters filters),
+    TResult loadedWithListState(
+        ControlObject object,
+        List<ControlResultSearchResult> controlSearchResults,
+        ControlObjectFilters filters),
+    TResult loadedState(
+        ControlObject object, bool needRefresh, ControlObjectFilters filters),
     @required TResult orElse(),
   });
   @optionalTypeArgs
@@ -86,9 +102,10 @@ abstract class $ControlObjectBlocStateCopyWith<$Res> {
   factory $ControlObjectBlocStateCopyWith(ControlObjectBlocState value,
           $Res Function(ControlObjectBlocState) then) =
       _$ControlObjectBlocStateCopyWithImpl<$Res>;
-  $Res call({ControlObject object});
+  $Res call({ControlObject object, ControlObjectFilters filters});
 
   $ControlObjectCopyWith<$Res> get object;
+  $ControlObjectFiltersCopyWith<$Res> get filters;
 }
 
 /// @nodoc
@@ -103,9 +120,12 @@ class _$ControlObjectBlocStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object object = freezed,
+    Object filters = freezed,
   }) {
     return _then(_value.copyWith(
       object: object == freezed ? _value.object : object as ControlObject,
+      filters:
+          filters == freezed ? _value.filters : filters as ControlObjectFilters,
     ));
   }
 
@@ -118,6 +138,16 @@ class _$ControlObjectBlocStateCopyWithImpl<$Res>
       return _then(_value.copyWith(object: value));
     });
   }
+
+  @override
+  $ControlObjectFiltersCopyWith<$Res> get filters {
+    if (_value.filters == null) {
+      return null;
+    }
+    return $ControlObjectFiltersCopyWith<$Res>(_value.filters, (value) {
+      return _then(_value.copyWith(filters: value));
+    });
+  }
 }
 
 /// @nodoc
@@ -127,10 +157,12 @@ abstract class $LoadingStateCopyWith<$Res>
           LoadingState value, $Res Function(LoadingState) then) =
       _$LoadingStateCopyWithImpl<$Res>;
   @override
-  $Res call({ControlObject object});
+  $Res call({ControlObject object, ControlObjectFilters filters});
 
   @override
   $ControlObjectCopyWith<$Res> get object;
+  @override
+  $ControlObjectFiltersCopyWith<$Res> get filters;
 }
 
 /// @nodoc
@@ -147,23 +179,28 @@ class _$LoadingStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object object = freezed,
+    Object filters = freezed,
   }) {
     return _then(LoadingState(
       object: object == freezed ? _value.object : object as ControlObject,
+      filters:
+          filters == freezed ? _value.filters : filters as ControlObjectFilters,
     ));
   }
 }
 
 /// @nodoc
 class _$LoadingState implements LoadingState {
-  const _$LoadingState({this.object});
+  const _$LoadingState({this.object, this.filters});
 
   @override
   final ControlObject object;
+  @override
+  final ControlObjectFilters filters;
 
   @override
   String toString() {
-    return 'ControlObjectBlocState.loadingState(object: $object)';
+    return 'ControlObjectBlocState.loadingState(object: $object, filters: $filters)';
   }
 
   @override
@@ -171,12 +208,16 @@ class _$LoadingState implements LoadingState {
     return identical(this, other) ||
         (other is LoadingState &&
             (identical(other.object, object) ||
-                const DeepCollectionEquality().equals(other.object, object)));
+                const DeepCollectionEquality().equals(other.object, object)) &&
+            (identical(other.filters, filters) ||
+                const DeepCollectionEquality().equals(other.filters, filters)));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(object);
+      runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(object) ^
+      const DeepCollectionEquality().hash(filters);
 
   @JsonKey(ignore: true)
   @override
@@ -186,30 +227,39 @@ class _$LoadingState implements LoadingState {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object>({
-    @required TResult loadingState(ControlObject object),
     @required
-        TResult loadedWithListState(ControlObject object,
-            List<ControlResultSearchResult> controlSearchResults),
-    @required TResult loadedState(ControlObject object, bool needRefresh),
+        TResult loadingState(
+            ControlObject object, ControlObjectFilters filters),
+    @required
+        TResult loadedWithListState(
+            ControlObject object,
+            List<ControlResultSearchResult> controlSearchResults,
+            ControlObjectFilters filters),
+    @required
+        TResult loadedState(ControlObject object, bool needRefresh,
+            ControlObjectFilters filters),
   }) {
     assert(loadingState != null);
     assert(loadedWithListState != null);
     assert(loadedState != null);
-    return loadingState(object);
+    return loadingState(object, filters);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object>({
-    TResult loadingState(ControlObject object),
-    TResult loadedWithListState(ControlObject object,
-        List<ControlResultSearchResult> controlSearchResults),
-    TResult loadedState(ControlObject object, bool needRefresh),
+    TResult loadingState(ControlObject object, ControlObjectFilters filters),
+    TResult loadedWithListState(
+        ControlObject object,
+        List<ControlResultSearchResult> controlSearchResults,
+        ControlObjectFilters filters),
+    TResult loadedState(
+        ControlObject object, bool needRefresh, ControlObjectFilters filters),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
     if (loadingState != null) {
-      return loadingState(object);
+      return loadingState(object, filters);
     }
     return orElse();
   }
@@ -244,10 +294,13 @@ class _$LoadingState implements LoadingState {
 }
 
 abstract class LoadingState implements ControlObjectBlocState {
-  const factory LoadingState({ControlObject object}) = _$LoadingState;
+  const factory LoadingState(
+      {ControlObject object, ControlObjectFilters filters}) = _$LoadingState;
 
   @override
   ControlObject get object;
+  @override
+  ControlObjectFilters get filters;
   @override
   @JsonKey(ignore: true)
   $LoadingStateCopyWith<LoadingState> get copyWith;
@@ -262,10 +315,13 @@ abstract class $LoadedWithListStateCopyWith<$Res>
   @override
   $Res call(
       {ControlObject object,
-      List<ControlResultSearchResult> controlSearchResults});
+      List<ControlResultSearchResult> controlSearchResults,
+      ControlObjectFilters filters});
 
   @override
   $ControlObjectCopyWith<$Res> get object;
+  @override
+  $ControlObjectFiltersCopyWith<$Res> get filters;
 }
 
 /// @nodoc
@@ -283,28 +339,34 @@ class _$LoadedWithListStateCopyWithImpl<$Res>
   $Res call({
     Object object = freezed,
     Object controlSearchResults = freezed,
+    Object filters = freezed,
   }) {
     return _then(LoadedWithListState(
       object: object == freezed ? _value.object : object as ControlObject,
       controlSearchResults: controlSearchResults == freezed
           ? _value.controlSearchResults
           : controlSearchResults as List<ControlResultSearchResult>,
+      filters:
+          filters == freezed ? _value.filters : filters as ControlObjectFilters,
     ));
   }
 }
 
 /// @nodoc
 class _$LoadedWithListState implements LoadedWithListState {
-  const _$LoadedWithListState({this.object, this.controlSearchResults});
+  const _$LoadedWithListState(
+      {this.object, this.controlSearchResults, this.filters});
 
   @override
   final ControlObject object;
   @override
   final List<ControlResultSearchResult> controlSearchResults;
+  @override
+  final ControlObjectFilters filters;
 
   @override
   String toString() {
-    return 'ControlObjectBlocState.loadedWithListState(object: $object, controlSearchResults: $controlSearchResults)';
+    return 'ControlObjectBlocState.loadedWithListState(object: $object, controlSearchResults: $controlSearchResults, filters: $filters)';
   }
 
   @override
@@ -314,15 +376,18 @@ class _$LoadedWithListState implements LoadedWithListState {
             (identical(other.object, object) ||
                 const DeepCollectionEquality().equals(other.object, object)) &&
             (identical(other.controlSearchResults, controlSearchResults) ||
-                const DeepCollectionEquality()
-                    .equals(other.controlSearchResults, controlSearchResults)));
+                const DeepCollectionEquality().equals(
+                    other.controlSearchResults, controlSearchResults)) &&
+            (identical(other.filters, filters) ||
+                const DeepCollectionEquality().equals(other.filters, filters)));
   }
 
   @override
   int get hashCode =>
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(object) ^
-      const DeepCollectionEquality().hash(controlSearchResults);
+      const DeepCollectionEquality().hash(controlSearchResults) ^
+      const DeepCollectionEquality().hash(filters);
 
   @JsonKey(ignore: true)
   @override
@@ -332,30 +397,39 @@ class _$LoadedWithListState implements LoadedWithListState {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object>({
-    @required TResult loadingState(ControlObject object),
     @required
-        TResult loadedWithListState(ControlObject object,
-            List<ControlResultSearchResult> controlSearchResults),
-    @required TResult loadedState(ControlObject object, bool needRefresh),
+        TResult loadingState(
+            ControlObject object, ControlObjectFilters filters),
+    @required
+        TResult loadedWithListState(
+            ControlObject object,
+            List<ControlResultSearchResult> controlSearchResults,
+            ControlObjectFilters filters),
+    @required
+        TResult loadedState(ControlObject object, bool needRefresh,
+            ControlObjectFilters filters),
   }) {
     assert(loadingState != null);
     assert(loadedWithListState != null);
     assert(loadedState != null);
-    return loadedWithListState(object, controlSearchResults);
+    return loadedWithListState(object, controlSearchResults, filters);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object>({
-    TResult loadingState(ControlObject object),
-    TResult loadedWithListState(ControlObject object,
-        List<ControlResultSearchResult> controlSearchResults),
-    TResult loadedState(ControlObject object, bool needRefresh),
+    TResult loadingState(ControlObject object, ControlObjectFilters filters),
+    TResult loadedWithListState(
+        ControlObject object,
+        List<ControlResultSearchResult> controlSearchResults,
+        ControlObjectFilters filters),
+    TResult loadedState(
+        ControlObject object, bool needRefresh, ControlObjectFilters filters),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
     if (loadedWithListState != null) {
-      return loadedWithListState(object, controlSearchResults);
+      return loadedWithListState(object, controlSearchResults, filters);
     }
     return orElse();
   }
@@ -391,13 +465,15 @@ class _$LoadedWithListState implements LoadedWithListState {
 
 abstract class LoadedWithListState implements ControlObjectBlocState {
   const factory LoadedWithListState(
-          {ControlObject object,
-          List<ControlResultSearchResult> controlSearchResults}) =
-      _$LoadedWithListState;
+      {ControlObject object,
+      List<ControlResultSearchResult> controlSearchResults,
+      ControlObjectFilters filters}) = _$LoadedWithListState;
 
   @override
   ControlObject get object;
   List<ControlResultSearchResult> get controlSearchResults;
+  @override
+  ControlObjectFilters get filters;
   @override
   @JsonKey(ignore: true)
   $LoadedWithListStateCopyWith<LoadedWithListState> get copyWith;
@@ -410,10 +486,13 @@ abstract class $LoadedStateCopyWith<$Res>
           LoadedState value, $Res Function(LoadedState) then) =
       _$LoadedStateCopyWithImpl<$Res>;
   @override
-  $Res call({ControlObject object, bool needRefresh});
+  $Res call(
+      {ControlObject object, bool needRefresh, ControlObjectFilters filters});
 
   @override
   $ControlObjectCopyWith<$Res> get object;
+  @override
+  $ControlObjectFiltersCopyWith<$Res> get filters;
 }
 
 /// @nodoc
@@ -431,27 +510,32 @@ class _$LoadedStateCopyWithImpl<$Res>
   $Res call({
     Object object = freezed,
     Object needRefresh = freezed,
+    Object filters = freezed,
   }) {
     return _then(LoadedState(
       object: object == freezed ? _value.object : object as ControlObject,
       needRefresh:
           needRefresh == freezed ? _value.needRefresh : needRefresh as bool,
+      filters:
+          filters == freezed ? _value.filters : filters as ControlObjectFilters,
     ));
   }
 }
 
 /// @nodoc
 class _$LoadedState implements LoadedState {
-  const _$LoadedState({this.object, this.needRefresh});
+  const _$LoadedState({this.object, this.needRefresh, this.filters});
 
   @override
   final ControlObject object;
   @override
   final bool needRefresh;
+  @override
+  final ControlObjectFilters filters;
 
   @override
   String toString() {
-    return 'ControlObjectBlocState.loadedState(object: $object, needRefresh: $needRefresh)';
+    return 'ControlObjectBlocState.loadedState(object: $object, needRefresh: $needRefresh, filters: $filters)';
   }
 
   @override
@@ -462,14 +546,17 @@ class _$LoadedState implements LoadedState {
                 const DeepCollectionEquality().equals(other.object, object)) &&
             (identical(other.needRefresh, needRefresh) ||
                 const DeepCollectionEquality()
-                    .equals(other.needRefresh, needRefresh)));
+                    .equals(other.needRefresh, needRefresh)) &&
+            (identical(other.filters, filters) ||
+                const DeepCollectionEquality().equals(other.filters, filters)));
   }
 
   @override
   int get hashCode =>
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(object) ^
-      const DeepCollectionEquality().hash(needRefresh);
+      const DeepCollectionEquality().hash(needRefresh) ^
+      const DeepCollectionEquality().hash(filters);
 
   @JsonKey(ignore: true)
   @override
@@ -479,30 +566,39 @@ class _$LoadedState implements LoadedState {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object>({
-    @required TResult loadingState(ControlObject object),
     @required
-        TResult loadedWithListState(ControlObject object,
-            List<ControlResultSearchResult> controlSearchResults),
-    @required TResult loadedState(ControlObject object, bool needRefresh),
+        TResult loadingState(
+            ControlObject object, ControlObjectFilters filters),
+    @required
+        TResult loadedWithListState(
+            ControlObject object,
+            List<ControlResultSearchResult> controlSearchResults,
+            ControlObjectFilters filters),
+    @required
+        TResult loadedState(ControlObject object, bool needRefresh,
+            ControlObjectFilters filters),
   }) {
     assert(loadingState != null);
     assert(loadedWithListState != null);
     assert(loadedState != null);
-    return loadedState(object, needRefresh);
+    return loadedState(object, needRefresh, filters);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object>({
-    TResult loadingState(ControlObject object),
-    TResult loadedWithListState(ControlObject object,
-        List<ControlResultSearchResult> controlSearchResults),
-    TResult loadedState(ControlObject object, bool needRefresh),
+    TResult loadingState(ControlObject object, ControlObjectFilters filters),
+    TResult loadedWithListState(
+        ControlObject object,
+        List<ControlResultSearchResult> controlSearchResults,
+        ControlObjectFilters filters),
+    TResult loadedState(
+        ControlObject object, bool needRefresh, ControlObjectFilters filters),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
     if (loadedState != null) {
-      return loadedState(object, needRefresh);
+      return loadedState(object, needRefresh, filters);
     }
     return orElse();
   }
@@ -537,12 +633,16 @@ class _$LoadedState implements LoadedState {
 }
 
 abstract class LoadedState implements ControlObjectBlocState {
-  const factory LoadedState({ControlObject object, bool needRefresh}) =
-      _$LoadedState;
+  const factory LoadedState(
+      {ControlObject object,
+      bool needRefresh,
+      ControlObjectFilters filters}) = _$LoadedState;
 
   @override
   ControlObject get object;
   bool get needRefresh;
+  @override
+  ControlObjectFilters get filters;
   @override
   @JsonKey(ignore: true)
   $LoadedStateCopyWith<LoadedState> get copyWith;
