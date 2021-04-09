@@ -136,6 +136,7 @@ class _ViolationFormWidgetState extends State<ViolationFormWidget> {
                     hintText: 'Выберите значение',
                     controller: _addressController,
                     validator: (_) => state.adressErrorString,
+                    autoValidate: true,
                   ),
                 ),
               ),
@@ -145,6 +146,7 @@ class _ViolationFormWidgetState extends State<ViolationFormWidget> {
               ProjectTextField(
                 title: 'Адресный ориентир',
                 controller: _targetMarkController,
+                autoValidate: true,
                 validator: (_) => state.targetLandmarkErrorString,
                 hintText: 'Введите данные',
                 onChanged: (value) =>
@@ -159,6 +161,7 @@ class _ViolationFormWidgetState extends State<ViolationFormWidget> {
                 controller: _objectElementController,
                 hintText: 'Выберите значение',
                 enabled: true,
+                autoValidate: true,
                 validator: (_) => state.objectElementErrorString,
                 formatter: (objectElement) => objectElement.name,
                 onChanged: (value) =>
@@ -182,6 +185,7 @@ class _ViolationFormWidgetState extends State<ViolationFormWidget> {
                     enabled: state.objectElement.id != null,
                     formatter: (value) =>
                         '${value.id?.toString()} ${value.violationName.name} ${value.violationType?.name} ${value.violationKind?.name}',
+                    autoValidate: true,
                     validator: (_) => state.violationClassificationErrorString,
                     onChanged: (value) =>
                         BlocProvider.of<ControlViolationFormBloc>(context).add(
@@ -202,34 +206,35 @@ class _ViolationFormWidgetState extends State<ViolationFormWidget> {
                   ),
                 ),
               Padding(
-                  padding: EdgeInsets.only(top: 20),
-                  child:
-                      ProjectAutocomplete<ViolationClassificationSearchResult>(
-                    'Нарушения, не входящие в ЕКН',
-                    controller: _violationClassificationControllerNoEkn,
-                    hintText: 'Введите данные',
-                    enabled: state.objectElement.id != null,
-                    formatter: (value) =>
-                        '${value.id?.toString()} ${value.violationName.name} ${value.violationType?.name} ${value.violationKind?.name}',
-                    validator: (_) => state.violationClassificationErrorStringNoEkn,
-                    onChanged: (value) =>
-                        BlocProvider.of<ControlViolationFormBloc>(context).add(
-                      ControlViolationFormEvent
-                          .setViolationClassificationNoEknString(value),
-                    ),
-                    onSuggestionSelected: (value) =>
-                        BlocProvider.of<ControlViolationFormBloc>(context).add(
-                      ControlViolationFormEvent.setViolationClassificationsNoEkn(
-                          value),
-                    ),
-                    suggestionsCallback: (value) => widget.dictionaryService
-                        .getViolationClassificationSearchResults(
-                      name: value,
-                      objectElement: state.objectElement,
-                      ekn: false,
-                    ),
+                padding: EdgeInsets.only(top: 20),
+                child: ProjectAutocomplete<ViolationClassificationSearchResult>(
+                  'Нарушения, не входящие в ЕКН',
+                  controller: _violationClassificationControllerNoEkn,
+                  hintText: 'Введите данные',
+                  enabled: state.objectElement.id != null,
+                  formatter: (value) =>
+                      '${value.id?.toString()} ${value.violationName.name} ${value.violationType?.name} ${value.violationKind?.name}',
+                  validator: (_) =>
+                      state.violationClassificationErrorStringNoEkn,
+                  autoValidate: true,
+                  onChanged: (value) =>
+                      BlocProvider.of<ControlViolationFormBloc>(context).add(
+                    ControlViolationFormEvent
+                        .setViolationClassificationNoEknString(value),
+                  ),
+                  onSuggestionSelected: (value) =>
+                      BlocProvider.of<ControlViolationFormBloc>(context).add(
+                    ControlViolationFormEvent.setViolationClassificationsNoEkn(
+                        value),
+                  ),
+                  suggestionsCallback: (value) => widget.dictionaryService
+                      .getViolationClassificationSearchResults(
+                    name: value,
+                    objectElement: state.objectElement,
+                    ekn: false,
                   ),
                 ),
+              ),
               SizedBox(
                 height: 20,
               ),
@@ -237,6 +242,7 @@ class _ViolationFormWidgetState extends State<ViolationFormWidget> {
                 title: 'Описание нарушения',
                 controller: _descriptionController,
                 hintText: 'Введите данные',
+                autoValidate: true,
                 validator: (_) => state.descriptionErrorString,
                 onChanged: (value) =>
                     BlocProvider.of<ControlViolationFormBloc>(context).add(
@@ -250,6 +256,7 @@ class _ViolationFormWidgetState extends State<ViolationFormWidget> {
                 controller: _additionalFeatureController,
                 hintText: 'Введите данные',
                 enabled: true,
+                autoValidate: true,
                 validator: (_) => state.violationAdditionalFeatureErrorString,
                 formatter: (additionalFeature) => additionalFeature.name,
                 onChanged: (value) =>
@@ -272,6 +279,7 @@ class _ViolationFormWidgetState extends State<ViolationFormWidget> {
                 hintText: 'Выберите значение',
                 enabled: true,
                 validator: (_) => state.contractorErrorString,
+                autoValidate: true,
                 formatter: (contractor) => contractor.name,
                 onChanged: (value) =>
                     BlocProvider.of<ControlViolationFormBloc>(context).add(

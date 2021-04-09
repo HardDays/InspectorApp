@@ -16,6 +16,7 @@ class ProjectAutocomplete<T> extends StatelessWidget {
   final String Function(T) formatter;
   final String Function(String) validator;
   final void Function(String) onChanged;
+  final bool autoValidate;
 
   ProjectAutocomplete(this.title, {
     this.controller,
@@ -26,6 +27,7 @@ class ProjectAutocomplete<T> extends StatelessWidget {
     this.formatter,
     this.enabled = false,
     this.onChanged,
+    this.autoValidate = false,
   });
 
   @override
@@ -49,7 +51,7 @@ class ProjectAutocomplete<T> extends StatelessWidget {
             hideOnLoading: true,
             hideOnEmpty: true,
             hideOnError: true,
-            autovalidateMode: AutovalidateMode.always,
+            autovalidateMode: autoValidate ? AutovalidateMode.always : AutovalidateMode.disabled,
             //noItemsFoundBuilder: (c) => null,
             textFieldConfiguration: TextFieldConfiguration(
               autofocus: false,
