@@ -14,9 +14,11 @@ class _$ControlObjectsMapStateTearOff {
   const _$ControlObjectsMapStateTearOff();
 
 // ignore: unused_element
-  _ControlObjectsMapState call({ControlObject selectedObject}) {
+  _ControlObjectsMapState call(
+      {ControlObject selectedObject, Location userLocation}) {
     return _ControlObjectsMapState(
       selectedObject: selectedObject,
+      userLocation: userLocation,
     );
   }
 }
@@ -28,6 +30,7 @@ const $ControlObjectsMapState = _$ControlObjectsMapStateTearOff();
 /// @nodoc
 mixin _$ControlObjectsMapState {
   ControlObject get selectedObject;
+  Location get userLocation;
 
   @JsonKey(ignore: true)
   $ControlObjectsMapStateCopyWith<ControlObjectsMapState> get copyWith;
@@ -38,9 +41,10 @@ abstract class $ControlObjectsMapStateCopyWith<$Res> {
   factory $ControlObjectsMapStateCopyWith(ControlObjectsMapState value,
           $Res Function(ControlObjectsMapState) then) =
       _$ControlObjectsMapStateCopyWithImpl<$Res>;
-  $Res call({ControlObject selectedObject});
+  $Res call({ControlObject selectedObject, Location userLocation});
 
   $ControlObjectCopyWith<$Res> get selectedObject;
+  $LocationCopyWith<$Res> get userLocation;
 }
 
 /// @nodoc
@@ -55,11 +59,15 @@ class _$ControlObjectsMapStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object selectedObject = freezed,
+    Object userLocation = freezed,
   }) {
     return _then(_value.copyWith(
       selectedObject: selectedObject == freezed
           ? _value.selectedObject
           : selectedObject as ControlObject,
+      userLocation: userLocation == freezed
+          ? _value.userLocation
+          : userLocation as Location,
     ));
   }
 
@@ -72,6 +80,16 @@ class _$ControlObjectsMapStateCopyWithImpl<$Res>
       return _then(_value.copyWith(selectedObject: value));
     });
   }
+
+  @override
+  $LocationCopyWith<$Res> get userLocation {
+    if (_value.userLocation == null) {
+      return null;
+    }
+    return $LocationCopyWith<$Res>(_value.userLocation, (value) {
+      return _then(_value.copyWith(userLocation: value));
+    });
+  }
 }
 
 /// @nodoc
@@ -81,10 +99,12 @@ abstract class _$ControlObjectsMapStateCopyWith<$Res>
           $Res Function(_ControlObjectsMapState) then) =
       __$ControlObjectsMapStateCopyWithImpl<$Res>;
   @override
-  $Res call({ControlObject selectedObject});
+  $Res call({ControlObject selectedObject, Location userLocation});
 
   @override
   $ControlObjectCopyWith<$Res> get selectedObject;
+  @override
+  $LocationCopyWith<$Res> get userLocation;
 }
 
 /// @nodoc
@@ -101,25 +121,31 @@ class __$ControlObjectsMapStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object selectedObject = freezed,
+    Object userLocation = freezed,
   }) {
     return _then(_ControlObjectsMapState(
       selectedObject: selectedObject == freezed
           ? _value.selectedObject
           : selectedObject as ControlObject,
+      userLocation: userLocation == freezed
+          ? _value.userLocation
+          : userLocation as Location,
     ));
   }
 }
 
 /// @nodoc
 class _$_ControlObjectsMapState implements _ControlObjectsMapState {
-  const _$_ControlObjectsMapState({this.selectedObject});
+  const _$_ControlObjectsMapState({this.selectedObject, this.userLocation});
 
   @override
   final ControlObject selectedObject;
+  @override
+  final Location userLocation;
 
   @override
   String toString() {
-    return 'ControlObjectsMapState(selectedObject: $selectedObject)';
+    return 'ControlObjectsMapState(selectedObject: $selectedObject, userLocation: $userLocation)';
   }
 
   @override
@@ -128,13 +154,17 @@ class _$_ControlObjectsMapState implements _ControlObjectsMapState {
         (other is _ControlObjectsMapState &&
             (identical(other.selectedObject, selectedObject) ||
                 const DeepCollectionEquality()
-                    .equals(other.selectedObject, selectedObject)));
+                    .equals(other.selectedObject, selectedObject)) &&
+            (identical(other.userLocation, userLocation) ||
+                const DeepCollectionEquality()
+                    .equals(other.userLocation, userLocation)));
   }
 
   @override
   int get hashCode =>
       runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(selectedObject);
+      const DeepCollectionEquality().hash(selectedObject) ^
+      const DeepCollectionEquality().hash(userLocation);
 
   @JsonKey(ignore: true)
   @override
@@ -144,11 +174,14 @@ class _$_ControlObjectsMapState implements _ControlObjectsMapState {
 }
 
 abstract class _ControlObjectsMapState implements ControlObjectsMapState {
-  const factory _ControlObjectsMapState({ControlObject selectedObject}) =
-      _$_ControlObjectsMapState;
+  const factory _ControlObjectsMapState(
+      {ControlObject selectedObject,
+      Location userLocation}) = _$_ControlObjectsMapState;
 
   @override
   ControlObject get selectedObject;
+  @override
+  Location get userLocation;
   @override
   @JsonKey(ignore: true)
   _$ControlObjectsMapStateCopyWith<_ControlObjectsMapState> get copyWith;

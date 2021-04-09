@@ -221,7 +221,13 @@ class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
   }
 
   Stream<ControlListBlocState> _onChangeShowMapEvent(event) async* {
-    yield (state.copyWith(showMap: event.showMap));
+    final userLocation = await _locationService.actualLocation;
+    yield state.copyWith(
+      showMap: event.showMap,
+      mapState: state.mapState.copyWith(
+        userLocation: userLocation,
+      ),
+    );
   }
 
   Stream<ControlListBlocState> _onRefreshControlListEvent(event) async* {

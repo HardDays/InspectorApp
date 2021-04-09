@@ -112,6 +112,12 @@ class ControlViolationPage extends StatelessWidget {
                       controlObject: controlObject,
                     ),
                     _buildPropsSection(),
+                    ProjectSection(
+                      _resolveDate,
+                      description: 'Срок устранения',
+                      child: _buildExtensionButton(),
+                    ),
+                    _buildDivider(),
                     _buildDescriptionSection(),
                     if (searchResult.violation.photos != null &&
                         searchResult.violation.photos.isNotEmpty)
@@ -483,7 +489,6 @@ class ControlViolationPage extends StatelessWidget {
         title: 'Реквизиты нарушения',
         fields: {
           'Номер ЦАФАП': searchResult.violation.cafapPrescriptionNum?.toString(),
-          'Срок устранения': _resolveDate,
           'Адрес нарушения': searchResult.violation.btiAddress?.toLongString(),
           'Адресный ориентир': searchResult.violation.address,
         },
