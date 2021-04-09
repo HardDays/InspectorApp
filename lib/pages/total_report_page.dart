@@ -1888,7 +1888,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
             ),
             Padding(padding: const EdgeInsets.only(left: 20)),
             Flexible(
-              child: _buildTextField('СНИЛС', 'Введите данные', _snilsControllers[index], enabled: enabled, validator: textValidator),
+              child: _buildTextField('СНИЛС', 'Введите данные', _snilsControllers[index], enabled: enabled),
             ),
           ],
         ),
