@@ -206,17 +206,17 @@ class DepartmentControlLocalSqliteServiceClient extends ObjectDBService
                     .replaceAll(
                       '_order_by_',
                       _generateOrderByStatement(request),
-                    ).let((String sql) { 
-                      if(_usePositionInRequest(request))
-                        return sql.replaceAll('_dist_', ',ABS(? - x) + ABS(? - y) AS distance');
-                      else
-                        return sql.replaceAll('_dist_', '');
-                    }),
+                    )
+                    .let((String sql) {
+                  if (_usePositionInRequest(request))
+                    return sql.replaceAll(
+                        '_dist_', ',ABS(? - x) + ABS(? - y) AS distance');
+                  else
+                    return sql.replaceAll('_dist_', '');
+                }),
                 [
-                  if(_usePositionInRequest(request))
-                    request.userPositionX,
-                  if(_usePositionInRequest(request))
-                    request.userPositionY,
+                  if (_usePositionInRequest(request)) request.userPositionX,
+                  if (_usePositionInRequest(request)) request.userPositionY,
                   request.to,
                   request.from,
                 ]),
@@ -225,36 +225,36 @@ class DepartmentControlLocalSqliteServiceClient extends ObjectDBService
 
   @override
   Future<ControlResultSearchResult> getControlSearchResultByIds(
-      DepartmentControlSearchResultByIdsRequest request) async
-        {
-    final r = await objectDb
-          .then(
-            (db) async {
-              return db.first(
-              {
-                'id': request.dcControlResultId,
-                'type': 'registerControlRequest',
-              },
-            );
-            },
-          )
-          .then(
-            (value) {
-              if(value != null) {
-                return DepartmentControlRegisterControlRequest.fromJson(value['request'])
-                  .copyWith
-                  .controlResult(id: value['id']); 
-              }
-              return null;
-            },
-          );
-        if(r != null) {
-          return _readDepartmentControlRegisterControlRequest(r)
-                .then(_fromDepartmentControlRegisterControlRequest);
-        } else {
-          return getControlSearchResults(DepartmentControlSearchResultsRequest(request.dcObjectId))
-          .then((value) => value.firstWhere((element) => element.id == request.dcControlResultId));
+      DepartmentControlSearchResultByIdsRequest request) async {
+    final r = await objectDb.then(
+      (db) async {
+        return db.first(
+          {
+            'id': request.dcControlResultId,
+            'type': 'registerControlRequest',
+          },
+        );
+      },
+    ).then(
+      (value) {
+        if (value != null) {
+          return DepartmentControlRegisterControlRequest.fromJson(
+                  value['request'])
+              .copyWith
+              .controlResult(id: value['id']);
         }
+        return null;
+      },
+    );
+    if (r != null) {
+      return _readDepartmentControlRegisterControlRequest(r)
+          .then(_fromDepartmentControlRegisterControlRequest);
+    } else {
+      return getControlSearchResults(
+              DepartmentControlSearchResultsRequest(request.dcObjectId))
+          .then((value) => value.firstWhere(
+              (element) => element.id == request.dcControlResultId));
+    }
   }
 
   @override
@@ -267,39 +267,42 @@ class DepartmentControlLocalSqliteServiceClient extends ObjectDBService
             (value) => value
                 .map(_fromDepartmentControlRegisterControlRequest)
                 .toList(),
-          ).then((list) async {
-            final db = await objectDb;
-            final searchResults = await db.find({
-              "type": "searchResult",
-              "violation.objectId": request.dcObjectId,
-              if(request.violationExists != null)
-                "violationExists": request.violationExists,
-              if(request.dcViolationKindId != null)
-                "violation.violationKind.id": request.dcViolationKindId,
-              if(request.dcViolationTypeId != null)
-                "violation.violationType.id": request.dcViolationTypeId,
-              if(request.sourceId != null)
-                "violation.source.id": request.sourceId,
-              if(request.violationNum != null)
-                "violation.violationNum": request.violationNum,
-              if(request.dcViolationStatusIds != null && request.dcViolationStatusIds.length > 0 && request.dcViolationStatusIds[0] != null)
-                "violation.violationStatus.id": request.dcViolationStatusIds[0],
-            }).then((value) => value
-              .println()
-              .map((e) => ControlResultSearchResult.fromJson(e))
-              .cast<ControlResultSearchResult>()
-              .where((e) => e.violation != null)
-              .map((ControlResultSearchResult e) async {
-                if(e.violation.photos != null)
-                  return e.copyWith.violation(photos: await Future.wait(e.violation.photos.map(_readPhoto)));
-                else
-                  return e;
-              })
-              .toList()
-              .cast<Future<ControlResultSearchResult>>()
-            );
-            return list + await Future.wait(searchResults);
-          });
+          )
+          .then((list) async {
+        final db = await objectDb;
+        final searchResults = await db.find({
+          "type": "searchResult",
+          "violation.objectId": request.dcObjectId,
+          if (request.violationExists != null)
+            "violationExists": request.violationExists,
+          if (request.dcViolationKindId != null)
+            "violation.violationKind.id": request.dcViolationKindId,
+          if (request.dcViolationTypeId != null)
+            "violation.violationType.id": request.dcViolationTypeId,
+          if (request.sourceId != null) "violation.source.id": request.sourceId,
+          if (request.violationNum != null)
+            "violation.violationNum": request.violationNum,
+          if (request.dcViolationStatusIds != null &&
+              request.dcViolationStatusIds.length > 0 &&
+              request.dcViolationStatusIds[0] != null)
+            "violation.violationStatus.id": request.dcViolationStatusIds[0],
+        }).then((value) => value
+            .println()
+            .map((e) => ControlResultSearchResult.fromJson(e))
+            .cast<ControlResultSearchResult>()
+            .where((e) => e.violation != null)
+            .map((ControlResultSearchResult e) async {
+              if (e.violation.photos != null)
+                return e.copyWith.violation(
+                    photos:
+                        await Future.wait(e.violation.photos.map(_readPhoto)));
+              else
+                return e;
+            })
+            .toList()
+            .cast<Future<ControlResultSearchResult>>());
+        return list + await Future.wait(searchResults);
+      });
 
   @override
   Future<ControlResult> registerControlResult(
@@ -323,37 +326,36 @@ class DepartmentControlLocalSqliteServiceClient extends ObjectDBService
     throw UnimplementedError();
   }
 
-  Future<Iterable<DepartmentControlRegisterControlRequest>> get _registerRequests
-    =>  objectDb
-          .then(
+  Future<Iterable<DepartmentControlRegisterControlRequest>>
+      get _registerRequests => objectDb.then(
             (db) async {
               //await db.remove({});
               return db.find(
-              {
-                'type': 'registerControlRequest',
-              },
-            );
+                {
+                  'type': 'registerControlRequest',
+                },
+              );
             },
-          )
-          .then(
+          ).then(
             (value) => value
                 .map(
-                  (e) => DepartmentControlRegisterControlRequest.fromJson(e['request'])
+                  (e) => DepartmentControlRegisterControlRequest.fromJson(
+                          e['request'])
                       .copyWith
                       .controlResult(id: e['id']),
                 )
                 .toList(),
           );
 
-  Future<Iterable<DepartmentControlUpdateControlRequest>> get updateRequests
-    => _updateRequests.then((value) => value
-              .map((e) =>
-                  _readDepartmentControlUpdateControlRequest(e))
+  Future<Iterable<DepartmentControlUpdateControlRequest>> get updateRequests =>
+      _updateRequests
+          .then((value) => value
+              .map((e) => _readDepartmentControlUpdateControlRequest(e))
               .toList())
-              .then((value) => Future.wait(value));
+          .then((value) => Future.wait(value));
 
-  Future<Iterable<DepartmentControlUpdateControlRequest>> get _updateRequests
-    =>  objectDb
+  Future<Iterable<DepartmentControlUpdateControlRequest>> get _updateRequests =>
+      objectDb
           .then(
             (db) => db.find(
               {
@@ -363,7 +365,8 @@ class DepartmentControlLocalSqliteServiceClient extends ObjectDBService
           )
           .then(
             (value) => value
-                .map((e) => DepartmentControlUpdateControlRequest.fromJson(e['request']))
+                .map((e) => DepartmentControlUpdateControlRequest.fromJson(
+                    e['request']))
                 .toList(),
           );
 
@@ -371,14 +374,13 @@ class DepartmentControlLocalSqliteServiceClient extends ObjectDBService
   Future<Iterable<DepartmentControlRegisterControlRequest>>
       get registerRequests => _registerRequests
           .then((value) => value
-              .map((e) =>
-                  _readDepartmentControlRegisterControlRequest(e))
+              .map((e) => _readDepartmentControlRegisterControlRequest(e))
               .toList())
-              .then((value) => Future.wait(value));
+          .then((value) => Future.wait(value));
 
   @override
-  Future<Iterable<DepartmentControlRemoveControlRequest>>
-      get removeRequests => objectDb
+  Future<Iterable<DepartmentControlRemoveControlRequest>> get removeRequests =>
+      objectDb
           .then(
             (db) => db.find(
               {
@@ -388,7 +390,8 @@ class DepartmentControlLocalSqliteServiceClient extends ObjectDBService
           )
           .then(
             (value) => value
-                .map((e) => DepartmentControlRemoveControlRequest.fromJson(e['request']))
+                .map((e) => DepartmentControlRemoveControlRequest.fromJson(
+                    e['request']))
                 .toList(),
           );
 
@@ -442,13 +445,15 @@ class DepartmentControlLocalSqliteServiceClient extends ObjectDBService
                 .controlResult(
                   violation: request.violation,
                 ),
-          )).toJson(),
+          ))
+              .toJson(),
         });
       } else {
         await db.insert({
           'id': await _nextControlResultId,
           'type': 'updateControlRequest',
-          'request': (await _saveDepartmentControlUpdateControlRequest(request)).toJson(),
+          'request': (await _saveDepartmentControlUpdateControlRequest(request))
+              .toJson(),
         });
       }
       return ControlResult(
@@ -590,16 +595,21 @@ class DepartmentControlLocalSqliteServiceClient extends ObjectDBService
   String _generateWhereStatement(DepartmentControlObjectsRequest request) {
     List<String> params = <String>[
       if (request.camerasExist != null)
-        request.camerasExist ? '${_ControlObjectsSql.TABLE_NAME}.cameraCount > 0' : '${_ControlObjectsSql.TABLE_NAME}.cameraCount = 0',
+        request.camerasExist
+            ? '${_ControlObjectsSql.TABLE_NAME}.cameraCount > 0'
+            : '${_ControlObjectsSql.TABLE_NAME}.cameraCount = 0',
       if (_usePositionInRequest(request))
         '(distance < ${request.searchRadius / 11111} OR distance IS NULL)',
       if (request.dcObjectTypesIds != null)
         'typeId = ${request.dcObjectTypesIds}',
-      if (request.dcObjectKind != null) '${_ControlObjectsSql.TABLE_NAME}.kind = "${request.dcObjectKind}"',
+      if (request.dcObjectKind != null)
+        '${_ControlObjectsSql.TABLE_NAME}.kind = "${request.dcObjectKind}"',
       if (request.balanceOwner != null)
         '${_ControlObjectsSql.TABLE_NAME}.balanceOwner LIKE "${request.balanceOwner}%"',
-      if (request.objectName != null) '${_ControlObjectsSql.TABLE_NAME}.name LIKE "${request.objectName}%"',
-      if (request.externalId != null) '${_ControlObjectsSql.TABLE_NAME}.externalId = ${request.externalId}',
+      if (request.objectName != null)
+        '${_ControlObjectsSql.TABLE_NAME}.name LIKE "${request.objectName}%"',
+      if (request.externalId != null)
+        '${_ControlObjectsSql.TABLE_NAME}.externalId = ${request.externalId}',
       if (request.daysFromLastSurvey != null && request.daysFromLastSurvey != 0)
         '${DateTime.now().millisecondsSinceEpoch} - ${_ControlObjectsSql.TABLE_NAME}.lastSurveyDate >= ${request.daysFromLastSurvey * Duration.millisecondsPerDay}',
       if (request.lastSurveyDateFrom != null)
@@ -615,8 +625,7 @@ class DepartmentControlLocalSqliteServiceClient extends ObjectDBService
       if (request.sort == 'type') 'typeId ASC',
       if (['name', 'address', 'lastSurveyDate'].contains(request.sort))
         '${_ControlObjectsSql.TABLE_NAME}.${request.sort} ASC',
-      if (_usePositionInRequest(request))
-        'distance ASC',
+      if (_usePositionInRequest(request)) 'distance ASC',
     ];
     return sortStrings.isNotEmpty ? 'ORDER BY ${sortStrings.join(" , ")}' : '';
   }
@@ -633,11 +642,10 @@ class DepartmentControlLocalSqliteServiceClient extends ObjectDBService
             nextControlResultId: metadata.nextControlResultId + 1));
         return metadata.nextControlResultId;
       });
-  
+
   Future<void> _clearId() async {
     final metadata = await this.metadata;
-    await saveMetadata(metadata.copyWith(
-            nextControlResultId: 0));
+    await saveMetadata(metadata.copyWith(nextControlResultId: 0));
   }
 
   Future<DCPhoto> _savePhoto(DCPhoto photo) async {
@@ -688,7 +696,6 @@ class DepartmentControlLocalSqliteServiceClient extends ObjectDBService
     }
   }
 
-
   Future<DepartmentControlUpdateControlRequest>
       _saveDepartmentControlUpdateControlRequest(
     DepartmentControlUpdateControlRequest request,
@@ -727,55 +734,56 @@ class DepartmentControlLocalSqliteServiceClient extends ObjectDBService
     }
   }
 
-  ControlResultSearchResult _fromDepartmentControlRegisterControlRequest(DepartmentControlRegisterControlRequest e) => ControlResultSearchResult(
-                    id: e.controlResult.id,
-                    closureSentToCafap: false,
-                    creationSentToCafap: false,
-                    violationExists: e.controlResult.violationExists ??
-                        e.controlResult.violation != null,
-                    geometryX: e.controlResult.geometryX,
-                    geometryY: e.controlResult.geometryY,
-                    surveyDate: e.controlResult.surveyDate,
-                    violation: e.controlResult.violation
-                        ?.let((DCViolation it) => ViolationSearchResult(
-                              additionalFeatures: it.additionalFeatures,
-                              address: it.address,
-                              btiAddress: it.btiAddress,
-                              critical: it.critical,
-                              id: it.id,
-                              detectionDate: it.detectionDate,
-                              description: it.description,
-                              eknViolationClassification:
-                                  it.eknViolationClassification,
-                              otherViolationClassification:
-                                  it.otherViolationClassification,
-                              refAddressTinao: it.refAddressTinao,
-                              objectElement: it.objectElement,
-                              violator: it.violator,
-                              resolveDate: it.resolveDate,
-                              controlDate: it.controlDate,
-                              photos: it.photos,
-                            )),
-                  );
+  ControlResultSearchResult _fromDepartmentControlRegisterControlRequest(
+          DepartmentControlRegisterControlRequest e) =>
+      ControlResultSearchResult(
+        id: e.controlResult.id,
+        closureSentToCafap: false,
+        creationSentToCafap: false,
+        violationExists: e.controlResult.violationExists ??
+            e.controlResult.violation != null,
+        geometryX: e.controlResult.geometryX,
+        geometryY: e.controlResult.geometryY,
+        surveyDate: e.controlResult.surveyDate,
+        violation: e.controlResult.violation
+            ?.let((DCViolation it) => ViolationSearchResult(
+                  additionalFeatures: it.additionalFeatures,
+                  address: it.address,
+                  btiAddress: it.btiAddress,
+                  critical: it.critical,
+                  id: it.id,
+                  detectionDate: it.detectionDate,
+                  description: it.description,
+                  eknViolationClassification: it.eknViolationClassification,
+                  otherViolationClassification: it.otherViolationClassification,
+                  refAddressTinao: it.refAddressTinao,
+                  objectElement: it.objectElement,
+                  violator: it.violator,
+                  resolveDate: it.resolveDate,
+                  controlDate: it.controlDate,
+                  photos: it.photos,
+                )),
+      );
 
   @override
-  Future<void> removeLocalRequests() async { 
-    await _registerRequests.then((value) => value.forEach((element) async { 
-      if(element.controlResult.violation != null) {
-        element.controlResult.violation.photos.forEach((photo) async {
-          await ImagesService.removeImage(photo.data);
-        });
-      }
-    }));
-    await _updateRequests.then((value) => value.forEach((element) async { 
-      if(element.violation != null) {
-        element.violation.photos.forEach((photo) async {
-          await ImagesService.removeImage(photo.data);
-        });
-      }
-    }));
+  Future<void> removeLocalRequests() async {
+    await _registerRequests.then((value) => value.forEach((element) async {
+          if (element.controlResult.violation != null) {
+            element.controlResult.violation.photos.forEach((photo) async {
+              await ImagesService.removeImage(photo.data);
+            });
+          }
+        }));
+    await _updateRequests.then((value) => value.forEach((element) async {
+          if (element.violation != null) {
+            element.violation.photos.forEach((photo) async {
+              await ImagesService.removeImage(photo.data);
+            });
+          }
+        }));
     await objectDb.then((db) async {
-      ['registerControlRequest', 'removeControlRequest', 'updateControlRequest'].forEach((type) async {
+      ['registerControlRequest', 'removeControlRequest', 'updateControlRequest']
+          .forEach((type) async {
         await db.remove({
           'type': type,
         });
@@ -784,30 +792,37 @@ class DepartmentControlLocalSqliteServiceClient extends ObjectDBService
     await _clearId();
   }
 
-  Future<void> saveSearchResults(Iterable<ControlResultSearchResult> searchResults)
-      => objectDb.then((db) {
+  Future<void> saveSearchResults(
+          Iterable<ControlResultSearchResult> searchResults) =>
+      objectDb.then((db) {
         db.remove({'type': 'searchResult'}); //TODO: fix it!!!
         return db;
       }).then((db) async {
         final l = await Future.wait(searchResults
-          .map((e) async => e.let((ControlResultSearchResult it) async {
-            if(it.violation?.photos != null)
-              return it.copyWith.violation(photos: await Future.wait(it.violation?.photos?.map(_savePhoto)));
-            else 
-              return it;
-          })));
+            .map((e) async => e.let((ControlResultSearchResult it) async {
+                  if (it.violation?.photos != null)
+                    return it.copyWith.violation(
+                        photos: await Future.wait(
+                            it.violation?.photos?.map(_savePhoto)));
+                  else
+                    return it;
+                })));
         return db.insertMany(
-          l.map((e) => e.toJson())
-          .map((e) {
+          l.map((e) => e.toJson()).map((e) {
             e['type'] = 'searchResult';
             return e;
           }).toList(),
         );
       });
 
-  bool _usePositionInRequest(DepartmentControlObjectsRequest request)
-    => request.userPositionX != null &&
-          request.userPositionY != null &&
-          request.searchRadius != null &&
-          request.onlyNearObjects == true;
+  bool _usePositionInRequest(DepartmentControlObjectsRequest request) =>
+      request.userPositionX != null &&
+      request.userPositionY != null &&
+      request.searchRadius != null &&
+      request.onlyNearObjects == true;
+
+  @override
+  Future<int> get violationsCount => objectDb
+      .then((db) => db.find({'type': 'searchResult'}))
+      .then((value) => value.length);
 }

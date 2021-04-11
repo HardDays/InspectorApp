@@ -16,6 +16,7 @@ import 'package:inspector/model/instruction.dart';
 import 'package:inspector/pages/control_object_page.dart';
 import 'package:inspector/pages/control_violation_form_page.dart';
 import 'package:inspector/providers/exceptions/api_exception.dart';
+import 'package:inspector/services/department_control/client/local/department_control_local_service.dart';
 import 'package:inspector/services/location/location.dart';
 import 'package:inspector/style/accept_dialog.dart';
 import 'package:inspector/style/colors.dart';
@@ -30,6 +31,7 @@ import 'package:inspector/widgets/control/control_objects_paginated_list.dart';
 import 'package:inspector/widgets/control/filters.dart';
 import 'package:inspector/widgets/sort_dialog.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 typedef Future RefreshFunction();
 
@@ -100,13 +102,13 @@ class _ControlListPageState extends State<ControlListPage> {
           appBar: FilterAppbar(
             'Ведомственный контроль',
             '',
-            'Сортировка',
+            state.showMap ? null : 'Сортировка',
             SortOrder.asc,
             onUpdate: () {
               _refreshIndicatorKey.currentState?.show();
             },
             onFilter: _onOpenFilters,
-            onSort: _onOpenSort,
+            onSort: state.showMap ? null : _onOpenSort,
           ),
           body: _buildBody(context, state),
         );
@@ -373,6 +375,7 @@ class _ControlListPageState extends State<ControlListPage> {
                     ControlListBlocEvent.registerSearchResultEvent(object,
                         violation: violation));
               },
+              violationNum: 'Создать нарушение',
             ),
           ),
         );

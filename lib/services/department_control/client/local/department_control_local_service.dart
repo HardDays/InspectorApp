@@ -17,4 +17,5 @@ abstract class DepartmentControlLocalService with DepartmentControlServiceClient
   Future<void> saveMetadata(DepartmentControlLocalServiceMetadata metadata);
   Future<bool> isLoaded();
   Future<void> setLoaded(bool value);
+  Future<int> get violationsCount;
 }

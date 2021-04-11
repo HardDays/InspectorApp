@@ -159,20 +159,34 @@ class ControlViolationFormBloc
         saveEvent: (event) async* {
           final newState = _validate(state);
           if (newState.isValid()) {
-            onConfirm(
-              _violation.copyWith(
-                btiAddress: state.address,
-                address: state.targetLandmark,
-                objectElement: state.objectElement,
-                description: state.description,
-                eknViolationClassification: state.violationClassification.violationName.name.isNotEmpty ? state.violationClassification : null,
-                otherViolationClassification: state.violationClassificationNoEkn.violationName.name.isNotEmpty ? state.violationClassificationNoEkn : null,
-                violator: state.contractor,
-                critical: state.critical,
-                additionalFeatures: [state.violationAdditionalFeature],
-                photos: state.photos,
-              ),
-            );
+            if (newState.photos.isEmpty) {
+              notificationBloc
+                .add(SnackBarNotificationEvent('Необходимо загрузить хотя бы одну фотографию'));
+            } else {
+              onConfirm(
+                _violation.copyWith(
+                  btiAddress: state.address,
+                  address: state.targetLandmark,
+                  objectElement: state.objectElement,
+                  description: state.description,
+                  eknViolationClassification: state
+                          .violationClassification.violationName.name.isNotEmpty
+                      ? state.violationClassification
+                      : null,
+                  otherViolationClassification: state
+                          .violationClassificationNoEkn
+                          .violationName
+                          .name
+                          .isNotEmpty
+                      ? state.violationClassificationNoEkn
+                      : null,
+                  violator: state.contractor,
+                  critical: state.critical,
+                  additionalFeatures: [state.violationAdditionalFeature],
+                  photos: state.photos,
+                ),
+              );
+            }
           } else {
             yield newState;
           }

@@ -57,7 +57,8 @@ class FilterAppbar extends StatelessWidget implements PreferredSizeWidget {
       ),
       actions: [
         _buildIcon(Icon(Icons.refresh, size: 25), date, onUpdate),
-        _buildSort(),
+        if(sort != null && onSort != null)
+          _buildSort(),
         _buildIcon(ProjectIcons.filterIcon(color: Colors.white), 'Фильтр', onFilter),
         Padding(padding: const EdgeInsets.only(right: 20))
       ],

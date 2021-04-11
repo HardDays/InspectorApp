@@ -95,25 +95,28 @@ class PerformMarkWidget extends HasDate {
                       ),
                     ],
                   ),
-                  TableRow(
-                    children: [
-                      Text(
-                        'Комментарий:',
-                        style: ProjectTextStyles.baseBold.apply(
-                          color: ProjectColors.black,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 20.0, bottom: 8.0),
-                        child: Text(
-                          performMark.comments ?? '',
-                          style: ProjectTextStyles.base.apply(
+                  if (performMark.comments != null &&
+                      performMark.comments.isNotEmpty)
+                    TableRow(
+                      children: [
+                        Text(
+                          'Комментарий:',
+                          style: ProjectTextStyles.baseBold.apply(
                             color: ProjectColors.black,
                           ),
                         ),
-                      ),
-                    ],
-                  ),
+                        Padding(
+                          padding:
+                              const EdgeInsets.only(left: 20.0, bottom: 8.0),
+                          child: Text(
+                            performMark.comments ?? '',
+                            style: ProjectTextStyles.base.apply(
+                              color: ProjectColors.black,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                 ],
               ),
             ],
@@ -124,7 +127,7 @@ class PerformMarkWidget extends HasDate {
               height: 140,
               child: Image(
                 image: MemoryImage(
-                    base64.decode(performMark.photos.first.data),
+                  base64.decode(performMark.photos.first.data),
                 ),
                 fit: BoxFit.contain,
               ),

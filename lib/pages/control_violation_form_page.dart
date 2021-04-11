@@ -13,16 +13,18 @@ class ControlViolationFormPage extends StatelessWidget {
     @required this.controlObject, 
     @required this.onConfirm,
     this.violation,
+    @required this.violationNum,
   }) : super(key: key);
 
   final ControlObject controlObject;
   final void Function(DCViolation violation) onConfirm;
   final DCViolation violation;
+  final String violationNum;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: ProjectAppbar('Создать нарушение'),
+      appBar: ProjectAppbar(violationNum),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.fromLTRB(30, 20, 30, 30),

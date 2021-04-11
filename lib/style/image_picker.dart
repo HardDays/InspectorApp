@@ -10,6 +10,7 @@ import 'package:inspector/style/text_style.dart';
 import 'package:inspector/style/colors.dart';
 import 'package:image/image.dart' as img;
 import 'package:image_picker/image_picker.dart' as p;
+import 'package:full_screen_image/full_screen_image.dart';
 
 // class ImagePicker extends StatefulWidget {
 
@@ -140,11 +141,13 @@ class ImagePicker extends StatelessWidget {
   }
 
   Widget _buildImage(int index) {
-    return Image(
-      image: MemoryImage(images[index]),
-      width: 210,
-      height: 210,
-      fit: BoxFit.contain,
+    return FullScreenWidget(
+      child: Image(
+        image: MemoryImage(images[index]),
+        width: 210,
+        height: 210,
+        fit: BoxFit.contain,
+      ),
     );
   }
 

@@ -32,6 +32,7 @@ import 'package:inspector/widgets/control/control_object/search_result/search_re
 import 'package:inspector/widgets/control/control_object/violation/filters.dart';
 import 'package:inspector/widgets/control/control_object/violation/violation_search_result_widget.dart';
 import 'package:inspector/widgets/control/control_object/violation/violation_short_search_result_widget.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class ControlObjectPage extends StatelessWidget {
@@ -257,6 +258,7 @@ class ControlObjectPage extends StatelessWidget {
                                   ControlListBlocEvent.updateControlResultEvent(
                                       _controlObject, searchResult.id, result));
                             },
+                            violationNum: 'Нарушение №${searchResult.violation.violationNum} от ${DateFormat("dd.MM.yyyy")}',
                           ),
                         ),
                       );
