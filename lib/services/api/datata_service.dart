@@ -1,4 +1,3 @@
-import 'package:inspector/model/address_search.dart';
 import 'package:inspector/model/violator_address.dart';
 import 'package:inspector/providers/dadata_provider.dart';
 

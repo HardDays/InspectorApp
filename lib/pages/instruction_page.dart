@@ -5,7 +5,6 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:inspector/blocs/instruction/bloc.dart';
 import 'package:inspector/blocs/instruction/events.dart';
 import 'package:inspector/blocs/instruction/states.dart';
-import 'package:inspector/blocs/instruction_list/bloc.dart';
 import 'package:inspector/model/address.dart';
 import 'package:inspector/model/check_status.dart';
 import 'package:inspector/model/digg_request_check.dart';
@@ -15,6 +14,7 @@ import 'package:inspector/model/instruction_status.dart';
 import 'package:inspector/model/report.dart';
 import 'package:inspector/pages/digg_report_page.dart';
 import 'package:inspector/pages/total_report_page.dart';
+import 'package:inspector/style/accept_dialog.dart';
 import 'package:inspector/style/appbar.dart';
 import 'package:inspector/style/button.dart';
 import 'package:inspector/style/card.dart';
@@ -36,23 +36,21 @@ class InstructionPage extends StatelessWidget {
   InstructionPage(this.instruction);
 
   void _onReport(BuildContext context, int violationIndex, Report report, InstructionCheck check) async {
-    final res = await Navigator.push(context, 
+    await Navigator.push(context, 
       MaterialPageRoute(
         builder: (context) => TotalReportPage(
-          report: report,
+          report: report.copyWith(),
           violationIndex: violationIndex,
         ),
       ),
     );  
-    if (res != null) {
-      BlocProvider.of<InstructionBloc>(context).add(RefreshReportsEvent());  
-    }
+    BlocProvider.of<InstructionBloc>(context).add(RefreshReportsEvent());  
   }
 
   void _onCreateReport(BuildContext context, InstructionCheck check) async {
      bool violationNotPresent = await _showViolationDialog(context);
      if (violationNotPresent != null) {
-      final res = await Navigator.push(context, 
+      await Navigator.push(context, 
         MaterialPageRoute(
           builder: (context) => TotalReportPage(
             report: Report.empty(violationNotPresent, check.id, instruction.id),
@@ -60,45 +58,40 @@ class InstructionPage extends StatelessWidget {
           ),
         ),
       );  
-      if (res != null) {
-        BlocProvider.of<InstructionBloc>(context).add(RefreshReportsEvent());  
-      }
+      BlocProvider.of<InstructionBloc>(context).add(RefreshReportsEvent());  
     }
   }
 
   void _onDiggReport(BuildContext context, DiggRequestCheck diggRequestCheck, Report report) async {
-    final res = await Navigator.push(context, 
-      MaterialPageRoute(
-        builder: (context) => 
-          DiggReportPage(
-            diggRequestCheck: diggRequestCheck,
-            report: report
-          )
+    await Navigator.push(context, 
+    MaterialPageRoute(
+      builder: (context) => 
+        DiggReportPage(
+          diggRequestCheck: diggRequestCheck,
+          report: report
         )
-      );
-     if (res != null) {
-      BlocProvider.of<InstructionBloc>(context).add(RefreshReportsEvent());  
-    }
+      )
+    );
+    BlocProvider.of<InstructionBloc>(context).add(RefreshReportsEvent());  
   }
 
   void _onCreateDiggReport(BuildContext context, Instruction instruction, InstructionCheck check, DiggRequestCheck diggRequestCheck, String status) async {
-    final res = await Navigator.push(context, 
-      MaterialPageRoute(
-        builder: (context) =>
-          DiggReportPage(
-            diggRequestCheck: diggRequestCheck, 
-            report: Report.empty(true, check.id, instruction.id), 
-            status: status
-          )
+    await Navigator.push(context, 
+    MaterialPageRoute(
+      builder: (context) =>
+        DiggReportPage(
+          diggRequestCheck: diggRequestCheck, 
+          report: Report.empty(true, check.id, instruction.id), 
+          status: status
         )
-      );
-     if (res != null) {
-      BlocProvider.of<InstructionBloc>(context).add(RefreshReportsEvent());  
-    }
+      )
+    );
+    BlocProvider.of<InstructionBloc>(context).add(RefreshReportsEvent());  
+    
   }
 
-  void _onStatus(BuildContext context, int status) {
-    BlocProvider.of<InstructionBloc>(context).add(UpadteInstructionStatusEvent(status));  
+  void _onStatus(BuildContext context, int status, {String reason}) {
+    BlocProvider.of<InstructionBloc>(context).add(UpadteInstructionStatusEvent(status: status, reason: reason));  
   }
 
   void _onRefreshReport(BuildContext context) {
@@ -147,8 +140,6 @@ class InstructionPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(instruction.id);
-
     return BlocProvider(
       create: (context)=> InstructionBloc(InstructionBlocState(null, instruction, []))..add(LoadReportsEvent()),
       child: BlocBuilder<InstructionBloc, InstructionBlocState>(
@@ -163,7 +154,7 @@ class InstructionPage extends StatelessWidget {
 
           final instruction = state.instruction;
           return Scaffold(
-            appBar: ProjectAppbar('Поручение № ${instruction.instructionNum} от ${DateFormat('dd.MM.yyyy').format(instruction.instructionDate)}'),
+            appBar: ProjectAppbar('Поручение № ${_buildInstructionTitle(instruction)}'),
             body: SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.only(left: 30, right: 30, top: 20),
@@ -199,6 +190,10 @@ class InstructionPage extends StatelessWidget {
         }
       )
     );
+  }
+
+  String _buildInstructionTitle(Instruction instruction) {
+    return '${instruction.instructionNum} от ${DateFormat('dd.MM.yyyy').format(instruction.instructionDate)}';
   }
 
   Widget _buildStatus(Instruction instruction) {
@@ -325,7 +320,6 @@ class InstructionPage extends StatelessWidget {
     }
   }
 
-
   Widget _buildReportButton(BuildContext context, InstructionCheck check, Instruction instruction) {
     final status = instruction.instructionStatus.id == InstructionStatusIds.inProgress || instruction.instructionStatus.id == InstructionStatusIds.partInProgress;
     if (status) {
@@ -335,12 +329,9 @@ class InstructionPage extends StatelessWidget {
             padding: const EdgeInsets.only(right: 10, left: 20),
             child: ProjectIcons.raportIcon(color: ProjectColors.blue.withOpacity(0.35)), 
           ),
-          SizedBox(
-            height: 38,
-            child: ProjectButton.builtFlatButton('+ Добавить рапорт ', 
-              onPressed: ()=> _onCreateReport(context, check), 
-              style: ProjectTextStyles.baseBold
-            ),
+          ProjectButton.builtFlatButton('+ Добавить рапорт ', 
+            onPressed: ()=> _onCreateReport(context, check), 
+            style: ProjectTextStyles.baseBold
           ),
          _buildReload(context)
         ],
@@ -452,12 +443,12 @@ class InstructionPage extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(top: 15), 
                       child: _buildReport(context, report, check, instruction, ()=> _onDiggReport(context, diggRequestCheck, report))
-                     ) : Container(),
-                    divider ? ProjectDivider() : Container(),
+                     ) : const SizedBox(),
+                    divider ? ProjectDivider() : const SizedBox(),
                   ],
                 ),
               ),
-              Align(
+              diggRequestCheck.checked ? Align(
                 alignment: Alignment.topRight,
                 child: Padding(
                   padding: const EdgeInsets.only(top: 18, right: 18),
@@ -467,7 +458,7 @@ class InstructionPage extends StatelessWidget {
                     rounded: false,
                   ),
                 ),
-              ),
+              ) : const SizedBox(),
             ],
           ),
           enabled: enabled,
@@ -540,17 +531,19 @@ class InstructionPage extends StatelessWidget {
   }
 
   Widget _buildCheckReports(BuildContext context,  InstructionCheck instructionCheck, List<Report> reports) {
-    final reportList = List<Report>();
-    final indexList = List<int>();
+    final reportList = <Report>[];
+    final indexList = <int>[];
     for (final report in reports) {
-      if (report.violations.isNotEmpty) {
-        for (int i = 0; i < report.violations.length; i++) {
-          indexList.add(i);
+      if (report.diggRequestChecks.isEmpty) {
+        if (report.violations.isNotEmpty) {
+          for (int i = 0; i < report.violations.length; i++) {
+            indexList.add(i);
+            reportList.add(report);
+          }
+        } else {
+          indexList.add(0);
           reportList.add(report);
         }
-      } else {
-        indexList.add(0);
-        reportList.add(report);
       }
     }
     return Padding(
@@ -576,7 +569,11 @@ class InstructionPage extends StatelessWidget {
               _buildParagraph(ProjectIcons.inspectorIcon(), toBeginningOfSentenceCase(instruction.instructionCreator.formattedName)),
               Column(
                 children: List.generate(instructionCheck.checkParticipants.length, 
-                  (index) => _buildParagraph(ProjectIcons.inspector2Icon(),  instructionCheck.checkParticipants[index].toString()),
+                  (index) { 
+                    final participant = instructionCheck.checkParticipants[index].toString();
+                    final title = participant + (participant[participant.length - 1] == '.' ? '' : '.');
+                    return _buildParagraph(ProjectIcons.inspector2Icon(), title); 
+                  },
                 ),
               ),
               Padding(
@@ -633,12 +630,30 @@ class InstructionPage extends StatelessWidget {
       return Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          canDecline ? Padding(
-            padding: const EdgeInsets.only(right: 20),
-            child: ProjectButton.buildOutlineButton('Отклонить',
-              onPressed: ()=> _onStatus(context, InstructionStatusIds.withdrawn)
-            ),
-          ) : Container(),
+          if(canDecline)
+            ...[
+              Padding(
+                padding: const EdgeInsets.only(right: 20),
+                child: ProjectButton.buildOutlineButton('Отклонить поручение',
+                  onPressed: () async {
+                    final result = await showDialog(
+                                    context: context,
+                                    builder: (ctx) => AcceptDialog(
+                                      message:
+                                        'Вы действительно хотите отклонить поручение № ${_buildInstructionTitle(instruction)}?',
+                                      responseHint: 'Причина отклонения',
+                                      acceptTitle: 'Да',
+                                      cancelTitle: 'Нет',
+                                    ),
+                                  );
+                    if(result != null) {
+                      _onStatus(context, InstructionStatusIds.withdrawn, reason: result);
+                    }
+                  }
+                ),
+             ),
+             Spacer(),
+            ],
           ProjectButton.builtFlatButton(titles[instruction.instructionStatus.id] ?? 'Подтвердить исполнение',
             onPressed: functions[instruction.instructionStatus.id],
           ),

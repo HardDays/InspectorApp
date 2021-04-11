@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 
 import 'pages/auth_page.dart';
 import 'pages/control_list_page.dart';
+import 'pages/control_list_page_webview.dart';
 import 'pages/instruction_list_page.dart';
 import 'pages/login_page.dart';
 import 'pages/main_page.dart';
@@ -18,14 +19,11 @@ import 'pages/map_page.dart';
 import 'pages/pin_code_page.dart';
 import 'pages/profile_page.dart';
 import 'pages/splash_screen_page.dart';
-import 'pages/test_page.dart';
 
 class Routes {
-  static const String testPage = '/test-page';
   static const String authPage = '/';
   static const String mainPage = '/main-page';
   static const all = <String>{
-    testPage,
     authPage,
     mainPage,
   };
@@ -35,7 +33,6 @@ class InspectorRouter extends RouterBase {
   @override
   List<RouteDef> get routes => _routes;
   final _routes = <RouteDef>[
-    RouteDef(Routes.testPage, page: TestPage),
     RouteDef(
       Routes.authPage,
       page: AuthPage,
@@ -50,12 +47,6 @@ class InspectorRouter extends RouterBase {
   @override
   Map<Type, AutoRouteFactory> get pagesMap => _pagesMap;
   final _pagesMap = <Type, AutoRouteFactory>{
-    TestPage: (data) {
-      return MaterialPageRoute<dynamic>(
-        builder: (context) => TestPage(),
-        settings: data,
-      );
-    },
     AuthPage: (data) {
       return MaterialPageRoute<dynamic>(
         builder: (context) => AuthPage(),
@@ -119,11 +110,13 @@ class MainPageRoutes {
   static const String mapPage = '/map-page';
   static const String controlSreen = '/control-sreen';
   static const String profilePage = '/profile-page';
+  static const String controlListPageWebView = '/control-list-page-web-view';
   static const all = <String>{
     instructionListPage,
     mapPage,
     controlSreen,
     profilePage,
+    controlListPageWebView,
   };
 }
 
@@ -139,6 +132,8 @@ class MainPageRouter extends RouterBase {
       generator: ControlSreenRouter(),
     ),
     RouteDef(MainPageRoutes.profilePage, page: ProfilePage),
+    RouteDef(MainPageRoutes.controlListPageWebView,
+        page: ControlListPageWebView),
   ];
   @override
   Map<Type, AutoRouteFactory> get pagesMap => _pagesMap;
@@ -164,6 +159,12 @@ class MainPageRouter extends RouterBase {
     ProfilePage: (data) {
       return MaterialPageRoute<dynamic>(
         builder: (context) => ProfilePage(),
+        settings: data,
+      );
+    },
+    ControlListPageWebView: (data) {
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => const ControlListPageWebView(),
         settings: data,
       );
     },

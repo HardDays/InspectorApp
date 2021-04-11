@@ -2,61 +2,122 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:inspector/blocs/control_background_service/bloc.dart';
+import 'package:inspector/blocs/control_background_service/event.dart';
+import 'package:inspector/blocs/control_background_service/state.dart';
 import 'package:inspector/blocs/control_list/bloc.dart';
+import 'package:inspector/blocs/control_list/event.dart';
+import 'package:inspector/blocs/control_list/sort_state.dart';
 import 'package:inspector/blocs/control_list/state.dart';
-import 'package:inspector/model/control_object.dart';
+import 'package:inspector/model/department_control/control_object.dart';
 import 'package:inspector/pages/control_object_page.dart';
-import 'package:inspector/style/button.dart';
+import 'package:inspector/pages/control_violation_form_page.dart';
+import 'package:inspector/providers/exceptions/api_exception.dart';
+import 'package:inspector/style/accept_dialog.dart';
 import 'package:inspector/style/colors.dart';
 import 'package:inspector/style/icons.dart';
 import 'package:inspector/style/switch.dart';
 import 'package:inspector/style/text_style.dart';
-import 'package:inspector/widgets/control/status.dart';
-import 'package:inspector/widgets/control/violation.dart';
 import 'package:inspector/style/filter_appbar.dart';
+import 'package:inspector/style/top_dialog.dart';
+import 'package:inspector/widgets/control/control_object_list.dart';
+import 'package:inspector/widgets/control/control_object_map.dart';
+import 'package:inspector/widgets/control/control_objects_paginated_list.dart';
+import 'package:inspector/widgets/control/filters.dart';
+import 'package:inspector/widgets/sort_dialog.dart';
 import 'package:intl/intl.dart';
-import 'package:flutter_map/flutter_map.dart';
-import 'package:latlong/latlong.dart';
+
+typedef Future RefreshFunction();
 
 class ControlListPage extends StatefulWidget {
-  const ControlListPage();
-
   @override
-  ControlListPageState createState() => ControlListPageState();
+  _ControlListPageState createState() => _ControlListPageState();
 }
 
-class ControlListPageState extends State<ControlListPage> {
-  bool mapContent = false;
+class _ControlListPageState extends State<ControlListPage> {
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
+      new GlobalKey<RefreshIndicatorState>();
 
-  void _onControl() {
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => ControlObjectPage()));
-  }
-
-  void _onMap(bool value) {
-    setState(() {
-      mapContent = value;
-    });
-  }
+  final MapController _mapController = MapController();
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ControlListBloc, ControlListBlocState>(
-      builder: (context, state) {
-        Widget body = Center(child: CircularProgressIndicator(),);
-        if (state is LoadedState) {
-          body = _buildLoadedBody(context, state);
-        }
-        return Scaffold(
-          appBar: FilterAppbar('Ведомственный контроль', '', '', ''),
-          body: body,
+    return BlocListener<ControlBackgroundServiceBloc,
+        ControlBackgroundServiceBlocState>(
+      child: _buildControlObjectsList(),
+      listener: (context, state) {
+        state.maybeMap(
+          loaded: (state) async {
+            if(await showDialog(
+              context: context,
+              builder: (ctx) => AcceptDialog(
+                message: 'В последний раз объекты ведомстенного контроля были загружены ${DateFormat("dd.MM.yyyy").format(state.lastUpdatedDate)} в ${DateFormat("mm:hh").format(state.lastUpdatedDate)}, желаете обновить?',
+                acceptTitle: 'Да',
+                cancelTitle: 'Нет',
+              ),
+            ) != null) {
+              BlocProvider.of<ControlBackgroundServiceBloc>(context).add(ControlBackgroundServiceBlocEvent.acceptLoadingEvent());
+            } else {
+              BlocProvider.of<ControlBackgroundServiceBloc>(context).add(ControlBackgroundServiceBlocEvent.cancelLoadingEvent());
+            }
+          },
+          notLoaded: (state) async {
+            if(await showDialog(
+              context: context,
+              builder: (ctx) => AcceptDialog(
+                message: 'Желаете загрузить объекты ведомственного контроля для использования оффлайн?',
+                acceptTitle: 'Да',
+                cancelTitle: 'Нет',
+              ),
+            ) != null) {
+              BlocProvider.of<ControlBackgroundServiceBloc>(context).add(ControlBackgroundServiceBlocEvent.acceptLoadingEvent());
+            } else {
+              BlocProvider.of<ControlBackgroundServiceBloc>(context).add(ControlBackgroundServiceBlocEvent.cancelLoadingEvent());
+            }
+          },
+          orElse: () {},
         );
       },
     );
   }
 
-  Widget _buildLoadedBody(BuildContext context, LoadedState state) {
+  BlocBuilder<ControlListBloc, ControlListBlocState>
+      _buildControlObjectsList() {
+    return BlocBuilder<ControlListBloc, ControlListBlocState>(
+      builder: (context, state) {
+        return Scaffold(
+          appBar: FilterAppbar(
+            'Ведомственный контроль',
+            '',
+            'Сортировка',
+            'Фильтры',
+            onUpdate: () {
+              _refreshIndicatorKey.currentState?.show();
+            },
+            onFilter: _onOpenFilters,
+            onSort: _onOpenSort,
+          ),
+          body: _buildBody(context, state),
+        );
+      },
+    );
+  }
+
+  Widget _cantWorkInThisMode() {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(50.0),
+        child: Text(
+          'На данный момент работа в разделе "Ведомственный контроль" в ручном режиме передачи данных или режиме offline не поддерживается',
+          textAlign: TextAlign.center,
+          style: ProjectTextStyles.mediumBold,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBody(BuildContext context, ControlListBlocState state) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
@@ -66,94 +127,125 @@ class ControlListPageState extends State<ControlListPage> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               _buildSwitchIcon(
-                  Icon(Icons.format_list_bulleted,
-                      color: ProjectColors.darkBlue),
-                  'Списком'),
+                Icon(Icons.format_list_bulleted, color: ProjectColors.darkBlue),
+                'Списком',
+              ),
               ProjectSwitch(
-                checked: mapContent,
-                onChanged: _onMap,
+                checked: state.showMap,
+                onChanged: _onMapChanged(context),
               ),
               _buildSwitchIcon(
-                  ProjectIcons.pinIcon(color: ProjectColors.darkBlue),
-                  'На карте'),
+                ProjectIcons.pinIcon(color: ProjectColors.darkBlue),
+                'На карте',
+              ),
             ],
           ),
         ),
-        Expanded(
-          child: mapContent
-              ? Stack(
-                  alignment: Alignment.bottomCenter,
-                  children: [
-                    FlutterMap(
-                      options: MapOptions(
-                        center: LatLng(55.746875, 37.6200),
-                        zoom: 16.5,
-                      ),
-                      layers: [
-                        TileLayerOptions(
-                            urlTemplate:
-                                'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                            subdomains: ['a', 'b', 'c']),
-                        PolygonLayerOptions(
-                          polygons: [
-                            Polygon(
-                              color: ProjectColors.red.withOpacity(0.5),
-                              borderColor: ProjectColors.blue,
-                              borderStrokeWidth: 1,
-                              points: [
-                                LatLng(55.7479487, 37.6207602),
-                                LatLng(55.7481479, 37.6206958),
-                                LatLng(55.7479849, 37.6194942),
-                                LatLng(55.7459921, 37.6205993),
-                                LatLng(55.7461612, 37.6208138),
-                                LatLng(55.7477554, 37.6199126),
-                                LatLng(55.7477192, 37.6202667),
-                                LatLng(55.7478581, 37.620374),
-                                LatLng(55.7479849, 37.620728),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Container(
-                          color: Colors.white,
-                          padding: const EdgeInsets.all(10),
-                          child: Column(
-                            children: [
-                              _buildInfo(state.objects.first),
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                    top: 10, right: 20, left: 20, bottom: 10),
-                                child: Row(
-                                  children: [
-                                    ProjectButton.buildOutlineButton(
-                                        'Нарушений не выявлено',
-                                        color: ProjectColors.green,
-                                        onPressed: () => {}),
-                                    Padding(
-                                        padding:
-                                            const EdgeInsets.only(left: 20)),
-                                    ProjectButton.buildOutlineButton(
-                                        'Зафиксировать нарушение',
-                                        color: ProjectColors.red,
-                                        onPressed: () => {})
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                )
-              : ListView(
-                  children: state.objects.map((e) => _buildControl(context, e)).toList(),
+        if (state.showMap)
+          state.map(
+            (normalState) => normalState.listState.map(
+              emptyListLoadedState: (emptyListLoadedState) =>
+                  _buildEmptyObjectsList(),
+              loadedAllListState: (loadedAllListState) => ControlObjectMap(
+                location: BlocProvider.of<ControlListBloc>(context).location,
+                controlObjects: loadedAllListState.objects,
+                selectedObject: normalState.mapState.selectedObject,
+                openControlObject: _onOpenControlObject(context),
+                selectObject: _onSelectControlObject(context),
+                hasNotViolations: _onHasNotViolations(context),
+                hasViolation: _onHasViolations(context),
+                mapController: _mapController,
+              ),
+              loadingListState: (loadingListState) => Center(
+                child: CircularProgressIndicator(),
+              ),
+              loadedListState: (loadedListState) => ControlObjectMap(
+                location: BlocProvider.of<ControlListBloc>(context).location,
+                controlObjects: loadedListState.objects,
+                selectedObject: normalState.mapState.selectedObject,
+                openControlObject: _onOpenControlObject(context),
+                selectObject: _onSelectControlObject(context),
+                hasNotViolations: _onHasNotViolations(context),
+                hasViolation: _onHasViolations(context),
+                mapController: _mapController,
+              ),
+            ),
+            cantWorkInThisModeState: (cantWorkInThisModeState) =>
+                _cantWorkInThisMode(),
+            apiExceptionState: (state) =>
+                _buildApiExceptionBody(state.exception),
+          )
+        else
+          Expanded(
+            child: RefreshIndicator(
+              onRefresh: _onRefreshList(context),
+              key: _refreshIndicatorKey,
+              child: state.map(
+                (normalState) => normalState.listState.map(
+                  emptyListLoadedState: (emptyListLoadedState) =>
+                      _buildEmptyObjectsList(),
+                  loadedAllListState: (loadedAllListState) =>
+                      ControlObjectsLoadedList(
+                    controlObjects: loadedAllListState.objects,
+                    hasNotViolation: _onHasNotViolations(context),
+                    hasViolation: _onHasViolations(context),
+                    open: _onOpenControlObject(context),
+                    showInMap: _onShowInMap(context),
+                  ),
+                  loadingListState: (loadingListState) => Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                  loadedListState: (loadedListState) =>
+                      ControlObjectsPaginatedList(
+                    controlObjects: loadedListState.objects,
+                    hasNotViolation: _onHasNotViolations(context),
+                    hasViolation: _onHasViolations(context),
+                    open: _onOpenControlObject(context),
+                    showInMap: _onShowInMap(context),
+                    loadNextPage: _onLoadNextPage(context),
+                  ),
                 ),
+                cantWorkInThisModeState: (cantWorkInThisModeState) =>
+                    _cantWorkInThisMode(),
+                apiExceptionState: (state) =>
+                    _buildApiExceptionBody(state.exception),
+              ),
+            ),
+          ),
+      ],
+    );
+  }
+
+  Widget _buildEmptyObjectsList() {
+    return _buildErrorMessageBody(
+      'Поблизости не найдено объектов ведомственного контроля. Попробуйте отключить поиск по местоположению.',
+    );
+  }
+
+  Widget _buildApiExceptionBody(ApiException exception) {
+    return _buildErrorMessageBody(
+      'Произошла ошибка ${exception.message}: ${exception.details}',
+    );
+  }
+
+  Widget _buildErrorMessageBody(String message) {
+    return CustomScrollView(
+      slivers: [
+        SliverFillRemaining(
+          hasScrollBody: false,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.all(50.0),
+                child: Text(
+                  'Поблизости не найдено объектов ведомственного контроля. Попробуйте отключить поиск по местоположению.',
+                  textAlign: TextAlign.center,
+                  style: ProjectTextStyles.mediumBold,
+                ),
+              ),
+            ],
+          ),
         ),
       ],
     );
@@ -177,160 +269,116 @@ class ControlListPageState extends State<ControlListPage> {
     );
   }
 
-  Widget _buildInfo(ControlObject object) {
-    return InkWell(
-      onTap: _onControl,
-      child: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Flexible(
-                  child: Row(
-                    children: [
-                      ControlStatusWidget(
-                          object.kind, object.id.toString()),
-                      Flexible(
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 10, right: 10),
-                          child: Text(
-                            object.address,
-                            style: ProjectTextStyles.base
-                                .apply(color: ProjectColors.black),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Text(
-                  object.area,
-                  style: ProjectTextStyles.base
-                      .apply(color: ProjectColors.darkBlue),
-                ),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 18),
-              child: Text(
-                'БАЛАНСОДЕРЖАТЕЛЬ',
-                style: ProjectTextStyles.base.apply(color: ProjectColors.black),
-              ),
-            ),
-            Padding(
-                padding: const EdgeInsets.only(top: 18),
-                child: Row(
-                  children: [
-                    _buildIcon(
-                        ProjectIcons.cameraIcon(), object.cameraCount.toString()),
-                    _buildIcon(ProjectIcons.alertIcon(), object.violationsCount.toString()),
-                    _buildIcon(
-                        ProjectIcons.calendarIcon(),
-                        '${object.lastSurveyDate} + ${object.lastSurveyDateDelta > 0 ? '(' + object.lastSurveyDateDelta.toString() + ')' : ''}',),
-                  ],
-                )),
-          ],
-        ),
-      ),
+  void _onOpenFilters() async {
+    final bloc = BlocProvider.of<ControlListBloc>(context);
+    final result = await showGeneralDialog(
+      context: context,
+      barrierDismissible: true,
+      transitionDuration: Duration(milliseconds: 100),
+      barrierLabel: MaterialLocalizations.of(context).dialogLabel,
+      barrierColor: Colors.transparent,
+      pageBuilder: (context, animation1, animation2) {
+        return ProjectTopDialog(
+          child: ControlFiltersWidget(bloc.state.filtersState),
+        );
+      },
     );
+
+    if (result != null) {
+      bloc.add(ControlListBlocEvent.changeFilters(result));
+      _refreshIndicatorKey.currentState?.show();
+    }
   }
 
-  Widget _buildControl(BuildContext context, ControlObject object) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 20, left: 30, right: 30),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border.all(
-          color: ProjectColors.lightBlue,
-          width: 1,
-        ),
+  void _onOpenSort() async {
+    final bloc = BlocProvider.of<ControlListBloc>(context);
+    final titles = [
+      'по дате последней проверки',
+      'по названию объекта',
+      'по типу объекта',
+      'по адресу объекта',
+      'по дате обследования',
+      'по контрольному сроку устранения нарушения'
+    ];
+    final result = await showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (context) => SortDialog(
+        bloc.state.sortState,
+        ControlObjectSortStrings.all,
+        titles,
       ),
-      child: Column(
-        children: [
-          ClipRect(
-            child: Slidable(
-                actionExtentRatio: 0.15,
-                actionPane: SlidableDrawerActionPane(),
-                secondaryActions: [
-                  _buildAction(
-                    context,
-                    ProjectIcons.thumbUpIcon(
-                        padding: const EdgeInsets.only(bottom: 7)),
-                    'Нарушений\nне выявлено',
-                  ),
-                  _buildAction(
-                    context,
-                    ProjectIcons.thumbDownIcon(
-                        padding: const EdgeInsets.only(bottom: 3)),
-                    'Выявлено\nнарушение',
-                  ),
-                  _buildAction(
-                    context,
-                    ProjectIcons.pinIcon(
-                        padding: const EdgeInsets.only(bottom: 5)),
-                    'Показать на\nкарте',
-                  ),
-                  _buildAction(
-                    context,
-                    ProjectIcons.viewIcon(
-                      color: ProjectColors.darkBlue,
-                    ),
-                    'Просмотр\nобъекта',
-                  ),
-                ],
-                child: _buildInfo(object)),
+    );
+
+    if (result != null) {
+      bloc.add(ControlListBlocEvent.changeSort(result));
+      _refreshIndicatorKey.currentState?.show();
+    }
+  }
+
+  void Function(ControlObject) _onOpenControlObject(BuildContext context) =>
+      (ControlObject object) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => ControlObjectPage(object)),
+        );
+      };
+
+  void Function(ControlObject) _onSelectControlObject(BuildContext context) =>(ControlObject object) {
+       BlocProvider.of<ControlListBloc>(context).add(ControlListBlocEvent.selectControlObject(object));
+};
+
+  void Function(ControlObject) _onHasNotViolations(BuildContext context) =>
+      (ControlObject object) async {
+        if ((await showDialog(
+                context: context,
+                builder: (ctx) => AcceptDialog(
+                    message:
+                        'Объект ${object.id} обследован. "Нарушений не выявленно". ${DateFormat("dd.MM.yyyy hh:mm").format(DateTime.now())}'))) !=
+            null) {
+          BlocProvider.of<ControlListBloc>(context).add(
+            ControlListBlocEvent.registerSearchResultEvent(
+              object,
+            ),
+          );
+        }
+      };
+
+  void Function(ControlObject) _onHasViolations(BuildContext context) =>
+      (ControlObject object) async {
+        await Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ControlViolationFormPage(
+              controlObject: object, onConfirm: (violation) { 
+                BlocProvider.of<ControlListBloc>(context).add(ControlListBlocEvent.registerSearchResultEvent(object, violation: violation));
+              },
+            ),
           ),
-          // Column(
-          //   children: object.violations.map((e) => ControlViolationWidget(violation: e,)).toList(),
-          // )
-        ],
-      ),
-    );
-  }
+        );
+      };
 
-  Widget _buildIcon(Widget icon, String title) {
-    return Row(
-      children: [
-        icon,
-        Padding(
-          padding: const EdgeInsets.only(left: 7, right: 15),
-          child: Text(
-            title,
-            style: ProjectTextStyles.base.apply(color: ProjectColors.black),
-          ),
-        ),
-      ],
-    );
-  }
+  void Function(ControlObject) _onShowInMap(BuildContext context) =>
+      (ControlObject object) {
+        BlocProvider.of<ControlListBloc>(context)
+            .add(ControlListBlocEvent.openInMapEvent(object));
+      };
 
-  Widget _buildAction(BuildContext context, Widget icon, String text) {
-    return InkWell(
-      //onTap: ()=> _onAddressReport(context, status),
-      child: Container(
-        decoration: BoxDecoration(
-            color: ProjectColors.grey,
-            border: Border(right: BorderSide(color: ProjectColors.lightBlue))),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              height: 34,
-              child: icon,
-            ),
-            Text(
-              text,
-              textAlign: TextAlign.center,
-              style: ProjectTextStyles.smallAction
-                  .apply(color: ProjectColors.black),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+  void Function(bool) _onMapChanged(BuildContext context) => (bool value) {
+        BlocProvider.of<ControlListBloc>(context)
+            .add(ControlListBlocEvent.changeShowMapEvent(value));
+      };
+
+  void Function() _onLoadNextPage(BuildContext context) =>
+      () => BlocProvider.of<ControlListBloc>(context)
+          .add(ControlListBlocEvent.loadNextPageControlListEvent());
+
+  RefreshFunction _onRefreshList(BuildContext context) => () async {
+        BlocProvider.of<ControlListBloc>(context)
+            .add(ControlListBlocEvent.refreshControlListEvent());
+        return BlocProvider.of<ControlListBloc>(context)
+            .firstWhere((state) => !state.listState.refresh);
+      };
 }
 
 class ControlSreen extends StatelessWidget {

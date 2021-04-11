@@ -1,5 +1,4 @@
 import 'package:bloc/bloc.dart';
-import 'package:flutter/services.dart';
 import 'package:inspector/blocs/instruction_filters/events.dart';
 import 'package:inspector/blocs/instruction_filters/states.dart';
 import 'package:inspector/model/instruction.dart';
@@ -22,43 +21,57 @@ class InstructionFiltersBloc extends Bloc<InstructionFiltersBlocEvent, Instructi
       final statuses = await _dictionaryService.getInstructionStatuses();
       statuses.insert(0, InstructionStatus(id: null, name: 'Все'));
       yield InstructionFiltersBlocState(statuses, state.filters);
-    } else if (event is SetCheckDatesEvent) {
+    } else if (event is SetCheckDateFromEvent) {
       yield InstructionFiltersBlocState(
         state.statuses,
-        InstructionFilters(
-          checkDates: event.dates,
-          instructionDates: state.filters.instructionDates,
-          instructionStatus: state.filters.instructionStatus,
-          instructionNum: state.filters.instructionNum,
+        state.filters.copyWith(
+          checkDateFrom: event.date,
+          checkDateTo: state.filters.checkDateTo,
+          instructionDateFrom: state.filters.instructionDateFrom,
+          instructionDateTo: state.filters.instructionDateTo
         )
       );
-    } else if (event is SetInstructionDatesEvent) {
+    } else if (event is SetCheckDateToEvent) {
       yield InstructionFiltersBlocState(
         state.statuses,
-        InstructionFilters(
-          checkDates: state.filters.checkDates,
-          instructionDates: event.dates,
-          instructionStatus: state.filters.instructionStatus,
-          instructionNum: state.filters.instructionNum,
+        state.filters.copyWith(
+          checkDateTo: event.date,
+          checkDateFrom: state.filters.checkDateFrom,
+          instructionDateFrom: state.filters.instructionDateFrom,
+          instructionDateTo: state.filters.instructionDateTo
+        )
+      );
+    } else if (event is SetInstructionDateFromEvent) {
+      yield InstructionFiltersBlocState(
+        state.statuses,
+        state.filters.copyWith(
+          instructionDateFrom: event.date,
+          instructionDateTo: state.filters.instructionDateTo,
+          checkDateTo: state.filters.checkDateTo,
+          checkDateFrom: state.filters.checkDateFrom,
+        )
+      );
+    } else if (event is SetInstructionDateToEvent) {
+      yield InstructionFiltersBlocState(
+        state.statuses,
+        state.filters.copyWith(
+          instructionDateTo: event.date,
+          instructionDateFrom: state.filters.instructionDateFrom,
+          checkDateTo: state.filters.checkDateTo,
+          checkDateFrom: state.filters.checkDateFrom,
         )
       );
     } else if (event is SetInstructionStatusEvent) {
       yield InstructionFiltersBlocState(
         state.statuses,
-        InstructionFilters(
-          checkDates: state.filters.checkDates,
-          instructionDates: state.filters.instructionDates,
+        state.filters.copyWith(
           instructionStatus: event.instructionStatus == 0 ? null :  event.instructionStatus,
-          instructionNum: state.filters.instructionNum,
         )
       );
     } else if (event is SetInstructionNumEvent) {
       yield InstructionFiltersBlocState(
         state.statuses,
-        InstructionFilters(
-          checkDates: state.filters.checkDates,
-          instructionDates: state.filters.instructionDates,
-          instructionStatus: state.filters.instructionStatus,
+        state.filters.copyWith(
           instructionNum: event.instructionNum,
         ),
       );

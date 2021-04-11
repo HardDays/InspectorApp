@@ -27,4 +27,7 @@ mixin UserMixin {
 
   Future<DateTime> getDateForNextTry();
   Future<void> setDateForNextTry(DateTime dateTime);
+
+  Future<bool> useWebVersionOfVK();
+  Future<void> setUseWebVersionOfVk(bool state);
 }

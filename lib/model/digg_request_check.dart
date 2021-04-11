@@ -11,6 +11,7 @@ class DiggRequestCheck {
   final int id;
   final int demandId;
   final bool workCompleted;
+  final bool checked;
   final bool landscapingRestored;
   final String diggNum;
   final String diggAddress;
@@ -24,6 +25,7 @@ class DiggRequestCheck {
     @required this.diggNum,
     @required this.diggAddress,
     @required this.comment,
+    this.checked = false
   });
 
   DiggRequestCheck copyWith({bool workCompleted, bool landscapingRestored, String comment}) {
@@ -47,6 +49,7 @@ class DiggRequestCheck {
       diggNum: json['diggNum'],
       diggAddress: json['diggAddress'],
       comment: json['comment'],
+      checked: json['workCompleted']  != null && json['landscapingRestored'] != null
     );
   }
 

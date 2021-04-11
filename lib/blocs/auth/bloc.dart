@@ -1,7 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:inspector/blocs/auth/events.dart';
 import 'package:inspector/blocs/auth/states.dart';
-import 'package:inspector/providers/api_provider.dart';
+import 'package:inspector/blocs/dictionary/bloc.dart';
+import 'package:inspector/blocs/dictionary/event.dart';
 import 'package:inspector/services/auth_exception.dart';
 import 'package:inspector/services/auth_service.dart';
 import 'package:inspector/services/persistance_service.dart';
@@ -12,7 +13,7 @@ typedef Stream<S> Dispatcher<E, S>(E event);
 
 class AuthBloc extends Bloc<AuthBlocEvent, AuthBlocStates> {
   AuthBloc(
-      AuthBlocStates initialState, this._authService, this._persistanceService)
+      AuthBlocStates initialState, this._authService, this._persistanceService, this._dictionaryBloc)
       : super(initialState) {
     _dispatchersMap = {
       EnterAuthScreenEvent: (event) =>
@@ -29,6 +30,7 @@ class AuthBloc extends Bloc<AuthBlocEvent, AuthBlocStates> {
 
   final AuthService _authService;
   final PersistanceService _persistanceService;
+  final DictionaryBloc _dictionaryBloc;
   String pin;
   String login;
   String password;
@@ -58,13 +60,13 @@ class AuthBloc extends Bloc<AuthBlocEvent, AuthBlocStates> {
           }
           final useFingerPrint =
               await _persistanceService.getFingerprintState();
-          if (useFingerPrint != null &&
-              !useFingerPrint &&
-              await _checkBiometric()) {
-            yield AutorizedState();
+          if (useFingerPrint && await _checkBiometric()) {
+            yield AutorizedState(false);
+            _dictionaryBloc.add(DictionaryBlocEvent.initEvent());
           }
         } else {
-           yield AutorizedState();
+           yield AutorizedState(false);
+           _dictionaryBloc.add(DictionaryBlocEvent.initEvent());
         }
       } else {
         yield ShowSetPinScreen(true);
@@ -77,7 +79,8 @@ class AuthBloc extends Bloc<AuthBlocEvent, AuthBlocStates> {
   Stream<AuthBlocStates> _onSetPinEvent(SetPinEvent event) async* {
     if (await _authService.isPinSetted()) {
       if (await _authService.isPinCorrect(event.pin)) {
-        yield AutorizedState();
+        yield AutorizedState(false);
+        _dictionaryBloc.add(DictionaryBlocEvent.initEvent());
       } else if (event.pin.length >= 4) {
         if (wrongTries < 4) {
           yield IncorrencPinState();
@@ -100,7 +103,8 @@ class AuthBloc extends Bloc<AuthBlocEvent, AuthBlocStates> {
         if (event.pin.length == 4) {
           if (event.pin == pin) {
             await _authService.setPin(event.pin);
-            yield AutorizedState();
+            yield AutorizedState(await _canCheckBiometric());
+            _dictionaryBloc.add(DictionaryBlocEvent.initEvent());
           } else {
             yield IncorrencRepeatPinState();
           }
@@ -136,7 +140,7 @@ class AuthBloc extends Bloc<AuthBlocEvent, AuthBlocStates> {
   Stream<AuthBlocStates> _onLoginEvent(LoginEvent event) async* {
     yield ShowLoginLoadingScreen();
     try {
-      var user = await _authService.authentificate(login, password);
+      await _authService.authentificate(login, password);
       add(EnterAuthScreenEvent());
     } on AuthException catch (e) {
       yield ShowLoginErrorScreen(e.message);
@@ -149,11 +153,17 @@ class AuthBloc extends Bloc<AuthBlocEvent, AuthBlocStates> {
 
   Future<bool> _checkBiometric() async {
     final LocalAuthentication auth = LocalAuthentication();
-    return await auth.authenticateWithBiometrics(
+    return await auth.authenticate(
         localizedReason: 'Нажмите на сканер отпечатка пальца',
         useErrorDialogs: true,
         stickyAuth: false,
+        biometricOnly: true,
         androidAuthStrings: AndroidAuthMessages(
             signInTitle: "Войти с помощью отпечатка пальца"));
+  }
+
+  Future<bool> _canCheckBiometric() async {
+    final LocalAuthentication auth = LocalAuthentication();
+    return await auth.canCheckBiometrics;
   }
 }

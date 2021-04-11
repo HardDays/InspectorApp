@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:inspector/style/text_style.dart';
+import 'package:intl/intl.dart';
 import 'package:path/path.dart' as p;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -36,10 +38,13 @@ class DiggReportPage extends StatefulWidget {
 
 class DiggReportPageState extends State<DiggReportPage> with SingleTickerProviderStateMixin {
 
+  final _formKey = GlobalKey<FormState>();
+
   final _commentController = TextEditingController();
 
   final List<Uint8List> _photos = [];
   final List<String> _photoNames = [];
+
   void initState() {
     super.initState();
 
@@ -81,18 +86,30 @@ class DiggReportPageState extends State<DiggReportPage> with SingleTickerProvide
   }
 
   void _onSave(BuildContext context, int status) async {
-    if (_photos.isNotEmpty) {
-      final res = await showDialog(context: context, child: AcceptDialog(message: 'Сохранить рапорт?'));
-      if (res != null) {
-        BlocProvider.of<DiggReportBloc>(context).add(SaveReportEvent(widget.diggRequestCheck, status, _commentController.text, _photos, _photoNames));  
+    final report = BlocProvider.of<DiggReportBloc>(context).state.report;
+    final date = report.reportDate ?? DateTime.now();
+    final number = report.reportNum != null ?  '№ ${report.reportNum}' : '';
+    if (_formKey.currentState.validate()) {
+      if (_photos.isNotEmpty) {
+        final res = await showDialog(
+          context: context, 
+          builder: (ctx) => AcceptDialog(
+            acceptTitle: 'Да',
+            cancelTitle: 'Нет',
+            message: status == ReportStatusIds.onApproval ? 'Вы подтверждаете передачу рапорта $number от ${DateFormat('dd.MM.yyyy').format(date)} на согласование?' : 'Сохранить рапорт?'
+          ),
+        );
+        if (res != null) {
+          BlocProvider.of<DiggReportBloc>(context).add(SaveReportEvent(widget.diggRequestCheck, status, _commentController.text, _photos, _photoNames));  
+        }
+      } else {
+        _showSnackBar(context, 'Пожалуйста, добавьте минимум одну фотографию');
       }
-    } else {
-      _showSnackBar(context, 'Пожалуйста, добавьте минимум одну фотографию');
     }
   }
 
   void _onDeleteReport(BuildContext context) async {
-    final res = await showDialog(context: context, child: AcceptDialog(message: 'Удалить рапорт?'));
+    final res = await showDialog(context: context, builder: (ctx) => AcceptDialog(message: 'Удалить рапорт?'));
     if (res != null) {
       BlocProvider.of<DiggReportBloc>(context).add(RemoveReportEvent());  
     }
@@ -112,6 +129,23 @@ class DiggReportPageState extends State<DiggReportPage> with SingleTickerProvide
       }
     );
   }
+    
+  void _showSuccess(BuildContext context, Report report) {
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) async {
+        final title = '№${report.reportNum} от ${DateFormat('dd.MM.yyyy').format(report.reportDate)}';
+        await showDialog(
+          context: context, 
+          builder: (ctx) => AcceptDialog(
+            cancelTitle: null,
+            acceptTitle: 'ОК',
+            message: report.reportStatus?.id == ReportStatusIds.onApproval ? 'Зарегистрирован рапорт $title' : 'Сохранен рапорт $title'
+          )
+        );
+        Navigator.pop(context);
+      }
+    );
+  }
 
   void _back() {
     WidgetsBinding.instance.addPostFrameCallback(
@@ -121,6 +155,13 @@ class DiggReportPageState extends State<DiggReportPage> with SingleTickerProvide
     );
   }
 
+  String _emptyValidator(String value) {
+    if (value.isEmpty) {
+      return 'Введите значение';
+    }
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
      return BlocProvider(
@@ -128,8 +169,7 @@ class DiggReportPageState extends State<DiggReportPage> with SingleTickerProvide
       child: BlocBuilder<DiggReportBloc, DiggReportBlocState>(
         builder: (context, state) {
           if (state is SuccessState) { 
-            _showSnackBar(context, 'Рапорт успешно сформирован');
-            _back();
+            _showSuccess(context, state.report);
           } else if (state is DeletedState) { 
             _showSnackBar(context, 'Рапорт удален');
             _back();
@@ -142,39 +182,43 @@ class DiggReportPageState extends State<DiggReportPage> with SingleTickerProvide
             body: SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.only(left: 30, right: 30, top: 20),
-                child: Column(
-                  children: [
-                    ProjectTitle('Обследование факта окончания работ и восстановления благоустройства'),
-                    ProjectSection('Номер разрытия', description: widget.diggRequestCheck.diggNum),
-                    ProjectSection('Адрес', description: widget.diggRequestCheck.diggAddress),
-                    ProjectTitle('Статус'),
-                    ProjectRadio('Работы не завершены',
-                      groupValue: state.status,
-                      value: DiggRequestCheckStatus.workNotComplete,
-                      onChanged: (value)=> _onStatus(context, value),
-                    ),
-                    ProjectRadio('Благоустройство не восстановлено',
-                      groupValue: state.status,
-                      value: DiggRequestCheckStatus.landscapingNotRestored,
-                      onChanged: (value)=> _onStatus(context, value),
-                    ),
-                    ProjectRadio('Благоустройство восстановлено',
-                      groupValue: state.status,
-                      value: DiggRequestCheckStatus.landscapingRestored,
-                      onChanged: (value)=> _onStatus(context, value),
-                    ),
-                    _buildComment(state),
-                    ProjectTitle('Фотоматериалы'),
-                    ImagePicker(
-                      margin: const EdgeInsets.only(top: 20, bottom: 0),
-                      images: _photos,
-                      names: _photoNames,
-                      onRotated: (index, image) => _onPhotoRotate(context, index, image),
-                      onPicked: (file)=> _onPhotoPick(context, file),
-                      onRemoved: (index)=> _onPhotoRemove(context, index),
-                    ),
-                    _buildButtons(context)
-                  ],
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      _buildError(context, state.report),
+                      ProjectTitle('Обследование факта окончания работ и восстановления благоустройства'),
+                      ProjectSection('Номер разрытия', description: widget.diggRequestCheck.diggNum),
+                      ProjectSection('Адрес', description: widget.diggRequestCheck.diggAddress),
+                      ProjectTitle('Статус'),
+                      ProjectRadio('Работы не завершены',
+                        groupValue: state.status,
+                        value: DiggRequestCheckStatus.workNotComplete,
+                        onChanged: (value)=> _onStatus(context, value),
+                      ),
+                      ProjectRadio('Благоустройство не восстановлено',
+                        groupValue: state.status,
+                        value: DiggRequestCheckStatus.landscapingNotRestored,
+                        onChanged: (value)=> _onStatus(context, value),
+                      ),
+                      ProjectRadio('Благоустройство восстановлено',
+                        groupValue: state.status,
+                        value: DiggRequestCheckStatus.landscapingRestored,
+                        onChanged: (value)=> _onStatus(context, value),
+                      ),
+                      _buildComment(state),
+                      ProjectTitle('Фотоматериалы'),
+                      ImagePicker(
+                        margin: const EdgeInsets.only(top: 20, bottom: 0),
+                        images: _photos,
+                        names: _photoNames,
+                        onRotated: (index, image) => _onPhotoRotate(context, index, image),
+                        onPicked: (file)=> _onPhotoPick(context, file),
+                        onRemoved: (index)=> _onPhotoRemove(context, index),
+                      ),
+                      _buildButtons(context)
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -186,6 +230,28 @@ class DiggReportPageState extends State<DiggReportPage> with SingleTickerProvide
     );
   }
 
+  Widget _buildError(BuildContext context, Report report) {
+    if (report.error != null && report.error.isNotEmpty) {
+      return Container(
+        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+        width: MediaQuery.of(context).size.width,
+        child: Text('Рапорт № ${report.reportNum} от ${DateFormat('dd.MM.yyyy').format(report.reportDate)} не был загружен в ЕИС ОАТИ. Ошибка: ${report.error}',
+          style: ProjectTextStyles.baseBold.apply(
+            color: ProjectColors.red,
+          ),
+        ),
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: ProjectColors.red,
+            width: 2,
+          ),
+        ),
+      );
+    } else {
+      return const SizedBox();
+    }
+  }
+
   Widget _buildComment(DiggReportBlocState state) {
     if (state.status != DiggRequestCheckStatus.landscapingRestored) {
       return Column(
@@ -194,6 +260,7 @@ class DiggReportPageState extends State<DiggReportPage> with SingleTickerProvide
           ProjectTextField(
             hintText: 'Комментарий',
             controller: _commentController,
+            validator: _emptyValidator,
           ),
         ],
       );

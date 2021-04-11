@@ -1,5 +1,3 @@
-import 'dart:convert' as c;
-
 import 'package:flutter/foundation.dart';
 
 class DepartmentCode {
@@ -27,16 +25,6 @@ class DepartmentCode {
       'name': name,
       'code': code
     };
-  }
-
-  static DepartmentCode parse(dynamic json, bool stringified) {
-    if (json != null) {
-      if (stringified) {
-        return DepartmentCode.fromJson(c.json.decode(json));
-      } else {
-        return DepartmentCode.fromJson(json);
-      }
-    }
   }
 
   Map<String, dynamic> toSqliteJson() {

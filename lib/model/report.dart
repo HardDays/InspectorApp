@@ -42,7 +42,7 @@ abstract class ReportStatusIds {
 class Report {
 
   final int id;
-  // final int dbId;
+  final int userId;
   final String localId;
   final String error;
   final int instructionId;
@@ -63,7 +63,7 @@ class Report {
     this.id,
     this.localId,
     this.error,
-    //this.dbId,
+    this.userId,
     this.instructionId,
     this.checkId,
     this.violationNotPresent,
@@ -78,21 +78,22 @@ class Report {
 
   bool get isNew => (reportStatus == null || reportStatus?.id == ReportStatusIds.new_ || reportStatus?.id == ReportStatusIds.project);
   bool get isReady => (id == null && reportStatus?.id == ReportStatusIds.onApproval);
-  bool get isUpdatable => isNew || reportStatus?.id == ReportStatusIds.declined;
-  bool get isDeletable => reportStatus != null && isNew;
+  bool get isUpdatable => isNew || reportStatus?.id == ReportStatusIds.declined || error != null;
+  bool get isDeletable => reportStatus != null && isNew || error != null;
 
   factory Report.empty(bool violationNotPresent, int checkId, int instructionId) {
     return Report(
       instructionId: instructionId,
       checkId: checkId,
       violationNotPresent: violationNotPresent,
-      violations:  violationNotPresent ? List<Violation>() : [Violation.empty()],
+      violations:  violationNotPresent ? <Violation>[] : [Violation.empty()],
       photos: [],
       diggRequestChecks: []
     );
   }
 
   Report copyWith({
+    int userId,
     bool violationNotPresent,
     String localId,
     String reportNum,
@@ -107,6 +108,7 @@ class Report {
       id: id,
       instructionId: instructionId, 
       checkId: checkId,
+      userId: userId ?? this.userId,
       localId: localId ?? this.localId,
       violationNotPresent: violationNotPresent ?? this.violationNotPresent,
       reportNum: reportNum ?? this.reportNum,
@@ -124,6 +126,7 @@ class Report {
     if (violations != null && index != null && index < violations.length) {
       return violations[index];
     }
+    return null;
   }
 
   factory Report.fromJson(Map<String, dynamic> json, {bool stringified = false}) {
@@ -137,7 +140,7 @@ class Report {
     return Report(
       id: json['id'], 
       localId: json['localId'],
-      //dbId: json['dbId'],
+      userId: json['userId'],
       instructionId: json['instructionId'], 
       checkId: json['checkId'],
       reportNum: json['reportNum'] ?? 'Проект рапорта от ${DateFormat('dd.MM.yyyy').format(date)}',
@@ -159,7 +162,7 @@ class Report {
     final json = {
       'id': id,
       'localId': localId,
-      //'dbId': dbId,
+      'userId': userId,
       'instructionId': instructionId,
       'checkId': checkId,
       'violationNotPresent': stringified ? ((violationNotPresent ?? false) ? 1 : 0) : violationNotPresent,

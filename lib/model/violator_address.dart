@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'dart:convert' as c;
 
 class ViolatorAddress {
@@ -21,19 +20,19 @@ class ViolatorAddress {
   final String flat;
 
   ViolatorAddress({
-    @required this.cladrCode,
-    @required this.zipCode,
-    @required this.subjectCode,
-    @required this.subjectName,
-    @required this.subjectType,
-    @required this.regionName,
-    @required this.regionType,
-    @required this.cityName,
-    @required this.cityType,
-    @required this.placeName,
-    @required this.placeType,
-    @required this.streetName,
-    @required this.streetType,
+    this.cladrCode,
+    this.zipCode,
+    this.subjectCode,
+    this.subjectName,
+    this.subjectType,
+    this.regionName,
+    this.regionType,
+    this.cityName,
+    this.cityType,
+    this.placeName,
+    this.placeType,
+    this.streetName,
+    this.streetType,
     this.house,
     this.building,
     this.buildingExt,
@@ -137,6 +136,8 @@ class ViolatorAddress {
       } else {
         return ViolatorAddress.fromJson(json);
       }
+    } else {
+      return null;
     }
   }
   

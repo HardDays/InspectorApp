@@ -36,7 +36,10 @@ class IncorrencPinState extends AuthBlocStates with PinCodeState {
 }
 
 class AutorizedState extends AuthBlocStates with PinCodeState {
+  AutorizedState(this.firstSetup);
+
   bool get needRebuild => false;
+  final bool firstSetup;
 }
 
 class ShowLoginScreen extends AuthBlocStates {

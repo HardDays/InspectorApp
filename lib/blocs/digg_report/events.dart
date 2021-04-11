@@ -1,7 +1,6 @@
 import 'dart:typed_data';
 
 import 'package:inspector/model/digg_request_check.dart';
-import 'package:inspector/model/report.dart';
 
 class DiggReportBlocEvent {
 

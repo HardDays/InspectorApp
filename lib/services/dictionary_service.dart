@@ -2,9 +2,20 @@
 import 'package:inspector/model/address.dart';
 import 'package:inspector/model/area.dart';
 import 'package:inspector/model/department_code.dart';
+import 'package:inspector/model/department_control/contractor.dart';
+import 'package:inspector/model/department_control/object_element.dart';
+import 'package:inspector/model/department_control/object_kind.dart';
+import 'package:inspector/model/department_control/object_type.dart';
+import 'package:inspector/model/department_control/source.dart';
+import 'package:inspector/model/department_control/violation_additional_feature.dart';
+import 'package:inspector/model/department_control/violation_classification_search_result.dart';
+import 'package:inspector/model/department_control/violation_extension_reason.dart';
+import 'package:inspector/model/department_control/violation_name.dart';
+import 'package:inspector/model/department_control/violation_status.dart';
 import 'package:inspector/model/dictionary_metadata.dart';
 import 'package:inspector/model/district.dart';
 import 'package:inspector/model/instruction_status.dart';
+import 'package:inspector/model/kladdr_address_object_type.dart';
 import 'package:inspector/model/normative_act.dart';
 import 'package:inspector/model/normative_act_article.dart';
 import 'package:inspector/model/report_status.dart';
@@ -53,7 +64,17 @@ class DictionaryService {
     DictionaryNames.violatorInfoPrivates: ApiDictionaryService().getViolatorInfoPrivate,
     DictionaryNames.violatorDocumentTypes: ApiDictionaryService().getViolatorDocumentTypes,
     DictionaryNames.reportStatuses: ApiDictionaryService().getReportStatuses,
-
+    DictionaryNames.kladdrAddressTypes: ApiDictionaryService().getKladdrAddressTypes,
+    DictionaryNames.dcObjectElements: ApiDictionaryService().getDCObjectElements,
+    DictionaryNames.dcObjectKinds: ApiDictionaryService().getDCObjectKinds,
+    DictionaryNames.dcObjectTypes: ApiDictionaryService().getDCObjectTypes,
+    DictionaryNames.dcViolationNames: ApiDictionaryService().getDCViolationNames,
+    DictionaryNames.dcViolationStatuses: ApiDictionaryService().getDCViolationStatuses,
+    DictionaryNames.dcContractors: ApiDictionaryService().getContractors,
+    DictionaryNames.dcViolationAdditionalFeatures: ApiDictionaryService().getViolationAdditionalFeatures,
+    DictionaryNames.dcSources: ApiDictionaryService().getDCSources,
+    DictionaryNames.dcViolationClassificationSearchResults: ApiDictionaryService().getViolationClassifications,
+    DictionaryNames.dcViolationExtensionReasons: ApiDictionaryService().getViolationExtensionReasons,
   };
 
  final Map<String, Function(Map<String, dynamic>)> _converters = {
@@ -75,6 +96,17 @@ class DictionaryService {
     DictionaryNames.violatorInfoPrivates: (json)=> ViolatorInfoPrivate.fromJson(json, stringified: true),
     DictionaryNames.violatorDocumentTypes: (json)=> ViolatorDocumentType.fromJson(json),
     DictionaryNames.reportStatuses: (json)=> ReportStatus.fromJson(json),
+    DictionaryNames.kladdrAddressTypes: (json)=> KladdrAddressObjectType.fromJson(json),
+    DictionaryNames.dcObjectElements: (json)=> ObjectElement.fromJson(json),
+    DictionaryNames.dcObjectKinds: (json)=> ObjectKind.fromJson(json),
+    DictionaryNames.dcObjectTypes: (json)=> ObjectType.fromJson(json),
+    DictionaryNames.dcViolationNames: (json)=> ViolationName.fromJson(json),
+    DictionaryNames.dcViolationStatuses: (json)=> ViolationStatus.fromJson(json),
+    DictionaryNames.dcContractors: (json)=> Contractor.fromJson(json),
+    DictionaryNames.dcViolationAdditionalFeatures: (json)=> ViolationAdditionalFeature.fromJson(json),
+    DictionaryNames.dcSources: (json)=> Source.fromJson(json),
+    DictionaryNames.dcViolationClassificationSearchResults: (json) => ViolationClassificationSearchResult.fromSqliteJson(json),
+    DictionaryNames.dcViolationExtensionReasons: (json) => ViolationExtensionReason.fromJson(json),
   };
 
   final _lock = Lock();
@@ -151,12 +183,14 @@ class DictionaryService {
     return await _dbService.all<T>(name, _converters[name], queries: queries, limit: limit);
   }
 
-  Future<List<Address>> getAddresses({String houseNum, int streetId}) async {
+  Future<List<Address>> getAddresses({String houseNum, int streetId, int areaId, int districtId}) async {
     return await _getData(DictionaryNames.addresses, 
       queries: [
         Query({
           'houseNum LIKE ?': '$houseNum%',
-          'streetId = ?': streetId
+          'streetId = ?': streetId,
+          'areaId = ?': areaId,
+          'districtId = ?': districtId,
         }),
       ],
       limit: 50
@@ -421,4 +455,132 @@ class DictionaryService {
       limit: 50
     );
   }
+
+  Future<List<KladdrAddressObjectType>> getKladdAddressTypes({String name,  String level}) async {
+    return await _getData<KladdrAddressObjectType>(DictionaryNames.kladdrAddressTypes, 
+      queries: [
+        Query({
+          'name LIKE ?': '$name%',
+          'level = ?': level,
+        }),
+      ],
+      limit: 50
+    );
+  }
+
+  Future<List<ObjectType>> getDCObjectTypes({String name}) async {
+    return await _getData<ObjectType>(DictionaryNames.dcObjectTypes, 
+      queries: [
+        Query({
+          'name LIKE ?': '$name%',
+        }),
+      ],
+      limit: 50
+    );
+  }
+
+  Future<List<ObjectKind>> getDCObjectKinds({String name}) async {
+    return await _getData<ObjectKind>(DictionaryNames.dcObjectKinds, 
+      queries: [
+        Query({
+          'name LIKE ?': '$name%',
+        }),
+      ],
+      limit: 50
+    );
+  }
+
+  Future<List<ViolationStatus>> getDCViolationStatuses({String name}) async {
+    return await _getData<ViolationStatus>(DictionaryNames.dcViolationStatuses, 
+      queries: [
+        Query({
+          'name LIKE ?': '$name%',
+        }),
+      ],
+      limit: 50
+    );
+  }
+
+  Future<List<ObjectElement>> getDCObjectElements({String name}) async {
+    return await _getData<ObjectElement>(DictionaryNames.dcObjectElements, 
+      queries: [
+        Query({
+          'name LIKE ?': '$name%',
+        }),
+      ],
+      limit: 50
+    );
+  }
+
+  Future<List<ViolationName>> getDCViolationNames({String name}) async {
+    return await _getData<ViolationName>(DictionaryNames.dcViolationNames, 
+      queries: [
+        Query({
+          'name LIKE ?': '$name%',
+        }),
+      ],
+      limit: 50
+    );
+  }
+
+  Future<List<Contractor>> getContractors({String name}) async {
+    return await _getData<Contractor>(DictionaryNames.dcContractors, 
+      queries: [
+        Query({
+          'name LIKE ?': '$name%',
+        }),
+      ],
+      limit: 50
+    );
+  }
+
+   Future<List<Source>> getDCSources({String name}) async {
+    return await _getData<Source>(DictionaryNames.dcSources, 
+      queries: [
+        Query({
+          'name LIKE ?': '$name%',
+        }),
+      ],
+      limit: 50
+    );
+  }
+
+   Future<List<ViolationAdditionalFeature>> getViolationAdditionalFeatures({String name}) async {
+    return await _getData<ViolationAdditionalFeature>(DictionaryNames.dcViolationAdditionalFeatures, 
+      queries: [
+        Query({
+          'name LIKE ?': '$name%',
+        }),
+      ],
+      limit: 50
+    );
+  }
+
+   Future<List<ViolationClassificationSearchResult>> getViolationClassificationSearchResults({String name, ObjectElement objectElement}) async {
+    return await _getData<ViolationClassificationSearchResult>(DictionaryNames.dcViolationClassificationSearchResults, 
+      queries: [
+        Query({
+          'violationNameName LIKE ?': '$name%',
+          if(objectElement != null)
+            if(objectElement.id != null)
+              'objectElementId = ?': objectElement.id
+            else
+              'objectElementName LIKE ?': '${objectElement.name}%',
+        }),
+      ],
+      limit: 50
+    );
+  }
+
+  Future<List<ViolationExtensionReason>> getViolationExtensionReasons({String name}) async {
+    return await _getData<ViolationExtensionReason>(DictionaryNames.dcViolationExtensionReasons,
+      queries: [
+        Query({
+          'name LIKE ?': '%$name%',
+        }),
+      ],
+      limit: 50
+    );
+  }
+
 }

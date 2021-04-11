@@ -20,7 +20,7 @@ class ProjectBottomNavigationBar extends StatelessWidget {
     Screens.ProfileScreen,
   ];
 
-  int get currentIndex => screenslist.indexOf(screen);
+  int get currentIndex => screen == Screens.VKWebScreen ? 1 : screenslist.indexOf(screen);
 
   Color _getColor(int index) =>
       index == currentIndex ? ProjectColors.blue : ProjectColors.mediumBlue;

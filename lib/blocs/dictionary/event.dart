@@ -1,16 +1,8 @@
-abstract class DictionaryBlocEvent { }
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-class LoadEvent extends DictionaryBlocEvent {
+part 'event.freezed.dart';
 
-}
-
-class UpdateEvent extends DictionaryBlocEvent {
-  final int count;
-  final String name;
-
-  UpdateEvent(this.name, this.count);
-}
-
-class LoadedEvent extends DictionaryBlocEvent {
-
+@freezed
+abstract class DictionaryBlocEvent with _$DictionaryBlocEvent {
+  const factory DictionaryBlocEvent.initEvent() = _InitEvent;
 }

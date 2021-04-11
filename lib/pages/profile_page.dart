@@ -7,7 +7,6 @@ import 'package:inspector/blocs/profile/event.dart';
 import 'package:inspector/blocs/profile/state.dart';
 import 'package:inspector/navigation.gr.dart';
 import 'package:inspector/services/auth_service.dart';
-import 'package:inspector/services/persistance_service.dart';
 import 'package:inspector/style/accept_dialog.dart';
 import 'package:inspector/style/button.dart';
 import 'package:inspector/style/colors.dart';
@@ -21,13 +20,7 @@ import 'package:provider/provider.dart';
 class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<ProfileBloc>(
-      create: (BuildContext context) => ProfileBloc(
-        EmptyBlocState(),
-        Provider.of<PersistanceService>(context, listen: false),
-      )..add(InitEvent()),
-      child:
-          BlocBuilder<ProfileBloc, ProfileBlocState>(builder: (context, state) {
+    return BlocBuilder<ProfileBloc, ProfileBlocState>(builder: (context, state) {
         if (state is FilledBlocState)
           return Scaffold(
             appBar: AppBar(
@@ -69,7 +62,7 @@ class ProfilePage extends StatelessWidget {
                           onTap: () async {
                             if ((await showDialog(
                                     context: context,
-                                    child: AcceptDialog(
+                                    builder: (ctx) => AcceptDialog(
                                         message:
                                             'Вход в приложение будет осуществлен с помощью логина и пароля. Текущие настройки быстрого доступа будут сброшены. Продолжить?'))) !=
                                 null) {
@@ -139,10 +132,16 @@ class ProfilePage extends StatelessWidget {
                               .apply(color: ProjectColors.black),
                         ),
                       ),
-                      _buildSectionItem(
-                        'Документы, требующие изменений',
-                        DocumentsForEditingWidget(),
-                      ),
+                      if(state.sending)
+                        _buildSectionItem(
+                          'Документы, требующие изменений',
+                          const SizedBox(),
+                        )
+                      else
+                        _buildSectionItem(
+                          'Документы, требующие изменений',
+                          DocumentsForEditingWidget(),
+                        ),
                     ],
                   ),
                   Padding(
@@ -157,7 +156,7 @@ class ProfilePage extends StatelessWidget {
                           ProjectButton.builtFlatButton(
                             'Отправить данные в ЕИС ОАТИ',
                             disabled:
-                                state.dataSendingMode && !state.canBeSended,
+                                state.dataSendingMode || !state.canBeSended,
                             onPressed: () =>
                                 BlocProvider.of<ProfileBloc>(context)
                                     .add(SendDataEvent(context)),
@@ -196,34 +195,6 @@ class ProfilePage extends StatelessWidget {
                           ],
                         ),
                       ),
-                      if(state.showFingerPrintSwitch)
-                      _buildSectionItem(
-                        'Быстрый доступ по Touch ID',
-                        Row(
-                          children: [
-                            Text(
-                              'Включен',
-                              style: ProjectTextStyles.medium
-                                  .apply(color: ProjectColors.black),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(
-                                  8.1, 0.0, 10.0, 0.0),
-                              child: ProjectSwitch(
-                                checked: state.useFingerprint,
-                                onChanged: (value) =>
-                                    BlocProvider.of<ProfileBloc>(context)
-                                        .add(SetUsingFingerPrint(value)),
-                              ),
-                            ),
-                            Text(
-                              'Выключен',
-                              style: ProjectTextStyles.medium
-                                  .apply(color: ProjectColors.black),
-                            ),
-                          ],
-                        ),
-                      ),
                       _buildSectionItem(
                         'Быстрый доступ по PIN-коду',
                         Row(
@@ -245,6 +216,61 @@ class ProfilePage extends StatelessWidget {
                             ),
                             Text(
                               'Включен',
+                              style: ProjectTextStyles.medium
+                                  .apply(color: ProjectColors.black),
+                            ),
+                          ],
+                        ),
+                      ),
+                      if(state.showFingerPrintSwitch)
+                      _buildSectionItem(
+                        'Быстрый доступ по Touch ID',
+                        Row(
+                          children: [
+                            Text(
+                              'Выключен',
+                              style: ProjectTextStyles.medium
+                                  .apply(color: ProjectColors.black),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(
+                                  8.1, 0.0, 10.0, 0.0),
+                              child: ProjectSwitch(
+                                checked: state.useFingerprint,
+                                onChanged: (value) =>
+                                    BlocProvider.of<ProfileBloc>(context)
+                                        .add(SetUsingFingerPrint(value)),
+                              ),
+                            ),
+                            Text(
+                              'Включен',
+                              style: ProjectTextStyles.medium
+                                  .apply(color: ProjectColors.black),
+                            ),
+                          ],
+                        ),
+                      ),
+                      _buildSectionItem(
+                        'Использовать Web-версию раздела "Ведомственный контроль"',
+                        Row(
+                          children: [
+                            Text(
+                              'Выключено',
+                              style: ProjectTextStyles.medium
+                                  .apply(color: ProjectColors.black),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(
+                                  8.1, 0.0, 10.0, 0.0),
+                              child: ProjectSwitch(
+                                checked: state.useWebVersionOfVK,
+                                onChanged: (value) =>
+                                    BlocProvider.of<ProfileBloc>(context)
+                                        .add(SetUseWebVersionOfVK(value)),
+                              ),
+                            ),
+                            Text(
+                              'Включено',
                               style: ProjectTextStyles.medium
                                   .apply(color: ProjectColors.black),
                             ),
@@ -289,7 +315,7 @@ class ProfilePage extends StatelessWidget {
             child: CircularProgressIndicator(),
           ),
         );
-      }),
+      },
     );
   }
 

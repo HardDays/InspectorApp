@@ -2,11 +2,21 @@ import 'package:inspector/model/address.dart';
 import 'package:inspector/model/area.dart';
 import 'package:inspector/model/check_status.dart';
 import 'package:inspector/model/check_type.dart';
-import 'package:inspector/model/control_object.dart';
 import 'package:inspector/model/department_code.dart';
+import 'package:inspector/model/department_control/contractor.dart';
+import 'package:inspector/model/department_control/object_element.dart';
+import 'package:inspector/model/department_control/object_kind.dart';
+import 'package:inspector/model/department_control/object_type.dart';
+import 'package:inspector/model/department_control/source.dart';
+import 'package:inspector/model/department_control/violation_additional_feature.dart';
+import 'package:inspector/model/department_control/violation_classification_search_result.dart';
+import 'package:inspector/model/department_control/violation_extension_reason.dart';
+import 'package:inspector/model/department_control/violation_name.dart';
+import 'package:inspector/model/department_control/violation_status.dart' as dc;
 import 'package:inspector/model/district.dart';
 import 'package:inspector/model/employee.dart';
 import 'package:inspector/model/instruction_status.dart';
+import 'package:inspector/model/kladdr_address_object_type.dart';
 import 'package:inspector/model/normative_act.dart';
 import 'package:inspector/model/normative_act_article.dart';
 import 'package:inspector/model/oati_department.dart';
@@ -40,8 +50,8 @@ class ApiDictionaryService {
 
   ApiDictionaryService._internal();
 
-  Future<List<T>> _loadDictionary<T>(Converter<T> converter, int from, int to) async {
-    final data = await api.getDictionary<T>(from, to);
+  Future<List<T>> _loadDictionary<T>(Converter<T> converter, int from, int to, {String sort}) async {
+    final data = await api.getDictionary<T>(from, to, sort: sort);
     try {
       return List<T>.from(
         data['data']
@@ -129,6 +139,40 @@ class ApiDictionaryService {
   Future<List<Street>> getStreets(int from, int to) =>
       _loadDictionary<Street>((d) => Street.fromJson(d), from, to);
 
-  Future<List<ControlObject>> getControlObjects(int from, int to) =>
-      _loadDictionary<ControlObject>((d) => ControlObject.fromJson(d), from, to);
+  // Future<List<ControlObject>> getControlObjects(int from, int to, {String sort}) =>
+  //     _loadDictionary<ControlObject>((d) => ControlObject.fromJson(d), from, to);
+  
+  Future<List<KladdrAddressObjectType>> getKladdrAddressTypes(int from, int to) =>
+      _loadDictionary<KladdrAddressObjectType>((d) => KladdrAddressObjectType.fromJson(d), from, to);
+
+  Future<List<ObjectKind>> getDCObjectKinds(int from, int to) =>
+      _loadDictionary<ObjectKind>((d) => ObjectKind.fromJson(d), from, to);
+  
+  Future<List<ObjectElement>> getDCObjectElements(int from, int to) =>
+      _loadDictionary<ObjectElement>((d) => ObjectElement.fromJson(d), from, to);
+
+  Future<List<ObjectType>> getDCObjectTypes(int from, int to) =>
+      _loadDictionary<ObjectType>((d) => ObjectType.fromJson(d), from, to);
+
+  Future<List<ViolationName>> getDCViolationNames(int from, int to) =>
+      _loadDictionary<ViolationName>((d) => ViolationName.fromJson(d), from, to);
+  
+  Future<List<dc.ViolationStatus>> getDCViolationStatuses(int from, int to) =>
+      _loadDictionary<dc.ViolationStatus>((d) => dc.ViolationStatus.fromJson(d), from, to);
+
+  Future<List<Contractor>> getContractors(int from, int to) =>
+      _loadDictionary<Contractor>((d) => Contractor.fromJson(d), from, to);
+  
+  Future<List<ViolationAdditionalFeature>> getViolationAdditionalFeatures(int from, int to) =>
+      _loadDictionary<ViolationAdditionalFeature>((d) => ViolationAdditionalFeature.fromJson(d), from, to);
+
+   Future<List<Source>> getDCSources(int from, int to) =>
+      _loadDictionary<Source>((d) => Source.fromJson(d), from, to);
+
+  Future<List<ViolationClassificationSearchResult>> getViolationClassifications(int from, int to) =>
+      _loadDictionary<ViolationClassificationSearchResult>((d) => ViolationClassificationSearchResult.fromJson(d), from, to);
+  
+  Future<List<ViolationExtensionReason>> getViolationExtensionReasons(int from, int to) =>
+      _loadDictionary<ViolationExtensionReason>((d) => ViolationExtensionReason.fromJson(d), from, to);
+
 }

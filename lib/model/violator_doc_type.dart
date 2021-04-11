@@ -40,6 +40,8 @@ class ViolatorDocumentType {
       } else {
         return ViolatorDocumentType.fromJson(json);
       }
+    } else {
+      return null;
     }
   }
 }

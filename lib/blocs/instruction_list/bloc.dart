@@ -5,9 +5,6 @@ import 'package:inspector/model/instruction.dart';
 import 'package:inspector/providers/exceptions/api_exception.dart';
 import 'package:inspector/services/instructions_service.dart';
 import 'package:inspector/services/objectdb/objectdb_persistance_service.dart';
-import 'package:inspector/services/persistance_service.dart';
-import 'package:intl/intl.dart';
-
 
 class InstructionListBloc extends Bloc<InstructionListBlocEvent, InstructionListBlocState> {
   InstructionListBloc(initialState) : super(initialState);
@@ -23,6 +20,12 @@ class InstructionListBloc extends Bloc<InstructionListBlocEvent, InstructionList
       final sort = await _service.sort();
       final order = await _service.sortOrder();
       final filters = await _service.filters();
+      // final filters = InstructionFilters(
+      //   instructionNum: filtersFromService.instructionNum,
+      //   instructionStatus: filtersFromService.instructionStatus,
+      //   // minDate: filtersFromService.minDate ?? DateTime(DateTime.now().year),
+      //   // maxDate: filtersFromService.maxDate ?? DateTime.now(),
+      // );
 
       try {
         final date = await _service.date();
@@ -99,30 +102,22 @@ class InstructionListBloc extends Bloc<InstructionListBlocEvent, InstructionList
         result = result.where((e) => e.instructionStatus.id == filters.instructionStatus).toList();
       }
       if (filters.instructionNum != null) {
-        result = result.where((e) => e.instructionNum.toLowerCase().startsWith(filters.instructionNum.toLowerCase())).toList();
+        result = result.where((e) => e.instructionNum.toLowerCase().contains(filters.instructionNum.toLowerCase())).toList();
       }
-      if (filters.checkDates != null) {
-        final dates = filters.checkDates;
-        if (dates.length == 1) {
-          final date = DateTime(dates[0].year, dates[0].month, dates[0].day);
-          result = result.where((e) => date == DateTime(e.checkDate.year, e.checkDate.month, e.checkDate.day)).toList();
-        } else if (dates.length == 2) {
-          final first = dates[0].subtract(Duration(seconds: 1));
-          final last = DateTime(dates[1].year, dates[1].month, dates[1].day, 23, 59);
-          result = result.where((e) => first.isBefore(e.checkDate) && last.isAfter(e.checkDate)).toList();
-        }
+      if (filters.instructionDateFrom != null) {
+        result = result.where((e) => e.instructionDate.isAfter(filters.instructionDateFrom)).toList();
       }
-       if (filters.instructionDates != null) {
-        final dates = filters.instructionDates;
-        if (dates.length == 1) {
-          final date = DateTime(dates[0].year, dates[0].month, dates[0].day);
-          result = result.where((e) => date == DateTime(e.instructionDate.year, e.instructionDate.month, e.instructionDate.day)).toList();
-        } else if (dates.length == 2) {
-          final first = dates[0].subtract(Duration(seconds: 1));
-          final last = DateTime(dates[1].year, dates[1].month, dates[1].day, 23, 59);
-          result = result.where((e) => first.isBefore(e.instructionDate) && last.isAfter(e.instructionDate)).toList();
-        }
+      if (filters.instructionDateTo != null) {
+        result = result.where((e) => e.instructionDate.isBefore(filters.instructionDateTo.add(Duration(days: 1)))).toList();
+      } 
+      if (filters.checkDateFrom != null) {
+        result = result.where((e) => e.checkDate.isAfter(filters.checkDateFrom)).toList();
       }
+      if (filters.checkDateTo != null) {
+        result = result.where((e) => e.checkDate.isBefore(filters.checkDateTo.add(Duration(days: 1)))).toList();
+      } 
+      
+      // result = result.where((e) => e.checkDate.isAfter(filters.minDate) && e.checkDate.isBefore(filters.maxDate.add(Duration(days: 1)))).toList();
     }
     result.sort((c1, c2) => c1.instructionNum.compareTo(c2.instructionNum));
     if (sort == InstructionSortStrings.instructionNum) {

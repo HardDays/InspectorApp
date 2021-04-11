@@ -30,6 +30,8 @@ class ViolatorInfo {
       } else {
         return ViolatorInfo.fromJson(json);
       }
+    } else {
+      return null;
     }
   }
 

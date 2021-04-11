@@ -17,12 +17,7 @@ class Info extends StatelessWidget {
               children: [
                 TextSpan(
                   text: '+7 495 663-10-00',
-                  style: ProjectTextStyles.medium.merge(
-                    TextStyle(
-                      color: ProjectColors.black,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
+                  style: ProjectTextStyles.medium.apply(color: ProjectColors.black),
                 ),
               ],
             ),
@@ -40,7 +35,7 @@ class Info extends StatelessWidget {
                     text: 'oati_support@mos.ru',
                     style: ProjectTextStyles.medium.merge(
                       TextStyle(
-                        color: ProjectColors.blue,
+                        color: ProjectColors.black,
                         decoration: TextDecoration.underline,
                       ),
                     ),

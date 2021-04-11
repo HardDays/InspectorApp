@@ -21,3 +21,9 @@ class OpenMapsErrorState extends NavigationBlocState {
 
   OpenMapsErrorState(this.currentScreen);
 }
+
+class OpenControlPageErrorState extends NavigationBlocState {
+  final Screens currentScreen;
+
+  OpenControlPageErrorState(this.currentScreen);
+}

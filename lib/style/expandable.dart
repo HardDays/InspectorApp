@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:inspector/style/colors.dart';
-import 'package:inspector/style/text_style.dart';
 
 class ProjectExpandable extends StatefulWidget { 
   final String title;

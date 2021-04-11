@@ -1,3 +1,4 @@
+import 'package:connectivity/connectivity.dart';
 import 'package:inspector/model/instruction.dart';
 import 'package:inspector/model/instruction_status.dart';
 import 'package:inspector/model/report.dart';
@@ -48,7 +49,8 @@ class InstructionsService {
   }
 
   Future<Instruction> find(int id, {bool reload = true}) async {
-    if(!reload || !(await _persistanceService.getDataSendingState())) {
+    final connectivityStatus = await Connectivity().checkConnectivity();
+    if(!reload || !(await _persistanceService.getDataSendingState()) || connectivityStatus == ConnectivityResult.none) {
       return (await _instructionsDbService.all(query: {'id': id})).first;
     }
     return await _apiService.getInstruction(id);
@@ -87,8 +89,9 @@ class InstructionsService {
     return _persistanceService.getInstructionReportDate(id);
   }
 
-  Future<Instruction> updateInstruction(int id, {InstructionStatus instructionStatus}) async {
-    if(!(await _persistanceService.getDataSendingState())) {
+  Future<Instruction> updateInstruction(int id, {InstructionStatus instructionStatus, String rejectReason}) async {
+    final connectivityStatus = await Connectivity().checkConnectivity();
+    if(!(await  _persistanceService.getDataSendingState()) || connectivityStatus == ConnectivityResult.none) {
       _instructionRequestService.save(id, instructionStatus);
       final instruction = (await _instructionsDbService.all(query: {'id': id})).first;
       final newInstructionJson = instruction.toJson();
@@ -98,7 +101,7 @@ class InstructionsService {
       return newInstruction;
     } else {
       _persistanceService.saveLastDataSendingDate(DateTime.now());
-      return await _apiService.updateInstruction(id, instructionStatus: instructionStatus);
+      return await _apiService.updateInstruction(id, instructionStatus: instructionStatus, rejectReason: rejectReason);
     }
   }
 

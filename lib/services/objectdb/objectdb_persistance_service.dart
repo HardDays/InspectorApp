@@ -1,11 +1,7 @@
-import 'package:inspector/model/dictionary_metadata.dart';
-import 'package:inspector/model/report.dart';
 import 'package:inspector/model/user.dart';
 import 'package:inspector/model/instruction.dart';
-import 'package:inspector/services/objectdb/objectdb_collection_service.dart';
 import 'package:inspector/services/objectdb/objectdb_service.dart';
 import 'package:inspector/services/persistance_service.dart';
-import 'package:intl/intl.dart';
 
 class ObjectDbPersistanceService extends ObjectDBService
     implements PersistanceService {
@@ -26,7 +22,7 @@ class ObjectDbPersistanceService extends ObjectDBService
         'key': key,
       });
       await db.insert({'key': key, 'value': value});
-      await db.tidy();
+      //await db.tidy();
     } catch (e) {
       print(e);
     }
@@ -58,7 +54,7 @@ class ObjectDbPersistanceService extends ObjectDBService
   Future<void> clearAllData() async {
     await init();
     await db.remove({});
-    await db.tidy();
+    //await db.tidy();
   }
 
   @override
@@ -69,7 +65,7 @@ class ObjectDbPersistanceService extends ObjectDBService
     await _removeKeyValue('token');
     await _removeKeyValue('usePin');
     await _removeKeyValue('dateForNextTry');
-    await db.tidy();
+    //await db.tidy();
   }
 
   @override
@@ -79,7 +75,7 @@ class ObjectDbPersistanceService extends ObjectDBService
 
   @override
   Future<bool> getFingerprintState() async {
-    return await _getKeyValue('fingerPrintState');
+    return await _getKeyValue('fingerPrintState') ?? false;
   }
 
   Future<DateTime> getInstructionsDate() async {
@@ -159,7 +155,7 @@ class ObjectDbPersistanceService extends ObjectDBService
 
   @override
   Future<void> saveFingerprintState(bool state) async {
-    await _saveKeyValue('fingerprintState', state);
+    await _saveKeyValue('fingerPrintState', state);
   }
 
   Future<void> saveInstructionSort(String value) async {
@@ -238,6 +234,16 @@ class ObjectDbPersistanceService extends ObjectDBService
   @override
   Future<void> saveUsePinState(bool state) async {
     await _saveKeyValue('usePin', state);
+  }
+
+  @override
+  Future<bool> useWebVersionOfVK() async {
+    return (await _getKeyValue('useWebVersionOfVK')) ?? true;
+  }
+
+  @override
+  Future<void> setUseWebVersionOfVk(bool state) async {
+    await _saveKeyValue('useWebVersionOfVK', state);
   }
 
    Future setReportNumber(int number) async {

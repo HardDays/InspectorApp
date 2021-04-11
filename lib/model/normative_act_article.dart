@@ -1,5 +1,3 @@
-import 'package:flutter/foundation.dart';
-
 class NormativeActArticle {
   final int id;
   final String name;

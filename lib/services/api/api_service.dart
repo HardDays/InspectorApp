@@ -1,15 +1,9 @@
-import 'package:inspector/model/address.dart';
-import 'package:inspector/model/area.dart';
-import 'package:inspector/model/district.dart';
 import 'package:inspector/model/instruction_status.dart';
 import 'package:inspector/model/report.dart';
-import 'package:inspector/model/special_object.dart';
-import 'package:inspector/model/street.dart';
+import 'package:inspector/model/report_status_info.dart';
 import 'package:inspector/providers/api_provider.dart';
 import 'package:inspector/providers/exceptions/parse_exception.dart';
 import 'package:inspector/model/instruction.dart';
-import 'package:inspector/model/instruction_status.dart';
-import 'dart:convert';
 
 class ApiService {
 
@@ -46,8 +40,8 @@ class ApiService {
     );
   }
   
-  Future <Instruction> updateInstruction(int id, {InstructionStatus instructionStatus}) async {
-    final data = await api.updateInstruction(id, instructionStatus: instructionStatus);
+  Future <Instruction> updateInstruction(int id, {InstructionStatus instructionStatus, String rejectReason}) async {
+    final data = await api.updateInstruction(id, instructionStatus: instructionStatus, rejectReason: rejectReason);
     return await _parse(
       ()=> Instruction.fromJson(data)
     );
@@ -62,4 +56,19 @@ class ApiService {
     );
   }
 
+  Future<Report> updateReport(Report report) async {
+    final data = await api.updateReport(report);
+    return await _parse(
+      ()=> Report.fromJson(data)
+    );
+  }
+
+   Future removeReport(Report report) async {
+    await api.removeReport(report);
+  }
+
+  Future<ReportStatusInfo> getReportStatusInfo(Report report) async => await _parse(
+    () async => ReportStatusInfo.fromJson(await api.getReportStatusInfo(report)),
+  );
+  
 }

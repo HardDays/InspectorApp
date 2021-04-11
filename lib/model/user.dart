@@ -31,6 +31,7 @@ class User {
         position: json['position'], 
       );
     }
+    return null;
   }
 
   Map<String, dynamic> toJson() {

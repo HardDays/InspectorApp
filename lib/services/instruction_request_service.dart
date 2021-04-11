@@ -39,7 +39,7 @@ class InstructionRequestService extends ObjectDBService {
         'key': key,
       });
       await db.insert({'key': key, 'value': value});
-      await db.tidy();
+      //await db.tidy();
     } catch (e) {
       print(e);
     }

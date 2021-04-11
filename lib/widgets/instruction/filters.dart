@@ -5,57 +5,85 @@ import 'package:inspector/blocs/instruction_filters/bloc.dart';
 import 'package:inspector/blocs/instruction_filters/states.dart';
 import 'package:inspector/blocs/instruction_filters/events.dart';
 import 'package:inspector/model/instruction.dart';
-import 'package:inspector/model/instruction_status.dart';
 import 'package:inspector/style/button.dart';
 import 'package:inspector/style/date_picker.dart';
 import 'package:inspector/style/select.dart';
 import 'package:inspector/style/text_field.dart';
 
-class InstructionFiltersWidget extends StatelessWidget {
+class InstructionFiltersWidget extends StatefulWidget {
 
   final InstructionFilters filters;
 
+
+  InstructionFiltersWidget(this.filters);
+
+  @override
+  _InstructionFiltersWidgetState createState() => _InstructionFiltersWidgetState();
+}
+
+class _InstructionFiltersWidgetState extends State<InstructionFiltersWidget> {
   TextEditingController _instructionNumController;
 
-  InstructionFiltersWidget(this.filters) {
-    _instructionNumController = TextEditingController(text: filters.instructionNum);
+  void initState() {
+    super.initState();
+    _instructionNumController = TextEditingController(text: widget.filters?.instructionNum);
+  }
+
+  void dispose() {
+    super.dispose();
+    _instructionNumController.dispose();
   }
 
   void _onFind(BuildContext context, InstructionFilters filters) {
-    final newFilters = InstructionFilters(
+    final newFilters = filters.copyWith(
+      instructionDateTo: filters.instructionDateTo,
+      instructionDateFrom: filters.instructionDateFrom,
+      checkDateTo: filters.checkDateTo,
+      checkDateFrom: filters.checkDateFrom,
       instructionNum: _instructionNumController.text,
-      checkDates: filters.checkDates,
-      instructionDates: filters.instructionDates,
-      instructionStatus: filters.instructionStatus
     );
     BlocProvider.of<InstructionFiltersBloc>(context).add(SaveEvent(newFilters));  
     Navigator.pop(context, newFilters);
   }
 
   void _onClear(BuildContext context) {
-    BlocProvider.of<InstructionFiltersBloc>(context).add(SaveEvent(InstructionFilters(instructionDates: [DateTime.now()], checkDates: [DateTime.now()])));  
+    _instructionNumController.clear();
+    BlocProvider.of<InstructionFiltersBloc>(context).add(
+      SaveEvent(
+        InstructionFilters(
+          instructionDateFrom: DateTime(DateTime.now().year), 
+          instructionDateTo: DateTime.now(),
+          checkDateFrom: DateTime(DateTime.now().year), 
+          checkDateTo: DateTime.now(),
+        ),
+      ),
+    );  
   }
 
   void _onStatus(BuildContext context, int status) {
     BlocProvider.of<InstructionFiltersBloc>(context).add(SetInstructionStatusEvent(status));  
   }
 
-  void _onCheckDates(BuildContext context, List<DateTime> dates) {
-    if (dates != null) {
-      BlocProvider.of<InstructionFiltersBloc>(context).add(SetCheckDatesEvent(dates)); 
-    } 
+  void _onInstructionDateFrom(BuildContext context, List<DateTime> dates) {
+    BlocProvider.of<InstructionFiltersBloc>(context).add(SetInstructionDateFromEvent(dates.isNotEmpty ? dates[0] : null)); 
   }
 
-  void _onInstructionDates(BuildContext context, List<DateTime> dates) {
-    if (dates != null) {
-      BlocProvider.of<InstructionFiltersBloc>(context).add(SetInstructionDatesEvent(dates));  
-    }
+  void _onInstructionDateTo(BuildContext context, List<DateTime> dates) {
+    BlocProvider.of<InstructionFiltersBloc>(context).add(SetInstructionDateToEvent(dates.isNotEmpty ? dates[0] : null));
+  }
+
+  void _onCheckDateFrom(BuildContext context, List<DateTime> dates) {
+    BlocProvider.of<InstructionFiltersBloc>(context).add(SetCheckDateFromEvent(dates.isNotEmpty ? dates[0] : null)); 
+  }
+
+  void _onCheckDateTo(BuildContext context, List<DateTime> dates) {
+    BlocProvider.of<InstructionFiltersBloc>(context).add(SetCheckDateToEvent(dates.isNotEmpty ? dates[0] : null));
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context)=> InstructionFiltersBloc(InstructionFiltersBlocState([], filters))..add(LoadEvent()),
+      create: (context)=> InstructionFiltersBloc(InstructionFiltersBlocState([], widget.filters))..add(LoadEvent()),
       child: BlocBuilder<InstructionFiltersBloc, InstructionFiltersBlocState>(
         builder: (context, state) {
           return Column(
@@ -91,19 +119,52 @@ class InstructionFiltersWidget extends StatelessWidget {
                   children: [
                     Flexible(
                       child: ProjectDatePicker(
-                        title: 'Дата поручения',
-                        hintText: 'Выберите дату или период',
-                        values: state.filters.instructionDates,
-                        onChanged: (dates)=> _onInstructionDates(context, dates),
+                        title: 'Дата поручения с',
+                        hintText: 'Выберите дату',
+                        singleDate: true,
+                        clearEnabled: true,
+                        values: [state.filters.instructionDateFrom],
+                        onChanged: (date) => _onInstructionDateFrom(context, date),
                       ),
                     ),
                     Padding(padding: const EdgeInsets.only(left: 35)),
                     Flexible(
                       child: ProjectDatePicker(
-                        title: 'Дата обследования',
-                        hintText: 'Выберите дату или период',
-                        values: state.filters.checkDates,
-                        onChanged: (dates)=> _onCheckDates(context, dates),
+                        title: 'Дата поручения по',
+                        hintText: 'Выберите дату',
+                        singleDate: true,
+                        clearEnabled: true,
+                        values: [state.filters.instructionDateTo],
+                        onChanged: (date) => _onInstructionDateTo(context, date),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+               Padding(
+                padding: const EdgeInsets.only(top: 18),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Flexible(
+                      child: ProjectDatePicker(
+                        title: 'Дата обследования с',
+                        hintText: 'Выберите дату',
+                        singleDate: true,
+                        clearEnabled: true,
+                        values: [state.filters.checkDateFrom],
+                        onChanged: (date) => _onCheckDateFrom(context, date),
+                      ),
+                    ),
+                    Padding(padding: const EdgeInsets.only(left: 35)),
+                    Flexible(
+                      child: ProjectDatePicker(
+                        title: 'Дата обследования по',
+                        hintText: 'Выберите дату',
+                        singleDate: true,
+                        clearEnabled: true,
+                        values: [state.filters.checkDateTo],
+                        onChanged: (date) => _onCheckDateTo(context, date),
                       ),
                     ),
                   ],
@@ -130,5 +191,4 @@ class InstructionFiltersWidget extends StatelessWidget {
       )
     );
   }
-
 }

@@ -1,5 +1,3 @@
-import 'package:inspector/model/instruction.dart';
-
 abstract class InstructionBlocEvent {}
 
 class FlushEvent extends InstructionBlocEvent {
@@ -17,6 +15,7 @@ class RefreshReportsEvent extends InstructionBlocEvent {
 
 class UpadteInstructionStatusEvent extends InstructionBlocEvent {
   final int status;
+  final String reason;
 
-  UpadteInstructionStatusEvent(this.status);
+  UpadteInstructionStatusEvent({this.status, this.reason});
 }

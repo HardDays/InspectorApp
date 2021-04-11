@@ -58,23 +58,25 @@ class InstructionListPageState extends State<InstructionListPage> with Automatic
   }
 
   Future _onFilter(BuildContext context, InstructionFilters filters) async {
-    final result = await showGeneralDialog(
-      context: context,
-      barrierDismissible: true,
-      transitionDuration: Duration(milliseconds: 100),
-      barrierLabel: MaterialLocalizations.of(context).dialogLabel,
-      barrierColor: Colors.transparent,
-      pageBuilder: (context, animation1, animation2) {
-        return ProjectTopDialog(
-          child: InstructionFiltersWidget(
-            filters
-          ),
-        );
-      },
-    );
+    if (filters != null) {
+      final result = await showGeneralDialog(
+        context: context,
+        barrierDismissible: true,
+        transitionDuration: Duration(milliseconds: 100),
+        barrierLabel: MaterialLocalizations.of(context).dialogLabel,
+        barrierColor: Colors.transparent,
+        pageBuilder: (context, animation1, animation2) {
+          return ProjectTopDialog(
+            child: InstructionFiltersWidget(
+              filters
+            ),
+          );
+        },
+      );
 
-    if (result != null) {
-      BlocProvider.of<InstructionListBloc>(context).add(FilterEvent(result));  
+      if (result != null) {
+        BlocProvider.of<InstructionListBloc>(context).add(FilterEvent(result));  
+      }
     }
   }
 

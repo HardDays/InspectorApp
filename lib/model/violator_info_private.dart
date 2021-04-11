@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:inspector/model/violator_address.dart';
 import 'package:inspector/model/violator_doc_type.dart';
 import 'dart:convert' as c;
@@ -76,24 +75,36 @@ class ViolatorInfoPrivate extends ViolatorInfo{
   }
 
   ViolatorInfoPrivate copyWith({
+    String phone,
+    String lastName,
+    String firstName,
+    String patronym,
+    String inn,
+    String snils,
     ViolatorDocumentType docType,
-    ViolatorAddress registrationAddress
+    String docSeries,
+    String docNumber,
+    int gender,
+    DateTime birthDate,
+    String birthPlace,
+    String registrationAddressString,
+    ViolatorAddress registrationAddress,
   }) {
     return ViolatorInfoPrivate(
       id: id,
-      phone: phone,
-      lastName: lastName,
-      firstName: firstName,
-      patronym: patronym,
-      inn: inn,
-      snils: snils,
+      phone: phone ?? this.phone,
+      lastName: lastName ?? this.lastName,
+      firstName: firstName ?? this.firstName,
+      patronym: patronym ?? this.patronym,
+      inn: inn ?? this.inn,
+      snils: snils ?? this.snils,
       docType: docType ?? this.docType,
-      docSeries: docSeries,
-      docNumber: docNumber,
-      gender: gender,
-      birthDate: birthDate,
-      birthPlace: birthPlace,
-      registrationAddressString: registrationAddressString,
+      docSeries: docSeries ?? this.docSeries,
+      docNumber: docNumber ?? this.docNumber,
+      gender: gender ?? this.gender,
+      birthDate: birthDate ?? this.birthDate,
+      birthPlace: birthPlace ?? this.birthPlace,
+      registrationAddressString: registrationAddressString ?? this.registrationAddressString,
       registrationAddress: registrationAddress ?? this.registrationAddress,
     );
   }
@@ -124,7 +135,7 @@ class ViolatorInfoPrivate extends ViolatorInfo{
 
   @override
   String toString() {
-    final data = [name, inn != null ? 'ИНН $inn' : null];
+    final data = [inn != null ? 'ИНН $inn' : null, name, docSeries != null && docNumber != null ? '($docSeries $docNumber)' : null];
     return data.where((e)=> e !=null).join(' ');
   }
 

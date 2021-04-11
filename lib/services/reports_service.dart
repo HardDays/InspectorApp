@@ -1,8 +1,6 @@
 import 'package:inspector/model/report.dart';
-import 'package:inspector/providers/exceptions/api_exception.dart';
+import 'package:inspector/model/report_status_info.dart';
 import 'package:inspector/services/api/api_service.dart';
-import 'package:inspector/services/mixins/data_sending_configuration_mixin.dart';
-import 'package:inspector/services/objectdb/objectdb_collection_service.dart';
 import 'package:inspector/services/objectdb/objectdb_persistance_service.dart';
 import 'package:inspector/services/sqlite/sqlite_reports_service.dart';
 
@@ -40,14 +38,17 @@ class ReportsService {
     return ready.where((element) => element.isReady).toList();
   }
 
+  void updateLastNumber() async {
+    final number = await _persistanceService.getReportNumber();
+    await _persistanceService.setReportNumber(number + 1);
+  }
+
   Future<Report> create(Report report, {String error, bool local = false}) async {
     // для тестирования
     if ((local || !(await _persistanceService.getDataSendingState()))) {
-      //await _reportsDbService.save({'instructionId': report.instructionId, 'checkId': report.checkId}, report);
       await _reportsDbService.save(report, error: error);
-      final number = await _persistanceService.getReportNumber();
-      await _persistanceService.setReportNumber(number + 1);
-      return report;
+      return (await _reportsDbService.all(query: {'localId': '"${report.localId}"'})).first;
+      
     } else {
       return await send(report);
     }
@@ -55,17 +56,29 @@ class ReportsService {
 
   Future<Report> send(Report report) async {
     await _persistanceService.saveLastDataSendingDate(DateTime.now());
-    final res = await _apiService.createReport(report);
-    await removeLocal(report);
+    Report res;
+    if (report.id == null) {
+      res = await _apiService.createReport(report);
+    } else {
+      res = await _apiService.updateReport(report);
+    }
+     await _reportsDbService.removeLocal(report);
     return res;
   }
 
-  Future removeLocal(Report report) async {
+  Future remove(Report report) async {
+    if (report.id != null) {
+      await _apiService.removeReport(report);
+    }
     await _reportsDbService.removeLocal(report);
   }
 
-  Future<List<Report>> reportErrors() async {
+  Future<List<Report>> reportErrors(int userId) async {
    //return [];
-    return await _reportsDbService.errors();
+    return await _reportsDbService.errors(userId);
   }
+
+  Future<ReportStatusInfo> getReportStatusInfo(Report report) async 
+    => await _apiService.getReportStatusInfo(report);
+  
 }
