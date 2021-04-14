@@ -135,9 +135,11 @@ class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
     }
   }
 
-  Stream<ControlListBlocState> onRegisterPerformControlEvent(RegisterPerformControlEvent event) async* {
-    if(!_checkIfCanCreatePerformControl(event.performControl)) {
-      _notificationBloc.add(OkDialogNotificationEvent('На ${DateFormat("dd.MM.yyyy").format(DateTime.now())} уже зарегистрирован контроль устранения'));
+  Stream<ControlListBlocState> onRegisterPerformControlEvent(
+      RegisterPerformControlEvent event) async* {
+    if (!_checkIfCanCreatePerformControl(event.performControl)) {
+      _notificationBloc.add(OkDialogNotificationEvent(
+          'На ${DateFormat("dd.MM.yyyy").format(DateTime.now())} уже зарегистрирован контроль устранения'));
     } else {
       try {
         await _departmentControlService.registerPerformControl(
@@ -207,25 +209,32 @@ class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
   }
 
   Stream<ControlListBlocState> _onOpenInMapEvent(OpenInMapEvent event) async* {
-    if (event.object.geometry == null) {
+    if (event.object.geometry == null || event.object.geometry.isEmpty) {
       _notificationBloc.add(SnackBarNotificationEvent(
           'Просмотр этого объекта на карте недоступен'));
     } else {
+      _location = Location(
+        latitude: event.object.geometry.first.points.first.x,
+        longitude: event.object.geometry.first.points.first.y,
+      );
       yield state.copyWith(
         showMap: true,
-        mapState: ControlObjectsMapState(
+        mapState: state.mapState.copyWith(
           selectedObject: event.object,
         ),
       );
     }
   }
 
-  Stream<ControlListBlocState> _onChangeShowMapEvent(event) async* {
-    final userLocation = await _locationService.actualLocation;
+  Stream<ControlListBlocState> _onChangeShowMapEvent(ChangeShowMapEvent event) async* {
+    Location userLocation;
+    if(event.showMap)
+      userLocation = await _locationService.actualLocation;
     yield state.copyWith(
       showMap: event.showMap,
       mapState: state.mapState.copyWith(
         userLocation: userLocation,
+        selectedObject: null,
       ),
     );
   }

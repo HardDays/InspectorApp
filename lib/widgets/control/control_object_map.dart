@@ -36,7 +36,6 @@ class ControlObjectMap extends StatelessWidget {
     this.location,
     this.selectedObject,
     this.controlObjects,
-    this.mapController,
     @required this.selectObject,
     @required this.openControlObject,
     @required this.hasNotViolations,
@@ -44,7 +43,7 @@ class ControlObjectMap extends StatelessWidget {
     this.userLocation,
   }) : super(key: key);
 
-  final MapController mapController;
+  final MapController mapController = MapController();
   final Location location;
   final ControlObject selectedObject;
   final List<ControlObject> controlObjects;
@@ -246,7 +245,7 @@ class ControlObjectMap extends StatelessWidget {
                       builder: (context) => Container(
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: ProjectColors.blue,
+                          color: ProjectColors.cyan,
                         ),
                       ),
                     ),
@@ -255,7 +254,7 @@ class ControlObjectMap extends StatelessWidget {
                 ),
             ].where((element) => element != null).toList(),
           ),
-          if (selectedObject != null)
+          if (selectedObject != null && selectedObject.geometry != null && selectedObject.geometry.isNotEmpty)
             Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [

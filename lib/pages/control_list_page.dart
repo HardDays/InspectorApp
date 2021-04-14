@@ -44,8 +44,6 @@ class _ControlListPageState extends State<ControlListPage> {
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       new GlobalKey<RefreshIndicatorState>();
 
-  final MapController _mapController = MapController();
-
   @override
   Widget build(BuildContext context) {
     return BlocListener<ControlBackgroundServiceBloc,
@@ -166,7 +164,6 @@ class _ControlListPageState extends State<ControlListPage> {
                 selectObject: _onSelectControlObject(context),
                 hasNotViolations: _onHasNotViolations(context),
                 hasViolation: _onHasViolations(context),
-                mapController: _mapController,
                 userLocation: state.mapState.userLocation,
               ),
               loadingListState: (loadingListState) => Center(
@@ -180,7 +177,6 @@ class _ControlListPageState extends State<ControlListPage> {
                 selectObject: _onSelectControlObject(context),
                 hasNotViolations: _onHasNotViolations(context),
                 hasViolation: _onHasViolations(context),
-                mapController: _mapController,
                 userLocation: state.mapState.userLocation,
               ),
             ),
