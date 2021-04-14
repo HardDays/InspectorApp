@@ -13,13 +13,18 @@ import 'package:inspector/model/department_control/object_element.dart';
 import 'package:inspector/model/department_control/violation_additional_feature.dart';
 import 'package:inspector/model/department_control/violation_classification.dart';
 import 'package:inspector/model/department_control/violation_name.dart';
+import 'package:inspector/model/street.dart';
+import 'package:inspector/services/dictionary_service.dart';
+import 'package:inspector/services/geo_service.dart';
 import 'package:inspector/services/location/location_service.dart';
 import 'package:inspector/extensions.dart';
+import 'package:inspector/services/network_status_service/network_status.dart';
+import 'package:inspector/services/network_status_service/network_status_service.dart';
 
 class ControlViolationFormBloc
     extends Bloc<ControlViolationFormEvent, CotnrolViolationFormState> {
-  ControlViolationFormBloc(
-      DCViolation initialViolation, this.onConfirm, this.locationService,
+  ControlViolationFormBloc(DCViolation initialViolation, this.onConfirm,
+      this.locationService, this.dictionaryService, this.networkStatusService,
       {this.notificationBloc})
       : super(
           CotnrolViolationFormState(
@@ -56,7 +61,12 @@ class ControlViolationFormBloc
   }
   final NotificationBloc notificationBloc;
   final LocationService locationService;
+  final DictionaryService dictionaryService;
   final void Function(DCViolation) onConfirm;
+  final NetworkStatusService networkStatusService;
+
+  final _geoService = GeoService(); // TODO: fix it
+
   DCViolation _violation;
 
   @override
@@ -160,8 +170,8 @@ class ControlViolationFormBloc
           final newState = _validate(state);
           if (newState.isValid()) {
             if (newState.photos.isEmpty) {
-              notificationBloc
-                .add(SnackBarNotificationEvent('Необходимо загрузить хотя бы одну фотографию'));
+              notificationBloc.add(SnackBarNotificationEvent(
+                  'Необходимо загрузить хотя бы одну фотографию'));
             } else {
               onConfirm(
                 _violation.copyWith(
@@ -225,10 +235,60 @@ class ControlViolationFormBloc
 
   Stream<CotnrolViolationFormState> _onSetUseGeoLocationForAddressEvent(
       SetUseGeoLocationForAddressEvent event) async* {
-    //yield (state.copyWith(setAddressByGeoLocation: event.value));
-    notificationBloc
-        .add(SnackBarNotificationEvent('Этот функционал пока не реализован'));
+    if ((await networkStatusService.actual).connectionStatus !=
+        ConnectionStatus.online) {
+      notificationBloc.add(SnackBarNotificationEvent(
+          'Невозможно определить адрес по местоположению без сети Интернет'));
+    } else {
+      yield* await locationService.actualLocation.then(
+        (l) => l.map<Stream<CotnrolViolationFormState>>(
+          (location) async* {
+            final res = await _geoService.reverseGeocode(
+                location.latitude, location.longitude);
+            Address address;
+            if (res.street != null) {
+              String street = res.street;
+              final streets = <Street>[];
+              while (streets.isEmpty) {
+                final r = await dictionaryService.getStreets(name: res.street);
+                streets.addAll(r);
+                street = street.substring(0, street.lastIndexOf(' '));
+              }
+              if (res.house != null) {
+                final addresses = await dictionaryService.getAddresses(
+                    streetId: streets.first.id);
+                if (addresses.isNotEmpty) {
+                  address = addresses[0];
+                }
+              }
+              if (address == null) {
+                address = (await dictionaryService.getAddresses(
+                    streetId: streets.first.id))[0];
+              }
+            }
+            if (address == null) {
+              notificationBloc.add(SnackBarNotificationEvent(
+                  'Не удалось определить адрес по местоположению'));
+            } else {
+              notificationBloc
+                  .add(SnackBarNotificationEvent('Проверьте адрес'));
+            }
+            yield state.copyWith(
+                setAddressByGeoLocation: event.value,
+                address: address ?? state.address);
+          },
+          noLocationProvided: (_) async* {
+            notificationBloc.add(SnackBarNotificationEvent(
+                'Не удалось определить местоположение'));
+          },
+        ),
+      );
+    }
   }
+
+  //yield (state.copyWith(setAddressByGeoLocation: event.value));
+  // notificationBloc
+  //     .add(SnackBarNotificationEvent('Этот функционал пока не реализован'));
 
   Stream<CotnrolViolationFormState> _onSetDescriptionEvent(
       SetDescriptionEvent event) async* {
