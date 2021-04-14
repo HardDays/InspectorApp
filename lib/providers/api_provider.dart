@@ -120,6 +120,7 @@ class ApiProvider {
           );
         } else {  
           print(ex.response.request.uri);
+          print(ex.response.data);
           throw ServerException(
             ex.response.statusCode,
             ex.response.data?.toString(),
