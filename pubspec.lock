@@ -427,13 +427,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.12.0"
-  full_screen_image:
-    dependency: "direct main"
-    description:
-      name: full_screen_image
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.2"
   geodesy:
     dependency: "direct main"
     description:
@@ -714,6 +707,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.0.2"
+  photo_view:
+    dependency: "direct main"
+    description:
+      name: photo_view
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.11.1"
   platform:
     dependency: transitive
     description:

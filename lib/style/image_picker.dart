@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:inspector/style/button.dart';
@@ -10,7 +11,7 @@ import 'package:inspector/style/text_style.dart';
 import 'package:inspector/style/colors.dart';
 import 'package:image/image.dart' as img;
 import 'package:image_picker/image_picker.dart' as p;
-import 'package:full_screen_image/full_screen_image.dart';
+import 'package:photo_view/photo_view.dart';
 
 // class ImagePicker extends StatefulWidget {
 
@@ -21,7 +22,6 @@ import 'package:full_screen_image/full_screen_image.dart';
 //   @override
 //   ImagePickerState createState() => ImagePickerState();
 // }
-
 
 class ImagePicker extends StatelessWidget {
   final bool enabled;
@@ -36,8 +36,8 @@ class ImagePicker extends StatelessWidget {
   final picker = p.ImagePicker();
 
   ImagePicker({
-    this.onPicked, 
-    this.onRemoved, 
+    this.onPicked,
+    this.onRemoved,
     this.onRotated,
     this.names,
     this.enabled = true,
@@ -45,7 +45,6 @@ class ImagePicker extends StatelessWidget {
     this.margin = const EdgeInsets.only(top: 20),
     this.buttonTitle = 'Добавить фото',
   });
-
 
   Future<p.ImageSource> _showViolationDialog(BuildContext context) {
     return showDialog(
@@ -55,14 +54,12 @@ class ImagePicker extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             ProjectButton.builtFlatButton('Галерея',
-              onPressed: ()=> Navigator.pop(context, p.ImageSource.gallery)
-            ),
+                onPressed: () => Navigator.pop(context, p.ImageSource.gallery)),
             Padding(
               padding: const EdgeInsets.only(top: 20),
             ),
             ProjectButton.buildOutlineButton('Камера',
-              onPressed: ()=> Navigator.pop(context, p.ImageSource.camera)
-            ),
+                onPressed: () => Navigator.pop(context, p.ImageSource.camera)),
           ],
         ),
       ),
@@ -87,8 +84,8 @@ class ImagePicker extends StatelessWidget {
       final rotated = img.copyRotate(image, angle);
       final result = img.encodeNamedImage(rotated, names[index]);
       if (result != null && onRotated != null) {
-          onRotated(index, result);
-        }
+        onRotated(index, result);
+      }
     }
   }
 
@@ -104,7 +101,7 @@ class ImagePicker extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: margin,
-        child: Column(
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
@@ -112,7 +109,8 @@ class ImagePicker extends StatelessWidget {
             child: Wrap(
               spacing: 10,
               //alignment: WrapAlignment.spaceBetween,
-              children: List.generate(images.length, 
+              children: List.generate(
+                images.length,
                 (index) => Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -122,16 +120,18 @@ class ImagePicker extends StatelessWidget {
                       margin: const EdgeInsets.only(bottom: 15),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children:[
+                        children: [
                           _buildRotateLeft(index),
                           _buildDelete(index),
                           _buildRotateRight(index),
-                        ]
+                        ],
                       ),
                     ),
-                  ]
+                  ],
                 ),
-              )..add((images.length - 2) % 3 == 0 ? SizedBox(width: 210) : Container()),
+              )..add((images.length - 2) % 3 == 0
+                  ? SizedBox(width: 210)
+                  : Container()),
             ),
           ),
           _buildAdd(context),
@@ -141,7 +141,23 @@ class ImagePicker extends StatelessWidget {
   }
 
   Widget _buildImage(int index) {
-    return FullScreenWidget(
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+          ExtendedNavigator.root.context,
+          MaterialPageRoute(
+            builder: (_) {
+              return Scaffold(
+                body: Center(
+                  child: PhotoView(
+                    imageProvider: MemoryImage(images[index]),
+                  ),
+                ),
+              );
+            },
+          ),
+        );
+      },
       child: Image(
         image: MemoryImage(images[index]),
         width: 210,
@@ -153,10 +169,11 @@ class ImagePicker extends StatelessWidget {
 
   Widget _buildRotateLeft(int index) {
     return InkWell(
-      onTap: ()=> _onRotate(index, -90),
+      onTap: () => _onRotate(index, -90),
       child: Padding(
         padding: EdgeInsets.only(top: 5, bottom: 5, right: 5),
-        child: Icon(Icons.rotate_left,
+        child: Icon(
+          Icons.rotate_left,
           color: ProjectColors.blue,
         ),
       ),
@@ -165,10 +182,11 @@ class ImagePicker extends StatelessWidget {
 
   Widget _buildRotateRight(int index) {
     return InkWell(
-      onTap: ()=> _onRotate(index, 90),
+      onTap: () => _onRotate(index, 90),
       child: Padding(
         padding: EdgeInsets.only(top: 5, bottom: 5, left: 5),
-        child: Icon(Icons.rotate_right,
+        child: Icon(
+          Icons.rotate_right,
           color: ProjectColors.blue,
         ),
       ),
@@ -180,25 +198,23 @@ class ImagePicker extends StatelessWidget {
       alignment: Alignment.topLeft,
       padding: const EdgeInsets.only(bottom: 2),
       child: ProjectButton.buildOutlineButton(buttonTitle,
-        icon: ProjectIcons.camera2Icon(
-          color: enabled ? ProjectColors.blue : ProjectColors.lightBlue
-        ),
-        onPressed: enabled ? ()=> _onPick(context) : null,
-        style: ProjectTextStyles.subTitle
-      ),
+          icon: ProjectIcons.camera2Icon(
+              color: enabled ? ProjectColors.blue : ProjectColors.lightBlue),
+          onPressed: enabled ? () => _onPick(context) : null,
+          style: ProjectTextStyles.subTitle),
     );
   }
 
   Widget _buildDelete(int index) {
     return InkWell(
-      onTap: ()=> _onDelete(index),
+      onTap: () => _onDelete(index),
       child: Padding(
         padding: const EdgeInsets.only(top: 7, bottom: 7),
-        child: Text('Удалить',
+        child: Text(
+          'Удалить',
           style: ProjectTextStyles.base.apply(color: ProjectColors.red),
         ),
       ),
     );
   }
-  
 }
