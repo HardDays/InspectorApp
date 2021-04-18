@@ -11,6 +11,8 @@ abstract class ViolationName implements  _$ViolationName {
   const factory ViolationName({
     int id,
     String name,
+    String violationFullName,
+    int externalId,
   }) = _ViolationName;
 
   factory ViolationName.fromJson(Map<String, dynamic> json) =>

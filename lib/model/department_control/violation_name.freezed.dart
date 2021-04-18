@@ -17,10 +17,13 @@ class _$ViolationNameTearOff {
   const _$ViolationNameTearOff();
 
 // ignore: unused_element
-  _ViolationName call({int id, String name}) {
+  _ViolationName call(
+      {int id, String name, String violationFullName, int externalId}) {
     return _ViolationName(
       id: id,
       name: name,
+      violationFullName: violationFullName,
+      externalId: externalId,
     );
   }
 
@@ -38,6 +41,8 @@ const $ViolationName = _$ViolationNameTearOff();
 mixin _$ViolationName {
   int get id;
   String get name;
+  String get violationFullName;
+  int get externalId;
 
   Map<String, dynamic> toJson();
   @JsonKey(ignore: true)
@@ -49,7 +54,7 @@ abstract class $ViolationNameCopyWith<$Res> {
   factory $ViolationNameCopyWith(
           ViolationName value, $Res Function(ViolationName) then) =
       _$ViolationNameCopyWithImpl<$Res>;
-  $Res call({int id, String name});
+  $Res call({int id, String name, String violationFullName, int externalId});
 }
 
 /// @nodoc
@@ -65,10 +70,16 @@ class _$ViolationNameCopyWithImpl<$Res>
   $Res call({
     Object id = freezed,
     Object name = freezed,
+    Object violationFullName = freezed,
+    Object externalId = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed ? _value.id : id as int,
       name: name == freezed ? _value.name : name as String,
+      violationFullName: violationFullName == freezed
+          ? _value.violationFullName
+          : violationFullName as String,
+      externalId: externalId == freezed ? _value.externalId : externalId as int,
     ));
   }
 }
@@ -80,7 +91,7 @@ abstract class _$ViolationNameCopyWith<$Res>
           _ViolationName value, $Res Function(_ViolationName) then) =
       __$ViolationNameCopyWithImpl<$Res>;
   @override
-  $Res call({int id, String name});
+  $Res call({int id, String name, String violationFullName, int externalId});
 }
 
 /// @nodoc
@@ -98,10 +109,16 @@ class __$ViolationNameCopyWithImpl<$Res>
   $Res call({
     Object id = freezed,
     Object name = freezed,
+    Object violationFullName = freezed,
+    Object externalId = freezed,
   }) {
     return _then(_ViolationName(
       id: id == freezed ? _value.id : id as int,
       name: name == freezed ? _value.name : name as String,
+      violationFullName: violationFullName == freezed
+          ? _value.violationFullName
+          : violationFullName as String,
+      externalId: externalId == freezed ? _value.externalId : externalId as int,
     ));
   }
 }
@@ -110,7 +127,9 @@ class __$ViolationNameCopyWithImpl<$Res>
 
 /// @nodoc
 class _$_ViolationName extends _ViolationName {
-  const _$_ViolationName({this.id, this.name}) : super._();
+  const _$_ViolationName(
+      {this.id, this.name, this.violationFullName, this.externalId})
+      : super._();
 
   factory _$_ViolationName.fromJson(Map<String, dynamic> json) =>
       _$_$_ViolationNameFromJson(json);
@@ -119,10 +138,14 @@ class _$_ViolationName extends _ViolationName {
   final int id;
   @override
   final String name;
+  @override
+  final String violationFullName;
+  @override
+  final int externalId;
 
   @override
   String toString() {
-    return 'ViolationName(id: $id, name: $name)';
+    return 'ViolationName(id: $id, name: $name, violationFullName: $violationFullName, externalId: $externalId)';
   }
 
   @override
@@ -132,14 +155,22 @@ class _$_ViolationName extends _ViolationName {
             (identical(other.id, id) ||
                 const DeepCollectionEquality().equals(other.id, id)) &&
             (identical(other.name, name) ||
-                const DeepCollectionEquality().equals(other.name, name)));
+                const DeepCollectionEquality().equals(other.name, name)) &&
+            (identical(other.violationFullName, violationFullName) ||
+                const DeepCollectionEquality()
+                    .equals(other.violationFullName, violationFullName)) &&
+            (identical(other.externalId, externalId) ||
+                const DeepCollectionEquality()
+                    .equals(other.externalId, externalId)));
   }
 
   @override
   int get hashCode =>
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(id) ^
-      const DeepCollectionEquality().hash(name);
+      const DeepCollectionEquality().hash(name) ^
+      const DeepCollectionEquality().hash(violationFullName) ^
+      const DeepCollectionEquality().hash(externalId);
 
   @JsonKey(ignore: true)
   @override
@@ -154,7 +185,11 @@ class _$_ViolationName extends _ViolationName {
 
 abstract class _ViolationName extends ViolationName {
   const _ViolationName._() : super._();
-  const factory _ViolationName({int id, String name}) = _$_ViolationName;
+  const factory _ViolationName(
+      {int id,
+      String name,
+      String violationFullName,
+      int externalId}) = _$_ViolationName;
 
   factory _ViolationName.fromJson(Map<String, dynamic> json) =
       _$_ViolationName.fromJson;
@@ -163,6 +198,10 @@ abstract class _ViolationName extends ViolationName {
   int get id;
   @override
   String get name;
+  @override
+  String get violationFullName;
+  @override
+  int get externalId;
   @override
   @JsonKey(ignore: true)
   _$ViolationNameCopyWith<_ViolationName> get copyWith;

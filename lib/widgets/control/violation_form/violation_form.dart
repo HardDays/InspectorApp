@@ -187,7 +187,7 @@ class _ViolationFormWidgetState extends State<ViolationFormWidget> {
                     hintText: 'Введите данные',
                     enabled: state.objectElement.id != null,
                     formatter: (value) =>
-                        '${value.id?.toString()} ${value.violationName.name} ${value.violationType?.name} ${value.violationKind?.name}',
+                        value.violationName.violationFullName,
                     autoValidate: true,
                     validator: (_) => state.violationClassificationErrorString,
                     onChanged: (value) =>
@@ -216,7 +216,7 @@ class _ViolationFormWidgetState extends State<ViolationFormWidget> {
                   hintText: 'Введите данные',
                   enabled: state.objectElement.id != null,
                   formatter: (value) =>
-                      '${value.id?.toString()} ${value.violationName.name} ${value.violationType?.name} ${value.violationKind?.name}',
+                      value.violationName.violationFullName,
                   validator: (_) =>
                       state.violationClassificationErrorStringNoEkn,
                   autoValidate: true,
