@@ -378,8 +378,8 @@ class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
     ControlObject object, {
     bool violationExists,
   }) async* {
-    _notificationBloc.add(
-        SnackBarNotificationEvent('Проверка на наличие связанных нарушений'));
+    // _notificationBloc.add(
+    //     SnackBarNotificationEvent('Проверка на наличие связанных нарушений'));
     final checkResult = await _departmentControlService.checkIfViolationsExists(
       object,
       _networkStatus,
