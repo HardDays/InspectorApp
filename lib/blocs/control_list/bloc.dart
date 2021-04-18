@@ -201,6 +201,9 @@ class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
           print(e.message);
           print(e.details);
           yield* (_onApiException(e));
+        } on Exception catch (e) {
+          print(e);
+          _notificationBloc.add(SnackBarNotificationEvent(e.toString()));
         }
       },
       event.object,
@@ -380,16 +383,23 @@ class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
   }) async* {
     // _notificationBloc.add(
     //     SnackBarNotificationEvent('Проверка на наличие связанных нарушений'));
-    final checkResult = await _departmentControlService.checkIfViolationsExists(
-      object,
-      _networkStatus,
-      violationExists: violationExists,
-    );
-    if (!checkResult) {
-      yield* f();
-    } else {
-      _notificationBloc.add(OkDialogNotificationEvent(
-          'У объекта присутствует связанное нарушение на текущую дату'));
+    try {
+      final checkResult = await _departmentControlService.checkIfViolationsExists(
+        object,
+        _networkStatus,
+        violationExists: violationExists,
+      );
+      if (!checkResult) {
+      // if(true) {
+        yield* f();
+      } else {
+        _notificationBloc.add(OkDialogNotificationEvent(
+            'У объекта присутствует связанное нарушение на текущую дату'));
+      }
+    } on ApiException catch (e) {
+      yield* _onApiException(e);
+    } on Exception catch (e) {
+      print(e);
     }
   }
 
