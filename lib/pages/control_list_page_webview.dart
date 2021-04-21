@@ -7,7 +7,7 @@ class ControlListPageWebView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return WebviewScaffold(
-      url: 'https://oati-app.fors.ru/oati-insp-mobile',
+      url: 'https://eis-oati.mos.ru/oati-insp-mobile',
       ignoreSSLErrors: true,
     );
   }
