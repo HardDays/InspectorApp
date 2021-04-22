@@ -83,7 +83,7 @@ class _ViolationFormWidgetState extends State<ViolationFormWidget> {
                                 .setUseGeoLocationForAddressEvent(value)),
                   ),
                   Text(
-                    'Определить адрес по местоположению',
+                    'Рядом со мной',
                     style: ProjectTextStyles.base.apply(
                       color: ProjectColors.black,
                     ),
@@ -135,7 +135,7 @@ class _ViolationFormWidgetState extends State<ViolationFormWidget> {
                     : null,
                 child: IgnorePointer(
                   child: ProjectTextField(
-                    title: 'Адрес',
+                    title: 'Адрес нарушения',
                     hintText: 'Выберите значение',
                     controller: _addressController,
                     validator: (_) => state.adressErrorString,
