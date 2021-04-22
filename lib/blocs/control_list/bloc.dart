@@ -23,6 +23,7 @@ class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
   static const pageCapacity = 10;
 
   final LocationService _locationService;
+  StreamSubscription<Location> _locationStreamSubscription;
   StreamSubscription<NetworkStatus> _networkStatusStreamSubscription;
 
   final DepartmentControlService _departmentControlService;
@@ -57,6 +58,9 @@ class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
         networkStatusService.listenNetworkStatus.listen((value) {
       _networkStatus = value;
       add(ControlListBlocEvent.changeNetworkStatusEvent(value));
+    });
+    _locationStreamSubscription = _locationService.subscribeToLocation.listen((location) {
+      _location = location;
     });
   }
 
@@ -230,13 +234,10 @@ class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
   }
 
   Stream<ControlListBlocState> _onChangeShowMapEvent(ChangeShowMapEvent event) async* {
-    Location userLocation;
-    if(event.showMap)
-      userLocation = await _locationService.actualLocation;
     yield state.copyWith(
       showMap: event.showMap,
       mapState: state.mapState.copyWith(
-        userLocation: userLocation,
+        userLocation: this.location,
         selectedObject: null,
       ),
     );
@@ -283,10 +284,9 @@ class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
     if (_networkStatus == null) {
       _networkStatus = await networkStatusService.actual;
     }
-    _location = await _locationService.actualLocation;
     _objects = await _departmentControlService.find(
         //Location(latitude: 55.74, longitude: 37.63),
-        _location,
+        this.location,
         _networkStatus,
         state.filtersState,
         state.sortState,
@@ -354,7 +354,7 @@ class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
   Stream<ControlListBlocState> _onLoadNextPageEvent(
       LoadNextPageControlListEvent event) async* {
     final _newObjects = await _departmentControlService.find(
-        _location,
+        this.location,
         _networkStatus,
         state.filtersState,
         state.sortState,
@@ -374,7 +374,7 @@ class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
     }
   }
 
-  Location get location => _location;
+  Location get location => _location ?? Location.noLocationProvided();
 
   Stream<ControlListBlocState> _checkIfThereAreViolations(
     Stream<ControlListBlocState> Function() f,
@@ -414,5 +414,6 @@ class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
   Future<void> close() async {
     await super.close();
     _networkStatusStreamSubscription.cancel();
+    _locationStreamSubscription.cancel();
   }
 }

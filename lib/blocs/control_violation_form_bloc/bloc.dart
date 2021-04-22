@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,6 +17,7 @@ import 'package:inspector/model/department_control/violation_name.dart';
 import 'package:inspector/model/street.dart';
 import 'package:inspector/services/dictionary_service.dart';
 import 'package:inspector/services/geo_service.dart';
+import 'package:inspector/services/location/location.dart';
 import 'package:inspector/services/location/location_service.dart';
 import 'package:inspector/extensions.dart';
 import 'package:inspector/services/network_status_service/network_status.dart';
@@ -58,6 +60,10 @@ class ControlViolationFormBloc
           ),
         ) {
     _violation = initialViolation ?? DCViolation();
+    _locationStreamSubscription =
+        locationService.subscribeToLocation.listen((location) {
+      _location = location;
+    });
   }
   final NotificationBloc notificationBloc;
   final LocationService locationService;
@@ -68,6 +74,9 @@ class ControlViolationFormBloc
   final _geoService = GeoService(); // TODO: fix it
 
   DCViolation _violation;
+
+  Location _location;
+  StreamSubscription<Location> _locationStreamSubscription;
 
   @override
   Stream<CotnrolViolationFormState> mapEventToState(
@@ -87,7 +96,7 @@ class ControlViolationFormBloc
             _onSetViolationAdditionalFeatureStringEvent,
         setUseGeoLocationForAddressEvent: _onSetUseGeoLocationForAddressEvent,
         addPhotoEvent: (event) async* {
-          final location = await locationService.actualLocation;
+          final location = await this.location;
           yield (state.copyWith(
             photos: List.from(state.photos)
               ..add(
@@ -240,48 +249,45 @@ class ControlViolationFormBloc
       notificationBloc.add(SnackBarNotificationEvent(
           'Невозможно определить адрес по местоположению без сети Интернет'));
     } else {
-      yield* await locationService.actualLocation.then(
-        (l) => l.map<Stream<CotnrolViolationFormState>>(
-          (location) async* {
-            final res = await _geoService.reverseGeocode(
-                location.latitude, location.longitude);
-            Address address;
-            if (res.street != null) {
-              String street = res.street;
-              final streets = <Street>[];
-              while (streets.isEmpty) {
-                final r = await dictionaryService.getStreets(name: res.street);
-                streets.addAll(r);
-                street = street.substring(0, street.lastIndexOf(' '));
-              }
-              if (res.house != null) {
-                final addresses = await dictionaryService.getAddresses(
-                    streetId: streets.first.id);
-                if (addresses.isNotEmpty) {
-                  address = addresses[0];
-                }
-              }
-              if (address == null) {
-                address = (await dictionaryService.getAddresses(
-                    streetId: streets.first.id))[0];
+      yield* location.map<Stream<CotnrolViolationFormState>>(
+        (location) async* {
+          final res = await _geoService.reverseGeocode(
+              location.latitude, location.longitude);
+          Address address;
+          if (res.street != null) {
+            String street = res.street;
+            final streets = <Street>[];
+            while (streets.isEmpty) {
+              final r = await dictionaryService.getStreets(name: res.street);
+              streets.addAll(r);
+              street = street.substring(0, street.lastIndexOf(' '));
+            }
+            if (res.house != null) {
+              final addresses = await dictionaryService.getAddresses(
+                  streetId: streets.first.id);
+              if (addresses.isNotEmpty) {
+                address = addresses[0];
               }
             }
             if (address == null) {
-              notificationBloc.add(SnackBarNotificationEvent(
-                  'Не удалось определить адрес по местоположению'));
-            } else {
-              notificationBloc
-                  .add(SnackBarNotificationEvent('Проверьте адрес'));
+              address = (await dictionaryService.getAddresses(
+                  streetId: streets.first.id))[0];
             }
-            yield state.copyWith(
-                setAddressByGeoLocation: event.value,
-                address: address ?? state.address);
-          },
-          noLocationProvided: (_) async* {
+          }
+          if (address == null) {
             notificationBloc.add(SnackBarNotificationEvent(
-                'Не удалось определить местоположение'));
-          },
-        ),
+                'Не удалось определить адрес по местоположению'));
+          } else {
+            notificationBloc.add(SnackBarNotificationEvent('Проверьте адрес'));
+          }
+          yield state.copyWith(
+              setAddressByGeoLocation: event.value,
+              address: address ?? state.address);
+        },
+        noLocationProvided: (_) async* {
+          notificationBloc.add(SnackBarNotificationEvent(
+              'Не удалось определить местоположение'));
+        },
       );
     }
   }
@@ -381,6 +387,13 @@ class ControlViolationFormBloc
     }
     return null;
   }
+
+  Future<void> close() async {
+    super.close();
+    await _locationStreamSubscription.cancel();
+  }
+
+  Location get location => _location ?? Location.noLocationProvided();
 
   //   adressErrorString == null &&
   //   targetLandmarkErrorString == null &&
