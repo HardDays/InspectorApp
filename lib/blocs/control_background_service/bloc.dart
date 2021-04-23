@@ -51,7 +51,7 @@ class ControlBackgroundServiceBloc extends Bloc<
 
   Stream<ControlBackgroundServiceBlocState> _onInitEvent(
       InitEvent event) async* {
-    if (_networkStatus?.connectionStatus == ConnectionStatus.online &&
+    if ((await networkStatusService.actual).connectionStatus == ConnectionStatus.online &&
         !showed) {
       final metadata = await departmentControlService.localMetadata;
       if (metadata.loaded) {

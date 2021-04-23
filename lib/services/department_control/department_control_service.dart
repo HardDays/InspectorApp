@@ -254,7 +254,7 @@ class DepartmentControlService {
       ),
     );
     int start = 0;
-    int page = 500;
+    int page = 10000;
     bool loaded = false;
     while (!_canceled && !loaded) {
       await _apiClient

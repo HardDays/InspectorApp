@@ -457,4 +457,7 @@ class ApiProvider {
     "to": to,
     "sort": sort,
   })));
+
+  Future<dynamic> getParams() 
+    => _request(() => dio.get('/parameters'));
 }
