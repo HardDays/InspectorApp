@@ -31,19 +31,24 @@ class ProjectSection extends StatelessWidget {
                 padding: const EdgeInsets.only(top: 16, bottom: 16, right: 16),
                 child: Row(
                   children: [
-                    if(description != null)
+                    if (description != null)
                       Flexible(
                         child: SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Text(
-                          description,
-                          style: ProjectTextStyles.base
-                              .apply(color: ProjectColors.black),
-                      ),
+                          child: ConstrainedBox(
+                            constraints: BoxConstraints(
+                              maxHeight: 150,
+                            ),
+                            child: Text(
+                              description,
+                              style: ProjectTextStyles.base.apply(
+                                color: ProjectColors.black,
+                              ),
+                              overflow: TextOverflow.visible,
+                            ),
+                          ),
                         ),
                       ),
-                    if(child != null)
-                      child,
+                    if (child != null) child,
                   ],
                 ),
               ),

@@ -37,15 +37,19 @@ class ControlObjectWidget extends StatelessWidget {
                       ),
                       Flexible(
                         child: Container(
-                          height: 60,
                           alignment: Alignment.center,
-                          child: SingleChildScrollView(
-                            child: Padding(
-                              padding: const EdgeInsets.only(left: 10, right: 10),
-                              child: Text(
-                                controlObject.address ?? '',
-                                style: ProjectTextStyles.base
-                                    .apply(color: ProjectColors.black),
+                          child: ConstrainedBox(
+                            constraints: BoxConstraints(
+                              maxHeight: 60,
+                            ),
+                            child: SingleChildScrollView(
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 10, right: 10),
+                                child: Text(
+                                  controlObject.address ?? '',
+                                  style: ProjectTextStyles.base
+                                      .apply(color: ProjectColors.black),
+                                ),
                               ),
                             ),
                           ),
