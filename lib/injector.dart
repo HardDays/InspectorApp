@@ -16,7 +16,7 @@ import 'package:inspector/services/department_control/client/local/department_co
 import 'package:inspector/services/department_control/client/local/sqlite/department_control_local_sqlite_service_client.dart';
 import 'package:inspector/services/department_control/department_control_service.dart';
 import 'package:inspector/services/dictionary_service.dart';
-import 'package:inspector/services/location/geolocator_location_service.dart';
+import 'package:inspector/services/location/geolocator2_location_service.dart';
 import 'package:inspector/services/location/location_service.dart';
 import 'package:inspector/services/network_status_service/connection_status_service.dart';
 import 'package:inspector/services/network_status_service/data_sending_mode_service.dart';
@@ -77,7 +77,7 @@ class InjectorWidget extends StatelessWidget {
           ),
         ),
         Provider<LocationService>(
-          create: (_) => GeolocatorLocationService(),
+          create: (_) => GeoLocator2LocationService(),
         ),
       ],
       child: MultiBlocProvider(
