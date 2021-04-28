@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:inspector/blocs/control_violation_form_bloc/event.dart';
 import 'package:inspector/blocs/control_violation_form_bloc/state.dart';
@@ -22,6 +23,7 @@ import 'package:inspector/services/location/location_service.dart';
 import 'package:inspector/extensions.dart';
 import 'package:inspector/services/network_status_service/network_status.dart';
 import 'package:inspector/services/network_status_service/network_status_service.dart';
+import 'package:inspector/style/colors.dart';
 
 class ControlViolationFormBloc
     extends Bloc<ControlViolationFormEvent, CotnrolViolationFormState> {
@@ -179,8 +181,16 @@ class ControlViolationFormBloc
           final newState = _validate(state);
           if (newState.isValid()) {
             if (newState.photos.isEmpty) {
-              notificationBloc.add(SnackBarNotificationEvent(
-                  'Необходимо загрузить хотя бы одну фотографию'));
+              ScaffoldMessenger.of(event.context).showSnackBar(
+                SnackBar(
+                  backgroundColor: ProjectColors.darkBlue,
+                  content: Text(
+                    'Необходимо загрузить хотя бы одну фотографию'
+                  ),
+                ),
+              ); // TODO: fix it, use NotificationBloc
+              // notificationBloc.add(SnackBarNotificationEvent(
+              //     'Необходимо загрузить хотя бы одну фотографию'));
             } else {
               onConfirm(
                 _violation.copyWith(

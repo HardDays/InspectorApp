@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:inspector/model/address.dart';
 import 'package:inspector/model/department_control/contractor.dart';
@@ -85,5 +86,5 @@ abstract class ControlViolationFormEvent with _$ControlViolationFormEvent {
     ViolationClassificationSearchResult classification,
   ]) = SetViolationClassificationNoEkn;
 
-  const factory ControlViolationFormEvent.saveEvent() = SaveControlViolation;
+  const factory ControlViolationFormEvent.saveEvent(BuildContext context) = SaveControlViolation;
 }

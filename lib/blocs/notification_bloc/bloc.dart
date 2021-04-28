@@ -4,7 +4,9 @@ import 'package:inspector/blocs/notification_bloc/states.dart';
 
 class NotificationBloc
     extends Bloc<NotificationBlocEvent, NotificationBlocState> {
-  NotificationBloc() : super(EmptyNotificationState());
+  NotificationBloc() : super(EmptyNotificationState()) {
+    print('n');
+  }
 
   Stream<NotificationBlocState> _onSnackBarNotificationEvent(
       SnackBarNotificationEvent event) async* {

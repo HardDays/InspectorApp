@@ -333,7 +333,7 @@ class _ViolationFormWidgetState extends State<ViolationFormWidget> {
                     'Сохранить',
                     onPressed: () {
                       BlocProvider.of<ControlViolationFormBloc>(context)
-                          .add(ControlViolationFormEvent.saveEvent());
+                          .add(ControlViolationFormEvent.saveEvent(context));
                     },
                   ),
                 ],

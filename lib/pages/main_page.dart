@@ -44,7 +44,7 @@ class MainPage extends StatelessWidget {
                 ),
               ),
               snackBarNotificationState: (state) =>
-                  Scaffold.of(context).showSnackBar(
+                  ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   backgroundColor: ProjectColors.darkBlue,
                   content: Text(state.message),
