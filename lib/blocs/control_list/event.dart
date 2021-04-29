@@ -4,6 +4,7 @@ import 'package:inspector/model/department_control/control_object.dart';
 import 'package:inspector/model/department_control/dcviolation.dart';
 import 'package:inspector/model/department_control/violation_extension_reason.dart';
 import 'package:inspector/model/department_control/perform_control.dart';
+import 'package:inspector/services/network_status_service/network_status.dart';
 
 part 'event.freezed.dart';
 
@@ -72,4 +73,8 @@ abstract class ControlListBlocEvent with _$ControlListBlocEvent {
     int controlResultId,
     DCViolation violation,
   ) = UpdateControlResultEvent;
+
+  const factory ControlListBlocEvent.changeNetworkStatusEvent(
+    NetworkStatus networkStatus,
+  ) = ChangeNetworkStatusEvent;
 }

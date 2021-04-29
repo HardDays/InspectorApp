@@ -1683,13 +1683,13 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
         InkWell(
           onTap: ()=> enabled ? _onAddressDialog(context, index, person?.legalAddress, _onLegalAddressSelect) : null,
           child: IgnorePointer(
-            child: _buildTextField('Фактический адрес', 'Введите данные', _legalAddressControllers[index], enabled: enabled, validator: textValidator),
+            child: _buildTextField('Юридический адрес', 'Введите данные', _legalAddressControllers[index], enabled: enabled, validator: textValidator),
           ),
         ),
         InkWell(
           onTap: ()=> enabled ? _onAddressDialog(context, index, person?.postalAddress, _onPostalAddressSelect) : null,
           child: IgnorePointer(
-            child: _buildTextField('Юридический адрес', 'Введите данные', _postalAddressControllers[index], enabled: enabled, validator: textValidator),
+            child: _buildTextField('Фактический адрес', 'Введите данные', _postalAddressControllers[index], enabled: enabled, validator: textValidator),
           ),
         ),
       ],
@@ -1771,13 +1771,13 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
         InkWell(
           onTap: ()=> enabled ? _onAddressDialog(context, index, person?.orgLegalAddress, _onLegalAddressSelect) : null,
           child: IgnorePointer(
-            child: _buildTextField('Фактический адрес', 'Введите данные', _legalAddressControllers[index], enabled: enabled, validator: textValidator),
+            child: _buildTextField('Юридический адрес', 'Введите данные', _legalAddressControllers[index], enabled: enabled, validator: textValidator),
           ),
         ),
         InkWell(
           onTap: ()=> enabled ? _onAddressDialog(context, index, person?.orgPostalAddress, _onPostalAddressSelect) : null,
           child: IgnorePointer(
-            child: _buildTextField('Юридический адрес', 'Введите данные', _postalAddressControllers[index], enabled: enabled, validator: textValidator),
+            child: _buildTextField('Фактический адрес', 'Введите данные', _postalAddressControllers[index], enabled: enabled, validator: textValidator),
           ),
         ),
       ],
@@ -1888,7 +1888,7 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
             ),
             Padding(padding: const EdgeInsets.only(left: 20)),
             Flexible(
-              child: _buildTextField('СНИЛС', 'Введите данные', _snilsControllers[index], enabled: enabled, validator: textValidator),
+              child: _buildTextField('СНИЛС', 'Введите данные', _snilsControllers[index], enabled: enabled),
             ),
           ],
         ),

@@ -20,7 +20,7 @@ class ProjectSection extends StatelessWidget {
               width: MediaQuery.of(context).size.width * 0.3,
               margin: const EdgeInsets.all(16),
               child: Text(
-                title,
+                '$title:',
                 style:
                     ProjectTextStyles.baseBold.apply(color: ProjectColors.blue),
               ),
@@ -31,19 +31,24 @@ class ProjectSection extends StatelessWidget {
                 padding: const EdgeInsets.only(top: 16, bottom: 16, right: 16),
                 child: Row(
                   children: [
-                    if(description != null)
+                    if (description != null)
                       Flexible(
                         child: SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Text(
-                          description,
-                          style: ProjectTextStyles.base
-                              .apply(color: ProjectColors.black),
-                      ),
+                          child: ConstrainedBox(
+                            constraints: BoxConstraints(
+                              maxHeight: 150,
+                            ),
+                            child: Text(
+                              description,
+                              style: ProjectTextStyles.base.apply(
+                                color: ProjectColors.black,
+                              ),
+                              overflow: TextOverflow.visible,
+                            ),
+                          ),
                         ),
                       ),
-                    if(child != null)
-                      child,
+                    if (child != null) child,
                   ],
                 ),
               ),

@@ -20,5 +20,5 @@ Map<String, dynamic> _$_$_ObjectElementToJson(_$_ObjectElement instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
-      'objectType': instance.objectType,
+      'objectType': instance.objectType?.toJson(),
     };

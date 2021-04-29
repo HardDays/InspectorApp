@@ -136,6 +136,7 @@ class PerformControlWidget extends HasDate {
                 child: Image(
                   image: MemoryImage(
                       base64.decode(performControl.photos.first.data)),
+                  fit: BoxFit.contain,
                 ),
               ),
           ],

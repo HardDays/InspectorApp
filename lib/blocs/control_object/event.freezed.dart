@@ -14,8 +14,15 @@ class _$ControlObjectBlocEventTearOff {
   const _$ControlObjectBlocEventTearOff();
 
 // ignore: unused_element
-  _LoadEvent loadEvent() {
-    return const _LoadEvent();
+  LoadEvent loadEvent() {
+    return const LoadEvent();
+  }
+
+// ignore: unused_element
+  ChangeFitersEvent changeFitersEvent(ControlObjectFilters filters) {
+    return ChangeFitersEvent(
+      filters,
+    );
   }
 }
 
@@ -28,19 +35,23 @@ mixin _$ControlObjectBlocEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object>({
     @required TResult loadEvent(),
+    @required TResult changeFitersEvent(ControlObjectFilters filters),
   });
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object>({
     TResult loadEvent(),
+    TResult changeFitersEvent(ControlObjectFilters filters),
     @required TResult orElse(),
   });
   @optionalTypeArgs
   TResult map<TResult extends Object>({
-    @required TResult loadEvent(_LoadEvent value),
+    @required TResult loadEvent(LoadEvent value),
+    @required TResult changeFitersEvent(ChangeFitersEvent value),
   });
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object>({
-    TResult loadEvent(_LoadEvent value),
+    TResult loadEvent(LoadEvent value),
+    TResult changeFitersEvent(ChangeFitersEvent value),
     @required TResult orElse(),
   });
 }
@@ -63,26 +74,25 @@ class _$ControlObjectBlocEventCopyWithImpl<$Res>
 }
 
 /// @nodoc
-abstract class _$LoadEventCopyWith<$Res> {
-  factory _$LoadEventCopyWith(
-          _LoadEvent value, $Res Function(_LoadEvent) then) =
-      __$LoadEventCopyWithImpl<$Res>;
+abstract class $LoadEventCopyWith<$Res> {
+  factory $LoadEventCopyWith(LoadEvent value, $Res Function(LoadEvent) then) =
+      _$LoadEventCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$LoadEventCopyWithImpl<$Res>
+class _$LoadEventCopyWithImpl<$Res>
     extends _$ControlObjectBlocEventCopyWithImpl<$Res>
-    implements _$LoadEventCopyWith<$Res> {
-  __$LoadEventCopyWithImpl(_LoadEvent _value, $Res Function(_LoadEvent) _then)
-      : super(_value, (v) => _then(v as _LoadEvent));
+    implements $LoadEventCopyWith<$Res> {
+  _$LoadEventCopyWithImpl(LoadEvent _value, $Res Function(LoadEvent) _then)
+      : super(_value, (v) => _then(v as LoadEvent));
 
   @override
-  _LoadEvent get _value => super._value as _LoadEvent;
+  LoadEvent get _value => super._value as LoadEvent;
 }
 
 /// @nodoc
-class _$_LoadEvent implements _LoadEvent {
-  const _$_LoadEvent();
+class _$LoadEvent implements LoadEvent {
+  const _$LoadEvent();
 
   @override
   String toString() {
@@ -91,7 +101,7 @@ class _$_LoadEvent implements _LoadEvent {
 
   @override
   bool operator ==(dynamic other) {
-    return identical(this, other) || (other is _LoadEvent);
+    return identical(this, other) || (other is LoadEvent);
   }
 
   @override
@@ -101,8 +111,10 @@ class _$_LoadEvent implements _LoadEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object>({
     @required TResult loadEvent(),
+    @required TResult changeFitersEvent(ControlObjectFilters filters),
   }) {
     assert(loadEvent != null);
+    assert(changeFitersEvent != null);
     return loadEvent();
   }
 
@@ -110,6 +122,7 @@ class _$_LoadEvent implements _LoadEvent {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object>({
     TResult loadEvent(),
+    TResult changeFitersEvent(ControlObjectFilters filters),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -122,16 +135,19 @@ class _$_LoadEvent implements _LoadEvent {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object>({
-    @required TResult loadEvent(_LoadEvent value),
+    @required TResult loadEvent(LoadEvent value),
+    @required TResult changeFitersEvent(ChangeFitersEvent value),
   }) {
     assert(loadEvent != null);
+    assert(changeFitersEvent != null);
     return loadEvent(this);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object>({
-    TResult loadEvent(_LoadEvent value),
+    TResult loadEvent(LoadEvent value),
+    TResult changeFitersEvent(ChangeFitersEvent value),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -142,6 +158,136 @@ class _$_LoadEvent implements _LoadEvent {
   }
 }
 
-abstract class _LoadEvent implements ControlObjectBlocEvent {
-  const factory _LoadEvent() = _$_LoadEvent;
+abstract class LoadEvent implements ControlObjectBlocEvent {
+  const factory LoadEvent() = _$LoadEvent;
+}
+
+/// @nodoc
+abstract class $ChangeFitersEventCopyWith<$Res> {
+  factory $ChangeFitersEventCopyWith(
+          ChangeFitersEvent value, $Res Function(ChangeFitersEvent) then) =
+      _$ChangeFitersEventCopyWithImpl<$Res>;
+  $Res call({ControlObjectFilters filters});
+
+  $ControlObjectFiltersCopyWith<$Res> get filters;
+}
+
+/// @nodoc
+class _$ChangeFitersEventCopyWithImpl<$Res>
+    extends _$ControlObjectBlocEventCopyWithImpl<$Res>
+    implements $ChangeFitersEventCopyWith<$Res> {
+  _$ChangeFitersEventCopyWithImpl(
+      ChangeFitersEvent _value, $Res Function(ChangeFitersEvent) _then)
+      : super(_value, (v) => _then(v as ChangeFitersEvent));
+
+  @override
+  ChangeFitersEvent get _value => super._value as ChangeFitersEvent;
+
+  @override
+  $Res call({
+    Object filters = freezed,
+  }) {
+    return _then(ChangeFitersEvent(
+      filters == freezed ? _value.filters : filters as ControlObjectFilters,
+    ));
+  }
+
+  @override
+  $ControlObjectFiltersCopyWith<$Res> get filters {
+    if (_value.filters == null) {
+      return null;
+    }
+    return $ControlObjectFiltersCopyWith<$Res>(_value.filters, (value) {
+      return _then(_value.copyWith(filters: value));
+    });
+  }
+}
+
+/// @nodoc
+class _$ChangeFitersEvent implements ChangeFitersEvent {
+  const _$ChangeFitersEvent(this.filters) : assert(filters != null);
+
+  @override
+  final ControlObjectFilters filters;
+
+  @override
+  String toString() {
+    return 'ControlObjectBlocEvent.changeFitersEvent(filters: $filters)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is ChangeFitersEvent &&
+            (identical(other.filters, filters) ||
+                const DeepCollectionEquality().equals(other.filters, filters)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^ const DeepCollectionEquality().hash(filters);
+
+  @JsonKey(ignore: true)
+  @override
+  $ChangeFitersEventCopyWith<ChangeFitersEvent> get copyWith =>
+      _$ChangeFitersEventCopyWithImpl<ChangeFitersEvent>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object>({
+    @required TResult loadEvent(),
+    @required TResult changeFitersEvent(ControlObjectFilters filters),
+  }) {
+    assert(loadEvent != null);
+    assert(changeFitersEvent != null);
+    return changeFitersEvent(filters);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object>({
+    TResult loadEvent(),
+    TResult changeFitersEvent(ControlObjectFilters filters),
+    @required TResult orElse(),
+  }) {
+    assert(orElse != null);
+    if (changeFitersEvent != null) {
+      return changeFitersEvent(filters);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object>({
+    @required TResult loadEvent(LoadEvent value),
+    @required TResult changeFitersEvent(ChangeFitersEvent value),
+  }) {
+    assert(loadEvent != null);
+    assert(changeFitersEvent != null);
+    return changeFitersEvent(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object>({
+    TResult loadEvent(LoadEvent value),
+    TResult changeFitersEvent(ChangeFitersEvent value),
+    @required TResult orElse(),
+  }) {
+    assert(orElse != null);
+    if (changeFitersEvent != null) {
+      return changeFitersEvent(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class ChangeFitersEvent implements ControlObjectBlocEvent {
+  const factory ChangeFitersEvent(ControlObjectFilters filters) =
+      _$ChangeFitersEvent;
+
+  ControlObjectFilters get filters;
+  @JsonKey(ignore: true)
+  $ChangeFitersEventCopyWith<ChangeFitersEvent> get copyWith;
 }

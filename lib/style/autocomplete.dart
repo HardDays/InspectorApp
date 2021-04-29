@@ -16,6 +16,7 @@ class ProjectAutocomplete<T> extends StatelessWidget {
   final String Function(T) formatter;
   final String Function(String) validator;
   final void Function(String) onChanged;
+  final bool autoValidate;
 
   ProjectAutocomplete(this.title, {
     this.controller,
@@ -26,6 +27,7 @@ class ProjectAutocomplete<T> extends StatelessWidget {
     this.formatter,
     this.enabled = false,
     this.onChanged,
+    this.autoValidate = false,
   });
 
   @override
@@ -49,6 +51,7 @@ class ProjectAutocomplete<T> extends StatelessWidget {
             hideOnLoading: true,
             hideOnEmpty: true,
             hideOnError: true,
+            autovalidateMode: autoValidate ? AutovalidateMode.always : AutovalidateMode.disabled,
             //noItemsFoundBuilder: (c) => null,
             textFieldConfiguration: TextFieldConfiguration(
               autofocus: false,
@@ -75,10 +78,12 @@ class ProjectAutocomplete<T> extends StatelessWidget {
             },
             suggestionsCallback: suggestionsCallback,
           ),
-          controller?.text?.isEmpty ?? false ? Padding(
-            padding: const EdgeInsets.only(top: 13, right: 10),
-            child: Icon(Icons.keyboard_arrow_down, 
-              color: ProjectColors.darkBlue,
+          controller?.text?.isEmpty ?? false ? IgnorePointer(
+            child: Padding(
+              padding: const EdgeInsets.only(top: 13, right: 10),
+              child: Icon(Icons.keyboard_arrow_down, 
+                color: ProjectColors.darkBlue,
+              ),
             ),
           ) : InkWell(
             onTap: () {

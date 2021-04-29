@@ -17,14 +17,16 @@ class ControlObjectInfo extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        ProjectSection('Объект',
-            child: ControlStatusWidget(controlObject.type.name,
-                controlObject.id.toString())),
-        _buildDivider(),
-        ProjectSection('Адрес', description: controlObject.address),
-        _buildDivider(),
         ProjectSection('Вид объекта',
-            description: controlObject.kind),
+            child: ControlStatusWidget(controlObject.type.name,
+                '${controlObject.externalId.toString()} ${controlObject.address}')),
+        //_buildDivider(),
+        //ProjectSection('Адрес', description: controlObject.address),
+        if(controlObject.kind != null && controlObject.kind.isNotEmpty)
+          _buildDivider(),
+        if(controlObject.kind != null && controlObject.kind.isNotEmpty)
+          ProjectSection('Тип объекта',
+              description: controlObject.kind),
         _buildDivider(),
         ProjectSection('Балансодержатель',
             description: controlObject.balanceOwner),

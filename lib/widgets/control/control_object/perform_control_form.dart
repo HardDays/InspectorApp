@@ -50,7 +50,9 @@ class _PerformControlFormWidgetState extends State<PerformControlFormWidget> {
         Text(
           '${widget.performControl.resolved ? "Устранено" : "Не устранено"}',
           style: ProjectTextStyles.title.apply(
-            color: widget.performControl.resolved ? ProjectColors.green : ProjectColors.red,
+            color: widget.performControl.resolved
+                ? ProjectColors.green
+                : ProjectColors.red,
           ),
         ),
         Text(
@@ -58,8 +60,8 @@ class _PerformControlFormWidgetState extends State<PerformControlFormWidget> {
           style: ProjectTextStyles.title,
         ),
         ImagePicker(
-          images: performControl.photos.map((e) => base64.decode(e.data))
-              .toList(),
+          images:
+              performControl.photos.map((e) => base64.decode(e.data)).toList(),
           names: performControl.photos.map((e) => e.name ?? '').toList(),
           onPicked: (f) => setState(
             () => performControl.photos.add(
@@ -70,14 +72,27 @@ class _PerformControlFormWidgetState extends State<PerformControlFormWidget> {
             ),
           ),
           onRemoved: (i) => setState(() => performControl.photos.removeAt(i)),
-          onRotated: (i, f) => setState(() => performControl.photos[i] = performControl.photos[i].copyWith(data: base64.encode(f))),
+          onRotated: (i, f) => setState(() => performControl.photos[i] =
+              performControl.photos[i].copyWith(data: base64.encode(f))),
         ),
         Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            ProjectButton.buildOutlineButton('Отменить', onPressed: widget.onCancel),
+            ProjectButton.buildOutlineButton(
+              'Отменить',
+              onPressed: () {
+                widget.onCancel();
+                Navigator.of(context).pop();
+              },
+            ),
             SizedBox(width: 20),
-            ProjectButton.builtFlatButton('ОК', onPressed: () => widget.onConfirm(performControl)),
+            ProjectButton.builtFlatButton(
+              'ОК',
+              onPressed: () {
+                widget.onConfirm(performControl);
+                Navigator.of(context).pop();
+              },
+            ),
           ],
         ),
       ],

@@ -40,11 +40,11 @@ Map<String, dynamic> _$_$_ViolationClassificationSearchResultToJson(
         _$_ViolationClassificationSearchResult instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'violationName': instance.violationName,
-      'violationType': instance.violationType,
-      'violationKind': instance.violationKind,
-      'objectType': instance.objectType,
-      'objectElement': instance.objectElement,
+      'violationName': instance.violationName?.toJson(),
+      'violationType': instance.violationType?.toJson(),
+      'violationKind': instance.violationKind?.toJson(),
+      'objectType': instance.objectType?.toJson(),
+      'objectElement': instance.objectElement?.toJson(),
       'ekn': instance.ekn,
       'warning': instance.warning,
       'regulations': instance.regulations,

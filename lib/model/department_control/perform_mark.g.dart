@@ -29,5 +29,5 @@ Map<String, dynamic> _$_$_PerformMarkToJson(_$_PerformMark instance) =>
       'organization': instance.organization,
       'creator': instance.creator,
       'comments': instance.comments,
-      'photos': instance.photos,
+      'photos': instance.photos?.map((e) => e?.toJson())?.toList(),
     };

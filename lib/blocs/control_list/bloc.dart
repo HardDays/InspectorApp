@@ -10,17 +10,20 @@ import 'package:inspector/blocs/notification_bloc/bloc.dart';
 import 'package:inspector/blocs/notification_bloc/events.dart';
 import 'package:inspector/model/department_control/control_object.dart';
 import 'package:inspector/model/department_control/control_result.dart';
+import 'package:inspector/model/department_control/perform_control.dart';
 import 'package:inspector/providers/exceptions/api_exception.dart';
 import 'package:inspector/services/department_control/department_control_service.dart';
 import 'package:inspector/services/location/location.dart';
 import 'package:inspector/services/location/location_service.dart';
 import 'package:inspector/services/network_status_service/network_status.dart';
 import 'package:inspector/services/network_status_service/network_status_service.dart';
+import 'package:intl/intl.dart';
 
 class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
   static const pageCapacity = 10;
 
   final LocationService _locationService;
+  StreamSubscription<Location> _locationStreamSubscription;
   StreamSubscription<NetworkStatus> _networkStatusStreamSubscription;
 
   final DepartmentControlService _departmentControlService;
@@ -54,11 +57,10 @@ class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
     _networkStatusStreamSubscription =
         networkStatusService.listenNetworkStatus.listen((value) {
       _networkStatus = value;
-      if (value.connectionStatus == ConnectionStatus.offline) {
-        add(ControlListBlocEvent.cantWorkInThisModeEvent());
-      } else {
-        add(ControlListBlocEvent.loadControlListEvent());
-      }
+      add(ControlListBlocEvent.changeNetworkStatusEvent(value));
+    });
+    _locationStreamSubscription = _locationService.subscribeToLocation.listen((location) {
+      _location = location;
     });
   }
 
@@ -81,6 +83,7 @@ class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
         updateResolveDateEvent: _onUpdateResolveDateEvent,
         removeViolationEvent: _onRemoveViolationEvent,
         updateControlResultEvent: _onUpdateControlResultEvent,
+        changeNetworkStatusEvent: (event) async* {},
       );
 
   Stream<ControlListBlocState> _onUpdateControlResultEvent(event) async* {
@@ -136,19 +139,25 @@ class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
     }
   }
 
-  Stream<ControlListBlocState> onRegisterPerformControlEvent(event) async* {
-    try {
-      await _departmentControlService.registerPerformControl(
-        event.object,
-        event.controlResultId,
-        event.performControl,
-        _networkStatus,
-      );
-      _notificationBloc.add(OkDialogNotificationEvent('Сохранено успешно'));
-    } on ApiException catch (e) {
-      print(e.message);
-      print(e.details);
-      yield* (_onApiException(e));
+  Stream<ControlListBlocState> onRegisterPerformControlEvent(
+      RegisterPerformControlEvent event) async* {
+    if (!_checkIfCanCreatePerformControl(event.performControl)) {
+      _notificationBloc.add(OkDialogNotificationEvent(
+          'На ${DateFormat("dd.MM.yyyy").format(DateTime.now())} уже зарегистрирован контроль устранения'));
+    } else {
+      try {
+        await _departmentControlService.registerPerformControl(
+          event.object,
+          event.controlResultId,
+          event.performControl,
+          _networkStatus,
+        );
+        _notificationBloc.add(OkDialogNotificationEvent('Сохранено успешно'));
+      } on ApiException catch (e) {
+        print(e.message);
+        print(e.details);
+        yield* (_onApiException(e));
+      }
     }
   }
 
@@ -172,48 +181,66 @@ class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
 
   Stream<ControlListBlocState> _onRegisterSearchResultEvent(
       RegisterSearchResultEvent event) async* {
-    
-      yield* _checkIfThereAreViolations(
-        () async* {
-          _notificationBloc.add(
+    yield* _checkIfThereAreViolations(
+      () async* {
+        _notificationBloc.add(
             SnackBarNotificationEvent('Сохранение результата обследования'));
         ControlResult result = ControlResult(
           violation: event.violation,
           surveyDate: DateTime.now(),
           violationExists: event.violation != null,
         );
-          try {
-            await _departmentControlService.registerControlResult(
-              event.object,
-              result,
-              _networkStatus,
-            );
-            final resultString = event.violation == null ? 'Нарушений не выявлено' : 'Выявлено нарушение';
-            _notificationBloc.add(OkDialogNotificationEvent(
+        try {
+          await _departmentControlService.registerControlResult(
+            event.object,
+            result,
+            _networkStatus,
+          );
+          final resultString = event.violation == null
+              ? 'Нарушений не выявлено'
+              : 'Выявлено нарушение';
+          _notificationBloc.add(SnackBarNotificationEvent(
               'Результат обследования "$resultString" сохранен успешно'));
-          } on ApiException catch (e) {
-              print(e.message);
-              print(e.details);
-              yield* (_onApiException(e));
-          }
-        },
-        event.object,
-        violationExists: event.violation != null,
-      );
+        } on ApiException catch (e) {
+          print(e.message);
+          print(e.details);
+          yield* (_onApiException(e));
+        } on Exception catch (e) {
+          print(e);
+          _notificationBloc.add(SnackBarNotificationEvent(e.toString()));
+        }
+      },
+      event.object,
+      violationExists: event.violation != null,
+    );
   }
 
   Stream<ControlListBlocState> _onOpenInMapEvent(OpenInMapEvent event) async* {
-    if (event.object.geometry == null) {
+    if (event.object.geometry == null || event.object.geometry.isEmpty) {
       _notificationBloc.add(SnackBarNotificationEvent(
           'Просмотр этого объекта на карте недоступен'));
     } else {
-      _notificationBloc.add(
-          SnackBarNotificationEvent('Данный функционал пока не реализован'));
+      _location = Location(
+        latitude: event.object.geometry.first.points.first.x,
+        longitude: event.object.geometry.first.points.first.y,
+      );
+      yield state.copyWith(
+        showMap: true,
+        mapState: state.mapState.copyWith(
+          selectedObject: event.object,
+        ),
+      );
     }
   }
 
-  Stream<ControlListBlocState> _onChangeShowMapEvent(event) async* {
-    yield (state.copyWith(showMap: event.showMap));
+  Stream<ControlListBlocState> _onChangeShowMapEvent(ChangeShowMapEvent event) async* {
+    yield state.copyWith(
+      showMap: event.showMap,
+      mapState: state.mapState.copyWith(
+        userLocation: this.location,
+        selectedObject: null,
+      ),
+    );
   }
 
   Stream<ControlListBlocState> _onRefreshControlListEvent(event) async* {
@@ -257,10 +284,9 @@ class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
     if (_networkStatus == null) {
       _networkStatus = await networkStatusService.actual;
     }
-    _location = await _locationService.actualLocation;
     _objects = await _departmentControlService.find(
         //Location(latitude: 55.74, longitude: 37.63),
-        _location,
+        this.location,
         _networkStatus,
         state.filtersState,
         state.sortState,
@@ -328,7 +354,7 @@ class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
   Stream<ControlListBlocState> _onLoadNextPageEvent(
       LoadNextPageControlListEvent event) async* {
     final _newObjects = await _departmentControlService.find(
-        _location,
+        this.location,
         _networkStatus,
         state.filtersState,
         state.sortState,
@@ -348,31 +374,46 @@ class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
     }
   }
 
-  Location get location => _location;
+  Location get location => _location ?? Location.noLocationProvided();
 
   Stream<ControlListBlocState> _checkIfThereAreViolations(
     Stream<ControlListBlocState> Function() f,
     ControlObject object, {
     bool violationExists,
-  }) async* { 
-    _notificationBloc.add(
-          SnackBarNotificationEvent('Проверка на наличие связанных нарушений'));
-    final checkResult = await _departmentControlService.checkIfViolationsExists(
-      object,
-      _networkStatus,
-      violationExists: violationExists,
-    );
-    if (!checkResult) {
-      yield* f();
-    } else {
-      _notificationBloc.add(OkDialogNotificationEvent(
-          'У объекта присутствует связанное нарушение на текущую дату'));
+  }) async* {
+    // _notificationBloc.add(
+    //     SnackBarNotificationEvent('Проверка на наличие связанных нарушений'));
+    try {
+      final checkResult = await _departmentControlService.checkIfViolationsExists(
+        object,
+        _networkStatus,
+        violationExists: violationExists,
+      );
+      if (!checkResult) {
+      // if(true) {
+        yield* f();
+      } else {
+        _notificationBloc.add(OkDialogNotificationEvent(
+            'У объекта присутствует связанное нарушение на текущую дату'));
+      }
+    } on ApiException catch (e) {
+      yield* _onApiException(e);
+    } on Exception catch (e) {
+      print(e);
     }
+  }
+
+  bool _checkIfCanCreatePerformControl(PerformControl performControl) {
+    if (performControl.factDate.difference(DateTime.now()).inDays < 1) {
+      return false;
+    }
+    return true;
   }
 
   @override
   Future<void> close() async {
     await super.close();
     _networkStatusStreamSubscription.cancel();
+    _locationStreamSubscription.cancel();
   }
 }

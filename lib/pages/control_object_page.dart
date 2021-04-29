@@ -6,29 +6,33 @@ import 'package:inspector/blocs/control_list/event.dart';
 import 'package:inspector/blocs/control_object/bloc.dart';
 import 'package:inspector/blocs/control_object/event.dart';
 import 'package:inspector/blocs/control_object/state.dart';
+import 'package:inspector/blocs/control_object_filters/state.dart';
 import 'package:inspector/blocs/notification_bloc/bloc.dart';
 import 'package:inspector/model/department_control/control_object.dart';
 import 'package:inspector/model/department_control/control_result_search_result.dart';
 import 'package:inspector/model/department_control/dcphoto.dart';
 import 'package:inspector/model/department_control/dcviolation.dart';
+import 'package:inspector/model/department_control/dcviolation_kind.dart';
+import 'package:inspector/model/department_control/dcviolation_type.dart';
 import 'package:inspector/model/department_control/perform_control.dart';
 import 'package:inspector/model/department_control/violation_short_search_result.dart';
 import 'package:inspector/pages/control_violation_form_page.dart';
 import 'package:inspector/pages/control_violation_page.dart';
 import 'package:inspector/services/department_control/department_control_service.dart';
+import 'package:inspector/services/dictionary_service.dart';
 import 'package:inspector/services/network_status_service/network_status_service.dart';
 import 'package:inspector/style/appbar.dart';
-
-//import 'package:inspector/style/colors.dart';
+import 'package:inspector/style/colors.dart';
 import 'package:inspector/style/dialog.dart';
-
-//import 'package:inspector/style/icons.dart';
-//import 'package:inspector/style/text_style.dart';
+import 'package:inspector/style/icons.dart';
+import 'package:inspector/style/text_style.dart';
 import 'package:inspector/widgets/control/control_object/control_object_info.dart';
 import 'package:inspector/widgets/control/control_object/perform_control_form.dart';
 import 'package:inspector/widgets/control/control_object/search_result/search_result_widget.dart';
+import 'package:inspector/widgets/control/control_object/violation/filters.dart';
 import 'package:inspector/widgets/control/control_object/violation/violation_search_result_widget.dart';
 import 'package:inspector/widgets/control/control_object/violation/violation_short_search_result_widget.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class ControlObjectPage extends StatelessWidget {
@@ -69,16 +73,20 @@ class ControlObjectPage extends StatelessWidget {
                     _refreshKey.currentState?.show();
                   return Column(
                     children: [
-                      ControlObjectInfo(
-                        controlObject: _controlObject,
-                      ),
                       Padding(
-                        padding: EdgeInsets.all(20),
+                        padding: const EdgeInsets.only(bottom: 15),
+                        child: ControlObjectInfo(
+                          controlObject: _controlObject,
+                        ),
+                      ),
+                      _buildFiltersSection(context, state.filters),
+                      Padding(
+                        padding: EdgeInsets.only(bottom: 30, top: 15),
                         child: state.maybeMap(
                           loadedWithListState: (state) => _buildSearchResults(
                               state.controlSearchResults, context),
-                          orElse: () => _buildViolationsList(
-                              state.object.violations, context),
+                          orElse: () => Container(),//_buildViolationsList(
+                              //state.object.violations, context),
                         ),
                       ),
                     ],
@@ -92,36 +100,43 @@ class ControlObjectPage extends StatelessWidget {
     );
   }
 
-  // Widget _buildIcon(Widget icon, String title) {
-  //   return Row(
-  //     children: [
-  //       icon,
-  //       Padding(
-  //         padding: const EdgeInsets.only(left: 10),
-  //         child: Text(
-  //           title,
-  //           style: ProjectTextStyles.small.apply(color: ProjectColors.black),
-  //         ),
-  //       )
-  //     ],
-  //   );
-  // }
+  Widget _buildIcon(Widget icon, String title, Future<void> Function() onTap) {
+    return InkWell(
+      onTap: onTap,
+      child: Padding(
+        padding: const EdgeInsets.all(15.0),
+        child: Row(
+          children: [
+            icon,
+            Padding(
+              padding: const EdgeInsets.only(left: 10),
+              child: Text(
+                title,
+                style:
+                    ProjectTextStyles.small.apply(color: ProjectColors.black),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
 
-  // Widget _buildFiltersSection() {
-  //   return Padding(
-  //     padding: const EdgeInsets.only(top: 30),
-  //     child: Row(
-  //       mainAxisAlignment: MainAxisAlignment.end,
-  //       children: [
-  //         _buildIcon(
-  //             ProjectIcons.sortIcon(color: ProjectColors.blue), 'По статусу'),
-  //         Padding(padding: const EdgeInsets.only(left: 15)),
-  //         _buildIcon(
-  //             ProjectIcons.filterIcon(color: ProjectColors.blue), 'Фильтр'),
-  //       ],
-  //     ),
-  //   );
-  // }
+  Widget _buildFiltersSection(BuildContext context, ControlObjectFilters filters) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        // _buildIcon(
+        //     ProjectIcons.sortIcon(color: ProjectColors.blue), 'По статусу'),
+        // Padding(padding: const EdgeInsets.only(left: 15)),
+        _buildIcon(
+          ProjectIcons.filterIcon(color: ProjectColors.blue),
+          'Фильтр',
+          () async => _openFilters(context, filters),
+        ),
+      ],
+    );
+  }
 
   Widget _buildSearchResults(
       List<ControlResultSearchResult> searchResults, BuildContext context) {
@@ -243,6 +258,7 @@ class ControlObjectPage extends StatelessWidget {
                                   ControlListBlocEvent.updateControlResultEvent(
                                       _controlObject, searchResult.id, result));
                             },
+                            violationNum: 'Нарушение №${searchResult.violation.violationNum} от ${DateFormat("dd.MM.yyyy")}',
                           ),
                         ),
                       );
@@ -338,6 +354,41 @@ class ControlObjectPage extends StatelessWidget {
                 },
               ))
           .toList(),
+    );
+  }
+
+  void _openFilters(BuildContext context, ControlObjectFilters filters) async {
+    final dictionaryService =
+        Provider.of<DictionaryService>(context, listen: false);
+    final statuses = await dictionaryService.getDCViolationStatuses();
+    final types = [
+      DCViolationType(id: 1, name: 'Простое'),
+      DCViolationType(id: 2, name: 'Грубое'),
+    ];
+    final kinds = [
+      DCViolationKind(id: 1, name: 'Устранимое'),
+      DCViolationKind(id: 1, name: 'Неустранимое'),
+    ];
+    final sources = (await dictionaryService.getDCSources())
+        .where((element) => ['ОАТИ', 'ЦАФАП'].contains(element.name))
+        .toList();
+    await showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (ctx) {
+        return Material(
+          child: ViolationFilters(
+            initialFilters: filters,
+            statuses: statuses,
+            sources: sources,
+            violationTypes: types,
+            violationKinds: kinds,
+            onConfirm: (filters) async {
+              BlocProvider.of<ControlObjectBloc>(context).add(ControlObjectBlocEvent.changeFitersEvent(filters));
+            },
+          ),
+        );
+      },
     );
   }
 }

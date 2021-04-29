@@ -39,7 +39,9 @@ class BackgroundLoadingBloc
 
   Stream<BackgroundLoadingBlocState> _onUpdateStatusTextEvent(
       UpdateStatusTextEvent event) async* {
-    yield (BackgroundLoadingBlocState.haveStatusState(event.text));
+    if(!_cancelableOperation.isCanceled) {
+      yield (BackgroundLoadingBlocState.haveStatusState(event.text));
+    }
   }
 
   Stream<BackgroundLoadingBlocState> _onFinishEvent(FinishEvent event) async* {

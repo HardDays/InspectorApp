@@ -250,33 +250,34 @@ class ProfilePage extends StatelessWidget {
                           ],
                         ),
                       ),
-                      _buildSectionItem(
-                        'Использовать Web-версию раздела "Ведомственный контроль"',
-                        Row(
-                          children: [
-                            Text(
-                              'Выключено',
-                              style: ProjectTextStyles.medium
-                                  .apply(color: ProjectColors.black),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(
-                                  8.1, 0.0, 10.0, 0.0),
-                              child: ProjectSwitch(
-                                checked: state.useWebVersionOfVK,
-                                onChanged: (value) =>
-                                    BlocProvider.of<ProfileBloc>(context)
-                                        .add(SetUseWebVersionOfVK(value)),
+                      if(String.fromEnvironment('DEFINEENV') != 'prod')
+                        _buildSectionItem(
+                          'Использовать Web-версию раздела "Ведомственный контроль"',
+                          Row(
+                            children: [
+                              Text(
+                                'Выключено',
+                                style: ProjectTextStyles.medium
+                                    .apply(color: ProjectColors.black),
                               ),
-                            ),
-                            Text(
-                              'Включено',
-                              style: ProjectTextStyles.medium
-                                  .apply(color: ProjectColors.black),
-                            ),
-                          ],
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(
+                                    8.1, 0.0, 10.0, 0.0),
+                                child: ProjectSwitch(
+                                  checked: state.useWebVersionOfVK,
+                                  onChanged: (value) =>
+                                      BlocProvider.of<ProfileBloc>(context)
+                                          .add(SetUseWebVersionOfVK(value)),
+                                ),
+                              ),
+                              Text(
+                                'Включено',
+                                style: ProjectTextStyles.medium
+                                    .apply(color: ProjectColors.black),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
                     ],
                   ),
                   _buildSection(

@@ -14,6 +14,7 @@ class ProjectTextField extends StatelessWidget {
   final Function(String) validator;
   final TextInputType inputType;
   final void Function(String) onChanged;
+  final bool autoValidate;
 
   ProjectTextField({
     this.controller,
@@ -26,6 +27,7 @@ class ProjectTextField extends StatelessWidget {
     this.enabled = true,
     this.inputType,
     this.onChanged,
+    this.autoValidate = false,
   });
 
   Widget _buildField() {
@@ -42,6 +44,7 @@ class ProjectTextField extends StatelessWidget {
       enabled: enabled,
       keyboardType: inputType,
       onChanged: onChanged,
+      autovalidateMode: autoValidate ? AutovalidateMode.always : AutovalidateMode.disabled,
       decoration: InputDecoration(
         errorMaxLines: 2,
         filled: !enabled,

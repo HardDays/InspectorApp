@@ -109,7 +109,7 @@ class ApiProvider {
   Future<dynamic> _request(Function request) async {
     try {
       final res = (await request());  
-      print(res.request.queryParameters);
+      //print(res.request.queryParameters);
       return res.data;
     } on DioError catch (ex) {
       print(ex);
@@ -120,6 +120,7 @@ class ApiProvider {
           );
         } else {  
           print(ex.response.request.uri);
+          print(ex.response.data);
           throw ServerException(
             ex.response.statusCode,
             ex.response.data?.toString(),
@@ -426,4 +427,37 @@ class ApiProvider {
   Future<dynamic> extendPeriod(int dcObjectId, int dcControlResultId, ViolationExtensionPeriod violationExtensionPeriod) {
     return _request(() => dio.post('/dc-objects/${dcObjectId}/control-results/${dcControlResultId}/op/extend-resolution-period', data: violationExtensionPeriod.toJson()));
   }
+
+  Future<dynamic> getControlResults({
+    int dcObjectId,
+    bool forCurrentUser,
+    DateTime surveyDateFrom,
+    DateTime surveyDateTo,
+    bool violationExists,
+    String violationNum,
+    List<int> dcViolationStatusIds,
+    int dcViolationTypeId,
+    int dcViolationKindId,
+    int sourceId,
+    int from,
+    int to,
+    List<String> sort,
+  }) => _request(() => dio.get('/dc-objects/control-results', queryParameters: _removeJsonNulls({
+    "dcObjectId": dcObjectId,
+    "forCurrentUser": forCurrentUser,
+    "surveyDateFrom": surveyDateFrom,
+    "surveyDateTo": surveyDateTo,
+    "violationExists": violationExists,
+    "violationNum": violationNum,
+    "dcViolationStatusIds": dcViolationStatusIds,
+    "dcViolationTypeId": dcViolationTypeId,
+    "dcViolationKindId": dcViolationKindId,
+    "sourceId": sourceId,
+    "from": from,
+    "to": to,
+    "sort": sort,
+  })));
+
+  Future<dynamic> getParams() 
+    => _request(() => dio.get('/parameters'));
 }

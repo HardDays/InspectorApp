@@ -111,8 +111,8 @@ class __$ViolationExtensionReasonCopyWithImpl<$Res>
 @JsonSerializable()
 
 /// @nodoc
-class _$_ViolationExtensionReason implements _ViolationExtensionReason {
-  const _$_ViolationExtensionReason({this.id, this.name});
+class _$_ViolationExtensionReason extends _ViolationExtensionReason {
+  const _$_ViolationExtensionReason({this.id, this.name}) : super._();
 
   factory _$_ViolationExtensionReason.fromJson(Map<String, dynamic> json) =>
       _$_$_ViolationExtensionReasonFromJson(json);
@@ -155,7 +155,8 @@ class _$_ViolationExtensionReason implements _ViolationExtensionReason {
   }
 }
 
-abstract class _ViolationExtensionReason implements ViolationExtensionReason {
+abstract class _ViolationExtensionReason extends ViolationExtensionReason {
+  const _ViolationExtensionReason._() : super._();
   const factory _ViolationExtensionReason({int id, String name}) =
       _$_ViolationExtensionReason;
 

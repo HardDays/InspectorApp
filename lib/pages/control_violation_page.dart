@@ -12,6 +12,7 @@ import 'package:inspector/model/department_control/control_result_search_result.
 import 'package:inspector/model/department_control/dcphoto.dart';
 import 'package:inspector/model/department_control/perform_control.dart';
 import 'package:inspector/services/department_control/department_control_service.dart';
+import 'package:inspector/services/dictionary_service.dart';
 import 'package:inspector/services/network_status_service/network_status_service.dart';
 import 'package:inspector/style/button.dart';
 import 'package:inspector/style/colors.dart';
@@ -100,7 +101,8 @@ class ControlViolationPage extends StatelessWidget {
                           padding: const EdgeInsets.only(
                               left: 10, right: 10, top: 2, bottom: 4),
                           child: Text(
-                            searchResult.violation.violationStatus?.name ?? 'Сохранено локально',
+                            searchResult.violation.violationStatus?.name ??
+                                'Сохранено локально',
                             style: ProjectTextStyles.smallBold
                                 .apply(color: ProjectColors.cyan),
                           ),
@@ -110,84 +112,17 @@ class ControlViolationPage extends StatelessWidget {
                     ControlObjectInfo(
                       controlObject: controlObject,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 35, bottom: 10),
-                      child: _buildTitle('Реквизиты нарушения'),
-                    ),
-                    ProjectSection(
-                      'Номер ЦАФАП',
-                      description: searchResult.violation.cafapPrescriptionNum
-                          ?.toString(),
-                    ),
-                    _buildDivider(),
+                    _buildPropsSection(),
                     ProjectSection(
                       'Срок устранения',
-                      description: searchResult.violation.resolveDate != null
-                          ? DateFormat("dd.MM.yyyy")
-                              .format(searchResult.violation.resolveDate)
-                          : '',
-                      child: Builder(
-                        builder: (context) => IconButton(
-                          icon: ProjectIcons.editIcon(),
-                          onPressed: () async {
-                            await showDialog(
-                              context: context,
-                              builder: (ctx) => ProjectDialog(
-                                child: ExtensionPeriodForm(
-                                  onCancel: () {
-                                    Navigator.of(ctx).pop();
-                                  },
-                                  onConfirm: (value) {
-                                    BlocProvider.of<ControlViolationPageBloc>(context).add(ControlViolationPageBlocEvent.extendPeriod(extensionPeriod: value));
-                                    Navigator.of(ctx).pop();
-                                  },
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
+                      description: _resolveDate,
+                      child: _buildExtensionButton(),
                     ),
                     _buildDivider(),
-                    ProjectSection(
-                      'Адрес нарушения',
-                      description:
-                          searchResult.violation.btiAddress?.toLongString(),
-                    ),
-                    _buildDivider(),
-                    ProjectSection(
-                      'Адресный ориентир',
-                      description: searchResult.violation.address,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 35, bottom: 10),
-                      child: _buildTitle('Описание нарушения'),
-                    ),
-                    ProjectSection(
-                      'Элемент объекта',
-                      description: searchResult.violation.objectElement.name ?? '',
-                    ),
-                    _buildDivider(),
-                    ProjectSection(
-                      'Описание нарушения',
-                      description: searchResult.violation.description,
-                    ),
-                    _buildDivider(),
-                    ProjectSection(
-                      'Дополнительный признак',
-                      description:
-                          searchResult.violation.additionalFeatures.isEmpty
-                              ? ''
-                              : searchResult
-                                  .violation.additionalFeatures?.first?.name ?? '',
-                    ),
-                    _buildDivider(),
+                    _buildDescriptionSection(),
                     if (searchResult.violation.photos != null &&
                         searchResult.violation.photos.isNotEmpty)
-                      Padding(
-                        padding: const EdgeInsets.only(top: 35, bottom: 5),
-                        child: _buildTitle('Фотоматериалы'),
-                      ),
+                      ..._buildSectionTitle('Фотоматериалы'),
                     if (searchResult.violation.photos != null &&
                         searchResult.violation.photos.isNotEmpty)
                       Container(
@@ -438,6 +373,7 @@ class ControlViolationPage extends StatelessWidget {
       ControlResultSearchResult searchResult, BuildContext context) {
     return ListView(
       shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
       children: <HasDate>[
         if (searchResult.violation.performControls != null &&
             searchResult.violation.performControls.isNotEmpty)
@@ -475,4 +411,109 @@ class ControlViolationPage extends StatelessWidget {
       ]..sort((a, b) => a.date.compareTo(b.date)),
     );
   }
+
+  List<Widget> _buildEknClassification() {
+    return _buildNullableField(
+      'Наименование нарушения по ЕКН',
+      searchResult.violation.eknViolationClassification?.violationName?.name,
+    );
+  }
+
+  List<Widget> _buildNullableField(String title, String value,
+      {Widget widget}) {
+    if (value != null && value.isNotEmpty) {
+      return [
+        ProjectSection(
+          title,
+          description: value,
+          child: widget,
+        ),
+        _buildDivider(),
+      ];
+    } else {
+      return [];
+    }
+  }
+
+  Widget _buildExtensionButton() {
+    return Builder(
+      builder: (context) => IconButton(
+        icon: ProjectIcons.editIcon(),
+        onPressed: () async {
+          await showDialog(
+            context: context,
+            builder: (ctx) => ProjectDialog(
+              child: ExtensionPeriodForm(
+                onCancel: () {
+                  Navigator.of(ctx).pop();
+                },
+                onConfirm: (value) {
+                  BlocProvider.of<ControlViolationPageBloc>(context).add(
+                      ControlViolationPageBlocEvent.extendPeriod(
+                          extensionPeriod: value));
+                  Navigator.of(ctx).pop();
+                },
+                dictionaryService: Provider.of<DictionaryService>(
+                  context,
+                  listen: false,
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  List<Widget> _buildSectionTitle(String title) {
+    return [
+      Padding(
+        padding: const EdgeInsets.only(top: 35, bottom: 10),
+        child: _buildTitle(title),
+      ),
+    ];
+  }
+
+  Widget _buildSection({String title, Map<String, String> fields}) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        _buildSectionTitle(title),
+        ...fields.entries
+            .map((field) => _buildNullableField(field.key, field.value))
+            .toList(),
+      ].expand((element) => element).toList(),
+    );
+  }
+
+  String get _resolveDate => searchResult.violation.resolveDate != null
+      ? DateFormat("dd.MM.yyyy").format(searchResult.violation.resolveDate)
+      : '';
+
+  Widget _buildPropsSection() => _buildSection(
+        title: 'Реквизиты нарушения',
+        fields: {
+          'Номер ЦАФАП':
+              searchResult.violation.cafapPrescriptionNum?.toString(),
+          'Адрес нарушения': searchResult.violation.btiAddress?.toLongString(),
+          'Адресный ориентир': searchResult.violation.address,
+        },
+      );
+
+  Widget _buildDescriptionSection() => _buildSection(
+        title: 'Описание нарушения',
+        fields: {
+          'Элемент объекта': searchResult.violation.objectElement.name,
+          'Наименование нарушения по ЕКН': searchResult
+              .violation.eknViolationClassification?.violationName?.name,
+          'Нарушение, не входящее в ЕКН': searchResult
+              .violation.otherViolationClassification?.violationName?.name,
+          'Описание нарушения': searchResult.violation.description,
+          'Критичность':
+              searchResult.violation.critical ?? false ? 'Критично' : '',
+          'Дополнительный признак': searchResult.violation.additionalFeatures
+              .map((e) => e.name)
+              .join(', '),
+        },
+      );
 }

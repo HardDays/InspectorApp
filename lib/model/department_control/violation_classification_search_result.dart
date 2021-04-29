@@ -39,6 +39,8 @@ abstract class ViolationClassificationSearchResult
         'article': article,
         'violationNameId': violationName?.id,
         'violationNameName': violationName?.name,
+        'violationNameViolationFullName': violationName.violationFullName,
+        'violationNameExternalId': violationName.externalId,
         'violationTypeId': violationType?.id,
         'violationTypeName': violationType?.name,
         'violationKindId': violationKind?.id,
@@ -65,6 +67,8 @@ abstract class ViolationClassificationSearchResult
         violationName: ViolationName(
           id: json['violationNameId'],
           name: json['violationNameName'],
+          externalId: json['violationNameExternalId'],
+          violationFullName: json['violationNameViolationFullName'],
         ),
         violationType: DCViolationType(
           id: json['violationTypeId'],

@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:geodesy/geodesy.dart';
 import 'package:inspector/blocs/control_background_service/bloc.dart';
 import 'package:inspector/blocs/control_background_service/event.dart';
 import 'package:inspector/blocs/control_background_service/state.dart';
@@ -11,9 +12,12 @@ import 'package:inspector/blocs/control_list/event.dart';
 import 'package:inspector/blocs/control_list/sort_state.dart';
 import 'package:inspector/blocs/control_list/state.dart';
 import 'package:inspector/model/department_control/control_object.dart';
+import 'package:inspector/model/instruction.dart';
 import 'package:inspector/pages/control_object_page.dart';
 import 'package:inspector/pages/control_violation_form_page.dart';
 import 'package:inspector/providers/exceptions/api_exception.dart';
+import 'package:inspector/services/department_control/client/local/department_control_local_service.dart';
+import 'package:inspector/services/location/location.dart';
 import 'package:inspector/style/accept_dialog.dart';
 import 'package:inspector/style/colors.dart';
 import 'package:inspector/style/icons.dart';
@@ -27,6 +31,7 @@ import 'package:inspector/widgets/control/control_objects_paginated_list.dart';
 import 'package:inspector/widgets/control/filters.dart';
 import 'package:inspector/widgets/sort_dialog.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 typedef Future RefreshFunction();
 
@@ -39,8 +44,6 @@ class _ControlListPageState extends State<ControlListPage> {
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       new GlobalKey<RefreshIndicatorState>();
 
-  final MapController _mapController = MapController();
-
   @override
   Widget build(BuildContext context) {
     return BlocListener<ControlBackgroundServiceBloc,
@@ -49,31 +52,39 @@ class _ControlListPageState extends State<ControlListPage> {
       listener: (context, state) {
         state.maybeMap(
           loaded: (state) async {
-            if(await showDialog(
-              context: context,
-              builder: (ctx) => AcceptDialog(
-                message: 'В последний раз объекты ведомстенного контроля были загружены ${DateFormat("dd.MM.yyyy").format(state.lastUpdatedDate)} в ${DateFormat("mm:hh").format(state.lastUpdatedDate)}, желаете обновить?',
-                acceptTitle: 'Да',
-                cancelTitle: 'Нет',
-              ),
-            ) != null) {
-              BlocProvider.of<ControlBackgroundServiceBloc>(context).add(ControlBackgroundServiceBlocEvent.acceptLoadingEvent());
+            if (await showDialog(
+                  context: context,
+                  builder: (ctx) => AcceptDialog(
+                    message:
+                        'В последний раз объекты ведомстенного контроля были загружены ${DateFormat("dd.MM.yyyy").format(state.lastUpdatedDate)} в ${DateFormat("mm:hh").format(state.lastUpdatedDate)}, желаете обновить?',
+                    acceptTitle: 'Да',
+                    cancelTitle: 'Нет',
+                  ),
+                ) !=
+                null) {
+              BlocProvider.of<ControlBackgroundServiceBloc>(context).add(
+                  ControlBackgroundServiceBlocEvent.acceptLoadingEvent(true));
             } else {
-              BlocProvider.of<ControlBackgroundServiceBloc>(context).add(ControlBackgroundServiceBlocEvent.cancelLoadingEvent());
+              BlocProvider.of<ControlBackgroundServiceBloc>(context)
+                  .add(ControlBackgroundServiceBlocEvent.cancelLoadingEvent());
             }
           },
           notLoaded: (state) async {
-            if(await showDialog(
-              context: context,
-              builder: (ctx) => AcceptDialog(
-                message: 'Желаете загрузить объекты ведомственного контроля для использования оффлайн?',
-                acceptTitle: 'Да',
-                cancelTitle: 'Нет',
-              ),
-            ) != null) {
-              BlocProvider.of<ControlBackgroundServiceBloc>(context).add(ControlBackgroundServiceBlocEvent.acceptLoadingEvent());
+            if (await showDialog(
+                  context: context,
+                  builder: (ctx) => AcceptDialog(
+                    message:
+                        'Желаете загрузить объекты ведомственного контроля для использования оффлайн?',
+                    acceptTitle: 'Да',
+                    cancelTitle: 'Нет',
+                  ),
+                ) !=
+                null) {
+              BlocProvider.of<ControlBackgroundServiceBloc>(context).add(
+                  ControlBackgroundServiceBlocEvent.acceptLoadingEvent(true));
             } else {
-              BlocProvider.of<ControlBackgroundServiceBloc>(context).add(ControlBackgroundServiceBlocEvent.cancelLoadingEvent());
+              BlocProvider.of<ControlBackgroundServiceBloc>(context)
+                  .add(ControlBackgroundServiceBlocEvent.cancelLoadingEvent());
             }
           },
           orElse: () {},
@@ -82,21 +93,20 @@ class _ControlListPageState extends State<ControlListPage> {
     );
   }
 
-  BlocBuilder<ControlListBloc, ControlListBlocState>
-      _buildControlObjectsList() {
+  Widget _buildControlObjectsList() {
     return BlocBuilder<ControlListBloc, ControlListBlocState>(
       builder: (context, state) {
         return Scaffold(
           appBar: FilterAppbar(
             'Ведомственный контроль',
             '',
-            'Сортировка',
-            'Фильтры',
+            state.showMap ? null : 'Сортировка',
+            SortOrder.asc,
             onUpdate: () {
               _refreshIndicatorKey.currentState?.show();
             },
             onFilter: _onOpenFilters,
-            onSort: _onOpenSort,
+            onSort: state.showMap ? null : _onOpenSort,
           ),
           body: _buildBody(context, state),
         );
@@ -154,7 +164,7 @@ class _ControlListPageState extends State<ControlListPage> {
                 selectObject: _onSelectControlObject(context),
                 hasNotViolations: _onHasNotViolations(context),
                 hasViolation: _onHasViolations(context),
-                mapController: _mapController,
+                userLocation: state.mapState.userLocation,
               ),
               loadingListState: (loadingListState) => Center(
                 child: CircularProgressIndicator(),
@@ -167,7 +177,7 @@ class _ControlListPageState extends State<ControlListPage> {
                 selectObject: _onSelectControlObject(context),
                 hasNotViolations: _onHasNotViolations(context),
                 hasViolation: _onHasViolations(context),
-                mapController: _mapController,
+                userLocation: state.mapState.userLocation,
               ),
             ),
             cantWorkInThisModeState: (cantWorkInThisModeState) =>
@@ -279,7 +289,10 @@ class _ControlListPageState extends State<ControlListPage> {
       barrierColor: Colors.transparent,
       pageBuilder: (context, animation1, animation2) {
         return ProjectTopDialog(
-          child: ControlFiltersWidget(bloc.state.filtersState),
+          child: ControlFiltersWidget(
+            bloc.state.filtersState,
+            bloc.state.showMap,
+          ),
         );
       },
     );
@@ -324,9 +337,11 @@ class _ControlListPageState extends State<ControlListPage> {
         );
       };
 
-  void Function(ControlObject) _onSelectControlObject(BuildContext context) =>(ControlObject object) {
-       BlocProvider.of<ControlListBloc>(context).add(ControlListBlocEvent.selectControlObject(object));
-};
+  void Function(ControlObject) _onSelectControlObject(BuildContext context) =>
+      (ControlObject object) {
+        BlocProvider.of<ControlListBloc>(context)
+            .add(ControlListBlocEvent.selectControlObject(object));
+      };
 
   void Function(ControlObject) _onHasNotViolations(BuildContext context) =>
       (ControlObject object) async {
@@ -350,9 +365,13 @@ class _ControlListPageState extends State<ControlListPage> {
           context,
           MaterialPageRoute(
             builder: (context) => ControlViolationFormPage(
-              controlObject: object, onConfirm: (violation) { 
-                BlocProvider.of<ControlListBloc>(context).add(ControlListBlocEvent.registerSearchResultEvent(object, violation: violation));
+              controlObject: object,
+              onConfirm: (violation) {
+                BlocProvider.of<ControlListBloc>(context).add(
+                    ControlListBlocEvent.registerSearchResultEvent(object,
+                        violation: violation));
               },
+              violationNum: 'Создать нарушение',
             ),
           ),
         );

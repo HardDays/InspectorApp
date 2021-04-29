@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:inspector/model/address.dart';
 import 'package:inspector/model/department_control/contractor.dart';
@@ -31,9 +32,9 @@ abstract class ControlViolationFormEvent with _$ControlViolationFormEvent {
     String objectElement,
   ) = SetObjectElementString;
 
-  const factory ControlViolationFormEvent.setObjectElement(
+  const factory ControlViolationFormEvent.setObjectElement([
     ObjectElement objectElement,
-  ) = SetObjectElement;
+  ]) = SetObjectElement;
 
   const factory ControlViolationFormEvent.setDescriptionEvent(
     String description,
@@ -43,17 +44,17 @@ abstract class ControlViolationFormEvent with _$ControlViolationFormEvent {
     String violationAdditionalFeature,
   ) = SetViolationAdditionalFeatureStringEvent;
 
-  const factory ControlViolationFormEvent.setViolationAdditionalFeatureEvent(
+  const factory ControlViolationFormEvent.setViolationAdditionalFeatureEvent([
     ViolationAdditionalFeature violationAdditionalFeature,
-  ) = SetViolationAdditionalFeatureEvent;
+  ]) = SetViolationAdditionalFeatureEvent;
 
   const factory ControlViolationFormEvent.setContractorStringEvent(
     String contractor,
   ) = SetContractorStringEvent;
 
-  const factory ControlViolationFormEvent.setContractorEvent(
+  const factory ControlViolationFormEvent.setContractorEvent([
     Contractor contractor,
-  ) = SetContractorEvent;
+  ]) = SetContractorEvent;
 
   const factory ControlViolationFormEvent.addPhotoEvent(
     Uint8List photo,
@@ -63,18 +64,27 @@ abstract class ControlViolationFormEvent with _$ControlViolationFormEvent {
   const factory ControlViolationFormEvent.removePhotoEvent(
     int index,
   ) = RemovePhotoEvent;
-  
+
   const factory ControlViolationFormEvent.rotatePhotoEvent(
     int index,
     Uint8List photo,
   ) = RotatePhotoEvent;
-  
+
   const factory ControlViolationFormEvent.setViolationClassificationString(
     String classification,
   ) = SetViolationClassificationString;
 
-  const factory ControlViolationFormEvent.setViolationClassifications(
+  const factory ControlViolationFormEvent.setViolationClassifications([
     ViolationClassificationSearchResult classification,
-  ) = SetViolationClassification;
+  ]) = SetViolationClassification;
 
+  const factory ControlViolationFormEvent.setViolationClassificationNoEknString(
+    String classification,
+  ) = SetViolationClassificationStringNoEkn;
+
+  const factory ControlViolationFormEvent.setViolationClassificationsNoEkn([
+    ViolationClassificationSearchResult classification,
+  ]) = SetViolationClassificationNoEkn;
+
+  const factory ControlViolationFormEvent.saveEvent(BuildContext context) = SaveControlViolation;
 }

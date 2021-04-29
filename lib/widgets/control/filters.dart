@@ -44,8 +44,9 @@ class ControlFiltersWidget extends StatelessWidget {
   final _dcViolationSourceController = TextEditingController();
 
   final ControlFiltersBlocState state;
+  final bool showInMap;
 
-  ControlFiltersWidget(this.state) {
+  ControlFiltersWidget(this.state, this.showInMap) {
     _initControllers(state);
   }
 
@@ -83,8 +84,10 @@ class ControlFiltersWidget extends StatelessWidget {
     _dcViolationSourceController.text = state.source?.name;
   }
 
-  Future<Iterable<ObjectType>> _onDCObjectTypeSearch(BuildContext context, String name) async  {
-    return await BlocProvider.of<ControlFiltersBloc>(context).getDCObjectTypes(name);
+  Future<Iterable<ObjectType>> _onDCObjectTypeSearch(
+      BuildContext context, String name) async {
+    return await BlocProvider.of<ControlFiltersBloc>(context)
+        .getDCObjectTypes(name);
   }
 
   void _onDCObjectTypeSelect(ControlFiltersBloc bloc, ObjectType type) {
@@ -92,8 +95,10 @@ class ControlFiltersWidget extends StatelessWidget {
     _dcObjectTypeController.text = type?.name;
   }
 
-  Future<Iterable<ObjectKind>> _onDCObjectKindSearch(BuildContext context, String name) async  {
-    return await BlocProvider.of<ControlFiltersBloc>(context).getDCObjectKinds(name);
+  Future<Iterable<ObjectKind>> _onDCObjectKindSearch(
+      BuildContext context, String name) async {
+    return await BlocProvider.of<ControlFiltersBloc>(context)
+        .getDCObjectKinds(name);
   }
 
   void _onDCObjectKindSelect(ControlFiltersBloc bloc, ObjectKind kind) {
@@ -101,7 +106,8 @@ class ControlFiltersWidget extends StatelessWidget {
     _dcObjectKindController.text = kind?.name;
   }
 
-  Future<Iterable<Area>> _onAreaSearch(BuildContext context, String name) async  {
+  Future<Iterable<Area>> _onAreaSearch(
+      BuildContext context, String name) async {
     return await BlocProvider.of<ControlFiltersBloc>(context).getAreas(name);
   }
 
@@ -110,8 +116,10 @@ class ControlFiltersWidget extends StatelessWidget {
     _areaController.text = area?.name;
   }
 
-  Future<Iterable<District>> _onDistrictSearch(BuildContext context, String name) async  {
-    return await BlocProvider.of<ControlFiltersBloc>(context).getDistricts(name);
+  Future<Iterable<District>> _onDistrictSearch(
+      BuildContext context, String name) async {
+    return await BlocProvider.of<ControlFiltersBloc>(context)
+        .getDistricts(name);
   }
 
   void _onDistrictSelect(ControlFiltersBloc bloc, District district) {
@@ -119,7 +127,8 @@ class ControlFiltersWidget extends StatelessWidget {
     _districtController.text = district?.name;
   }
 
-  Future<Iterable<Street>> _onStreetSearch(BuildContext context, String name) async  {
+  Future<Iterable<Street>> _onStreetSearch(
+      BuildContext context, String name) async {
     return await BlocProvider.of<ControlFiltersBloc>(context).getStreets(name);
   }
 
@@ -128,8 +137,10 @@ class ControlFiltersWidget extends StatelessWidget {
     _streetController.text = street?.toString();
   }
 
-  Future<Iterable<Address>> _onAddressSearch(BuildContext context, String name) async  {
-    return await BlocProvider.of<ControlFiltersBloc>(context).getAddresses(name);
+  Future<Iterable<Address>> _onAddressSearch(
+      BuildContext context, String name) async {
+    return await BlocProvider.of<ControlFiltersBloc>(context)
+        .getAddresses(name);
   }
 
   void _onAddressSelect(ControlFiltersBloc bloc, Address address) {
@@ -142,20 +153,26 @@ class ControlFiltersWidget extends StatelessWidget {
   }
 
   void _onCamera(ControlFiltersBloc bloc, String value) {
-    bloc.add(CopyStateEvent(bloc.state.copyWith(camerasExist: value == _cameras.first)));
+    bloc.add(CopyStateEvent(
+        bloc.state.copyWith(camerasExist: value == _cameras.first)));
   }
 
-  Future<Iterable<ObjectElement>> _onDCObjectElementSearch(BuildContext context, String name) async  {
-    return await BlocProvider.of<ControlFiltersBloc>(context).getDCObjectElements(name);
+  Future<Iterable<ObjectElement>> _onDCObjectElementSearch(
+      BuildContext context, String name) async {
+    return await BlocProvider.of<ControlFiltersBloc>(context)
+        .getDCObjectElements(name);
   }
 
-  void _onDCObjectElementSelect(ControlFiltersBloc bloc, ObjectElement element) {
+  void _onDCObjectElementSelect(
+      ControlFiltersBloc bloc, ObjectElement element) {
     bloc.add(CopyStateEvent(bloc.state.copyWith(objectElement: element)));
     _dcObjectElementController.text = element?.name;
   }
 
-  Future<Iterable<ViolationName>> _onDCViolationNameSearch(BuildContext context, String name) async  {
-    return await BlocProvider.of<ControlFiltersBloc>(context).getDCViolationNames(name);
+  Future<Iterable<ViolationName>> _onDCViolationNameSearch(
+      BuildContext context, String name) async {
+    return await BlocProvider.of<ControlFiltersBloc>(context)
+        .getDCViolationNames(name);
   }
 
   void _onDCViolationNameSelect(ControlFiltersBloc bloc, ViolationName name) {
@@ -167,11 +184,14 @@ class ControlFiltersWidget extends StatelessWidget {
     bloc.add(CopyStateEvent(bloc.state.copyWith(ignoreViolations: value)));
   }
 
-  Future<Iterable<ViolationStatus>> _onDCViolationStatusSearch(BuildContext context, String name) async  {
-    return await BlocProvider.of<ControlFiltersBloc>(context).getDCViolationStatuses(name);
+  Future<Iterable<ViolationStatus>> _onDCViolationStatusSearch(
+      BuildContext context, String name) async {
+    return await BlocProvider.of<ControlFiltersBloc>(context)
+        .getDCViolationStatuses(name);
   }
 
-  void _onDCViolationStatusSelect(ControlFiltersBloc bloc, ViolationStatus status) {
+  void _onDCViolationStatusSelect(
+      ControlFiltersBloc bloc, ViolationStatus status) {
     bloc.add(CopyStateEvent(bloc.state.copyWith(violationStatus: status)));
     _dcViolationStatusController.text = status?.name;
   }
@@ -184,8 +204,10 @@ class ControlFiltersWidget extends StatelessWidget {
     bloc.add(CopyStateEvent(bloc.state.copyWith(detectionDates: values)));
   }
 
-  Future<Iterable<Source>> _onDCSourceSearch(BuildContext context, String name) async  {
-    return await BlocProvider.of<ControlFiltersBloc>(context).getDCSources(name);
+  Future<Iterable<Source>> _onDCSourceSearch(
+      BuildContext context, String name) async {
+    return await BlocProvider.of<ControlFiltersBloc>(context)
+        .getDCSources(name);
   }
 
   void _onDCSourceSelect(ControlFiltersBloc bloc, Source source) {
@@ -194,7 +216,8 @@ class ControlFiltersWidget extends StatelessWidget {
   }
 
   void _onClear(ControlFiltersBloc bloc) {
-    final state = ControlFiltersBlocState(searchRadius: 500, daysFromLastSurvey: 7);
+    final state =
+        ControlFiltersBlocState(searchRadius: 500, daysFromLastSurvey: 7);
     bloc.add(CopyStateEvent(state));
     _initControllers(state);
   }
@@ -202,55 +225,61 @@ class ControlFiltersWidget extends StatelessWidget {
   void _onFind(BuildContext context, ControlFiltersBloc bloc) {
     final objectName = _objectNameController.text;
     final ownerName = _balanceOwnerController.text;
-    Navigator.pop(context,
-      bloc.state.copyWith(
-        externalId: int.tryParse(_externalIdController.text),
-        objectName: objectName.isEmpty ? null : objectName,
-        searchRadius: int.tryParse(_searchRadiusController.text),
-        balanceOwner: ownerName.isEmpty ? null : ownerName,
-        daysFromLastSurvey: int.tryParse(_daysFromLastSurveyController.text),
-      )
-    );
+    Navigator.pop(
+        context,
+        bloc.state.copyWith(
+          externalId: int.tryParse(_externalIdController.text),
+          objectName: objectName.isEmpty ? null : objectName,
+          searchRadius: int.tryParse(_searchRadiusController.text),
+          balanceOwner: ownerName.isEmpty ? null : ownerName,
+          daysFromLastSurvey: int.tryParse(_daysFromLastSurveyController.text),
+        ));
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context)=> ControlFiltersBloc(state),
-      child: BlocBuilder<ControlFiltersBloc, ControlFiltersBlocState>(
-        builder: (context, state) {
+        create: (context) => ControlFiltersBloc(state, showInMap),
+        child: BlocBuilder<ControlFiltersBloc, ControlFiltersBlocState>(
+            builder: (context, state) {
           final bloc = BlocProvider.of<ControlFiltersBloc>(context);
           return SizedBox(
-            height: MediaQuery.of(context).size.height * 0.75,
+            height: MediaQuery.of(context).size.height * 0.5,
             child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Flexible(
-                        child: ProjectAutocomplete('Тип объекта',
-                          hintText: 'Все',
-                          enabled: true,
-                          suggestionsCallback: (text)=> _onDCObjectTypeSearch(context, text),
-                          onSuggestionSelected: (value)=> _onDCObjectTypeSelect(bloc, value),
-                          formatter: (value) => '${value.code} ${value.name}',
-                          controller: _dcObjectTypeController,
-                        ),
-                      ),
-                      Padding(padding: const EdgeInsets.only(left: 35)),
-                      Flexible(
-                        child: ProjectAutocomplete('Вид объекта',
-                          hintText: 'Все',
-                          enabled: true,
-                          suggestionsCallback: (text)=> _onDCObjectKindSearch(context, text),
-                          onSuggestionSelected: (value)=> _onDCObjectKindSelect(bloc, value),
-                          formatter: (value) => '${value.name}',
-                          controller: _dcObjectKindController,
-                        ),
-                      ),
-                    ]
+                child: Column(
+              children: [
+                Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                  Flexible(
+                    child: ProjectAutocomplete(
+                      'Тип объекта',
+                      hintText: 'Все',
+                      enabled: true,
+                      suggestionsCallback: (text) =>
+                          _onDCObjectTypeSearch(context, text),
+                      onSuggestionSelected: (value) =>
+                          _onDCObjectTypeSelect(bloc, value),
+                      formatter: (value) => '${value.code} ${value.name}',
+                      controller: _dcObjectTypeController,
+                    ),
                   ),
+                  if (!showInMap)
+                    Padding(padding: const EdgeInsets.only(left: 35)),
+                  if (!showInMap)
+                    Flexible(
+                      child: ProjectAutocomplete(
+                        'Вид объекта',
+                        hintText: 'Все',
+                        enabled: true,
+                        suggestionsCallback: (text) =>
+                            _onDCObjectKindSearch(context, text),
+                        onSuggestionSelected: (value) =>
+                            _onDCObjectKindSelect(bloc, value),
+                        formatter: (value) => '${value.name}',
+                        controller: _dcObjectKindController,
+                      ),
+                    ),
+                ]),
+                if (!showInMap)
                   Padding(
                     padding: const EdgeInsets.only(top: 18),
                     child: Row(
@@ -274,65 +303,75 @@ class ControlFiltersWidget extends StatelessWidget {
                       ],
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 18),
-                    child: Row(
+                Padding(
+                  padding: const EdgeInsets.only(top: 18),
+                  child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Flexible(
-                          child: ProjectAutocomplete('Округ',
+                          child: ProjectAutocomplete(
+                            'Округ',
                             hintText: 'Все',
                             enabled: true,
-                            suggestionsCallback: (text)=> _onAreaSearch(context, text),
-                            onSuggestionSelected: (value)=> _onAreaSelect(bloc, value),
+                            suggestionsCallback: (text) =>
+                                _onAreaSearch(context, text),
+                            onSuggestionSelected: (value) =>
+                                _onAreaSelect(bloc, value),
                             controller: _areaController,
                           ),
                         ),
                         Padding(padding: const EdgeInsets.only(left: 35)),
                         Flexible(
-                          child: ProjectAutocomplete('Район',
+                          child: ProjectAutocomplete(
+                            'Район',
                             hintText: 'Все',
                             enabled: true,
-                            suggestionsCallback: (text)=> _onDistrictSearch(context, text),
-                            onSuggestionSelected: (value)=> _onDistrictSelect(bloc, value),
+                            suggestionsCallback: (text) =>
+                                _onDistrictSearch(context, text),
+                            onSuggestionSelected: (value) =>
+                                _onDistrictSelect(bloc, value),
                             controller: _districtController,
                           ),
                         ),
-                      ]
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 18),
-                    child: Row(
+                      ]),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 18),
+                  child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Flexible(
-                          child: ProjectAutocomplete('Улица',
+                          child: ProjectAutocomplete(
+                            'Улица',
                             hintText: 'Все',
                             enabled: true,
-                            suggestionsCallback: (text)=> _onStreetSearch(context, text),
-                            onSuggestionSelected: (value)=> _onStreetSelect(bloc, value),
+                            suggestionsCallback: (text) =>
+                                _onStreetSearch(context, text),
+                            onSuggestionSelected: (value) =>
+                                _onStreetSelect(bloc, value),
                             controller: _streetController,
                             formatter: (value) => '${value.toString()}',
                           ),
                         ),
                         Padding(padding: const EdgeInsets.only(left: 35)),
                         Flexible(
-                          child: ProjectAutocomplete('Адрес',
+                          child: ProjectAutocomplete(
+                            'Адрес',
                             hintText: 'Все',
                             enabled: true,
-                            suggestionsCallback: (text)=> _onAddressSearch(context, text),
-                            onSuggestionSelected: (value)=> _onAddressSelect(bloc, value),
+                            suggestionsCallback: (text) =>
+                                _onAddressSearch(context, text),
+                            onSuggestionSelected: (value) =>
+                                _onAddressSelect(bloc, value),
                             controller: _addressController,
                             formatter: (value) => '${value.toString()}',
                           ),
                         ),
-                      ]
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 18),
-                    child: Row(
+                      ]),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 18),
+                  child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Flexible(
@@ -343,185 +382,200 @@ class ControlFiltersWidget extends StatelessWidget {
                             controller: _searchRadiusController,
                           ),
                         ),
-                      ]
-                    ),
-                  ),
+                      ]),
+                ),
+                if (!showInMap)
                   Padding(
                     padding: const EdgeInsets.only(top: 18),
                     child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Flexible(
-                          child: ProjectTextField(
-                            title: 'Балансодержатель',
-                            hintText: 'Введите данные',
-                            controller: _balanceOwnerController,
-                          ),
-                        ),
-                        Padding(padding: const EdgeInsets.only(left: 35)),
-                        Flexible(
-                          child: ProjectTextField(
-                            title: 'Дней с последней проверки, более',
-                            hintText: 'Введите данные',
-                            inputType: TextInputType.number,
-                            controller: _daysFromLastSurveyController,
-                          ),
-                        ),
-                      ]
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 18),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Flexible(
-                          child: ProjectDatePicker(
-                            title: 'Дата последней проверки',
-                            hintText: 'Выберите дату или период',
-                            values: state.lastSurveyDates,
-                            onChanged: (value)=> _onLastSurveyDate(bloc, value ?? []),
-                          ),
-                        ),
-                        Padding(padding: const EdgeInsets.only(left: 35)),
-                        Flexible(
-                          child: ProjectSelect(
-                            _cameras.length, 
-                            (state.camerasExist ?? true) ? _cameras[0] : _cameras[1], 
-                            (index)=> _cameras[index],
-                            (index)=> _cameras[index],
-                            title: 'Наличие камер',
-                            hintText: 'Введите данные',
-                            onChanged: (value)=> _onCamera(bloc, value),
-                          ),
-                        ),
-                      ]
-                    ),
-                  ),
-                  ProjectTitle('Поиск нарушений'),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 18),
-                    child: Row(
-                      children: [
-                        ProjectCheckbox(
-                          value: state.ignoreViolations ?? false,
-                          onChanged: (value)=> _onIgnore(bloc, value),
-                        ),
-                        Flexible(
-                          child: Padding(
-                          padding: const EdgeInsets.only(left: 10),
-                            child: Text('Скрыть нарушения',
-                              style: ProjectTextStyles.base.apply(color: ProjectColors.black),
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Flexible(
+                            child: ProjectTextField(
+                              title: 'Балансодержатель',
+                              hintText: 'Введите данные',
+                              controller: _balanceOwnerController,
                             ),
                           ),
-                        ),
-                      ],
-                    ),
+                          Padding(padding: const EdgeInsets.only(left: 35)),
+                          Flexible(
+                            child: ProjectTextField(
+                              title: 'Дней с последней проверки, более',
+                              hintText: 'Введите данные',
+                              inputType: TextInputType.number,
+                              controller: _daysFromLastSurveyController,
+                            ),
+                          ),
+                        ]),
                   ),
+                if (!showInMap)
                   Padding(
                     padding: const EdgeInsets.only(top: 18),
                     child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Flexible(
-                          child: ProjectAutocomplete('Элемент объекта',
-                            hintText: 'Все',
-                            enabled: true,
-                            suggestionsCallback: (text)=> _onDCObjectElementSearch(context, text),
-                            onSuggestionSelected: (value)=> _onDCObjectElementSelect(bloc, value),
-                            controller: _dcObjectElementController,
-                            formatter: (value) => '${value.name}',
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Flexible(
+                            child: ProjectDatePicker(
+                              title: 'Дата последней проверки',
+                              hintText: 'Выберите дату',
+                              values: state.lastSurveyDates,
+                              onChanged: (value) =>
+                                  _onLastSurveyDate(bloc, value ?? []),
+                            ),
                           ),
-                        ),
-                        Padding(padding: const EdgeInsets.only(left: 35)),
-                        Flexible(
-                          child: ProjectAutocomplete('Наименование нарушения',
-                            hintText: 'Все',
-                            enabled: true,
-                            suggestionsCallback: (text)=> _onDCViolationNameSearch(context, text),
-                            onSuggestionSelected: (value)=> _onDCViolationNameSelect(bloc, value),
-                            controller: _dcViolationNameController,
-                            formatter: (value) => '${value.name}',
+                          Padding(padding: const EdgeInsets.only(left: 35)),
+                          Flexible(
+                            child: ProjectSelect(
+                              _cameras.length,
+                              (state.camerasExist ?? true)
+                                  ? _cameras[0]
+                                  : _cameras[1],
+                              (index) => _cameras[index],
+                              (index) => _cameras[index],
+                              title: 'Наличие камер',
+                              hintText: 'Введите данные',
+                              onChanged: (value) => _onCamera(bloc, value),
+                            ),
                           ),
-                        ),
-                      ]
-                    ),
+                        ]),
                   ),
+                ProjectTitle('Поиск нарушений'),
+                Padding(
+                  padding: const EdgeInsets.only(top: 18),
+                  child: Row(
+                    children: [
+                      ProjectCheckbox(
+                        value: state.ignoreViolations ?? false,
+                        onChanged: (value) => _onIgnore(bloc, value),
+                      ),
+                      Flexible(
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 10),
+                          child: Text(
+                            'Скрыть нарушения',
+                            style: ProjectTextStyles.base
+                                .apply(color: ProjectColors.black),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                if (!showInMap)
                   Padding(
                     padding: const EdgeInsets.only(top: 18),
                     child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Flexible(
+                            child: ProjectAutocomplete(
+                              'Элемент объекта',
+                              hintText: 'Все',
+                              enabled: true,
+                              suggestionsCallback: (text) =>
+                                  _onDCObjectElementSearch(context, text),
+                              onSuggestionSelected: (value) =>
+                                  _onDCObjectElementSelect(bloc, value),
+                              controller: _dcObjectElementController,
+                              formatter: (value) => '${value.name}',
+                            ),
+                          ),
+                          Padding(padding: const EdgeInsets.only(left: 35)),
+                          Flexible(
+                            child: ProjectAutocomplete(
+                              'Наименование нарушения',
+                              hintText: 'Все',
+                              enabled: true,
+                              suggestionsCallback: (text) =>
+                                  _onDCViolationNameSearch(context, text),
+                              onSuggestionSelected: (value) =>
+                                  _onDCViolationNameSelect(bloc, value),
+                              controller: _dcViolationNameController,
+                              formatter: (value) => '${value.name}',
+                            ),
+                          ),
+                        ]),
+                  ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 18),
+                  child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Flexible(
-                          child: ProjectAutocomplete('Статус нарушения',
-                            hintText: 'Все',
-                            enabled: true,
-                            suggestionsCallback: (text)=> _onDCViolationStatusSearch(context, text),
-                            onSuggestionSelected: (value)=> _onDCViolationStatusSelect(bloc, value),
-                            controller: _dcViolationStatusController,
-                            formatter: (value) => '${value.name}',
+                        if (!showInMap)
+                          Flexible(
+                            child: ProjectAutocomplete(
+                              'Статус нарушения',
+                              hintText: 'Все',
+                              enabled: true,
+                              suggestionsCallback: (text) =>
+                                  _onDCViolationStatusSearch(context, text),
+                              onSuggestionSelected: (value) =>
+                                  _onDCViolationStatusSelect(bloc, value),
+                              controller: _dcViolationStatusController,
+                              formatter: (value) => '${value.name}',
+                            ),
                           ),
-                        ),
-                        Padding(padding: const EdgeInsets.only(left: 35)),
+                        if (!showInMap)
+                          Padding(padding: const EdgeInsets.only(left: 35)),
                         Flexible(
-                          child: ProjectAutocomplete('Источник данных',
+                          child: ProjectAutocomplete(
+                            'Источник данных',
                             hintText: 'Все',
                             enabled: true,
-                            suggestionsCallback: (text)=> _onDCSourceSearch(context, text),
-                            onSuggestionSelected: (value)=> _onDCSourceSelect(bloc, value),
+                            suggestionsCallback: (text) =>
+                                _onDCSourceSearch(context, text),
+                            onSuggestionSelected: (value) =>
+                                _onDCSourceSelect(bloc, value),
                             controller: _dcViolationSourceController,
                             formatter: (value) => '${value.name}',
                           ),
                         ),
-                      ]
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 18),
-                    child: Row(
+                      ]),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 18),
+                  child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Flexible(
-                          child: ProjectDatePicker(
-                            title: 'Дата обследования',
-                            hintText: 'Выберите дату или период',
-                            values: state.detectionDates,
-                            onChanged: (value)=> _onDetectionDate(bloc, value ?? []),
+                        if (!showInMap)
+                          Flexible(
+                            child: ProjectDatePicker(
+                              title: 'Дата обследования',
+                              hintText: 'Выберите дату',
+                              values: state.detectionDates,
+                              onChanged: (value) =>
+                                  _onDetectionDate(bloc, value ?? []),
+                            ),
                           ),
-                        ),
-                        Padding(padding: const EdgeInsets.only(left: 35)),
+                        if (!showInMap)
+                          Padding(padding: const EdgeInsets.only(left: 35)),
                         Flexible(
                           child: ProjectDatePicker(
                             title: 'Контрольный срок устранения',
-                            hintText: 'Выберите дату или период',
+                            hintText: 'Выберите дату',
                             values: state.controlDates,
-                            onChanged: (value)=> _onControlDate(bloc, value ?? []),
+                            onChanged: (value) =>
+                                _onControlDate(bloc, value ?? []),
                           ),
                         ),
-                      ]
-                    ),
+                      ]),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 18),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      ProjectButton.buildOutlineButton('Сбросить',
+                          onPressed: () => _onClear(bloc)),
+                      Padding(padding: const EdgeInsets.only(left: 20)),
+                      ProjectButton.builtFlatButton('Найти',
+                          onPressed: () => _onFind(context, bloc))
+                    ],
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 18),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        ProjectButton.buildOutlineButton('Сбросить',
-                          onPressed: ()=> _onClear(bloc)
-                        ),
-                        Padding(padding: const EdgeInsets.only(left: 20)), 
-                        ProjectButton.builtFlatButton('Найти',
-                          onPressed: ()=> _onFind(context, bloc)
-                        )
-                      ],
-                    ),
-                  ),
-                ],
-              )
-            ),
+                ),
+              ],
+            )),
           );
-        }
-      )
-    );
+        }));
   }
 }

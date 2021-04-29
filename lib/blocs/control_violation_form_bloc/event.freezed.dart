@@ -50,7 +50,7 @@ class _$ControlViolationFormEventTearOff {
   }
 
 // ignore: unused_element
-  SetObjectElement setObjectElement(ObjectElement objectElement) {
+  SetObjectElement setObjectElement([ObjectElement objectElement]) {
     return SetObjectElement(
       objectElement,
     );
@@ -74,7 +74,7 @@ class _$ControlViolationFormEventTearOff {
 
 // ignore: unused_element
   SetViolationAdditionalFeatureEvent setViolationAdditionalFeatureEvent(
-      ViolationAdditionalFeature violationAdditionalFeature) {
+      [ViolationAdditionalFeature violationAdditionalFeature]) {
     return SetViolationAdditionalFeatureEvent(
       violationAdditionalFeature,
     );
@@ -88,7 +88,7 @@ class _$ControlViolationFormEventTearOff {
   }
 
 // ignore: unused_element
-  SetContractorEvent setContractorEvent(Contractor contractor) {
+  SetContractorEvent setContractorEvent([Contractor contractor]) {
     return SetContractorEvent(
       contractor,
     );
@@ -127,9 +127,32 @@ class _$ControlViolationFormEventTearOff {
 
 // ignore: unused_element
   SetViolationClassification setViolationClassifications(
-      ViolationClassificationSearchResult classification) {
+      [ViolationClassificationSearchResult classification]) {
     return SetViolationClassification(
       classification,
+    );
+  }
+
+// ignore: unused_element
+  SetViolationClassificationStringNoEkn setViolationClassificationNoEknString(
+      String classification) {
+    return SetViolationClassificationStringNoEkn(
+      classification,
+    );
+  }
+
+// ignore: unused_element
+  SetViolationClassificationNoEkn setViolationClassificationsNoEkn(
+      [ViolationClassificationSearchResult classification]) {
+    return SetViolationClassificationNoEkn(
+      classification,
+    );
+  }
+
+// ignore: unused_element
+  SaveControlViolation saveEvent(BuildContext context) {
+    return SaveControlViolation(
+      context,
     );
   }
 }
@@ -164,6 +187,12 @@ mixin _$ControlViolationFormEvent {
     @required
         TResult setViolationClassifications(
             ViolationClassificationSearchResult classification),
+    @required
+        TResult setViolationClassificationNoEknString(String classification),
+    @required
+        TResult setViolationClassificationsNoEkn(
+            ViolationClassificationSearchResult classification),
+    @required TResult saveEvent(BuildContext context),
   });
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object>({
@@ -186,6 +215,10 @@ mixin _$ControlViolationFormEvent {
     TResult setViolationClassificationString(String classification),
     TResult setViolationClassifications(
         ViolationClassificationSearchResult classification),
+    TResult setViolationClassificationNoEknString(String classification),
+    TResult setViolationClassificationsNoEkn(
+        ViolationClassificationSearchResult classification),
+    TResult saveEvent(BuildContext context),
     @required TResult orElse(),
   });
   @optionalTypeArgs
@@ -215,6 +248,13 @@ mixin _$ControlViolationFormEvent {
             SetViolationClassificationString value),
     @required
         TResult setViolationClassifications(SetViolationClassification value),
+    @required
+        TResult setViolationClassificationNoEknString(
+            SetViolationClassificationStringNoEkn value),
+    @required
+        TResult setViolationClassificationsNoEkn(
+            SetViolationClassificationNoEkn value),
+    @required TResult saveEvent(SaveControlViolation value),
   });
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object>({
@@ -238,6 +278,11 @@ mixin _$ControlViolationFormEvent {
     TResult setViolationClassificationString(
         SetViolationClassificationString value),
     TResult setViolationClassifications(SetViolationClassification value),
+    TResult setViolationClassificationNoEknString(
+        SetViolationClassificationStringNoEkn value),
+    TResult setViolationClassificationsNoEkn(
+        SetViolationClassificationNoEkn value),
+    TResult saveEvent(SaveControlViolation value),
     @required TResult orElse(),
   });
 }
@@ -342,6 +387,12 @@ class _$SetCriticalEvent implements SetCriticalEvent {
     @required
         TResult setViolationClassifications(
             ViolationClassificationSearchResult classification),
+    @required
+        TResult setViolationClassificationNoEknString(String classification),
+    @required
+        TResult setViolationClassificationsNoEkn(
+            ViolationClassificationSearchResult classification),
+    @required TResult saveEvent(BuildContext context),
   }) {
     assert(setCriticalEvent != null);
     assert(setUseGeoLocationForAddressEvent != null);
@@ -359,6 +410,9 @@ class _$SetCriticalEvent implements SetCriticalEvent {
     assert(rotatePhotoEvent != null);
     assert(setViolationClassificationString != null);
     assert(setViolationClassifications != null);
+    assert(setViolationClassificationNoEknString != null);
+    assert(setViolationClassificationsNoEkn != null);
+    assert(saveEvent != null);
     return setCriticalEvent(value);
   }
 
@@ -384,6 +438,10 @@ class _$SetCriticalEvent implements SetCriticalEvent {
     TResult setViolationClassificationString(String classification),
     TResult setViolationClassifications(
         ViolationClassificationSearchResult classification),
+    TResult setViolationClassificationNoEknString(String classification),
+    TResult setViolationClassificationsNoEkn(
+        ViolationClassificationSearchResult classification),
+    TResult saveEvent(BuildContext context),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -421,6 +479,13 @@ class _$SetCriticalEvent implements SetCriticalEvent {
             SetViolationClassificationString value),
     @required
         TResult setViolationClassifications(SetViolationClassification value),
+    @required
+        TResult setViolationClassificationNoEknString(
+            SetViolationClassificationStringNoEkn value),
+    @required
+        TResult setViolationClassificationsNoEkn(
+            SetViolationClassificationNoEkn value),
+    @required TResult saveEvent(SaveControlViolation value),
   }) {
     assert(setCriticalEvent != null);
     assert(setUseGeoLocationForAddressEvent != null);
@@ -438,6 +503,9 @@ class _$SetCriticalEvent implements SetCriticalEvent {
     assert(rotatePhotoEvent != null);
     assert(setViolationClassificationString != null);
     assert(setViolationClassifications != null);
+    assert(setViolationClassificationNoEknString != null);
+    assert(setViolationClassificationsNoEkn != null);
+    assert(saveEvent != null);
     return setCriticalEvent(this);
   }
 
@@ -464,6 +532,11 @@ class _$SetCriticalEvent implements SetCriticalEvent {
     TResult setViolationClassificationString(
         SetViolationClassificationString value),
     TResult setViolationClassifications(SetViolationClassification value),
+    TResult setViolationClassificationNoEknString(
+        SetViolationClassificationStringNoEkn value),
+    TResult setViolationClassificationsNoEkn(
+        SetViolationClassificationNoEkn value),
+    TResult saveEvent(SaveControlViolation value),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -570,6 +643,12 @@ class _$SetUseGeoLocationForAddressEvent
     @required
         TResult setViolationClassifications(
             ViolationClassificationSearchResult classification),
+    @required
+        TResult setViolationClassificationNoEknString(String classification),
+    @required
+        TResult setViolationClassificationsNoEkn(
+            ViolationClassificationSearchResult classification),
+    @required TResult saveEvent(BuildContext context),
   }) {
     assert(setCriticalEvent != null);
     assert(setUseGeoLocationForAddressEvent != null);
@@ -587,6 +666,9 @@ class _$SetUseGeoLocationForAddressEvent
     assert(rotatePhotoEvent != null);
     assert(setViolationClassificationString != null);
     assert(setViolationClassifications != null);
+    assert(setViolationClassificationNoEknString != null);
+    assert(setViolationClassificationsNoEkn != null);
+    assert(saveEvent != null);
     return setUseGeoLocationForAddressEvent(value);
   }
 
@@ -612,6 +694,10 @@ class _$SetUseGeoLocationForAddressEvent
     TResult setViolationClassificationString(String classification),
     TResult setViolationClassifications(
         ViolationClassificationSearchResult classification),
+    TResult setViolationClassificationNoEknString(String classification),
+    TResult setViolationClassificationsNoEkn(
+        ViolationClassificationSearchResult classification),
+    TResult saveEvent(BuildContext context),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -649,6 +735,13 @@ class _$SetUseGeoLocationForAddressEvent
             SetViolationClassificationString value),
     @required
         TResult setViolationClassifications(SetViolationClassification value),
+    @required
+        TResult setViolationClassificationNoEknString(
+            SetViolationClassificationStringNoEkn value),
+    @required
+        TResult setViolationClassificationsNoEkn(
+            SetViolationClassificationNoEkn value),
+    @required TResult saveEvent(SaveControlViolation value),
   }) {
     assert(setCriticalEvent != null);
     assert(setUseGeoLocationForAddressEvent != null);
@@ -666,6 +759,9 @@ class _$SetUseGeoLocationForAddressEvent
     assert(rotatePhotoEvent != null);
     assert(setViolationClassificationString != null);
     assert(setViolationClassifications != null);
+    assert(setViolationClassificationNoEknString != null);
+    assert(setViolationClassificationsNoEkn != null);
+    assert(saveEvent != null);
     return setUseGeoLocationForAddressEvent(this);
   }
 
@@ -692,6 +788,11 @@ class _$SetUseGeoLocationForAddressEvent
     TResult setViolationClassificationString(
         SetViolationClassificationString value),
     TResult setViolationClassifications(SetViolationClassification value),
+    TResult setViolationClassificationNoEknString(
+        SetViolationClassificationStringNoEkn value),
+    TResult setViolationClassificationsNoEkn(
+        SetViolationClassificationNoEkn value),
+    TResult saveEvent(SaveControlViolation value),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -796,6 +897,12 @@ class _$SetAddressEvent implements SetAddressEvent {
     @required
         TResult setViolationClassifications(
             ViolationClassificationSearchResult classification),
+    @required
+        TResult setViolationClassificationNoEknString(String classification),
+    @required
+        TResult setViolationClassificationsNoEkn(
+            ViolationClassificationSearchResult classification),
+    @required TResult saveEvent(BuildContext context),
   }) {
     assert(setCriticalEvent != null);
     assert(setUseGeoLocationForAddressEvent != null);
@@ -813,6 +920,9 @@ class _$SetAddressEvent implements SetAddressEvent {
     assert(rotatePhotoEvent != null);
     assert(setViolationClassificationString != null);
     assert(setViolationClassifications != null);
+    assert(setViolationClassificationNoEknString != null);
+    assert(setViolationClassificationsNoEkn != null);
+    assert(saveEvent != null);
     return setAddressEvent(address);
   }
 
@@ -838,6 +948,10 @@ class _$SetAddressEvent implements SetAddressEvent {
     TResult setViolationClassificationString(String classification),
     TResult setViolationClassifications(
         ViolationClassificationSearchResult classification),
+    TResult setViolationClassificationNoEknString(String classification),
+    TResult setViolationClassificationsNoEkn(
+        ViolationClassificationSearchResult classification),
+    TResult saveEvent(BuildContext context),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -875,6 +989,13 @@ class _$SetAddressEvent implements SetAddressEvent {
             SetViolationClassificationString value),
     @required
         TResult setViolationClassifications(SetViolationClassification value),
+    @required
+        TResult setViolationClassificationNoEknString(
+            SetViolationClassificationStringNoEkn value),
+    @required
+        TResult setViolationClassificationsNoEkn(
+            SetViolationClassificationNoEkn value),
+    @required TResult saveEvent(SaveControlViolation value),
   }) {
     assert(setCriticalEvent != null);
     assert(setUseGeoLocationForAddressEvent != null);
@@ -892,6 +1013,9 @@ class _$SetAddressEvent implements SetAddressEvent {
     assert(rotatePhotoEvent != null);
     assert(setViolationClassificationString != null);
     assert(setViolationClassifications != null);
+    assert(setViolationClassificationNoEknString != null);
+    assert(setViolationClassificationsNoEkn != null);
+    assert(saveEvent != null);
     return setAddressEvent(this);
   }
 
@@ -918,6 +1042,11 @@ class _$SetAddressEvent implements SetAddressEvent {
     TResult setViolationClassificationString(
         SetViolationClassificationString value),
     TResult setViolationClassifications(SetViolationClassification value),
+    TResult setViolationClassificationNoEknString(
+        SetViolationClassificationStringNoEkn value),
+    TResult setViolationClassificationsNoEkn(
+        SetViolationClassificationNoEkn value),
+    TResult saveEvent(SaveControlViolation value),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -1024,6 +1153,12 @@ class _$SetTargetLandmark implements SetTargetLandmark {
     @required
         TResult setViolationClassifications(
             ViolationClassificationSearchResult classification),
+    @required
+        TResult setViolationClassificationNoEknString(String classification),
+    @required
+        TResult setViolationClassificationsNoEkn(
+            ViolationClassificationSearchResult classification),
+    @required TResult saveEvent(BuildContext context),
   }) {
     assert(setCriticalEvent != null);
     assert(setUseGeoLocationForAddressEvent != null);
@@ -1041,6 +1176,9 @@ class _$SetTargetLandmark implements SetTargetLandmark {
     assert(rotatePhotoEvent != null);
     assert(setViolationClassificationString != null);
     assert(setViolationClassifications != null);
+    assert(setViolationClassificationNoEknString != null);
+    assert(setViolationClassificationsNoEkn != null);
+    assert(saveEvent != null);
     return setTargetLandmark(targetLandmark);
   }
 
@@ -1066,6 +1204,10 @@ class _$SetTargetLandmark implements SetTargetLandmark {
     TResult setViolationClassificationString(String classification),
     TResult setViolationClassifications(
         ViolationClassificationSearchResult classification),
+    TResult setViolationClassificationNoEknString(String classification),
+    TResult setViolationClassificationsNoEkn(
+        ViolationClassificationSearchResult classification),
+    TResult saveEvent(BuildContext context),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -1103,6 +1245,13 @@ class _$SetTargetLandmark implements SetTargetLandmark {
             SetViolationClassificationString value),
     @required
         TResult setViolationClassifications(SetViolationClassification value),
+    @required
+        TResult setViolationClassificationNoEknString(
+            SetViolationClassificationStringNoEkn value),
+    @required
+        TResult setViolationClassificationsNoEkn(
+            SetViolationClassificationNoEkn value),
+    @required TResult saveEvent(SaveControlViolation value),
   }) {
     assert(setCriticalEvent != null);
     assert(setUseGeoLocationForAddressEvent != null);
@@ -1120,6 +1269,9 @@ class _$SetTargetLandmark implements SetTargetLandmark {
     assert(rotatePhotoEvent != null);
     assert(setViolationClassificationString != null);
     assert(setViolationClassifications != null);
+    assert(setViolationClassificationNoEknString != null);
+    assert(setViolationClassificationsNoEkn != null);
+    assert(saveEvent != null);
     return setTargetLandmark(this);
   }
 
@@ -1146,6 +1298,11 @@ class _$SetTargetLandmark implements SetTargetLandmark {
     TResult setViolationClassificationString(
         SetViolationClassificationString value),
     TResult setViolationClassifications(SetViolationClassification value),
+    TResult setViolationClassificationNoEknString(
+        SetViolationClassificationStringNoEkn value),
+    TResult setViolationClassificationsNoEkn(
+        SetViolationClassificationNoEkn value),
+    TResult saveEvent(SaveControlViolation value),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -1250,6 +1407,12 @@ class _$SetObjectElementString implements SetObjectElementString {
     @required
         TResult setViolationClassifications(
             ViolationClassificationSearchResult classification),
+    @required
+        TResult setViolationClassificationNoEknString(String classification),
+    @required
+        TResult setViolationClassificationsNoEkn(
+            ViolationClassificationSearchResult classification),
+    @required TResult saveEvent(BuildContext context),
   }) {
     assert(setCriticalEvent != null);
     assert(setUseGeoLocationForAddressEvent != null);
@@ -1267,6 +1430,9 @@ class _$SetObjectElementString implements SetObjectElementString {
     assert(rotatePhotoEvent != null);
     assert(setViolationClassificationString != null);
     assert(setViolationClassifications != null);
+    assert(setViolationClassificationNoEknString != null);
+    assert(setViolationClassificationsNoEkn != null);
+    assert(saveEvent != null);
     return setObjectElementString(objectElement);
   }
 
@@ -1292,6 +1458,10 @@ class _$SetObjectElementString implements SetObjectElementString {
     TResult setViolationClassificationString(String classification),
     TResult setViolationClassifications(
         ViolationClassificationSearchResult classification),
+    TResult setViolationClassificationNoEknString(String classification),
+    TResult setViolationClassificationsNoEkn(
+        ViolationClassificationSearchResult classification),
+    TResult saveEvent(BuildContext context),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -1329,6 +1499,13 @@ class _$SetObjectElementString implements SetObjectElementString {
             SetViolationClassificationString value),
     @required
         TResult setViolationClassifications(SetViolationClassification value),
+    @required
+        TResult setViolationClassificationNoEknString(
+            SetViolationClassificationStringNoEkn value),
+    @required
+        TResult setViolationClassificationsNoEkn(
+            SetViolationClassificationNoEkn value),
+    @required TResult saveEvent(SaveControlViolation value),
   }) {
     assert(setCriticalEvent != null);
     assert(setUseGeoLocationForAddressEvent != null);
@@ -1346,6 +1523,9 @@ class _$SetObjectElementString implements SetObjectElementString {
     assert(rotatePhotoEvent != null);
     assert(setViolationClassificationString != null);
     assert(setViolationClassifications != null);
+    assert(setViolationClassificationNoEknString != null);
+    assert(setViolationClassificationsNoEkn != null);
+    assert(saveEvent != null);
     return setObjectElementString(this);
   }
 
@@ -1372,6 +1552,11 @@ class _$SetObjectElementString implements SetObjectElementString {
     TResult setViolationClassificationString(
         SetViolationClassificationString value),
     TResult setViolationClassifications(SetViolationClassification value),
+    TResult setViolationClassificationNoEknString(
+        SetViolationClassificationStringNoEkn value),
+    TResult setViolationClassificationsNoEkn(
+        SetViolationClassificationNoEkn value),
+    TResult saveEvent(SaveControlViolation value),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -1436,7 +1621,7 @@ class _$SetObjectElementCopyWithImpl<$Res>
 
 /// @nodoc
 class _$SetObjectElement implements SetObjectElement {
-  const _$SetObjectElement(this.objectElement) : assert(objectElement != null);
+  const _$SetObjectElement([this.objectElement]);
 
   @override
   final ObjectElement objectElement;
@@ -1489,6 +1674,12 @@ class _$SetObjectElement implements SetObjectElement {
     @required
         TResult setViolationClassifications(
             ViolationClassificationSearchResult classification),
+    @required
+        TResult setViolationClassificationNoEknString(String classification),
+    @required
+        TResult setViolationClassificationsNoEkn(
+            ViolationClassificationSearchResult classification),
+    @required TResult saveEvent(BuildContext context),
   }) {
     assert(setCriticalEvent != null);
     assert(setUseGeoLocationForAddressEvent != null);
@@ -1506,6 +1697,9 @@ class _$SetObjectElement implements SetObjectElement {
     assert(rotatePhotoEvent != null);
     assert(setViolationClassificationString != null);
     assert(setViolationClassifications != null);
+    assert(setViolationClassificationNoEknString != null);
+    assert(setViolationClassificationsNoEkn != null);
+    assert(saveEvent != null);
     return setObjectElement(objectElement);
   }
 
@@ -1531,6 +1725,10 @@ class _$SetObjectElement implements SetObjectElement {
     TResult setViolationClassificationString(String classification),
     TResult setViolationClassifications(
         ViolationClassificationSearchResult classification),
+    TResult setViolationClassificationNoEknString(String classification),
+    TResult setViolationClassificationsNoEkn(
+        ViolationClassificationSearchResult classification),
+    TResult saveEvent(BuildContext context),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -1568,6 +1766,13 @@ class _$SetObjectElement implements SetObjectElement {
             SetViolationClassificationString value),
     @required
         TResult setViolationClassifications(SetViolationClassification value),
+    @required
+        TResult setViolationClassificationNoEknString(
+            SetViolationClassificationStringNoEkn value),
+    @required
+        TResult setViolationClassificationsNoEkn(
+            SetViolationClassificationNoEkn value),
+    @required TResult saveEvent(SaveControlViolation value),
   }) {
     assert(setCriticalEvent != null);
     assert(setUseGeoLocationForAddressEvent != null);
@@ -1585,6 +1790,9 @@ class _$SetObjectElement implements SetObjectElement {
     assert(rotatePhotoEvent != null);
     assert(setViolationClassificationString != null);
     assert(setViolationClassifications != null);
+    assert(setViolationClassificationNoEknString != null);
+    assert(setViolationClassificationsNoEkn != null);
+    assert(saveEvent != null);
     return setObjectElement(this);
   }
 
@@ -1611,6 +1819,11 @@ class _$SetObjectElement implements SetObjectElement {
     TResult setViolationClassificationString(
         SetViolationClassificationString value),
     TResult setViolationClassifications(SetViolationClassification value),
+    TResult setViolationClassificationNoEknString(
+        SetViolationClassificationStringNoEkn value),
+    TResult setViolationClassificationsNoEkn(
+        SetViolationClassificationNoEkn value),
+    TResult saveEvent(SaveControlViolation value),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -1622,7 +1835,7 @@ class _$SetObjectElement implements SetObjectElement {
 }
 
 abstract class SetObjectElement implements ControlViolationFormEvent {
-  const factory SetObjectElement(ObjectElement objectElement) =
+  const factory SetObjectElement([ObjectElement objectElement]) =
       _$SetObjectElement;
 
   ObjectElement get objectElement;
@@ -1714,6 +1927,12 @@ class _$SetDescriptionEvent implements SetDescriptionEvent {
     @required
         TResult setViolationClassifications(
             ViolationClassificationSearchResult classification),
+    @required
+        TResult setViolationClassificationNoEknString(String classification),
+    @required
+        TResult setViolationClassificationsNoEkn(
+            ViolationClassificationSearchResult classification),
+    @required TResult saveEvent(BuildContext context),
   }) {
     assert(setCriticalEvent != null);
     assert(setUseGeoLocationForAddressEvent != null);
@@ -1731,6 +1950,9 @@ class _$SetDescriptionEvent implements SetDescriptionEvent {
     assert(rotatePhotoEvent != null);
     assert(setViolationClassificationString != null);
     assert(setViolationClassifications != null);
+    assert(setViolationClassificationNoEknString != null);
+    assert(setViolationClassificationsNoEkn != null);
+    assert(saveEvent != null);
     return setDescriptionEvent(description);
   }
 
@@ -1756,6 +1978,10 @@ class _$SetDescriptionEvent implements SetDescriptionEvent {
     TResult setViolationClassificationString(String classification),
     TResult setViolationClassifications(
         ViolationClassificationSearchResult classification),
+    TResult setViolationClassificationNoEknString(String classification),
+    TResult setViolationClassificationsNoEkn(
+        ViolationClassificationSearchResult classification),
+    TResult saveEvent(BuildContext context),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -1793,6 +2019,13 @@ class _$SetDescriptionEvent implements SetDescriptionEvent {
             SetViolationClassificationString value),
     @required
         TResult setViolationClassifications(SetViolationClassification value),
+    @required
+        TResult setViolationClassificationNoEknString(
+            SetViolationClassificationStringNoEkn value),
+    @required
+        TResult setViolationClassificationsNoEkn(
+            SetViolationClassificationNoEkn value),
+    @required TResult saveEvent(SaveControlViolation value),
   }) {
     assert(setCriticalEvent != null);
     assert(setUseGeoLocationForAddressEvent != null);
@@ -1810,6 +2043,9 @@ class _$SetDescriptionEvent implements SetDescriptionEvent {
     assert(rotatePhotoEvent != null);
     assert(setViolationClassificationString != null);
     assert(setViolationClassifications != null);
+    assert(setViolationClassificationNoEknString != null);
+    assert(setViolationClassificationsNoEkn != null);
+    assert(saveEvent != null);
     return setDescriptionEvent(this);
   }
 
@@ -1836,6 +2072,11 @@ class _$SetDescriptionEvent implements SetDescriptionEvent {
     TResult setViolationClassificationString(
         SetViolationClassificationString value),
     TResult setViolationClassifications(SetViolationClassification value),
+    TResult setViolationClassificationNoEknString(
+        SetViolationClassificationStringNoEkn value),
+    TResult setViolationClassificationsNoEkn(
+        SetViolationClassificationNoEkn value),
+    TResult saveEvent(SaveControlViolation value),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -1952,6 +2193,12 @@ class _$SetViolationAdditionalFeatureStringEvent
     @required
         TResult setViolationClassifications(
             ViolationClassificationSearchResult classification),
+    @required
+        TResult setViolationClassificationNoEknString(String classification),
+    @required
+        TResult setViolationClassificationsNoEkn(
+            ViolationClassificationSearchResult classification),
+    @required TResult saveEvent(BuildContext context),
   }) {
     assert(setCriticalEvent != null);
     assert(setUseGeoLocationForAddressEvent != null);
@@ -1969,6 +2216,9 @@ class _$SetViolationAdditionalFeatureStringEvent
     assert(rotatePhotoEvent != null);
     assert(setViolationClassificationString != null);
     assert(setViolationClassifications != null);
+    assert(setViolationClassificationNoEknString != null);
+    assert(setViolationClassificationsNoEkn != null);
+    assert(saveEvent != null);
     return setViolationAdditionalFeatureStringEvent(violationAdditionalFeature);
   }
 
@@ -1994,6 +2244,10 @@ class _$SetViolationAdditionalFeatureStringEvent
     TResult setViolationClassificationString(String classification),
     TResult setViolationClassifications(
         ViolationClassificationSearchResult classification),
+    TResult setViolationClassificationNoEknString(String classification),
+    TResult setViolationClassificationsNoEkn(
+        ViolationClassificationSearchResult classification),
+    TResult saveEvent(BuildContext context),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -2032,6 +2286,13 @@ class _$SetViolationAdditionalFeatureStringEvent
             SetViolationClassificationString value),
     @required
         TResult setViolationClassifications(SetViolationClassification value),
+    @required
+        TResult setViolationClassificationNoEknString(
+            SetViolationClassificationStringNoEkn value),
+    @required
+        TResult setViolationClassificationsNoEkn(
+            SetViolationClassificationNoEkn value),
+    @required TResult saveEvent(SaveControlViolation value),
   }) {
     assert(setCriticalEvent != null);
     assert(setUseGeoLocationForAddressEvent != null);
@@ -2049,6 +2310,9 @@ class _$SetViolationAdditionalFeatureStringEvent
     assert(rotatePhotoEvent != null);
     assert(setViolationClassificationString != null);
     assert(setViolationClassifications != null);
+    assert(setViolationClassificationNoEknString != null);
+    assert(setViolationClassificationsNoEkn != null);
+    assert(saveEvent != null);
     return setViolationAdditionalFeatureStringEvent(this);
   }
 
@@ -2075,6 +2339,11 @@ class _$SetViolationAdditionalFeatureStringEvent
     TResult setViolationClassificationString(
         SetViolationClassificationString value),
     TResult setViolationClassifications(SetViolationClassification value),
+    TResult setViolationClassificationNoEknString(
+        SetViolationClassificationStringNoEkn value),
+    TResult setViolationClassificationsNoEkn(
+        SetViolationClassificationNoEkn value),
+    TResult saveEvent(SaveControlViolation value),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -2147,8 +2416,7 @@ class _$SetViolationAdditionalFeatureEventCopyWithImpl<$Res>
 /// @nodoc
 class _$SetViolationAdditionalFeatureEvent
     implements SetViolationAdditionalFeatureEvent {
-  const _$SetViolationAdditionalFeatureEvent(this.violationAdditionalFeature)
-      : assert(violationAdditionalFeature != null);
+  const _$SetViolationAdditionalFeatureEvent([this.violationAdditionalFeature]);
 
   @override
   final ViolationAdditionalFeature violationAdditionalFeature;
@@ -2206,6 +2474,12 @@ class _$SetViolationAdditionalFeatureEvent
     @required
         TResult setViolationClassifications(
             ViolationClassificationSearchResult classification),
+    @required
+        TResult setViolationClassificationNoEknString(String classification),
+    @required
+        TResult setViolationClassificationsNoEkn(
+            ViolationClassificationSearchResult classification),
+    @required TResult saveEvent(BuildContext context),
   }) {
     assert(setCriticalEvent != null);
     assert(setUseGeoLocationForAddressEvent != null);
@@ -2223,6 +2497,9 @@ class _$SetViolationAdditionalFeatureEvent
     assert(rotatePhotoEvent != null);
     assert(setViolationClassificationString != null);
     assert(setViolationClassifications != null);
+    assert(setViolationClassificationNoEknString != null);
+    assert(setViolationClassificationsNoEkn != null);
+    assert(saveEvent != null);
     return setViolationAdditionalFeatureEvent(violationAdditionalFeature);
   }
 
@@ -2248,6 +2525,10 @@ class _$SetViolationAdditionalFeatureEvent
     TResult setViolationClassificationString(String classification),
     TResult setViolationClassifications(
         ViolationClassificationSearchResult classification),
+    TResult setViolationClassificationNoEknString(String classification),
+    TResult setViolationClassificationsNoEkn(
+        ViolationClassificationSearchResult classification),
+    TResult saveEvent(BuildContext context),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -2285,6 +2566,13 @@ class _$SetViolationAdditionalFeatureEvent
             SetViolationClassificationString value),
     @required
         TResult setViolationClassifications(SetViolationClassification value),
+    @required
+        TResult setViolationClassificationNoEknString(
+            SetViolationClassificationStringNoEkn value),
+    @required
+        TResult setViolationClassificationsNoEkn(
+            SetViolationClassificationNoEkn value),
+    @required TResult saveEvent(SaveControlViolation value),
   }) {
     assert(setCriticalEvent != null);
     assert(setUseGeoLocationForAddressEvent != null);
@@ -2302,6 +2590,9 @@ class _$SetViolationAdditionalFeatureEvent
     assert(rotatePhotoEvent != null);
     assert(setViolationClassificationString != null);
     assert(setViolationClassifications != null);
+    assert(setViolationClassificationNoEknString != null);
+    assert(setViolationClassificationsNoEkn != null);
+    assert(saveEvent != null);
     return setViolationAdditionalFeatureEvent(this);
   }
 
@@ -2328,6 +2619,11 @@ class _$SetViolationAdditionalFeatureEvent
     TResult setViolationClassificationString(
         SetViolationClassificationString value),
     TResult setViolationClassifications(SetViolationClassification value),
+    TResult setViolationClassificationNoEknString(
+        SetViolationClassificationStringNoEkn value),
+    TResult setViolationClassificationsNoEkn(
+        SetViolationClassificationNoEkn value),
+    TResult saveEvent(SaveControlViolation value),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -2341,7 +2637,7 @@ class _$SetViolationAdditionalFeatureEvent
 abstract class SetViolationAdditionalFeatureEvent
     implements ControlViolationFormEvent {
   const factory SetViolationAdditionalFeatureEvent(
-          ViolationAdditionalFeature violationAdditionalFeature) =
+          [ViolationAdditionalFeature violationAdditionalFeature]) =
       _$SetViolationAdditionalFeatureEvent;
 
   ViolationAdditionalFeature get violationAdditionalFeature;
@@ -2437,6 +2733,12 @@ class _$SetContractorStringEvent implements SetContractorStringEvent {
     @required
         TResult setViolationClassifications(
             ViolationClassificationSearchResult classification),
+    @required
+        TResult setViolationClassificationNoEknString(String classification),
+    @required
+        TResult setViolationClassificationsNoEkn(
+            ViolationClassificationSearchResult classification),
+    @required TResult saveEvent(BuildContext context),
   }) {
     assert(setCriticalEvent != null);
     assert(setUseGeoLocationForAddressEvent != null);
@@ -2454,6 +2756,9 @@ class _$SetContractorStringEvent implements SetContractorStringEvent {
     assert(rotatePhotoEvent != null);
     assert(setViolationClassificationString != null);
     assert(setViolationClassifications != null);
+    assert(setViolationClassificationNoEknString != null);
+    assert(setViolationClassificationsNoEkn != null);
+    assert(saveEvent != null);
     return setContractorStringEvent(contractor);
   }
 
@@ -2479,6 +2784,10 @@ class _$SetContractorStringEvent implements SetContractorStringEvent {
     TResult setViolationClassificationString(String classification),
     TResult setViolationClassifications(
         ViolationClassificationSearchResult classification),
+    TResult setViolationClassificationNoEknString(String classification),
+    TResult setViolationClassificationsNoEkn(
+        ViolationClassificationSearchResult classification),
+    TResult saveEvent(BuildContext context),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -2516,6 +2825,13 @@ class _$SetContractorStringEvent implements SetContractorStringEvent {
             SetViolationClassificationString value),
     @required
         TResult setViolationClassifications(SetViolationClassification value),
+    @required
+        TResult setViolationClassificationNoEknString(
+            SetViolationClassificationStringNoEkn value),
+    @required
+        TResult setViolationClassificationsNoEkn(
+            SetViolationClassificationNoEkn value),
+    @required TResult saveEvent(SaveControlViolation value),
   }) {
     assert(setCriticalEvent != null);
     assert(setUseGeoLocationForAddressEvent != null);
@@ -2533,6 +2849,9 @@ class _$SetContractorStringEvent implements SetContractorStringEvent {
     assert(rotatePhotoEvent != null);
     assert(setViolationClassificationString != null);
     assert(setViolationClassifications != null);
+    assert(setViolationClassificationNoEknString != null);
+    assert(setViolationClassificationsNoEkn != null);
+    assert(saveEvent != null);
     return setContractorStringEvent(this);
   }
 
@@ -2559,6 +2878,11 @@ class _$SetContractorStringEvent implements SetContractorStringEvent {
     TResult setViolationClassificationString(
         SetViolationClassificationString value),
     TResult setViolationClassifications(SetViolationClassification value),
+    TResult setViolationClassificationNoEknString(
+        SetViolationClassificationStringNoEkn value),
+    TResult setViolationClassificationsNoEkn(
+        SetViolationClassificationNoEkn value),
+    TResult saveEvent(SaveControlViolation value),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -2621,7 +2945,7 @@ class _$SetContractorEventCopyWithImpl<$Res>
 
 /// @nodoc
 class _$SetContractorEvent implements SetContractorEvent {
-  const _$SetContractorEvent(this.contractor) : assert(contractor != null);
+  const _$SetContractorEvent([this.contractor]);
 
   @override
   final Contractor contractor;
@@ -2674,6 +2998,12 @@ class _$SetContractorEvent implements SetContractorEvent {
     @required
         TResult setViolationClassifications(
             ViolationClassificationSearchResult classification),
+    @required
+        TResult setViolationClassificationNoEknString(String classification),
+    @required
+        TResult setViolationClassificationsNoEkn(
+            ViolationClassificationSearchResult classification),
+    @required TResult saveEvent(BuildContext context),
   }) {
     assert(setCriticalEvent != null);
     assert(setUseGeoLocationForAddressEvent != null);
@@ -2691,6 +3021,9 @@ class _$SetContractorEvent implements SetContractorEvent {
     assert(rotatePhotoEvent != null);
     assert(setViolationClassificationString != null);
     assert(setViolationClassifications != null);
+    assert(setViolationClassificationNoEknString != null);
+    assert(setViolationClassificationsNoEkn != null);
+    assert(saveEvent != null);
     return setContractorEvent(contractor);
   }
 
@@ -2716,6 +3049,10 @@ class _$SetContractorEvent implements SetContractorEvent {
     TResult setViolationClassificationString(String classification),
     TResult setViolationClassifications(
         ViolationClassificationSearchResult classification),
+    TResult setViolationClassificationNoEknString(String classification),
+    TResult setViolationClassificationsNoEkn(
+        ViolationClassificationSearchResult classification),
+    TResult saveEvent(BuildContext context),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -2753,6 +3090,13 @@ class _$SetContractorEvent implements SetContractorEvent {
             SetViolationClassificationString value),
     @required
         TResult setViolationClassifications(SetViolationClassification value),
+    @required
+        TResult setViolationClassificationNoEknString(
+            SetViolationClassificationStringNoEkn value),
+    @required
+        TResult setViolationClassificationsNoEkn(
+            SetViolationClassificationNoEkn value),
+    @required TResult saveEvent(SaveControlViolation value),
   }) {
     assert(setCriticalEvent != null);
     assert(setUseGeoLocationForAddressEvent != null);
@@ -2770,6 +3114,9 @@ class _$SetContractorEvent implements SetContractorEvent {
     assert(rotatePhotoEvent != null);
     assert(setViolationClassificationString != null);
     assert(setViolationClassifications != null);
+    assert(setViolationClassificationNoEknString != null);
+    assert(setViolationClassificationsNoEkn != null);
+    assert(saveEvent != null);
     return setContractorEvent(this);
   }
 
@@ -2796,6 +3143,11 @@ class _$SetContractorEvent implements SetContractorEvent {
     TResult setViolationClassificationString(
         SetViolationClassificationString value),
     TResult setViolationClassifications(SetViolationClassification value),
+    TResult setViolationClassificationNoEknString(
+        SetViolationClassificationStringNoEkn value),
+    TResult setViolationClassificationsNoEkn(
+        SetViolationClassificationNoEkn value),
+    TResult saveEvent(SaveControlViolation value),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -2807,7 +3159,7 @@ class _$SetContractorEvent implements SetContractorEvent {
 }
 
 abstract class SetContractorEvent implements ControlViolationFormEvent {
-  const factory SetContractorEvent(Contractor contractor) =
+  const factory SetContractorEvent([Contractor contractor]) =
       _$SetContractorEvent;
 
   Contractor get contractor;
@@ -2908,6 +3260,12 @@ class _$AddPhotoEvent implements AddPhotoEvent {
     @required
         TResult setViolationClassifications(
             ViolationClassificationSearchResult classification),
+    @required
+        TResult setViolationClassificationNoEknString(String classification),
+    @required
+        TResult setViolationClassificationsNoEkn(
+            ViolationClassificationSearchResult classification),
+    @required TResult saveEvent(BuildContext context),
   }) {
     assert(setCriticalEvent != null);
     assert(setUseGeoLocationForAddressEvent != null);
@@ -2925,6 +3283,9 @@ class _$AddPhotoEvent implements AddPhotoEvent {
     assert(rotatePhotoEvent != null);
     assert(setViolationClassificationString != null);
     assert(setViolationClassifications != null);
+    assert(setViolationClassificationNoEknString != null);
+    assert(setViolationClassificationsNoEkn != null);
+    assert(saveEvent != null);
     return addPhotoEvent(photo, name);
   }
 
@@ -2950,6 +3311,10 @@ class _$AddPhotoEvent implements AddPhotoEvent {
     TResult setViolationClassificationString(String classification),
     TResult setViolationClassifications(
         ViolationClassificationSearchResult classification),
+    TResult setViolationClassificationNoEknString(String classification),
+    TResult setViolationClassificationsNoEkn(
+        ViolationClassificationSearchResult classification),
+    TResult saveEvent(BuildContext context),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -2987,6 +3352,13 @@ class _$AddPhotoEvent implements AddPhotoEvent {
             SetViolationClassificationString value),
     @required
         TResult setViolationClassifications(SetViolationClassification value),
+    @required
+        TResult setViolationClassificationNoEknString(
+            SetViolationClassificationStringNoEkn value),
+    @required
+        TResult setViolationClassificationsNoEkn(
+            SetViolationClassificationNoEkn value),
+    @required TResult saveEvent(SaveControlViolation value),
   }) {
     assert(setCriticalEvent != null);
     assert(setUseGeoLocationForAddressEvent != null);
@@ -3004,6 +3376,9 @@ class _$AddPhotoEvent implements AddPhotoEvent {
     assert(rotatePhotoEvent != null);
     assert(setViolationClassificationString != null);
     assert(setViolationClassifications != null);
+    assert(setViolationClassificationNoEknString != null);
+    assert(setViolationClassificationsNoEkn != null);
+    assert(saveEvent != null);
     return addPhotoEvent(this);
   }
 
@@ -3030,6 +3405,11 @@ class _$AddPhotoEvent implements AddPhotoEvent {
     TResult setViolationClassificationString(
         SetViolationClassificationString value),
     TResult setViolationClassifications(SetViolationClassification value),
+    TResult setViolationClassificationNoEknString(
+        SetViolationClassificationStringNoEkn value),
+    TResult setViolationClassificationsNoEkn(
+        SetViolationClassificationNoEkn value),
+    TResult saveEvent(SaveControlViolation value),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -3132,6 +3512,12 @@ class _$RemovePhotoEvent implements RemovePhotoEvent {
     @required
         TResult setViolationClassifications(
             ViolationClassificationSearchResult classification),
+    @required
+        TResult setViolationClassificationNoEknString(String classification),
+    @required
+        TResult setViolationClassificationsNoEkn(
+            ViolationClassificationSearchResult classification),
+    @required TResult saveEvent(BuildContext context),
   }) {
     assert(setCriticalEvent != null);
     assert(setUseGeoLocationForAddressEvent != null);
@@ -3149,6 +3535,9 @@ class _$RemovePhotoEvent implements RemovePhotoEvent {
     assert(rotatePhotoEvent != null);
     assert(setViolationClassificationString != null);
     assert(setViolationClassifications != null);
+    assert(setViolationClassificationNoEknString != null);
+    assert(setViolationClassificationsNoEkn != null);
+    assert(saveEvent != null);
     return removePhotoEvent(index);
   }
 
@@ -3174,6 +3563,10 @@ class _$RemovePhotoEvent implements RemovePhotoEvent {
     TResult setViolationClassificationString(String classification),
     TResult setViolationClassifications(
         ViolationClassificationSearchResult classification),
+    TResult setViolationClassificationNoEknString(String classification),
+    TResult setViolationClassificationsNoEkn(
+        ViolationClassificationSearchResult classification),
+    TResult saveEvent(BuildContext context),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -3211,6 +3604,13 @@ class _$RemovePhotoEvent implements RemovePhotoEvent {
             SetViolationClassificationString value),
     @required
         TResult setViolationClassifications(SetViolationClassification value),
+    @required
+        TResult setViolationClassificationNoEknString(
+            SetViolationClassificationStringNoEkn value),
+    @required
+        TResult setViolationClassificationsNoEkn(
+            SetViolationClassificationNoEkn value),
+    @required TResult saveEvent(SaveControlViolation value),
   }) {
     assert(setCriticalEvent != null);
     assert(setUseGeoLocationForAddressEvent != null);
@@ -3228,6 +3628,9 @@ class _$RemovePhotoEvent implements RemovePhotoEvent {
     assert(rotatePhotoEvent != null);
     assert(setViolationClassificationString != null);
     assert(setViolationClassifications != null);
+    assert(setViolationClassificationNoEknString != null);
+    assert(setViolationClassificationsNoEkn != null);
+    assert(saveEvent != null);
     return removePhotoEvent(this);
   }
 
@@ -3254,6 +3657,11 @@ class _$RemovePhotoEvent implements RemovePhotoEvent {
     TResult setViolationClassificationString(
         SetViolationClassificationString value),
     TResult setViolationClassifications(SetViolationClassification value),
+    TResult setViolationClassificationNoEknString(
+        SetViolationClassificationStringNoEkn value),
+    TResult setViolationClassificationsNoEkn(
+        SetViolationClassificationNoEkn value),
+    TResult saveEvent(SaveControlViolation value),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -3365,6 +3773,12 @@ class _$RotatePhotoEvent implements RotatePhotoEvent {
     @required
         TResult setViolationClassifications(
             ViolationClassificationSearchResult classification),
+    @required
+        TResult setViolationClassificationNoEknString(String classification),
+    @required
+        TResult setViolationClassificationsNoEkn(
+            ViolationClassificationSearchResult classification),
+    @required TResult saveEvent(BuildContext context),
   }) {
     assert(setCriticalEvent != null);
     assert(setUseGeoLocationForAddressEvent != null);
@@ -3382,6 +3796,9 @@ class _$RotatePhotoEvent implements RotatePhotoEvent {
     assert(rotatePhotoEvent != null);
     assert(setViolationClassificationString != null);
     assert(setViolationClassifications != null);
+    assert(setViolationClassificationNoEknString != null);
+    assert(setViolationClassificationsNoEkn != null);
+    assert(saveEvent != null);
     return rotatePhotoEvent(index, photo);
   }
 
@@ -3407,6 +3824,10 @@ class _$RotatePhotoEvent implements RotatePhotoEvent {
     TResult setViolationClassificationString(String classification),
     TResult setViolationClassifications(
         ViolationClassificationSearchResult classification),
+    TResult setViolationClassificationNoEknString(String classification),
+    TResult setViolationClassificationsNoEkn(
+        ViolationClassificationSearchResult classification),
+    TResult saveEvent(BuildContext context),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -3444,6 +3865,13 @@ class _$RotatePhotoEvent implements RotatePhotoEvent {
             SetViolationClassificationString value),
     @required
         TResult setViolationClassifications(SetViolationClassification value),
+    @required
+        TResult setViolationClassificationNoEknString(
+            SetViolationClassificationStringNoEkn value),
+    @required
+        TResult setViolationClassificationsNoEkn(
+            SetViolationClassificationNoEkn value),
+    @required TResult saveEvent(SaveControlViolation value),
   }) {
     assert(setCriticalEvent != null);
     assert(setUseGeoLocationForAddressEvent != null);
@@ -3461,6 +3889,9 @@ class _$RotatePhotoEvent implements RotatePhotoEvent {
     assert(rotatePhotoEvent != null);
     assert(setViolationClassificationString != null);
     assert(setViolationClassifications != null);
+    assert(setViolationClassificationNoEknString != null);
+    assert(setViolationClassificationsNoEkn != null);
+    assert(saveEvent != null);
     return rotatePhotoEvent(this);
   }
 
@@ -3487,6 +3918,11 @@ class _$RotatePhotoEvent implements RotatePhotoEvent {
     TResult setViolationClassificationString(
         SetViolationClassificationString value),
     TResult setViolationClassifications(SetViolationClassification value),
+    TResult setViolationClassificationNoEknString(
+        SetViolationClassificationStringNoEkn value),
+    TResult setViolationClassificationsNoEkn(
+        SetViolationClassificationNoEkn value),
+    TResult saveEvent(SaveControlViolation value),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -3600,6 +4036,12 @@ class _$SetViolationClassificationString
     @required
         TResult setViolationClassifications(
             ViolationClassificationSearchResult classification),
+    @required
+        TResult setViolationClassificationNoEknString(String classification),
+    @required
+        TResult setViolationClassificationsNoEkn(
+            ViolationClassificationSearchResult classification),
+    @required TResult saveEvent(BuildContext context),
   }) {
     assert(setCriticalEvent != null);
     assert(setUseGeoLocationForAddressEvent != null);
@@ -3617,6 +4059,9 @@ class _$SetViolationClassificationString
     assert(rotatePhotoEvent != null);
     assert(setViolationClassificationString != null);
     assert(setViolationClassifications != null);
+    assert(setViolationClassificationNoEknString != null);
+    assert(setViolationClassificationsNoEkn != null);
+    assert(saveEvent != null);
     return setViolationClassificationString(classification);
   }
 
@@ -3642,6 +4087,10 @@ class _$SetViolationClassificationString
     TResult setViolationClassificationString(String classification),
     TResult setViolationClassifications(
         ViolationClassificationSearchResult classification),
+    TResult setViolationClassificationNoEknString(String classification),
+    TResult setViolationClassificationsNoEkn(
+        ViolationClassificationSearchResult classification),
+    TResult saveEvent(BuildContext context),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -3679,6 +4128,13 @@ class _$SetViolationClassificationString
             SetViolationClassificationString value),
     @required
         TResult setViolationClassifications(SetViolationClassification value),
+    @required
+        TResult setViolationClassificationNoEknString(
+            SetViolationClassificationStringNoEkn value),
+    @required
+        TResult setViolationClassificationsNoEkn(
+            SetViolationClassificationNoEkn value),
+    @required TResult saveEvent(SaveControlViolation value),
   }) {
     assert(setCriticalEvent != null);
     assert(setUseGeoLocationForAddressEvent != null);
@@ -3696,6 +4152,9 @@ class _$SetViolationClassificationString
     assert(rotatePhotoEvent != null);
     assert(setViolationClassificationString != null);
     assert(setViolationClassifications != null);
+    assert(setViolationClassificationNoEknString != null);
+    assert(setViolationClassificationsNoEkn != null);
+    assert(saveEvent != null);
     return setViolationClassificationString(this);
   }
 
@@ -3722,6 +4181,11 @@ class _$SetViolationClassificationString
     TResult setViolationClassificationString(
         SetViolationClassificationString value),
     TResult setViolationClassifications(SetViolationClassification value),
+    TResult setViolationClassificationNoEknString(
+        SetViolationClassificationStringNoEkn value),
+    TResult setViolationClassificationsNoEkn(
+        SetViolationClassificationNoEkn value),
+    TResult saveEvent(SaveControlViolation value),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -3790,8 +4254,7 @@ class _$SetViolationClassificationCopyWithImpl<$Res>
 
 /// @nodoc
 class _$SetViolationClassification implements SetViolationClassification {
-  const _$SetViolationClassification(this.classification)
-      : assert(classification != null);
+  const _$SetViolationClassification([this.classification]);
 
   @override
   final ViolationClassificationSearchResult classification;
@@ -3847,6 +4310,12 @@ class _$SetViolationClassification implements SetViolationClassification {
     @required
         TResult setViolationClassifications(
             ViolationClassificationSearchResult classification),
+    @required
+        TResult setViolationClassificationNoEknString(String classification),
+    @required
+        TResult setViolationClassificationsNoEkn(
+            ViolationClassificationSearchResult classification),
+    @required TResult saveEvent(BuildContext context),
   }) {
     assert(setCriticalEvent != null);
     assert(setUseGeoLocationForAddressEvent != null);
@@ -3864,6 +4333,9 @@ class _$SetViolationClassification implements SetViolationClassification {
     assert(rotatePhotoEvent != null);
     assert(setViolationClassificationString != null);
     assert(setViolationClassifications != null);
+    assert(setViolationClassificationNoEknString != null);
+    assert(setViolationClassificationsNoEkn != null);
+    assert(saveEvent != null);
     return setViolationClassifications(classification);
   }
 
@@ -3889,6 +4361,10 @@ class _$SetViolationClassification implements SetViolationClassification {
     TResult setViolationClassificationString(String classification),
     TResult setViolationClassifications(
         ViolationClassificationSearchResult classification),
+    TResult setViolationClassificationNoEknString(String classification),
+    TResult setViolationClassificationsNoEkn(
+        ViolationClassificationSearchResult classification),
+    TResult saveEvent(BuildContext context),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -3926,6 +4402,13 @@ class _$SetViolationClassification implements SetViolationClassification {
             SetViolationClassificationString value),
     @required
         TResult setViolationClassifications(SetViolationClassification value),
+    @required
+        TResult setViolationClassificationNoEknString(
+            SetViolationClassificationStringNoEkn value),
+    @required
+        TResult setViolationClassificationsNoEkn(
+            SetViolationClassificationNoEkn value),
+    @required TResult saveEvent(SaveControlViolation value),
   }) {
     assert(setCriticalEvent != null);
     assert(setUseGeoLocationForAddressEvent != null);
@@ -3943,6 +4426,9 @@ class _$SetViolationClassification implements SetViolationClassification {
     assert(rotatePhotoEvent != null);
     assert(setViolationClassificationString != null);
     assert(setViolationClassifications != null);
+    assert(setViolationClassificationNoEknString != null);
+    assert(setViolationClassificationsNoEkn != null);
+    assert(saveEvent != null);
     return setViolationClassifications(this);
   }
 
@@ -3969,6 +4455,11 @@ class _$SetViolationClassification implements SetViolationClassification {
     TResult setViolationClassificationString(
         SetViolationClassificationString value),
     TResult setViolationClassifications(SetViolationClassification value),
+    TResult setViolationClassificationNoEknString(
+        SetViolationClassificationStringNoEkn value),
+    TResult setViolationClassificationsNoEkn(
+        SetViolationClassificationNoEkn value),
+    TResult saveEvent(SaveControlViolation value),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -3981,10 +4472,805 @@ class _$SetViolationClassification implements SetViolationClassification {
 
 abstract class SetViolationClassification implements ControlViolationFormEvent {
   const factory SetViolationClassification(
-          ViolationClassificationSearchResult classification) =
+          [ViolationClassificationSearchResult classification]) =
       _$SetViolationClassification;
 
   ViolationClassificationSearchResult get classification;
   @JsonKey(ignore: true)
   $SetViolationClassificationCopyWith<SetViolationClassification> get copyWith;
+}
+
+/// @nodoc
+abstract class $SetViolationClassificationStringNoEknCopyWith<$Res> {
+  factory $SetViolationClassificationStringNoEknCopyWith(
+          SetViolationClassificationStringNoEkn value,
+          $Res Function(SetViolationClassificationStringNoEkn) then) =
+      _$SetViolationClassificationStringNoEknCopyWithImpl<$Res>;
+  $Res call({String classification});
+}
+
+/// @nodoc
+class _$SetViolationClassificationStringNoEknCopyWithImpl<$Res>
+    extends _$ControlViolationFormEventCopyWithImpl<$Res>
+    implements $SetViolationClassificationStringNoEknCopyWith<$Res> {
+  _$SetViolationClassificationStringNoEknCopyWithImpl(
+      SetViolationClassificationStringNoEkn _value,
+      $Res Function(SetViolationClassificationStringNoEkn) _then)
+      : super(_value, (v) => _then(v as SetViolationClassificationStringNoEkn));
+
+  @override
+  SetViolationClassificationStringNoEkn get _value =>
+      super._value as SetViolationClassificationStringNoEkn;
+
+  @override
+  $Res call({
+    Object classification = freezed,
+  }) {
+    return _then(SetViolationClassificationStringNoEkn(
+      classification == freezed
+          ? _value.classification
+          : classification as String,
+    ));
+  }
+}
+
+/// @nodoc
+class _$SetViolationClassificationStringNoEkn
+    implements SetViolationClassificationStringNoEkn {
+  const _$SetViolationClassificationStringNoEkn(this.classification)
+      : assert(classification != null);
+
+  @override
+  final String classification;
+
+  @override
+  String toString() {
+    return 'ControlViolationFormEvent.setViolationClassificationNoEknString(classification: $classification)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is SetViolationClassificationStringNoEkn &&
+            (identical(other.classification, classification) ||
+                const DeepCollectionEquality()
+                    .equals(other.classification, classification)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(classification);
+
+  @JsonKey(ignore: true)
+  @override
+  $SetViolationClassificationStringNoEknCopyWith<
+          SetViolationClassificationStringNoEkn>
+      get copyWith => _$SetViolationClassificationStringNoEknCopyWithImpl<
+          SetViolationClassificationStringNoEkn>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object>({
+    @required TResult setCriticalEvent(bool value),
+    @required TResult setUseGeoLocationForAddressEvent(bool value),
+    @required TResult setAddressEvent(Address address),
+    @required TResult setTargetLandmark(String targetLandmark),
+    @required TResult setObjectElementString(String objectElement),
+    @required TResult setObjectElement(ObjectElement objectElement),
+    @required TResult setDescriptionEvent(String description),
+    @required
+        TResult setViolationAdditionalFeatureStringEvent(
+            String violationAdditionalFeature),
+    @required
+        TResult setViolationAdditionalFeatureEvent(
+            ViolationAdditionalFeature violationAdditionalFeature),
+    @required TResult setContractorStringEvent(String contractor),
+    @required TResult setContractorEvent(Contractor contractor),
+    @required TResult addPhotoEvent(Uint8List photo, String name),
+    @required TResult removePhotoEvent(int index),
+    @required TResult rotatePhotoEvent(int index, Uint8List photo),
+    @required TResult setViolationClassificationString(String classification),
+    @required
+        TResult setViolationClassifications(
+            ViolationClassificationSearchResult classification),
+    @required
+        TResult setViolationClassificationNoEknString(String classification),
+    @required
+        TResult setViolationClassificationsNoEkn(
+            ViolationClassificationSearchResult classification),
+    @required TResult saveEvent(BuildContext context),
+  }) {
+    assert(setCriticalEvent != null);
+    assert(setUseGeoLocationForAddressEvent != null);
+    assert(setAddressEvent != null);
+    assert(setTargetLandmark != null);
+    assert(setObjectElementString != null);
+    assert(setObjectElement != null);
+    assert(setDescriptionEvent != null);
+    assert(setViolationAdditionalFeatureStringEvent != null);
+    assert(setViolationAdditionalFeatureEvent != null);
+    assert(setContractorStringEvent != null);
+    assert(setContractorEvent != null);
+    assert(addPhotoEvent != null);
+    assert(removePhotoEvent != null);
+    assert(rotatePhotoEvent != null);
+    assert(setViolationClassificationString != null);
+    assert(setViolationClassifications != null);
+    assert(setViolationClassificationNoEknString != null);
+    assert(setViolationClassificationsNoEkn != null);
+    assert(saveEvent != null);
+    return setViolationClassificationNoEknString(classification);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object>({
+    TResult setCriticalEvent(bool value),
+    TResult setUseGeoLocationForAddressEvent(bool value),
+    TResult setAddressEvent(Address address),
+    TResult setTargetLandmark(String targetLandmark),
+    TResult setObjectElementString(String objectElement),
+    TResult setObjectElement(ObjectElement objectElement),
+    TResult setDescriptionEvent(String description),
+    TResult setViolationAdditionalFeatureStringEvent(
+        String violationAdditionalFeature),
+    TResult setViolationAdditionalFeatureEvent(
+        ViolationAdditionalFeature violationAdditionalFeature),
+    TResult setContractorStringEvent(String contractor),
+    TResult setContractorEvent(Contractor contractor),
+    TResult addPhotoEvent(Uint8List photo, String name),
+    TResult removePhotoEvent(int index),
+    TResult rotatePhotoEvent(int index, Uint8List photo),
+    TResult setViolationClassificationString(String classification),
+    TResult setViolationClassifications(
+        ViolationClassificationSearchResult classification),
+    TResult setViolationClassificationNoEknString(String classification),
+    TResult setViolationClassificationsNoEkn(
+        ViolationClassificationSearchResult classification),
+    TResult saveEvent(BuildContext context),
+    @required TResult orElse(),
+  }) {
+    assert(orElse != null);
+    if (setViolationClassificationNoEknString != null) {
+      return setViolationClassificationNoEknString(classification);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object>({
+    @required TResult setCriticalEvent(SetCriticalEvent value),
+    @required
+        TResult setUseGeoLocationForAddressEvent(
+            SetUseGeoLocationForAddressEvent value),
+    @required TResult setAddressEvent(SetAddressEvent value),
+    @required TResult setTargetLandmark(SetTargetLandmark value),
+    @required TResult setObjectElementString(SetObjectElementString value),
+    @required TResult setObjectElement(SetObjectElement value),
+    @required TResult setDescriptionEvent(SetDescriptionEvent value),
+    @required
+        TResult setViolationAdditionalFeatureStringEvent(
+            SetViolationAdditionalFeatureStringEvent value),
+    @required
+        TResult setViolationAdditionalFeatureEvent(
+            SetViolationAdditionalFeatureEvent value),
+    @required TResult setContractorStringEvent(SetContractorStringEvent value),
+    @required TResult setContractorEvent(SetContractorEvent value),
+    @required TResult addPhotoEvent(AddPhotoEvent value),
+    @required TResult removePhotoEvent(RemovePhotoEvent value),
+    @required TResult rotatePhotoEvent(RotatePhotoEvent value),
+    @required
+        TResult setViolationClassificationString(
+            SetViolationClassificationString value),
+    @required
+        TResult setViolationClassifications(SetViolationClassification value),
+    @required
+        TResult setViolationClassificationNoEknString(
+            SetViolationClassificationStringNoEkn value),
+    @required
+        TResult setViolationClassificationsNoEkn(
+            SetViolationClassificationNoEkn value),
+    @required TResult saveEvent(SaveControlViolation value),
+  }) {
+    assert(setCriticalEvent != null);
+    assert(setUseGeoLocationForAddressEvent != null);
+    assert(setAddressEvent != null);
+    assert(setTargetLandmark != null);
+    assert(setObjectElementString != null);
+    assert(setObjectElement != null);
+    assert(setDescriptionEvent != null);
+    assert(setViolationAdditionalFeatureStringEvent != null);
+    assert(setViolationAdditionalFeatureEvent != null);
+    assert(setContractorStringEvent != null);
+    assert(setContractorEvent != null);
+    assert(addPhotoEvent != null);
+    assert(removePhotoEvent != null);
+    assert(rotatePhotoEvent != null);
+    assert(setViolationClassificationString != null);
+    assert(setViolationClassifications != null);
+    assert(setViolationClassificationNoEknString != null);
+    assert(setViolationClassificationsNoEkn != null);
+    assert(saveEvent != null);
+    return setViolationClassificationNoEknString(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object>({
+    TResult setCriticalEvent(SetCriticalEvent value),
+    TResult setUseGeoLocationForAddressEvent(
+        SetUseGeoLocationForAddressEvent value),
+    TResult setAddressEvent(SetAddressEvent value),
+    TResult setTargetLandmark(SetTargetLandmark value),
+    TResult setObjectElementString(SetObjectElementString value),
+    TResult setObjectElement(SetObjectElement value),
+    TResult setDescriptionEvent(SetDescriptionEvent value),
+    TResult setViolationAdditionalFeatureStringEvent(
+        SetViolationAdditionalFeatureStringEvent value),
+    TResult setViolationAdditionalFeatureEvent(
+        SetViolationAdditionalFeatureEvent value),
+    TResult setContractorStringEvent(SetContractorStringEvent value),
+    TResult setContractorEvent(SetContractorEvent value),
+    TResult addPhotoEvent(AddPhotoEvent value),
+    TResult removePhotoEvent(RemovePhotoEvent value),
+    TResult rotatePhotoEvent(RotatePhotoEvent value),
+    TResult setViolationClassificationString(
+        SetViolationClassificationString value),
+    TResult setViolationClassifications(SetViolationClassification value),
+    TResult setViolationClassificationNoEknString(
+        SetViolationClassificationStringNoEkn value),
+    TResult setViolationClassificationsNoEkn(
+        SetViolationClassificationNoEkn value),
+    TResult saveEvent(SaveControlViolation value),
+    @required TResult orElse(),
+  }) {
+    assert(orElse != null);
+    if (setViolationClassificationNoEknString != null) {
+      return setViolationClassificationNoEknString(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class SetViolationClassificationStringNoEkn
+    implements ControlViolationFormEvent {
+  const factory SetViolationClassificationStringNoEkn(String classification) =
+      _$SetViolationClassificationStringNoEkn;
+
+  String get classification;
+  @JsonKey(ignore: true)
+  $SetViolationClassificationStringNoEknCopyWith<
+      SetViolationClassificationStringNoEkn> get copyWith;
+}
+
+/// @nodoc
+abstract class $SetViolationClassificationNoEknCopyWith<$Res> {
+  factory $SetViolationClassificationNoEknCopyWith(
+          SetViolationClassificationNoEkn value,
+          $Res Function(SetViolationClassificationNoEkn) then) =
+      _$SetViolationClassificationNoEknCopyWithImpl<$Res>;
+  $Res call({ViolationClassificationSearchResult classification});
+
+  $ViolationClassificationSearchResultCopyWith<$Res> get classification;
+}
+
+/// @nodoc
+class _$SetViolationClassificationNoEknCopyWithImpl<$Res>
+    extends _$ControlViolationFormEventCopyWithImpl<$Res>
+    implements $SetViolationClassificationNoEknCopyWith<$Res> {
+  _$SetViolationClassificationNoEknCopyWithImpl(
+      SetViolationClassificationNoEkn _value,
+      $Res Function(SetViolationClassificationNoEkn) _then)
+      : super(_value, (v) => _then(v as SetViolationClassificationNoEkn));
+
+  @override
+  SetViolationClassificationNoEkn get _value =>
+      super._value as SetViolationClassificationNoEkn;
+
+  @override
+  $Res call({
+    Object classification = freezed,
+  }) {
+    return _then(SetViolationClassificationNoEkn(
+      classification == freezed
+          ? _value.classification
+          : classification as ViolationClassificationSearchResult,
+    ));
+  }
+
+  @override
+  $ViolationClassificationSearchResultCopyWith<$Res> get classification {
+    if (_value.classification == null) {
+      return null;
+    }
+    return $ViolationClassificationSearchResultCopyWith<$Res>(
+        _value.classification, (value) {
+      return _then(_value.copyWith(classification: value));
+    });
+  }
+}
+
+/// @nodoc
+class _$SetViolationClassificationNoEkn
+    implements SetViolationClassificationNoEkn {
+  const _$SetViolationClassificationNoEkn([this.classification]);
+
+  @override
+  final ViolationClassificationSearchResult classification;
+
+  @override
+  String toString() {
+    return 'ControlViolationFormEvent.setViolationClassificationsNoEkn(classification: $classification)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is SetViolationClassificationNoEkn &&
+            (identical(other.classification, classification) ||
+                const DeepCollectionEquality()
+                    .equals(other.classification, classification)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(classification);
+
+  @JsonKey(ignore: true)
+  @override
+  $SetViolationClassificationNoEknCopyWith<SetViolationClassificationNoEkn>
+      get copyWith => _$SetViolationClassificationNoEknCopyWithImpl<
+          SetViolationClassificationNoEkn>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object>({
+    @required TResult setCriticalEvent(bool value),
+    @required TResult setUseGeoLocationForAddressEvent(bool value),
+    @required TResult setAddressEvent(Address address),
+    @required TResult setTargetLandmark(String targetLandmark),
+    @required TResult setObjectElementString(String objectElement),
+    @required TResult setObjectElement(ObjectElement objectElement),
+    @required TResult setDescriptionEvent(String description),
+    @required
+        TResult setViolationAdditionalFeatureStringEvent(
+            String violationAdditionalFeature),
+    @required
+        TResult setViolationAdditionalFeatureEvent(
+            ViolationAdditionalFeature violationAdditionalFeature),
+    @required TResult setContractorStringEvent(String contractor),
+    @required TResult setContractorEvent(Contractor contractor),
+    @required TResult addPhotoEvent(Uint8List photo, String name),
+    @required TResult removePhotoEvent(int index),
+    @required TResult rotatePhotoEvent(int index, Uint8List photo),
+    @required TResult setViolationClassificationString(String classification),
+    @required
+        TResult setViolationClassifications(
+            ViolationClassificationSearchResult classification),
+    @required
+        TResult setViolationClassificationNoEknString(String classification),
+    @required
+        TResult setViolationClassificationsNoEkn(
+            ViolationClassificationSearchResult classification),
+    @required TResult saveEvent(BuildContext context),
+  }) {
+    assert(setCriticalEvent != null);
+    assert(setUseGeoLocationForAddressEvent != null);
+    assert(setAddressEvent != null);
+    assert(setTargetLandmark != null);
+    assert(setObjectElementString != null);
+    assert(setObjectElement != null);
+    assert(setDescriptionEvent != null);
+    assert(setViolationAdditionalFeatureStringEvent != null);
+    assert(setViolationAdditionalFeatureEvent != null);
+    assert(setContractorStringEvent != null);
+    assert(setContractorEvent != null);
+    assert(addPhotoEvent != null);
+    assert(removePhotoEvent != null);
+    assert(rotatePhotoEvent != null);
+    assert(setViolationClassificationString != null);
+    assert(setViolationClassifications != null);
+    assert(setViolationClassificationNoEknString != null);
+    assert(setViolationClassificationsNoEkn != null);
+    assert(saveEvent != null);
+    return setViolationClassificationsNoEkn(classification);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object>({
+    TResult setCriticalEvent(bool value),
+    TResult setUseGeoLocationForAddressEvent(bool value),
+    TResult setAddressEvent(Address address),
+    TResult setTargetLandmark(String targetLandmark),
+    TResult setObjectElementString(String objectElement),
+    TResult setObjectElement(ObjectElement objectElement),
+    TResult setDescriptionEvent(String description),
+    TResult setViolationAdditionalFeatureStringEvent(
+        String violationAdditionalFeature),
+    TResult setViolationAdditionalFeatureEvent(
+        ViolationAdditionalFeature violationAdditionalFeature),
+    TResult setContractorStringEvent(String contractor),
+    TResult setContractorEvent(Contractor contractor),
+    TResult addPhotoEvent(Uint8List photo, String name),
+    TResult removePhotoEvent(int index),
+    TResult rotatePhotoEvent(int index, Uint8List photo),
+    TResult setViolationClassificationString(String classification),
+    TResult setViolationClassifications(
+        ViolationClassificationSearchResult classification),
+    TResult setViolationClassificationNoEknString(String classification),
+    TResult setViolationClassificationsNoEkn(
+        ViolationClassificationSearchResult classification),
+    TResult saveEvent(BuildContext context),
+    @required TResult orElse(),
+  }) {
+    assert(orElse != null);
+    if (setViolationClassificationsNoEkn != null) {
+      return setViolationClassificationsNoEkn(classification);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object>({
+    @required TResult setCriticalEvent(SetCriticalEvent value),
+    @required
+        TResult setUseGeoLocationForAddressEvent(
+            SetUseGeoLocationForAddressEvent value),
+    @required TResult setAddressEvent(SetAddressEvent value),
+    @required TResult setTargetLandmark(SetTargetLandmark value),
+    @required TResult setObjectElementString(SetObjectElementString value),
+    @required TResult setObjectElement(SetObjectElement value),
+    @required TResult setDescriptionEvent(SetDescriptionEvent value),
+    @required
+        TResult setViolationAdditionalFeatureStringEvent(
+            SetViolationAdditionalFeatureStringEvent value),
+    @required
+        TResult setViolationAdditionalFeatureEvent(
+            SetViolationAdditionalFeatureEvent value),
+    @required TResult setContractorStringEvent(SetContractorStringEvent value),
+    @required TResult setContractorEvent(SetContractorEvent value),
+    @required TResult addPhotoEvent(AddPhotoEvent value),
+    @required TResult removePhotoEvent(RemovePhotoEvent value),
+    @required TResult rotatePhotoEvent(RotatePhotoEvent value),
+    @required
+        TResult setViolationClassificationString(
+            SetViolationClassificationString value),
+    @required
+        TResult setViolationClassifications(SetViolationClassification value),
+    @required
+        TResult setViolationClassificationNoEknString(
+            SetViolationClassificationStringNoEkn value),
+    @required
+        TResult setViolationClassificationsNoEkn(
+            SetViolationClassificationNoEkn value),
+    @required TResult saveEvent(SaveControlViolation value),
+  }) {
+    assert(setCriticalEvent != null);
+    assert(setUseGeoLocationForAddressEvent != null);
+    assert(setAddressEvent != null);
+    assert(setTargetLandmark != null);
+    assert(setObjectElementString != null);
+    assert(setObjectElement != null);
+    assert(setDescriptionEvent != null);
+    assert(setViolationAdditionalFeatureStringEvent != null);
+    assert(setViolationAdditionalFeatureEvent != null);
+    assert(setContractorStringEvent != null);
+    assert(setContractorEvent != null);
+    assert(addPhotoEvent != null);
+    assert(removePhotoEvent != null);
+    assert(rotatePhotoEvent != null);
+    assert(setViolationClassificationString != null);
+    assert(setViolationClassifications != null);
+    assert(setViolationClassificationNoEknString != null);
+    assert(setViolationClassificationsNoEkn != null);
+    assert(saveEvent != null);
+    return setViolationClassificationsNoEkn(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object>({
+    TResult setCriticalEvent(SetCriticalEvent value),
+    TResult setUseGeoLocationForAddressEvent(
+        SetUseGeoLocationForAddressEvent value),
+    TResult setAddressEvent(SetAddressEvent value),
+    TResult setTargetLandmark(SetTargetLandmark value),
+    TResult setObjectElementString(SetObjectElementString value),
+    TResult setObjectElement(SetObjectElement value),
+    TResult setDescriptionEvent(SetDescriptionEvent value),
+    TResult setViolationAdditionalFeatureStringEvent(
+        SetViolationAdditionalFeatureStringEvent value),
+    TResult setViolationAdditionalFeatureEvent(
+        SetViolationAdditionalFeatureEvent value),
+    TResult setContractorStringEvent(SetContractorStringEvent value),
+    TResult setContractorEvent(SetContractorEvent value),
+    TResult addPhotoEvent(AddPhotoEvent value),
+    TResult removePhotoEvent(RemovePhotoEvent value),
+    TResult rotatePhotoEvent(RotatePhotoEvent value),
+    TResult setViolationClassificationString(
+        SetViolationClassificationString value),
+    TResult setViolationClassifications(SetViolationClassification value),
+    TResult setViolationClassificationNoEknString(
+        SetViolationClassificationStringNoEkn value),
+    TResult setViolationClassificationsNoEkn(
+        SetViolationClassificationNoEkn value),
+    TResult saveEvent(SaveControlViolation value),
+    @required TResult orElse(),
+  }) {
+    assert(orElse != null);
+    if (setViolationClassificationsNoEkn != null) {
+      return setViolationClassificationsNoEkn(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class SetViolationClassificationNoEkn
+    implements ControlViolationFormEvent {
+  const factory SetViolationClassificationNoEkn(
+          [ViolationClassificationSearchResult classification]) =
+      _$SetViolationClassificationNoEkn;
+
+  ViolationClassificationSearchResult get classification;
+  @JsonKey(ignore: true)
+  $SetViolationClassificationNoEknCopyWith<SetViolationClassificationNoEkn>
+      get copyWith;
+}
+
+/// @nodoc
+abstract class $SaveControlViolationCopyWith<$Res> {
+  factory $SaveControlViolationCopyWith(SaveControlViolation value,
+          $Res Function(SaveControlViolation) then) =
+      _$SaveControlViolationCopyWithImpl<$Res>;
+  $Res call({BuildContext context});
+}
+
+/// @nodoc
+class _$SaveControlViolationCopyWithImpl<$Res>
+    extends _$ControlViolationFormEventCopyWithImpl<$Res>
+    implements $SaveControlViolationCopyWith<$Res> {
+  _$SaveControlViolationCopyWithImpl(
+      SaveControlViolation _value, $Res Function(SaveControlViolation) _then)
+      : super(_value, (v) => _then(v as SaveControlViolation));
+
+  @override
+  SaveControlViolation get _value => super._value as SaveControlViolation;
+
+  @override
+  $Res call({
+    Object context = freezed,
+  }) {
+    return _then(SaveControlViolation(
+      context == freezed ? _value.context : context as BuildContext,
+    ));
+  }
+}
+
+/// @nodoc
+class _$SaveControlViolation implements SaveControlViolation {
+  const _$SaveControlViolation(this.context) : assert(context != null);
+
+  @override
+  final BuildContext context;
+
+  @override
+  String toString() {
+    return 'ControlViolationFormEvent.saveEvent(context: $context)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is SaveControlViolation &&
+            (identical(other.context, context) ||
+                const DeepCollectionEquality().equals(other.context, context)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^ const DeepCollectionEquality().hash(context);
+
+  @JsonKey(ignore: true)
+  @override
+  $SaveControlViolationCopyWith<SaveControlViolation> get copyWith =>
+      _$SaveControlViolationCopyWithImpl<SaveControlViolation>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object>({
+    @required TResult setCriticalEvent(bool value),
+    @required TResult setUseGeoLocationForAddressEvent(bool value),
+    @required TResult setAddressEvent(Address address),
+    @required TResult setTargetLandmark(String targetLandmark),
+    @required TResult setObjectElementString(String objectElement),
+    @required TResult setObjectElement(ObjectElement objectElement),
+    @required TResult setDescriptionEvent(String description),
+    @required
+        TResult setViolationAdditionalFeatureStringEvent(
+            String violationAdditionalFeature),
+    @required
+        TResult setViolationAdditionalFeatureEvent(
+            ViolationAdditionalFeature violationAdditionalFeature),
+    @required TResult setContractorStringEvent(String contractor),
+    @required TResult setContractorEvent(Contractor contractor),
+    @required TResult addPhotoEvent(Uint8List photo, String name),
+    @required TResult removePhotoEvent(int index),
+    @required TResult rotatePhotoEvent(int index, Uint8List photo),
+    @required TResult setViolationClassificationString(String classification),
+    @required
+        TResult setViolationClassifications(
+            ViolationClassificationSearchResult classification),
+    @required
+        TResult setViolationClassificationNoEknString(String classification),
+    @required
+        TResult setViolationClassificationsNoEkn(
+            ViolationClassificationSearchResult classification),
+    @required TResult saveEvent(BuildContext context),
+  }) {
+    assert(setCriticalEvent != null);
+    assert(setUseGeoLocationForAddressEvent != null);
+    assert(setAddressEvent != null);
+    assert(setTargetLandmark != null);
+    assert(setObjectElementString != null);
+    assert(setObjectElement != null);
+    assert(setDescriptionEvent != null);
+    assert(setViolationAdditionalFeatureStringEvent != null);
+    assert(setViolationAdditionalFeatureEvent != null);
+    assert(setContractorStringEvent != null);
+    assert(setContractorEvent != null);
+    assert(addPhotoEvent != null);
+    assert(removePhotoEvent != null);
+    assert(rotatePhotoEvent != null);
+    assert(setViolationClassificationString != null);
+    assert(setViolationClassifications != null);
+    assert(setViolationClassificationNoEknString != null);
+    assert(setViolationClassificationsNoEkn != null);
+    assert(saveEvent != null);
+    return saveEvent(context);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object>({
+    TResult setCriticalEvent(bool value),
+    TResult setUseGeoLocationForAddressEvent(bool value),
+    TResult setAddressEvent(Address address),
+    TResult setTargetLandmark(String targetLandmark),
+    TResult setObjectElementString(String objectElement),
+    TResult setObjectElement(ObjectElement objectElement),
+    TResult setDescriptionEvent(String description),
+    TResult setViolationAdditionalFeatureStringEvent(
+        String violationAdditionalFeature),
+    TResult setViolationAdditionalFeatureEvent(
+        ViolationAdditionalFeature violationAdditionalFeature),
+    TResult setContractorStringEvent(String contractor),
+    TResult setContractorEvent(Contractor contractor),
+    TResult addPhotoEvent(Uint8List photo, String name),
+    TResult removePhotoEvent(int index),
+    TResult rotatePhotoEvent(int index, Uint8List photo),
+    TResult setViolationClassificationString(String classification),
+    TResult setViolationClassifications(
+        ViolationClassificationSearchResult classification),
+    TResult setViolationClassificationNoEknString(String classification),
+    TResult setViolationClassificationsNoEkn(
+        ViolationClassificationSearchResult classification),
+    TResult saveEvent(BuildContext context),
+    @required TResult orElse(),
+  }) {
+    assert(orElse != null);
+    if (saveEvent != null) {
+      return saveEvent(context);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object>({
+    @required TResult setCriticalEvent(SetCriticalEvent value),
+    @required
+        TResult setUseGeoLocationForAddressEvent(
+            SetUseGeoLocationForAddressEvent value),
+    @required TResult setAddressEvent(SetAddressEvent value),
+    @required TResult setTargetLandmark(SetTargetLandmark value),
+    @required TResult setObjectElementString(SetObjectElementString value),
+    @required TResult setObjectElement(SetObjectElement value),
+    @required TResult setDescriptionEvent(SetDescriptionEvent value),
+    @required
+        TResult setViolationAdditionalFeatureStringEvent(
+            SetViolationAdditionalFeatureStringEvent value),
+    @required
+        TResult setViolationAdditionalFeatureEvent(
+            SetViolationAdditionalFeatureEvent value),
+    @required TResult setContractorStringEvent(SetContractorStringEvent value),
+    @required TResult setContractorEvent(SetContractorEvent value),
+    @required TResult addPhotoEvent(AddPhotoEvent value),
+    @required TResult removePhotoEvent(RemovePhotoEvent value),
+    @required TResult rotatePhotoEvent(RotatePhotoEvent value),
+    @required
+        TResult setViolationClassificationString(
+            SetViolationClassificationString value),
+    @required
+        TResult setViolationClassifications(SetViolationClassification value),
+    @required
+        TResult setViolationClassificationNoEknString(
+            SetViolationClassificationStringNoEkn value),
+    @required
+        TResult setViolationClassificationsNoEkn(
+            SetViolationClassificationNoEkn value),
+    @required TResult saveEvent(SaveControlViolation value),
+  }) {
+    assert(setCriticalEvent != null);
+    assert(setUseGeoLocationForAddressEvent != null);
+    assert(setAddressEvent != null);
+    assert(setTargetLandmark != null);
+    assert(setObjectElementString != null);
+    assert(setObjectElement != null);
+    assert(setDescriptionEvent != null);
+    assert(setViolationAdditionalFeatureStringEvent != null);
+    assert(setViolationAdditionalFeatureEvent != null);
+    assert(setContractorStringEvent != null);
+    assert(setContractorEvent != null);
+    assert(addPhotoEvent != null);
+    assert(removePhotoEvent != null);
+    assert(rotatePhotoEvent != null);
+    assert(setViolationClassificationString != null);
+    assert(setViolationClassifications != null);
+    assert(setViolationClassificationNoEknString != null);
+    assert(setViolationClassificationsNoEkn != null);
+    assert(saveEvent != null);
+    return saveEvent(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object>({
+    TResult setCriticalEvent(SetCriticalEvent value),
+    TResult setUseGeoLocationForAddressEvent(
+        SetUseGeoLocationForAddressEvent value),
+    TResult setAddressEvent(SetAddressEvent value),
+    TResult setTargetLandmark(SetTargetLandmark value),
+    TResult setObjectElementString(SetObjectElementString value),
+    TResult setObjectElement(SetObjectElement value),
+    TResult setDescriptionEvent(SetDescriptionEvent value),
+    TResult setViolationAdditionalFeatureStringEvent(
+        SetViolationAdditionalFeatureStringEvent value),
+    TResult setViolationAdditionalFeatureEvent(
+        SetViolationAdditionalFeatureEvent value),
+    TResult setContractorStringEvent(SetContractorStringEvent value),
+    TResult setContractorEvent(SetContractorEvent value),
+    TResult addPhotoEvent(AddPhotoEvent value),
+    TResult removePhotoEvent(RemovePhotoEvent value),
+    TResult rotatePhotoEvent(RotatePhotoEvent value),
+    TResult setViolationClassificationString(
+        SetViolationClassificationString value),
+    TResult setViolationClassifications(SetViolationClassification value),
+    TResult setViolationClassificationNoEknString(
+        SetViolationClassificationStringNoEkn value),
+    TResult setViolationClassificationsNoEkn(
+        SetViolationClassificationNoEkn value),
+    TResult saveEvent(SaveControlViolation value),
+    @required TResult orElse(),
+  }) {
+    assert(orElse != null);
+    if (saveEvent != null) {
+      return saveEvent(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class SaveControlViolation implements ControlViolationFormEvent {
+  const factory SaveControlViolation(BuildContext context) =
+      _$SaveControlViolation;
+
+  BuildContext get context;
+  @JsonKey(ignore: true)
+  $SaveControlViolationCopyWith<SaveControlViolation> get copyWith;
 }

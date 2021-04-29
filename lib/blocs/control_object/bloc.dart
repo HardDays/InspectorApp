@@ -41,23 +41,26 @@ class ControlObjectBloc
           ControlObjectBlocEvent event) =>
       event.map(
         loadEvent: (event) async* {
-          yield (ControlObjectBlocState.loadingState(object: object));
-          if(_networkStatus == null) {
+          yield (ControlObjectBlocState.loadingState(
+              object: object, filters: state.filters));
+          if (_networkStatus == null) {
             _networkStatus = await networkStatusService.actual;
           }
           final results = await departmentControlService.getControlResults(
-              object, _networkStatus);
+              object, _networkStatus, state.filters);
           yield* (results.map(
             controlResultsListResponse: (response) async* {
               yield (ControlObjectBlocState.loadedWithListState(
                 object: object,
                 controlSearchResults: response.results,
+                filters: state.filters,
               ));
             },
             emptyResultsListResponse: (response) async* {
               yield (ControlObjectBlocState.loadedState(
                 object: object,
                 needRefresh: false,
+                filters: state.filters,
               ));
             },
             exceptionResponse: (response) async* {
@@ -72,6 +75,13 @@ class ControlObjectBloc
               ));
             },
           ));
+        },
+        changeFitersEvent: (event) async* {
+          yield ControlObjectBlocState.loadedState(
+            object: object,
+            needRefresh: true,
+            filters: event.filters,
+          );
         },
       );
 

@@ -89,7 +89,7 @@ class ObjectDbPersistanceService extends ObjectDBService
     return await _getKeyValue('instructionSort');
   }
 
-   Future<String> getInstructionSortOrder() async {
+  Future<String> getInstructionSortOrder() async {
     return await _getKeyValue('instructionSortOrder');
   }
 
@@ -136,12 +136,15 @@ class ObjectDbPersistanceService extends ObjectDBService
   }
 
   Future<InstructionFilters> getInstructionFilters() async {
-    return InstructionFilters.fromJson(await _getKeyValue('instructionFilters') ?? {});
+    return InstructionFilters.fromJson(
+        await _getKeyValue('instructionFilters') ?? {});
   }
 
   Future<DateTime> getInstructionReportDate(int instructionId) async {
     final dateTime = await _getKeyValue('instructionReportDate$instructionId');
-    return dateTime == null ? null : DateTime.fromMillisecondsSinceEpoch(dateTime);
+    return dateTime == null
+        ? null
+        : DateTime.fromMillisecondsSinceEpoch(dateTime);
   }
 
   Future<int> getReportNumber() async {
@@ -175,9 +178,11 @@ class ObjectDbPersistanceService extends ObjectDBService
     await _saveKeyValue('instructionFilters', value.toJson());
   }
 
-  Future<void> saveInstructionsReportDate(int instructionId, {DateTime date}) async {
+  Future<void> saveInstructionsReportDate(int instructionId,
+      {DateTime date}) async {
     date = date ?? DateTime.now();
-    await _saveKeyValue('instructionReportDate$instructionId', date.millisecondsSinceEpoch);
+    await _saveKeyValue(
+        'instructionReportDate$instructionId', date.millisecondsSinceEpoch);
   }
 
   @override
@@ -246,9 +251,16 @@ class ObjectDbPersistanceService extends ObjectDBService
     await _saveKeyValue('useWebVersionOfVK', state);
   }
 
-   Future setReportNumber(int number) async {
+  Future setReportNumber(int number) async {
     return await _saveKeyValue('lastReportNumber', number);
   }
+
+  @override
+  Future<String> dcWebUrl() => _getKeyValue('dcWebUrl')
+      .then((value) => value ?? 'https://eis-oati.mos.ru/oati-insp-mobile');
+
+  @override
+  Future<void> saveDcWebUrl(String url) => _saveKeyValue('dcWebUrl', url);
 
   // @override
   // Future<void> saveInstructionForSending(Instruction instruction) async {

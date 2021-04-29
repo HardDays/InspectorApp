@@ -89,7 +89,7 @@ class TableDefinitions {
     DictionaryNames.dcObjectElements: '''CREATE TABLE IF NOT EXISTS dcObjectElements(id INTEGER PRIMARY KEY, name TEXT, typeId INTEGER, typeName TEXT, typeCode TEXT)''',
     DictionaryNames.dcObjectKinds: '''CREATE TABLE IF NOT EXISTS dcObjectKinds(id INTEGER PRIMARY KEY, name TEXT)''',
     DictionaryNames.dcObjectTypes: '''CREATE TABLE IF NOT EXISTS dcObjectTypes(id INTEGER PRIMARY KEY, name TEXT, code TEXT)''',
-    DictionaryNames.dcViolationNames: '''CREATE TABLE IF NOT EXISTS dcViolationNames(id INTEGER PRIMARY KEY, name TEXT)''',
+    DictionaryNames.dcViolationNames: '''CREATE TABLE IF NOT EXISTS dcViolationNames(id INTEGER PRIMARY KEY, name TEXT, externalId INTEGER, violationFullName TEXT)''',
     DictionaryNames.dcViolationStatuses: '''CREATE TABLE IF NOT EXISTS dcViolationStatuses(id INTEGER PRIMARY KEY, name TEXT)''',
     DictionaryNames.dcContractors: '''CREATE TABLE IF NOT EXISTS dcContractors(id INTEGER PRIMARY KEY, name TEXT, inn TEXT)''',
     DictionaryNames.dcViolationAdditionalFeatures: '''CREATE TABLE IF NOT EXISTS dcViolationAdditionalFeatures(id INTEGER PRIMARY KEY, name TEXT)''',
@@ -103,6 +103,8 @@ class TableDefinitions {
       article TEXT,
       violationNameId INTEGER,
       violationNameName TEXT,
+      violationNameViolationFullName TEXT,
+      violationNameExternalId INTEGER,
       violationTypeId INTEGER,
       violationTypeName TEXT,      
       violationKindId INTEGER,
@@ -146,11 +148,11 @@ class SqliteDictionaryService {
           await db.insert(TableDefinitions.metadata, {'id': 1, 'data': json.encode({})});
         },
         onOpen: (db) async {
+          await db.execute('drop table dcViolationClassificationSearchResults');
           for (final key in TableDefinitions.all.keys) {
             await db.execute(TableDefinitions.all[key]);
           }
           // await db.execute(TableDefinitions.all[ DictionaryNames.kladdrAddressTypes]);
-          // await db.execute('drop table violationTypes');
           // await db.execute(TableDefinitions.all[ DictionaryNames.violationTypes]);
           // await db.execute(TableDefinitions.all[ DictionaryNames.violatorInfoIps]);
           // await db.execute(TableDefinitions.all[ DictionaryNames.violatorInfoLegals]);

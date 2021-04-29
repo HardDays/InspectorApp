@@ -16,7 +16,7 @@ class Info extends StatelessWidget {
               style: ProjectTextStyles.medium.apply(color: ProjectColors.black),
               children: [
                 TextSpan(
-                  text: '+7 495 663-10-00',
+                  text: '+7 (495) 155-78-97',
                   style: ProjectTextStyles.medium.apply(color: ProjectColors.black),
                 ),
               ],

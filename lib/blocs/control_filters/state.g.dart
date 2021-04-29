@@ -60,14 +60,14 @@ _$AllState _$_$AllStateFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$_$AllStateToJson(_$AllState instance) =>
     <String, dynamic>{
-      'dcObjectType': instance.dcObjectType,
-      'dcObjectKind': instance.dcObjectKind,
+      'dcObjectType': instance.dcObjectType?.toJson(),
+      'dcObjectKind': instance.dcObjectKind?.toJson(),
       'externalId': instance.externalId,
       'objectName': instance.objectName,
-      'area': instance.area,
-      'district': instance.district,
-      'street': instance.street,
-      'address': instance.address,
+      'area': instance.area?.toJson(),
+      'district': instance.district?.toJson(),
+      'street': instance.street?.toJson(),
+      'address': instance.address?.toJson(),
       'searchRadius': instance.searchRadius,
       'balanceOwner': instance.balanceOwner,
       'daysFromLastSurvey': instance.daysFromLastSurvey,
@@ -75,10 +75,10 @@ Map<String, dynamic> _$_$AllStateToJson(_$AllState instance) =>
           instance.lastSurveyDates?.map((e) => e?.toIso8601String())?.toList(),
       'camerasExist': instance.camerasExist,
       'ignoreViolations': instance.ignoreViolations,
-      'objectElement': instance.objectElement,
-      'violationName': instance.violationName,
-      'violationStatus': instance.violationStatus,
-      'source': instance.source,
+      'objectElement': instance.objectElement?.toJson(),
+      'violationName': instance.violationName?.toJson(),
+      'violationStatus': instance.violationStatus?.toJson(),
+      'source': instance.source?.toJson(),
       'controlDates':
           instance.controlDates?.map((e) => e?.toIso8601String())?.toList(),
       'detectionDates':

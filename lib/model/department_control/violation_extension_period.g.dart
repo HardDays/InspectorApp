@@ -24,6 +24,6 @@ Map<String, dynamic> _$_$_ViolationExtensionPeriodToJson(
         _$_ViolationExtensionPeriod instance) =>
     <String, dynamic>{
       'resolveDate': instance.resolveDate?.toIso8601String(),
-      'extensionReason': instance.extensionReason,
+      'extensionReason': instance.extensionReason?.toJson(),
       'comments': instance.comments,
     };

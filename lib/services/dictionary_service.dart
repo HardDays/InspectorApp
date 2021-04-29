@@ -187,10 +187,14 @@ class DictionaryService {
     return await _getData(DictionaryNames.addresses, 
       queries: [
         Query({
-          'houseNum LIKE ?': '$houseNum%',
-          'streetId = ?': streetId,
-          'areaId = ?': areaId,
-          'districtId = ?': districtId,
+          if(houseNum != null)
+            'houseNum LIKE ?': '$houseNum%',
+          if(streetId != null)
+            'streetId = ?': streetId,
+          if(areaId != null)
+            'areaId = ?': areaId,
+          if(districtId != null)
+            'districtId = ?': districtId,
         }),
       ],
       limit: 50
@@ -250,8 +254,10 @@ class DictionaryService {
     return await _getData<Street>(DictionaryNames.streets, 
       queries: [
         Query({
-          'name LIKE ?': '$name%',
-          'districtId = ?': districtId
+          if(name != null)
+            'name LIKE ?': '$name%',
+          if(districtId != null)
+            'districtId = ?': districtId
         }),
       ],
       limit: 50
@@ -494,7 +500,8 @@ class DictionaryService {
     return await _getData<ViolationStatus>(DictionaryNames.dcViolationStatuses, 
       queries: [
         Query({
-          'name LIKE ?': '$name%',
+          if(name != null && name.isNotEmpty)
+            'name LIKE ?': '$name%',
         }),
       ],
       limit: 50
@@ -538,7 +545,8 @@ class DictionaryService {
     return await _getData<Source>(DictionaryNames.dcSources, 
       queries: [
         Query({
-          'name LIKE ?': '$name%',
+          if(name != null)
+            'name LIKE ?': '$name%',
         }),
       ],
       limit: 50
@@ -556,7 +564,7 @@ class DictionaryService {
     );
   }
 
-   Future<List<ViolationClassificationSearchResult>> getViolationClassificationSearchResults({String name, ObjectElement objectElement}) async {
+   Future<List<ViolationClassificationSearchResult>> getViolationClassificationSearchResults({String name, ObjectElement objectElement, bool ekn}) async {
     return await _getData<ViolationClassificationSearchResult>(DictionaryNames.dcViolationClassificationSearchResults, 
       queries: [
         Query({
@@ -566,6 +574,8 @@ class DictionaryService {
               'objectElementId = ?': objectElement.id
             else
               'objectElementName LIKE ?': '${objectElement.name}%',
+          if(ekn != null)
+            'ekn = ?': ekn ? 1 : 0,
         }),
       ],
       limit: 50

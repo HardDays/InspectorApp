@@ -86,71 +86,71 @@ class ControlObjectCard extends StatelessWidget {
             children: controlObject.violations
                 .map(
                   (e) => ViolationShortSearchResultWidget(
-                    onClick: () {},
-                    onCompleted: () async {
-                      await showDialog(
-                        context: context,
-                        builder: (_) => ProjectDialog(
-                          child: PerformControlFormWidget(
-                            onConfirm: (performControl) {
-                              BlocProvider.of<ControlListBloc>(context).add(
-                                  ControlListBlocEvent
-                                      .registerPerformControlEvent(
-                                      performControl,
-                                      controlObject,
-                                      e.id));
-                            },
-                            onCancel: () {
-                              Navigator.of(context).pop();
-                            },
-                            violationNum: e.violationNum,
-                            performControl: PerformControl(
-                              factDate: DateTime.now(),
-                              photos: <DCPhoto>[],
-                              planDate: DateTime.now(),
-                              resolved: true,
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                    onNotCompleted: () async {
-                      await showDialog(
-                        context: context,
-                        builder: (_) => ProjectDialog(
-                          child: PerformControlFormWidget(
-                            onConfirm: (performControl) {
-                              BlocProvider.of<ControlListBloc>(context).add(
-                                ControlListBlocEvent
-                                    .registerPerformControlEvent(
-                                  performControl,
-                                  controlObject,
-                                  e.id,
-                                ),
-                              );
-                            },
-                            onCancel: () {
-                              Navigator.of(context).pop();
-                            },
-                            violationNum: e.violationNum,
-                            performControl: PerformControl(
-                              factDate: DateTime.now(),
-                              photos: <DCPhoto>[],
-                              planDate: DateTime.now(),
-                              resolved: false,
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                    onRemove: () {
-                      BlocProvider.of<ControlListBloc>(context).add(
-                        ControlListBlocEvent.removeViolationEvent(
-                          controlObject,
-                          e.id,
-                        ),
-                      );
-                    },
+                    // onClick: () {},
+                    // onCompleted: () async {
+                    //   await showDialog(
+                    //     context: context,
+                    //     builder: (_) => ProjectDialog(
+                    //       child: PerformControlFormWidget(
+                    //         onConfirm: (performControl) {
+                    //           BlocProvider.of<ControlListBloc>(context).add(
+                    //               ControlListBlocEvent
+                    //                   .registerPerformControlEvent(
+                    //                   performControl,
+                    //                   controlObject,
+                    //                   e.id));
+                    //         },
+                    //         onCancel: () {
+                    //           Navigator.of(context).pop();
+                    //         },
+                    //         violationNum: e.violationNum,
+                    //         performControl: PerformControl(
+                    //           factDate: DateTime.now(),
+                    //           photos: <DCPhoto>[],
+                    //           planDate: DateTime.now(),
+                    //           resolved: true,
+                    //         ),
+                    //       ),
+                    //     ),
+                    //   );
+                    // },
+                    // onNotCompleted: () async {
+                    //   await showDialog(
+                    //     context: context,
+                    //     builder: (_) => ProjectDialog(
+                    //       child: PerformControlFormWidget(
+                    //         onConfirm: (performControl) {
+                    //           BlocProvider.of<ControlListBloc>(context).add(
+                    //             ControlListBlocEvent
+                    //                 .registerPerformControlEvent(
+                    //               performControl,
+                    //               controlObject,
+                    //               e.id,
+                    //             ),
+                    //           );
+                    //         },
+                    //         onCancel: () {
+                    //           Navigator.of(context).pop();
+                    //         },
+                    //         violationNum: e.violationNum,
+                    //         performControl: PerformControl(
+                    //           factDate: DateTime.now(),
+                    //           photos: <DCPhoto>[],
+                    //           planDate: DateTime.now(),
+                    //           resolved: false,
+                    //         ),
+                    //       ),
+                    //     ),
+                    //   );
+                    // },
+                    // onRemove: () {
+                    //   BlocProvider.of<ControlListBloc>(context).add(
+                    //     ControlListBlocEvent.removeViolationEvent(
+                    //       controlObject,
+                    //       e.id,
+                    //     ),
+                    //   );
+                    // },
                     violation: e,
                   ),
                 )

@@ -3038,3 +3038,428 @@ abstract class _DepartmentControlExtendControlPeriodRequest
   _$DepartmentControlExtendControlPeriodRequestCopyWith<
       _DepartmentControlExtendControlPeriodRequest> get copyWith;
 }
+
+DepartmentControlControlResultsRequest
+    _$DepartmentControlControlResultsRequestFromJson(
+        Map<String, dynamic> json) {
+  return _DepartmentControlControlResultsRequest.fromJson(json);
+}
+
+/// @nodoc
+class _$DepartmentControlControlResultsRequestTearOff {
+  const _$DepartmentControlControlResultsRequestTearOff();
+
+// ignore: unused_element
+  _DepartmentControlControlResultsRequest call(
+      {int dcObjectId,
+      bool forCurrentUser,
+      DateTime surveyDateFrom,
+      DateTime surveyDateTo,
+      bool violationExists,
+      String violationNum,
+      List<int> dcViolationStatusIds,
+      int dcViolationTypeId,
+      int dcViolationKindId,
+      int sourceId,
+      int from,
+      int to,
+      List<String> sort}) {
+    return _DepartmentControlControlResultsRequest(
+      dcObjectId: dcObjectId,
+      forCurrentUser: forCurrentUser,
+      surveyDateFrom: surveyDateFrom,
+      surveyDateTo: surveyDateTo,
+      violationExists: violationExists,
+      violationNum: violationNum,
+      dcViolationStatusIds: dcViolationStatusIds,
+      dcViolationTypeId: dcViolationTypeId,
+      dcViolationKindId: dcViolationKindId,
+      sourceId: sourceId,
+      from: from,
+      to: to,
+      sort: sort,
+    );
+  }
+
+// ignore: unused_element
+  DepartmentControlControlResultsRequest fromJson(Map<String, Object> json) {
+    return DepartmentControlControlResultsRequest.fromJson(json);
+  }
+}
+
+/// @nodoc
+// ignore: unused_element
+const $DepartmentControlControlResultsRequest =
+    _$DepartmentControlControlResultsRequestTearOff();
+
+/// @nodoc
+mixin _$DepartmentControlControlResultsRequest {
+  int get dcObjectId;
+  bool get forCurrentUser;
+  DateTime get surveyDateFrom;
+  DateTime get surveyDateTo;
+  bool get violationExists;
+  String get violationNum;
+  List<int> get dcViolationStatusIds;
+  int get dcViolationTypeId;
+  int get dcViolationKindId;
+  int get sourceId;
+  int get from;
+  int get to;
+  List<String> get sort;
+
+  Map<String, dynamic> toJson();
+  @JsonKey(ignore: true)
+  $DepartmentControlControlResultsRequestCopyWith<
+      DepartmentControlControlResultsRequest> get copyWith;
+}
+
+/// @nodoc
+abstract class $DepartmentControlControlResultsRequestCopyWith<$Res> {
+  factory $DepartmentControlControlResultsRequestCopyWith(
+          DepartmentControlControlResultsRequest value,
+          $Res Function(DepartmentControlControlResultsRequest) then) =
+      _$DepartmentControlControlResultsRequestCopyWithImpl<$Res>;
+  $Res call(
+      {int dcObjectId,
+      bool forCurrentUser,
+      DateTime surveyDateFrom,
+      DateTime surveyDateTo,
+      bool violationExists,
+      String violationNum,
+      List<int> dcViolationStatusIds,
+      int dcViolationTypeId,
+      int dcViolationKindId,
+      int sourceId,
+      int from,
+      int to,
+      List<String> sort});
+}
+
+/// @nodoc
+class _$DepartmentControlControlResultsRequestCopyWithImpl<$Res>
+    implements $DepartmentControlControlResultsRequestCopyWith<$Res> {
+  _$DepartmentControlControlResultsRequestCopyWithImpl(this._value, this._then);
+
+  final DepartmentControlControlResultsRequest _value;
+  // ignore: unused_field
+  final $Res Function(DepartmentControlControlResultsRequest) _then;
+
+  @override
+  $Res call({
+    Object dcObjectId = freezed,
+    Object forCurrentUser = freezed,
+    Object surveyDateFrom = freezed,
+    Object surveyDateTo = freezed,
+    Object violationExists = freezed,
+    Object violationNum = freezed,
+    Object dcViolationStatusIds = freezed,
+    Object dcViolationTypeId = freezed,
+    Object dcViolationKindId = freezed,
+    Object sourceId = freezed,
+    Object from = freezed,
+    Object to = freezed,
+    Object sort = freezed,
+  }) {
+    return _then(_value.copyWith(
+      dcObjectId: dcObjectId == freezed ? _value.dcObjectId : dcObjectId as int,
+      forCurrentUser: forCurrentUser == freezed
+          ? _value.forCurrentUser
+          : forCurrentUser as bool,
+      surveyDateFrom: surveyDateFrom == freezed
+          ? _value.surveyDateFrom
+          : surveyDateFrom as DateTime,
+      surveyDateTo: surveyDateTo == freezed
+          ? _value.surveyDateTo
+          : surveyDateTo as DateTime,
+      violationExists: violationExists == freezed
+          ? _value.violationExists
+          : violationExists as bool,
+      violationNum: violationNum == freezed
+          ? _value.violationNum
+          : violationNum as String,
+      dcViolationStatusIds: dcViolationStatusIds == freezed
+          ? _value.dcViolationStatusIds
+          : dcViolationStatusIds as List<int>,
+      dcViolationTypeId: dcViolationTypeId == freezed
+          ? _value.dcViolationTypeId
+          : dcViolationTypeId as int,
+      dcViolationKindId: dcViolationKindId == freezed
+          ? _value.dcViolationKindId
+          : dcViolationKindId as int,
+      sourceId: sourceId == freezed ? _value.sourceId : sourceId as int,
+      from: from == freezed ? _value.from : from as int,
+      to: to == freezed ? _value.to : to as int,
+      sort: sort == freezed ? _value.sort : sort as List<String>,
+    ));
+  }
+}
+
+/// @nodoc
+abstract class _$DepartmentControlControlResultsRequestCopyWith<$Res>
+    implements $DepartmentControlControlResultsRequestCopyWith<$Res> {
+  factory _$DepartmentControlControlResultsRequestCopyWith(
+          _DepartmentControlControlResultsRequest value,
+          $Res Function(_DepartmentControlControlResultsRequest) then) =
+      __$DepartmentControlControlResultsRequestCopyWithImpl<$Res>;
+  @override
+  $Res call(
+      {int dcObjectId,
+      bool forCurrentUser,
+      DateTime surveyDateFrom,
+      DateTime surveyDateTo,
+      bool violationExists,
+      String violationNum,
+      List<int> dcViolationStatusIds,
+      int dcViolationTypeId,
+      int dcViolationKindId,
+      int sourceId,
+      int from,
+      int to,
+      List<String> sort});
+}
+
+/// @nodoc
+class __$DepartmentControlControlResultsRequestCopyWithImpl<$Res>
+    extends _$DepartmentControlControlResultsRequestCopyWithImpl<$Res>
+    implements _$DepartmentControlControlResultsRequestCopyWith<$Res> {
+  __$DepartmentControlControlResultsRequestCopyWithImpl(
+      _DepartmentControlControlResultsRequest _value,
+      $Res Function(_DepartmentControlControlResultsRequest) _then)
+      : super(
+            _value, (v) => _then(v as _DepartmentControlControlResultsRequest));
+
+  @override
+  _DepartmentControlControlResultsRequest get _value =>
+      super._value as _DepartmentControlControlResultsRequest;
+
+  @override
+  $Res call({
+    Object dcObjectId = freezed,
+    Object forCurrentUser = freezed,
+    Object surveyDateFrom = freezed,
+    Object surveyDateTo = freezed,
+    Object violationExists = freezed,
+    Object violationNum = freezed,
+    Object dcViolationStatusIds = freezed,
+    Object dcViolationTypeId = freezed,
+    Object dcViolationKindId = freezed,
+    Object sourceId = freezed,
+    Object from = freezed,
+    Object to = freezed,
+    Object sort = freezed,
+  }) {
+    return _then(_DepartmentControlControlResultsRequest(
+      dcObjectId: dcObjectId == freezed ? _value.dcObjectId : dcObjectId as int,
+      forCurrentUser: forCurrentUser == freezed
+          ? _value.forCurrentUser
+          : forCurrentUser as bool,
+      surveyDateFrom: surveyDateFrom == freezed
+          ? _value.surveyDateFrom
+          : surveyDateFrom as DateTime,
+      surveyDateTo: surveyDateTo == freezed
+          ? _value.surveyDateTo
+          : surveyDateTo as DateTime,
+      violationExists: violationExists == freezed
+          ? _value.violationExists
+          : violationExists as bool,
+      violationNum: violationNum == freezed
+          ? _value.violationNum
+          : violationNum as String,
+      dcViolationStatusIds: dcViolationStatusIds == freezed
+          ? _value.dcViolationStatusIds
+          : dcViolationStatusIds as List<int>,
+      dcViolationTypeId: dcViolationTypeId == freezed
+          ? _value.dcViolationTypeId
+          : dcViolationTypeId as int,
+      dcViolationKindId: dcViolationKindId == freezed
+          ? _value.dcViolationKindId
+          : dcViolationKindId as int,
+      sourceId: sourceId == freezed ? _value.sourceId : sourceId as int,
+      from: from == freezed ? _value.from : from as int,
+      to: to == freezed ? _value.to : to as int,
+      sort: sort == freezed ? _value.sort : sort as List<String>,
+    ));
+  }
+}
+
+@JsonSerializable()
+
+/// @nodoc
+class _$_DepartmentControlControlResultsRequest
+    implements _DepartmentControlControlResultsRequest {
+  const _$_DepartmentControlControlResultsRequest(
+      {this.dcObjectId,
+      this.forCurrentUser,
+      this.surveyDateFrom,
+      this.surveyDateTo,
+      this.violationExists,
+      this.violationNum,
+      this.dcViolationStatusIds,
+      this.dcViolationTypeId,
+      this.dcViolationKindId,
+      this.sourceId,
+      this.from,
+      this.to,
+      this.sort});
+
+  factory _$_DepartmentControlControlResultsRequest.fromJson(
+          Map<String, dynamic> json) =>
+      _$_$_DepartmentControlControlResultsRequestFromJson(json);
+
+  @override
+  final int dcObjectId;
+  @override
+  final bool forCurrentUser;
+  @override
+  final DateTime surveyDateFrom;
+  @override
+  final DateTime surveyDateTo;
+  @override
+  final bool violationExists;
+  @override
+  final String violationNum;
+  @override
+  final List<int> dcViolationStatusIds;
+  @override
+  final int dcViolationTypeId;
+  @override
+  final int dcViolationKindId;
+  @override
+  final int sourceId;
+  @override
+  final int from;
+  @override
+  final int to;
+  @override
+  final List<String> sort;
+
+  @override
+  String toString() {
+    return 'DepartmentControlControlResultsRequest(dcObjectId: $dcObjectId, forCurrentUser: $forCurrentUser, surveyDateFrom: $surveyDateFrom, surveyDateTo: $surveyDateTo, violationExists: $violationExists, violationNum: $violationNum, dcViolationStatusIds: $dcViolationStatusIds, dcViolationTypeId: $dcViolationTypeId, dcViolationKindId: $dcViolationKindId, sourceId: $sourceId, from: $from, to: $to, sort: $sort)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is _DepartmentControlControlResultsRequest &&
+            (identical(other.dcObjectId, dcObjectId) ||
+                const DeepCollectionEquality()
+                    .equals(other.dcObjectId, dcObjectId)) &&
+            (identical(other.forCurrentUser, forCurrentUser) ||
+                const DeepCollectionEquality()
+                    .equals(other.forCurrentUser, forCurrentUser)) &&
+            (identical(other.surveyDateFrom, surveyDateFrom) ||
+                const DeepCollectionEquality()
+                    .equals(other.surveyDateFrom, surveyDateFrom)) &&
+            (identical(other.surveyDateTo, surveyDateTo) ||
+                const DeepCollectionEquality()
+                    .equals(other.surveyDateTo, surveyDateTo)) &&
+            (identical(other.violationExists, violationExists) ||
+                const DeepCollectionEquality()
+                    .equals(other.violationExists, violationExists)) &&
+            (identical(other.violationNum, violationNum) ||
+                const DeepCollectionEquality()
+                    .equals(other.violationNum, violationNum)) &&
+            (identical(other.dcViolationStatusIds, dcViolationStatusIds) ||
+                const DeepCollectionEquality().equals(
+                    other.dcViolationStatusIds, dcViolationStatusIds)) &&
+            (identical(other.dcViolationTypeId, dcViolationTypeId) ||
+                const DeepCollectionEquality()
+                    .equals(other.dcViolationTypeId, dcViolationTypeId)) &&
+            (identical(other.dcViolationKindId, dcViolationKindId) ||
+                const DeepCollectionEquality()
+                    .equals(other.dcViolationKindId, dcViolationKindId)) &&
+            (identical(other.sourceId, sourceId) ||
+                const DeepCollectionEquality()
+                    .equals(other.sourceId, sourceId)) &&
+            (identical(other.from, from) ||
+                const DeepCollectionEquality().equals(other.from, from)) &&
+            (identical(other.to, to) ||
+                const DeepCollectionEquality().equals(other.to, to)) &&
+            (identical(other.sort, sort) ||
+                const DeepCollectionEquality().equals(other.sort, sort)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(dcObjectId) ^
+      const DeepCollectionEquality().hash(forCurrentUser) ^
+      const DeepCollectionEquality().hash(surveyDateFrom) ^
+      const DeepCollectionEquality().hash(surveyDateTo) ^
+      const DeepCollectionEquality().hash(violationExists) ^
+      const DeepCollectionEquality().hash(violationNum) ^
+      const DeepCollectionEquality().hash(dcViolationStatusIds) ^
+      const DeepCollectionEquality().hash(dcViolationTypeId) ^
+      const DeepCollectionEquality().hash(dcViolationKindId) ^
+      const DeepCollectionEquality().hash(sourceId) ^
+      const DeepCollectionEquality().hash(from) ^
+      const DeepCollectionEquality().hash(to) ^
+      const DeepCollectionEquality().hash(sort);
+
+  @JsonKey(ignore: true)
+  @override
+  _$DepartmentControlControlResultsRequestCopyWith<
+          _DepartmentControlControlResultsRequest>
+      get copyWith => __$DepartmentControlControlResultsRequestCopyWithImpl<
+          _DepartmentControlControlResultsRequest>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$_$_DepartmentControlControlResultsRequestToJson(this);
+  }
+}
+
+abstract class _DepartmentControlControlResultsRequest
+    implements DepartmentControlControlResultsRequest {
+  const factory _DepartmentControlControlResultsRequest(
+      {int dcObjectId,
+      bool forCurrentUser,
+      DateTime surveyDateFrom,
+      DateTime surveyDateTo,
+      bool violationExists,
+      String violationNum,
+      List<int> dcViolationStatusIds,
+      int dcViolationTypeId,
+      int dcViolationKindId,
+      int sourceId,
+      int from,
+      int to,
+      List<String> sort}) = _$_DepartmentControlControlResultsRequest;
+
+  factory _DepartmentControlControlResultsRequest.fromJson(
+          Map<String, dynamic> json) =
+      _$_DepartmentControlControlResultsRequest.fromJson;
+
+  @override
+  int get dcObjectId;
+  @override
+  bool get forCurrentUser;
+  @override
+  DateTime get surveyDateFrom;
+  @override
+  DateTime get surveyDateTo;
+  @override
+  bool get violationExists;
+  @override
+  String get violationNum;
+  @override
+  List<int> get dcViolationStatusIds;
+  @override
+  int get dcViolationTypeId;
+  @override
+  int get dcViolationKindId;
+  @override
+  int get sourceId;
+  @override
+  int get from;
+  @override
+  int get to;
+  @override
+  List<String> get sort;
+  @override
+  @JsonKey(ignore: true)
+  _$DepartmentControlControlResultsRequestCopyWith<
+      _DepartmentControlControlResultsRequest> get copyWith;
+}

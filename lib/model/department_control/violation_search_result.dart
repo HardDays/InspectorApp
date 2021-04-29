@@ -47,6 +47,8 @@ abstract class ViolationSearchResult with _$ViolationSearchResult {
     List<ViolationExtensionPeriodSearchResult> extensionPeriods,
     bool creationSentToCafap,
     bool closureSentToCafap,
+    int objectId,
+    String objectName,
   }) = _ViolationSearchResult;
 
   factory ViolationSearchResult.fromJson(Map<String, dynamic> json) =>

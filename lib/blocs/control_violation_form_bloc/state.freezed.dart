@@ -18,26 +18,46 @@ class _$CotnrolViolationFormStateTearOff {
       {bool setAddressByGeoLocation,
       bool critical,
       Address address,
+      String adressErrorString,
       String targetLandmark,
+      String targetLandmarkErrorString,
       ObjectElement objectElement,
+      String objectElementErrorString,
       String description,
+      String descriptionErrorString,
       ViolationAdditionalFeature violationAdditionalFeature,
+      String violationAdditionalFeatureErrorString,
       Contractor contractor,
+      String contractorErrorString,
       List<DCPhoto> photos,
       bool showClassificationField,
-      ViolationClassification violationClassification}) {
+      ViolationClassification violationClassification,
+      String violationClassificationErrorString,
+      ViolationClassification violationClassificationNoEkn,
+      String violationClassificationErrorStringNoEkn}) {
     return _CotnrolViolationFormState(
       setAddressByGeoLocation: setAddressByGeoLocation,
       critical: critical,
       address: address,
+      adressErrorString: adressErrorString,
       targetLandmark: targetLandmark,
+      targetLandmarkErrorString: targetLandmarkErrorString,
       objectElement: objectElement,
+      objectElementErrorString: objectElementErrorString,
       description: description,
+      descriptionErrorString: descriptionErrorString,
       violationAdditionalFeature: violationAdditionalFeature,
+      violationAdditionalFeatureErrorString:
+          violationAdditionalFeatureErrorString,
       contractor: contractor,
+      contractorErrorString: contractorErrorString,
       photos: photos,
       showClassificationField: showClassificationField,
       violationClassification: violationClassification,
+      violationClassificationErrorString: violationClassificationErrorString,
+      violationClassificationNoEkn: violationClassificationNoEkn,
+      violationClassificationErrorStringNoEkn:
+          violationClassificationErrorStringNoEkn,
     );
   }
 }
@@ -51,14 +71,23 @@ mixin _$CotnrolViolationFormState {
   bool get setAddressByGeoLocation;
   bool get critical;
   Address get address;
+  String get adressErrorString;
   String get targetLandmark;
+  String get targetLandmarkErrorString;
   ObjectElement get objectElement;
+  String get objectElementErrorString;
   String get description;
+  String get descriptionErrorString;
   ViolationAdditionalFeature get violationAdditionalFeature;
+  String get violationAdditionalFeatureErrorString;
   Contractor get contractor;
+  String get contractorErrorString;
   List<DCPhoto> get photos;
   bool get showClassificationField;
   ViolationClassification get violationClassification;
+  String get violationClassificationErrorString;
+  ViolationClassification get violationClassificationNoEkn;
+  String get violationClassificationErrorStringNoEkn;
 
   @JsonKey(ignore: true)
   $CotnrolViolationFormStateCopyWith<CotnrolViolationFormState> get copyWith;
@@ -73,19 +102,29 @@ abstract class $CotnrolViolationFormStateCopyWith<$Res> {
       {bool setAddressByGeoLocation,
       bool critical,
       Address address,
+      String adressErrorString,
       String targetLandmark,
+      String targetLandmarkErrorString,
       ObjectElement objectElement,
+      String objectElementErrorString,
       String description,
+      String descriptionErrorString,
       ViolationAdditionalFeature violationAdditionalFeature,
+      String violationAdditionalFeatureErrorString,
       Contractor contractor,
+      String contractorErrorString,
       List<DCPhoto> photos,
       bool showClassificationField,
-      ViolationClassification violationClassification});
+      ViolationClassification violationClassification,
+      String violationClassificationErrorString,
+      ViolationClassification violationClassificationNoEkn,
+      String violationClassificationErrorStringNoEkn});
 
   $ObjectElementCopyWith<$Res> get objectElement;
   $ViolationAdditionalFeatureCopyWith<$Res> get violationAdditionalFeature;
   $ContractorCopyWith<$Res> get contractor;
   $ViolationClassificationCopyWith<$Res> get violationClassification;
+  $ViolationClassificationCopyWith<$Res> get violationClassificationNoEkn;
 }
 
 /// @nodoc
@@ -102,14 +141,23 @@ class _$CotnrolViolationFormStateCopyWithImpl<$Res>
     Object setAddressByGeoLocation = freezed,
     Object critical = freezed,
     Object address = freezed,
+    Object adressErrorString = freezed,
     Object targetLandmark = freezed,
+    Object targetLandmarkErrorString = freezed,
     Object objectElement = freezed,
+    Object objectElementErrorString = freezed,
     Object description = freezed,
+    Object descriptionErrorString = freezed,
     Object violationAdditionalFeature = freezed,
+    Object violationAdditionalFeatureErrorString = freezed,
     Object contractor = freezed,
+    Object contractorErrorString = freezed,
     Object photos = freezed,
     Object showClassificationField = freezed,
     Object violationClassification = freezed,
+    Object violationClassificationErrorString = freezed,
+    Object violationClassificationNoEkn = freezed,
+    Object violationClassificationErrorStringNoEkn = freezed,
   }) {
     return _then(_value.copyWith(
       setAddressByGeoLocation: setAddressByGeoLocation == freezed
@@ -117,19 +165,38 @@ class _$CotnrolViolationFormStateCopyWithImpl<$Res>
           : setAddressByGeoLocation as bool,
       critical: critical == freezed ? _value.critical : critical as bool,
       address: address == freezed ? _value.address : address as Address,
+      adressErrorString: adressErrorString == freezed
+          ? _value.adressErrorString
+          : adressErrorString as String,
       targetLandmark: targetLandmark == freezed
           ? _value.targetLandmark
           : targetLandmark as String,
+      targetLandmarkErrorString: targetLandmarkErrorString == freezed
+          ? _value.targetLandmarkErrorString
+          : targetLandmarkErrorString as String,
       objectElement: objectElement == freezed
           ? _value.objectElement
           : objectElement as ObjectElement,
+      objectElementErrorString: objectElementErrorString == freezed
+          ? _value.objectElementErrorString
+          : objectElementErrorString as String,
       description:
           description == freezed ? _value.description : description as String,
+      descriptionErrorString: descriptionErrorString == freezed
+          ? _value.descriptionErrorString
+          : descriptionErrorString as String,
       violationAdditionalFeature: violationAdditionalFeature == freezed
           ? _value.violationAdditionalFeature
           : violationAdditionalFeature as ViolationAdditionalFeature,
+      violationAdditionalFeatureErrorString:
+          violationAdditionalFeatureErrorString == freezed
+              ? _value.violationAdditionalFeatureErrorString
+              : violationAdditionalFeatureErrorString as String,
       contractor:
           contractor == freezed ? _value.contractor : contractor as Contractor,
+      contractorErrorString: contractorErrorString == freezed
+          ? _value.contractorErrorString
+          : contractorErrorString as String,
       photos: photos == freezed ? _value.photos : photos as List<DCPhoto>,
       showClassificationField: showClassificationField == freezed
           ? _value.showClassificationField
@@ -137,6 +204,17 @@ class _$CotnrolViolationFormStateCopyWithImpl<$Res>
       violationClassification: violationClassification == freezed
           ? _value.violationClassification
           : violationClassification as ViolationClassification,
+      violationClassificationErrorString:
+          violationClassificationErrorString == freezed
+              ? _value.violationClassificationErrorString
+              : violationClassificationErrorString as String,
+      violationClassificationNoEkn: violationClassificationNoEkn == freezed
+          ? _value.violationClassificationNoEkn
+          : violationClassificationNoEkn as ViolationClassification,
+      violationClassificationErrorStringNoEkn:
+          violationClassificationErrorStringNoEkn == freezed
+              ? _value.violationClassificationErrorStringNoEkn
+              : violationClassificationErrorStringNoEkn as String,
     ));
   }
 
@@ -181,6 +259,17 @@ class _$CotnrolViolationFormStateCopyWithImpl<$Res>
       return _then(_value.copyWith(violationClassification: value));
     });
   }
+
+  @override
+  $ViolationClassificationCopyWith<$Res> get violationClassificationNoEkn {
+    if (_value.violationClassificationNoEkn == null) {
+      return null;
+    }
+    return $ViolationClassificationCopyWith<$Res>(
+        _value.violationClassificationNoEkn, (value) {
+      return _then(_value.copyWith(violationClassificationNoEkn: value));
+    });
+  }
 }
 
 /// @nodoc
@@ -194,14 +283,23 @@ abstract class _$CotnrolViolationFormStateCopyWith<$Res>
       {bool setAddressByGeoLocation,
       bool critical,
       Address address,
+      String adressErrorString,
       String targetLandmark,
+      String targetLandmarkErrorString,
       ObjectElement objectElement,
+      String objectElementErrorString,
       String description,
+      String descriptionErrorString,
       ViolationAdditionalFeature violationAdditionalFeature,
+      String violationAdditionalFeatureErrorString,
       Contractor contractor,
+      String contractorErrorString,
       List<DCPhoto> photos,
       bool showClassificationField,
-      ViolationClassification violationClassification});
+      ViolationClassification violationClassification,
+      String violationClassificationErrorString,
+      ViolationClassification violationClassificationNoEkn,
+      String violationClassificationErrorStringNoEkn});
 
   @override
   $ObjectElementCopyWith<$Res> get objectElement;
@@ -211,6 +309,8 @@ abstract class _$CotnrolViolationFormStateCopyWith<$Res>
   $ContractorCopyWith<$Res> get contractor;
   @override
   $ViolationClassificationCopyWith<$Res> get violationClassification;
+  @override
+  $ViolationClassificationCopyWith<$Res> get violationClassificationNoEkn;
 }
 
 /// @nodoc
@@ -230,14 +330,23 @@ class __$CotnrolViolationFormStateCopyWithImpl<$Res>
     Object setAddressByGeoLocation = freezed,
     Object critical = freezed,
     Object address = freezed,
+    Object adressErrorString = freezed,
     Object targetLandmark = freezed,
+    Object targetLandmarkErrorString = freezed,
     Object objectElement = freezed,
+    Object objectElementErrorString = freezed,
     Object description = freezed,
+    Object descriptionErrorString = freezed,
     Object violationAdditionalFeature = freezed,
+    Object violationAdditionalFeatureErrorString = freezed,
     Object contractor = freezed,
+    Object contractorErrorString = freezed,
     Object photos = freezed,
     Object showClassificationField = freezed,
     Object violationClassification = freezed,
+    Object violationClassificationErrorString = freezed,
+    Object violationClassificationNoEkn = freezed,
+    Object violationClassificationErrorStringNoEkn = freezed,
   }) {
     return _then(_CotnrolViolationFormState(
       setAddressByGeoLocation: setAddressByGeoLocation == freezed
@@ -245,19 +354,38 @@ class __$CotnrolViolationFormStateCopyWithImpl<$Res>
           : setAddressByGeoLocation as bool,
       critical: critical == freezed ? _value.critical : critical as bool,
       address: address == freezed ? _value.address : address as Address,
+      adressErrorString: adressErrorString == freezed
+          ? _value.adressErrorString
+          : adressErrorString as String,
       targetLandmark: targetLandmark == freezed
           ? _value.targetLandmark
           : targetLandmark as String,
+      targetLandmarkErrorString: targetLandmarkErrorString == freezed
+          ? _value.targetLandmarkErrorString
+          : targetLandmarkErrorString as String,
       objectElement: objectElement == freezed
           ? _value.objectElement
           : objectElement as ObjectElement,
+      objectElementErrorString: objectElementErrorString == freezed
+          ? _value.objectElementErrorString
+          : objectElementErrorString as String,
       description:
           description == freezed ? _value.description : description as String,
+      descriptionErrorString: descriptionErrorString == freezed
+          ? _value.descriptionErrorString
+          : descriptionErrorString as String,
       violationAdditionalFeature: violationAdditionalFeature == freezed
           ? _value.violationAdditionalFeature
           : violationAdditionalFeature as ViolationAdditionalFeature,
+      violationAdditionalFeatureErrorString:
+          violationAdditionalFeatureErrorString == freezed
+              ? _value.violationAdditionalFeatureErrorString
+              : violationAdditionalFeatureErrorString as String,
       contractor:
           contractor == freezed ? _value.contractor : contractor as Contractor,
+      contractorErrorString: contractorErrorString == freezed
+          ? _value.contractorErrorString
+          : contractorErrorString as String,
       photos: photos == freezed ? _value.photos : photos as List<DCPhoto>,
       showClassificationField: showClassificationField == freezed
           ? _value.showClassificationField
@@ -265,24 +393,45 @@ class __$CotnrolViolationFormStateCopyWithImpl<$Res>
       violationClassification: violationClassification == freezed
           ? _value.violationClassification
           : violationClassification as ViolationClassification,
+      violationClassificationErrorString:
+          violationClassificationErrorString == freezed
+              ? _value.violationClassificationErrorString
+              : violationClassificationErrorString as String,
+      violationClassificationNoEkn: violationClassificationNoEkn == freezed
+          ? _value.violationClassificationNoEkn
+          : violationClassificationNoEkn as ViolationClassification,
+      violationClassificationErrorStringNoEkn:
+          violationClassificationErrorStringNoEkn == freezed
+              ? _value.violationClassificationErrorStringNoEkn
+              : violationClassificationErrorStringNoEkn as String,
     ));
   }
 }
 
 /// @nodoc
-class _$_CotnrolViolationFormState implements _CotnrolViolationFormState {
+class _$_CotnrolViolationFormState extends _CotnrolViolationFormState {
   const _$_CotnrolViolationFormState(
       {this.setAddressByGeoLocation,
       this.critical,
       this.address,
+      this.adressErrorString,
       this.targetLandmark,
+      this.targetLandmarkErrorString,
       this.objectElement,
+      this.objectElementErrorString,
       this.description,
+      this.descriptionErrorString,
       this.violationAdditionalFeature,
+      this.violationAdditionalFeatureErrorString,
       this.contractor,
+      this.contractorErrorString,
       this.photos,
       this.showClassificationField,
-      this.violationClassification});
+      this.violationClassification,
+      this.violationClassificationErrorString,
+      this.violationClassificationNoEkn,
+      this.violationClassificationErrorStringNoEkn})
+      : super._();
 
   @override
   final bool setAddressByGeoLocation;
@@ -291,25 +440,43 @@ class _$_CotnrolViolationFormState implements _CotnrolViolationFormState {
   @override
   final Address address;
   @override
+  final String adressErrorString;
+  @override
   final String targetLandmark;
+  @override
+  final String targetLandmarkErrorString;
   @override
   final ObjectElement objectElement;
   @override
+  final String objectElementErrorString;
+  @override
   final String description;
+  @override
+  final String descriptionErrorString;
   @override
   final ViolationAdditionalFeature violationAdditionalFeature;
   @override
+  final String violationAdditionalFeatureErrorString;
+  @override
   final Contractor contractor;
+  @override
+  final String contractorErrorString;
   @override
   final List<DCPhoto> photos;
   @override
   final bool showClassificationField;
   @override
   final ViolationClassification violationClassification;
+  @override
+  final String violationClassificationErrorString;
+  @override
+  final ViolationClassification violationClassificationNoEkn;
+  @override
+  final String violationClassificationErrorStringNoEkn;
 
   @override
   String toString() {
-    return 'CotnrolViolationFormState(setAddressByGeoLocation: $setAddressByGeoLocation, critical: $critical, address: $address, targetLandmark: $targetLandmark, objectElement: $objectElement, description: $description, violationAdditionalFeature: $violationAdditionalFeature, contractor: $contractor, photos: $photos, showClassificationField: $showClassificationField, violationClassification: $violationClassification)';
+    return 'CotnrolViolationFormState(setAddressByGeoLocation: $setAddressByGeoLocation, critical: $critical, address: $address, adressErrorString: $adressErrorString, targetLandmark: $targetLandmark, targetLandmarkErrorString: $targetLandmarkErrorString, objectElement: $objectElement, objectElementErrorString: $objectElementErrorString, description: $description, descriptionErrorString: $descriptionErrorString, violationAdditionalFeature: $violationAdditionalFeature, violationAdditionalFeatureErrorString: $violationAdditionalFeatureErrorString, contractor: $contractor, contractorErrorString: $contractorErrorString, photos: $photos, showClassificationField: $showClassificationField, violationClassification: $violationClassification, violationClassificationErrorString: $violationClassificationErrorString, violationClassificationNoEkn: $violationClassificationNoEkn, violationClassificationErrorStringNoEkn: $violationClassificationErrorStringNoEkn)';
   }
 
   @override
@@ -325,33 +492,43 @@ class _$_CotnrolViolationFormState implements _CotnrolViolationFormState {
             (identical(other.address, address) ||
                 const DeepCollectionEquality()
                     .equals(other.address, address)) &&
+            (identical(other.adressErrorString, adressErrorString) ||
+                const DeepCollectionEquality()
+                    .equals(other.adressErrorString, adressErrorString)) &&
             (identical(other.targetLandmark, targetLandmark) ||
                 const DeepCollectionEquality()
                     .equals(other.targetLandmark, targetLandmark)) &&
+            (identical(other.targetLandmarkErrorString, targetLandmarkErrorString) ||
+                const DeepCollectionEquality().equals(
+                    other.targetLandmarkErrorString,
+                    targetLandmarkErrorString)) &&
             (identical(other.objectElement, objectElement) ||
                 const DeepCollectionEquality()
                     .equals(other.objectElement, objectElement)) &&
+            (identical(other.objectElementErrorString, objectElementErrorString) ||
+                const DeepCollectionEquality().equals(
+                    other.objectElementErrorString,
+                    objectElementErrorString)) &&
             (identical(other.description, description) ||
                 const DeepCollectionEquality()
                     .equals(other.description, description)) &&
-            (identical(other.violationAdditionalFeature,
-                    violationAdditionalFeature) ||
+            (identical(other.descriptionErrorString, descriptionErrorString) ||
+                const DeepCollectionEquality().equals(
+                    other.descriptionErrorString, descriptionErrorString)) &&
+            (identical(other.violationAdditionalFeature, violationAdditionalFeature) ||
                 const DeepCollectionEquality().equals(
                     other.violationAdditionalFeature,
                     violationAdditionalFeature)) &&
-            (identical(other.contractor, contractor) ||
-                const DeepCollectionEquality()
-                    .equals(other.contractor, contractor)) &&
-            (identical(other.photos, photos) ||
-                const DeepCollectionEquality().equals(other.photos, photos)) &&
-            (identical(
-                    other.showClassificationField, showClassificationField) ||
-                const DeepCollectionEquality().equals(
-                    other.showClassificationField, showClassificationField)) &&
-            (identical(
-                    other.violationClassification, violationClassification) ||
-                const DeepCollectionEquality().equals(
-                    other.violationClassification, violationClassification)));
+            (identical(other.violationAdditionalFeatureErrorString, violationAdditionalFeatureErrorString) ||
+                const DeepCollectionEquality().equals(other.violationAdditionalFeatureErrorString, violationAdditionalFeatureErrorString)) &&
+            (identical(other.contractor, contractor) || const DeepCollectionEquality().equals(other.contractor, contractor)) &&
+            (identical(other.contractorErrorString, contractorErrorString) || const DeepCollectionEquality().equals(other.contractorErrorString, contractorErrorString)) &&
+            (identical(other.photos, photos) || const DeepCollectionEquality().equals(other.photos, photos)) &&
+            (identical(other.showClassificationField, showClassificationField) || const DeepCollectionEquality().equals(other.showClassificationField, showClassificationField)) &&
+            (identical(other.violationClassification, violationClassification) || const DeepCollectionEquality().equals(other.violationClassification, violationClassification)) &&
+            (identical(other.violationClassificationErrorString, violationClassificationErrorString) || const DeepCollectionEquality().equals(other.violationClassificationErrorString, violationClassificationErrorString)) &&
+            (identical(other.violationClassificationNoEkn, violationClassificationNoEkn) || const DeepCollectionEquality().equals(other.violationClassificationNoEkn, violationClassificationNoEkn)) &&
+            (identical(other.violationClassificationErrorStringNoEkn, violationClassificationErrorStringNoEkn) || const DeepCollectionEquality().equals(other.violationClassificationErrorStringNoEkn, violationClassificationErrorStringNoEkn)));
   }
 
   @override
@@ -360,14 +537,25 @@ class _$_CotnrolViolationFormState implements _CotnrolViolationFormState {
       const DeepCollectionEquality().hash(setAddressByGeoLocation) ^
       const DeepCollectionEquality().hash(critical) ^
       const DeepCollectionEquality().hash(address) ^
+      const DeepCollectionEquality().hash(adressErrorString) ^
       const DeepCollectionEquality().hash(targetLandmark) ^
+      const DeepCollectionEquality().hash(targetLandmarkErrorString) ^
       const DeepCollectionEquality().hash(objectElement) ^
+      const DeepCollectionEquality().hash(objectElementErrorString) ^
       const DeepCollectionEquality().hash(description) ^
+      const DeepCollectionEquality().hash(descriptionErrorString) ^
       const DeepCollectionEquality().hash(violationAdditionalFeature) ^
+      const DeepCollectionEquality()
+          .hash(violationAdditionalFeatureErrorString) ^
       const DeepCollectionEquality().hash(contractor) ^
+      const DeepCollectionEquality().hash(contractorErrorString) ^
       const DeepCollectionEquality().hash(photos) ^
       const DeepCollectionEquality().hash(showClassificationField) ^
-      const DeepCollectionEquality().hash(violationClassification);
+      const DeepCollectionEquality().hash(violationClassification) ^
+      const DeepCollectionEquality().hash(violationClassificationErrorString) ^
+      const DeepCollectionEquality().hash(violationClassificationNoEkn) ^
+      const DeepCollectionEquality()
+          .hash(violationClassificationErrorStringNoEkn);
 
   @JsonKey(ignore: true)
   @override
@@ -377,19 +565,29 @@ class _$_CotnrolViolationFormState implements _CotnrolViolationFormState {
               this, _$identity);
 }
 
-abstract class _CotnrolViolationFormState implements CotnrolViolationFormState {
+abstract class _CotnrolViolationFormState extends CotnrolViolationFormState {
+  const _CotnrolViolationFormState._() : super._();
   const factory _CotnrolViolationFormState(
           {bool setAddressByGeoLocation,
           bool critical,
           Address address,
+          String adressErrorString,
           String targetLandmark,
+          String targetLandmarkErrorString,
           ObjectElement objectElement,
+          String objectElementErrorString,
           String description,
+          String descriptionErrorString,
           ViolationAdditionalFeature violationAdditionalFeature,
+          String violationAdditionalFeatureErrorString,
           Contractor contractor,
+          String contractorErrorString,
           List<DCPhoto> photos,
           bool showClassificationField,
-          ViolationClassification violationClassification}) =
+          ViolationClassification violationClassification,
+          String violationClassificationErrorString,
+          ViolationClassification violationClassificationNoEkn,
+          String violationClassificationErrorStringNoEkn}) =
       _$_CotnrolViolationFormState;
 
   @override
@@ -399,21 +597,39 @@ abstract class _CotnrolViolationFormState implements CotnrolViolationFormState {
   @override
   Address get address;
   @override
+  String get adressErrorString;
+  @override
   String get targetLandmark;
+  @override
+  String get targetLandmarkErrorString;
   @override
   ObjectElement get objectElement;
   @override
+  String get objectElementErrorString;
+  @override
   String get description;
+  @override
+  String get descriptionErrorString;
   @override
   ViolationAdditionalFeature get violationAdditionalFeature;
   @override
+  String get violationAdditionalFeatureErrorString;
+  @override
   Contractor get contractor;
+  @override
+  String get contractorErrorString;
   @override
   List<DCPhoto> get photos;
   @override
   bool get showClassificationField;
   @override
   ViolationClassification get violationClassification;
+  @override
+  String get violationClassificationErrorString;
+  @override
+  ViolationClassification get violationClassificationNoEkn;
+  @override
+  String get violationClassificationErrorStringNoEkn;
   @override
   @JsonKey(ignore: true)
   _$CotnrolViolationFormStateCopyWith<_CotnrolViolationFormState> get copyWith;

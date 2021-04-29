@@ -22,8 +22,8 @@ class _$DCPhotoTearOff {
       String name,
       String data,
       String loadDate,
-      int geometryX,
-      int geometryY}) {
+      double geometryX,
+      double geometryY}) {
     return _DCPhoto(
       id: id,
       name: name,
@@ -50,8 +50,8 @@ mixin _$DCPhoto {
   String get name;
   String get data;
   String get loadDate;
-  int get geometryX;
-  int get geometryY;
+  double get geometryX;
+  double get geometryY;
 
   Map<String, dynamic> toJson();
   @JsonKey(ignore: true)
@@ -67,8 +67,8 @@ abstract class $DCPhotoCopyWith<$Res> {
       String name,
       String data,
       String loadDate,
-      int geometryX,
-      int geometryY});
+      double geometryX,
+      double geometryY});
 }
 
 /// @nodoc
@@ -93,8 +93,8 @@ class _$DCPhotoCopyWithImpl<$Res> implements $DCPhotoCopyWith<$Res> {
       name: name == freezed ? _value.name : name as String,
       data: data == freezed ? _value.data : data as String,
       loadDate: loadDate == freezed ? _value.loadDate : loadDate as String,
-      geometryX: geometryX == freezed ? _value.geometryX : geometryX as int,
-      geometryY: geometryY == freezed ? _value.geometryY : geometryY as int,
+      geometryX: geometryX == freezed ? _value.geometryX : geometryX as double,
+      geometryY: geometryY == freezed ? _value.geometryY : geometryY as double,
     ));
   }
 }
@@ -109,8 +109,8 @@ abstract class _$DCPhotoCopyWith<$Res> implements $DCPhotoCopyWith<$Res> {
       String name,
       String data,
       String loadDate,
-      int geometryX,
-      int geometryY});
+      double geometryX,
+      double geometryY});
 }
 
 /// @nodoc
@@ -136,8 +136,8 @@ class __$DCPhotoCopyWithImpl<$Res> extends _$DCPhotoCopyWithImpl<$Res>
       name: name == freezed ? _value.name : name as String,
       data: data == freezed ? _value.data : data as String,
       loadDate: loadDate == freezed ? _value.loadDate : loadDate as String,
-      geometryX: geometryX == freezed ? _value.geometryX : geometryX as int,
-      geometryY: geometryY == freezed ? _value.geometryY : geometryY as int,
+      geometryX: geometryX == freezed ? _value.geometryX : geometryX as double,
+      geometryY: geometryY == freezed ? _value.geometryY : geometryY as double,
     ));
   }
 }
@@ -166,9 +166,9 @@ class _$_DCPhoto implements _DCPhoto {
   @override
   final String loadDate;
   @override
-  final int geometryX;
+  final double geometryX;
   @override
-  final int geometryY;
+  final double geometryY;
 
   @override
   String toString() {
@@ -223,8 +223,8 @@ abstract class _DCPhoto implements DCPhoto {
       String name,
       String data,
       String loadDate,
-      int geometryX,
-      int geometryY}) = _$_DCPhoto;
+      double geometryX,
+      double geometryY}) = _$_DCPhoto;
 
   factory _DCPhoto.fromJson(Map<String, dynamic> json) = _$_DCPhoto.fromJson;
 
@@ -237,9 +237,9 @@ abstract class _DCPhoto implements DCPhoto {
   @override
   String get loadDate;
   @override
-  int get geometryX;
+  double get geometryX;
   @override
-  int get geometryY;
+  double get geometryY;
   @override
   @JsonKey(ignore: true)
   _$DCPhotoCopyWith<_DCPhoto> get copyWith;

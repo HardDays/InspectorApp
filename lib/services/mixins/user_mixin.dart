@@ -30,4 +30,7 @@ mixin UserMixin {
 
   Future<bool> useWebVersionOfVK();
   Future<void> setUseWebVersionOfVk(bool state);
+
+  Future<String> dcWebUrl();
+  Future<void> saveDcWebUrl(String url);
 }

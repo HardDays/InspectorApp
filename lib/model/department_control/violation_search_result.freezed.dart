@@ -47,7 +47,9 @@ class _$ViolationSearchResultTearOff {
       List<PerformControlSearchResult> performControls,
       List<ViolationExtensionPeriodSearchResult> extensionPeriods,
       bool creationSentToCafap,
-      bool closureSentToCafap}) {
+      bool closureSentToCafap,
+      int objectId,
+      String objectName}) {
     return _ViolationSearchResult(
       id: id,
       detectionDate: detectionDate,
@@ -78,6 +80,8 @@ class _$ViolationSearchResultTearOff {
       extensionPeriods: extensionPeriods,
       creationSentToCafap: creationSentToCafap,
       closureSentToCafap: closureSentToCafap,
+      objectId: objectId,
+      objectName: objectName,
     );
   }
 
@@ -122,6 +126,8 @@ mixin _$ViolationSearchResult {
   List<ViolationExtensionPeriodSearchResult> get extensionPeriods;
   bool get creationSentToCafap;
   bool get closureSentToCafap;
+  int get objectId;
+  String get objectName;
 
   Map<String, dynamic> toJson();
   @JsonKey(ignore: true)
@@ -162,7 +168,9 @@ abstract class $ViolationSearchResultCopyWith<$Res> {
       List<PerformControlSearchResult> performControls,
       List<ViolationExtensionPeriodSearchResult> extensionPeriods,
       bool creationSentToCafap,
-      bool closureSentToCafap});
+      bool closureSentToCafap,
+      int objectId,
+      String objectName});
 
   $ViolationClassificationCopyWith<$Res> get eknViolationClassification;
   $ViolationClassificationCopyWith<$Res> get otherViolationClassification;
@@ -213,6 +221,8 @@ class _$ViolationSearchResultCopyWithImpl<$Res>
     Object extensionPeriods = freezed,
     Object creationSentToCafap = freezed,
     Object closureSentToCafap = freezed,
+    Object objectId = freezed,
+    Object objectName = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed ? _value.id : id as int,
@@ -286,6 +296,9 @@ class _$ViolationSearchResultCopyWithImpl<$Res>
       closureSentToCafap: closureSentToCafap == freezed
           ? _value.closureSentToCafap
           : closureSentToCafap as bool,
+      objectId: objectId == freezed ? _value.objectId : objectId as int,
+      objectName:
+          objectName == freezed ? _value.objectName : objectName as String,
     ));
   }
 
@@ -398,7 +411,9 @@ abstract class _$ViolationSearchResultCopyWith<$Res>
       List<PerformControlSearchResult> performControls,
       List<ViolationExtensionPeriodSearchResult> extensionPeriods,
       bool creationSentToCafap,
-      bool closureSentToCafap});
+      bool closureSentToCafap,
+      int objectId,
+      String objectName});
 
   @override
   $ViolationClassificationCopyWith<$Res> get eknViolationClassification;
@@ -458,6 +473,8 @@ class __$ViolationSearchResultCopyWithImpl<$Res>
     Object extensionPeriods = freezed,
     Object creationSentToCafap = freezed,
     Object closureSentToCafap = freezed,
+    Object objectId = freezed,
+    Object objectName = freezed,
   }) {
     return _then(_ViolationSearchResult(
       id: id == freezed ? _value.id : id as int,
@@ -531,6 +548,9 @@ class __$ViolationSearchResultCopyWithImpl<$Res>
       closureSentToCafap: closureSentToCafap == freezed
           ? _value.closureSentToCafap
           : closureSentToCafap as bool,
+      objectId: objectId == freezed ? _value.objectId : objectId as int,
+      objectName:
+          objectName == freezed ? _value.objectName : objectName as String,
     ));
   }
 }
@@ -568,7 +588,9 @@ class _$_ViolationSearchResult implements _ViolationSearchResult {
       this.performControls,
       this.extensionPeriods,
       this.creationSentToCafap,
-      this.closureSentToCafap});
+      this.closureSentToCafap,
+      this.objectId,
+      this.objectName});
 
   factory _$_ViolationSearchResult.fromJson(Map<String, dynamic> json) =>
       _$_$_ViolationSearchResultFromJson(json);
@@ -631,10 +653,14 @@ class _$_ViolationSearchResult implements _ViolationSearchResult {
   final bool creationSentToCafap;
   @override
   final bool closureSentToCafap;
+  @override
+  final int objectId;
+  @override
+  final String objectName;
 
   @override
   String toString() {
-    return 'ViolationSearchResult(id: $id, detectionDate: $detectionDate, eknViolationClassification: $eknViolationClassification, otherViolationClassification: $otherViolationClassification, btiAddress: $btiAddress, address: $address, btiRefAddress: $btiRefAddress, refAddressTinao: $refAddressTinao, objectElement: $objectElement, description: $description, violator: $violator, critical: $critical, resolveDate: $resolveDate, controlDate: $controlDate, additionalFeatures: $additionalFeatures, photos: $photos, violationNum: $violationNum, violationStatus: $violationStatus, source: $source, violationKind: $violationKind, cafapAssigmentId: $cafapAssigmentId, cafapPrescriptionId: $cafapPrescriptionId, cafapPrescriptionNum: $cafapPrescriptionNum, cafapViolationConfirmed: $cafapViolationConfirmed, performMarks: $performMarks, performControls: $performControls, extensionPeriods: $extensionPeriods, creationSentToCafap: $creationSentToCafap, closureSentToCafap: $closureSentToCafap)';
+    return 'ViolationSearchResult(id: $id, detectionDate: $detectionDate, eknViolationClassification: $eknViolationClassification, otherViolationClassification: $otherViolationClassification, btiAddress: $btiAddress, address: $address, btiRefAddress: $btiRefAddress, refAddressTinao: $refAddressTinao, objectElement: $objectElement, description: $description, violator: $violator, critical: $critical, resolveDate: $resolveDate, controlDate: $controlDate, additionalFeatures: $additionalFeatures, photos: $photos, violationNum: $violationNum, violationStatus: $violationStatus, source: $source, violationKind: $violationKind, cafapAssigmentId: $cafapAssigmentId, cafapPrescriptionId: $cafapPrescriptionId, cafapPrescriptionNum: $cafapPrescriptionNum, cafapViolationConfirmed: $cafapViolationConfirmed, performMarks: $performMarks, performControls: $performControls, extensionPeriods: $extensionPeriods, creationSentToCafap: $creationSentToCafap, closureSentToCafap: $closureSentToCafap, objectId: $objectId, objectName: $objectName)';
   }
 
   @override
@@ -697,7 +723,9 @@ class _$_ViolationSearchResult implements _ViolationSearchResult {
             (identical(other.performControls, performControls) || const DeepCollectionEquality().equals(other.performControls, performControls)) &&
             (identical(other.extensionPeriods, extensionPeriods) || const DeepCollectionEquality().equals(other.extensionPeriods, extensionPeriods)) &&
             (identical(other.creationSentToCafap, creationSentToCafap) || const DeepCollectionEquality().equals(other.creationSentToCafap, creationSentToCafap)) &&
-            (identical(other.closureSentToCafap, closureSentToCafap) || const DeepCollectionEquality().equals(other.closureSentToCafap, closureSentToCafap)));
+            (identical(other.closureSentToCafap, closureSentToCafap) || const DeepCollectionEquality().equals(other.closureSentToCafap, closureSentToCafap)) &&
+            (identical(other.objectId, objectId) || const DeepCollectionEquality().equals(other.objectId, objectId)) &&
+            (identical(other.objectName, objectName) || const DeepCollectionEquality().equals(other.objectName, objectName)));
   }
 
   @override
@@ -731,7 +759,9 @@ class _$_ViolationSearchResult implements _ViolationSearchResult {
       const DeepCollectionEquality().hash(performControls) ^
       const DeepCollectionEquality().hash(extensionPeriods) ^
       const DeepCollectionEquality().hash(creationSentToCafap) ^
-      const DeepCollectionEquality().hash(closureSentToCafap);
+      const DeepCollectionEquality().hash(closureSentToCafap) ^
+      const DeepCollectionEquality().hash(objectId) ^
+      const DeepCollectionEquality().hash(objectName);
 
   @JsonKey(ignore: true)
   @override
@@ -775,7 +805,9 @@ abstract class _ViolationSearchResult implements ViolationSearchResult {
       List<PerformControlSearchResult> performControls,
       List<ViolationExtensionPeriodSearchResult> extensionPeriods,
       bool creationSentToCafap,
-      bool closureSentToCafap}) = _$_ViolationSearchResult;
+      bool closureSentToCafap,
+      int objectId,
+      String objectName}) = _$_ViolationSearchResult;
 
   factory _ViolationSearchResult.fromJson(Map<String, dynamic> json) =
       _$_ViolationSearchResult.fromJson;
@@ -838,6 +870,10 @@ abstract class _ViolationSearchResult implements ViolationSearchResult {
   bool get creationSentToCafap;
   @override
   bool get closureSentToCafap;
+  @override
+  int get objectId;
+  @override
+  String get objectName;
   @override
   @JsonKey(ignore: true)
   _$ViolationSearchResultCopyWith<_ViolationSearchResult> get copyWith;
