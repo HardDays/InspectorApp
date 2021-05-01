@@ -176,20 +176,15 @@ class ControlViolationWidgetState extends State<ControlViolationWidget> {
                                       bottom: BorderSide(
                                         color: ProjectColors.cyan,
                                       ),
-                                      right: _actions
-                                          ? BorderSide(
-                                              color: ProjectColors.cyan,
-                                            )
-                                          : BorderSide(
-                                              width: 0,
-                                              color: Colors.transparent,
-                                            ),
+                                      right: BorderSide(
+                                        color: ProjectColors.cyan,
+                                      ),
                                     ),
                                   ),
                                   padding: const EdgeInsets.only(
                                       left: 10, right: 10, top: 2, bottom: 4),
                                   margin: EdgeInsets.only(
-                                      top: 15, right: _actions ? 15 : 0),
+                                      top: 15, right: 15),
                                   child: Text(
                                     widget.violationStatus?.name ?? 'Создано локально',
                                     style: ProjectTextStyles.smallBold

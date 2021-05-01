@@ -59,20 +59,12 @@ class SearchResultWidget extends StatelessWidget {
                     alignment: Alignment.topRight,
                     child: Container(
                       decoration: BoxDecoration(
-                        border: Border(
-                          left: BorderSide(
-                            color: ProjectColors.cyan,
-                          ),
-                          top: BorderSide(
-                            color: ProjectColors.cyan,
-                          ),
-                          bottom: BorderSide(
-                            color: ProjectColors.cyan,
-                          ),
+                        border: Border.all(
+                          color: ProjectColors.green,
                         ),
                       ),
-                      padding: const EdgeInsets.only(left: 10, top: 2, bottom: 4),
-                      margin: EdgeInsets.only(top: 15),
+                      padding: const EdgeInsets.only(left: 10, top: 2, bottom: 4, right: 10),
+                      margin: EdgeInsets.only(top: 15, right: 15),
                       child: Text(
                         'Нарушений не выявлено',
                         style: ProjectTextStyles.smallBold
