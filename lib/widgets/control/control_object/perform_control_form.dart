@@ -56,7 +56,7 @@ class _PerformControlFormWidgetState extends State<PerformControlFormWidget> {
           ),
         ),
         Text(
-          '${DateFormat("dd.MM.yyyy hh:mm").format(widget.performControl.factDate)}',
+          '${DateFormat("dd.MM.yyyy HH:mm").format(widget.performControl.factDate)}',
           style: ProjectTextStyles.title,
         ),
         ImagePicker(

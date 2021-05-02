@@ -349,7 +349,7 @@ class _ControlListPageState extends State<ControlListPage> {
                 context: context,
                 builder: (ctx) => AcceptDialog(
                     message:
-                        'Объект ${object.id} обследован. "Нарушений не выявленно". ${DateFormat("dd.MM.yyyy hh:mm").format(DateTime.now())}'))) !=
+                        'Объект ${object.id} обследован. "Нарушений не выявленно". ${DateFormat("dd.MM.yyyy HH:mm").format(DateTime.now())}'))) !=
             null) {
           BlocProvider.of<ControlListBloc>(context).add(
             ControlListBlocEvent.registerSearchResultEvent(

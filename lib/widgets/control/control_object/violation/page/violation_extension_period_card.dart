@@ -41,7 +41,7 @@ class ViolationExtensionPeriodCard extends HasDate {
                     width: 10.5,
                   ),
                   Text(
-                    DateFormat('dd.MM.yyyy hh:mm')
+                    DateFormat('dd.MM.yyyy HH:mm')
                         .format(violationExtensionPeriod.resolveDate),
                     style: ProjectTextStyles.baseBold.apply(
                       color: ProjectColors.black,
@@ -85,7 +85,7 @@ class ViolationExtensionPeriodCard extends HasDate {
                   //     Padding(
                   //       padding: const EdgeInsets.only(left: 20.0, bottom: 8.0),
                   //       child: Text(
-                  //         DateFormat('dd.MM.yyyy hh:mm')
+                  //         DateFormat('dd.MM.yyyy HH:mm')
                   //           .format(violationExtensionPeriod.resolveDate),
                   //         style: ProjectTextStyles.base.apply(
                   //           color: ProjectColors.black,

@@ -43,7 +43,7 @@ class PerformMarkWidget extends HasDate {
                     width: 10.5,
                   ),
                   Text(
-                    DateFormat('dd.MM.yyyy hh:mm')
+                    DateFormat('dd.MM.yyyy HH:mm')
                         .format(performMark.resolveDate),
                     style: ProjectTextStyles.baseBold.apply(
                       color: ProjectColors.black,

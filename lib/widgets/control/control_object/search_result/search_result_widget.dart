@@ -47,7 +47,7 @@ class SearchResultWidget extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Дата обследования\n${DateFormat("hh:mm dd.MM.yyyy").format(searchResult.surveyDate)}',
+                          'Дата обследования\n${DateFormat("HH:mm dd.MM.yyyy").format(searchResult.surveyDate)}',
                           style: ProjectTextStyles.baseBold
                               .apply(color: ProjectColors.blue),
                         ),

@@ -120,7 +120,7 @@ class ControlViolationWidgetState extends State<ControlViolationWidget> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'Нарушение ${widget.violationNum ?? ""} от ${widget.detectionDate != null ? DateFormat("hh:mm dd.MM.yyyy").format(widget.detectionDate) : ""}',
+                                    'Нарушение ${widget.violationNum ?? ""} от ${widget.detectionDate != null ? DateFormat("HH:mm dd.MM.yyyy").format(widget.detectionDate) : ""}',
                                     style: ProjectTextStyles.baseBold
                                         .apply(color: ProjectColors.blue),
                                   ),

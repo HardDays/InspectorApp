@@ -53,7 +53,7 @@ class PerformControlWidget extends HasDate {
                       width: 10.5,
                     ),
                     Text(
-                      DateFormat('dd.MM.yyyy hh:mm').format(performControl.factDate),
+                      DateFormat('dd.MM.yyyy HH:mm').format(performControl.factDate),
                       style: ProjectTextStyles.baseBold.apply(
                         color: ProjectColors.black,
                       ),
@@ -96,7 +96,7 @@ class PerformControlWidget extends HasDate {
                         Padding(
                           padding: const EdgeInsets.only(left: 20.0, bottom: 8.0),
                           child: Text(
-                            DateFormat('dd.MM.yyyy hh:mm')
+                            DateFormat('dd.MM.yyyy HH:mm')
                                 .format(performControl.planDate),
                             style: ProjectTextStyles.base.apply(
                               color: ProjectColors.black,
