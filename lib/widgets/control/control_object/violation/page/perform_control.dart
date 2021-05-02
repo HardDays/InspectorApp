@@ -88,7 +88,7 @@ class PerformControlWidget extends HasDate {
                     TableRow(
                       children: [
                         Text(
-                          'Плановая дата:',
+                          'Плановая дата контроля:',
                           style: ProjectTextStyles.baseBold.apply(
                             color: ProjectColors.black,
                           ),
