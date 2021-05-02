@@ -319,6 +319,8 @@ class ControlViolationFormBloc
       ));
     } else {
       add(SetObjectElementString(''));
+      add(SetViolationClassification());
+      add(SetViolationClassificationNoEkn());
     }
   }
 
@@ -387,6 +389,9 @@ class ControlViolationFormBloc
     if (state.objectElement.name.isEmpty) {
       return 'Введите элемент объекта';
     }
+    if (state.objectElement.id == null) {
+      return 'Необходимо выбрать вид объекта из списка';
+    }
     return null;
   }
 
@@ -394,6 +399,9 @@ class ControlViolationFormBloc
     if (state.violationClassification.violationName.name.isEmpty &&
         state.violationClassificationNoEkn.violationName.name.isEmpty) {
       return 'Должно быть заполнено хотя бы одно поле классификации нарушения';
+    }
+    if(state.violationClassification.id == null && state.violationClassificationNoEkn.id == null) {
+      return 'Классификация нарушения должна быть выбрана из списка';
     }
     return null;
   }
