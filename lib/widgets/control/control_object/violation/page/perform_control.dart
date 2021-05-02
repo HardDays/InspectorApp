@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:inspector/model/department_control/perform_control_search_result.dart';
 import 'package:inspector/style/card.dart';
@@ -11,6 +12,7 @@ import 'package:inspector/widgets/control/control_object/violation/action/violat
 import 'package:inspector/widgets/control/control_object/violation/page/has_date.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:photo_view/photo_view.dart';
 
 class PerformControlWidget extends HasDate {
   const PerformControlWidget({
@@ -53,7 +55,8 @@ class PerformControlWidget extends HasDate {
                       width: 10.5,
                     ),
                     Text(
-                      DateFormat('dd.MM.yyyy HH:mm').format(performControl.factDate),
+                      DateFormat('dd.MM.yyyy HH:mm')
+                          .format(performControl.factDate),
                       style: ProjectTextStyles.baseBold.apply(
                         color: ProjectColors.black,
                       ),
@@ -75,7 +78,8 @@ class PerformControlWidget extends HasDate {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(left: 20.0, bottom: 8.0),
+                          padding:
+                              const EdgeInsets.only(left: 20.0, bottom: 8.0),
                           child: Text(
                             performControl.creatorShortFio,
                             style: ProjectTextStyles.base.apply(
@@ -94,7 +98,8 @@ class PerformControlWidget extends HasDate {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(left: 20.0, bottom: 8.0),
+                          padding:
+                              const EdgeInsets.only(left: 20.0, bottom: 8.0),
                           child: Text(
                             DateFormat('dd.MM.yyyy HH:mm')
                                 .format(performControl.planDate),
@@ -114,12 +119,14 @@ class PerformControlWidget extends HasDate {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(left: 20.0, bottom: 8.0),
+                          padding:
+                              const EdgeInsets.only(left: 20.0, bottom: 8.0),
                           child: Container(
                             alignment: Alignment.centerLeft,
                             child: ProjectSwitch(
                               checked: performControl.resolved,
-                              onChanged: (value) => onResolveChanged(performControl.copyWith(resolved: value)),
+                              onChanged: (value) => onResolveChanged(
+                                  performControl.copyWith(resolved: value)),
                             ),
                           ),
                         ),
@@ -129,21 +136,46 @@ class PerformControlWidget extends HasDate {
                 ),
               ],
             ),
-            if(performControl.photos.isNotEmpty)
+            if (performControl.photos.isNotEmpty)
               SizedBox(
                 width: 210,
                 height: 140,
-                child: Image(
-                  image: MemoryImage(
-                      base64.decode(performControl.photos.first.data)),
-                  fit: BoxFit.contain,
+                child: InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      ExtendedNavigator.root.context,
+                      MaterialPageRoute(
+                        builder: (_) {
+                          return Scaffold(
+                            body: Center(
+                              child: PhotoView(
+                                imageProvider: MemoryImage(
+                                  base64.decode(
+                                    performControl.photos.first.data,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    );
+                  },
+                  child: Image(
+                    image: MemoryImage(
+                      base64.decode(
+                        performControl.photos.first.data,
+                      ),
+                    ),
+                    fit: BoxFit.contain,
+                  ),
                 ),
               ),
           ],
         ),
       ),
       secondaryActions: [
-        if(onRemove != null)
+        if (onRemove != null)
           ViolationAction(
             icon: ProjectIcons.delete1Icon(),
             text: 'Удалить',

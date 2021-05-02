@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:inspector/model/department_control/perform_mark.dart';
 import 'package:inspector/style/card.dart';
@@ -7,6 +8,7 @@ import 'package:inspector/style/colors.dart';
 import 'package:inspector/style/text_style.dart';
 import 'package:inspector/widgets/control/control_object/violation/page/has_date.dart';
 import 'package:intl/intl.dart';
+import 'package:photo_view/photo_view.dart';
 
 class PerformMarkWidget extends HasDate {
   const PerformMarkWidget({
@@ -125,11 +127,33 @@ class PerformMarkWidget extends HasDate {
             SizedBox(
               width: 210,
               height: 140,
-              child: Image(
-                image: MemoryImage(
-                  base64.decode(performMark.photos.first.data),
+              child: InkWell(
+                onTap: () {
+                  Navigator.push(
+                    ExtendedNavigator.root.context,
+                    MaterialPageRoute(
+                      builder: (_) {
+                        return Scaffold(
+                          body: Center(
+                            child: PhotoView(
+                              imageProvider: MemoryImage(
+                                base64.decode(
+                                  performMark.photos.first.data,
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                },
+                child: Image(
+                  image: MemoryImage(
+                    base64.decode(performMark.photos.first.data),
+                  ),
+                  fit: BoxFit.contain,
                 ),
-                fit: BoxFit.contain,
               ),
             ),
         ],
