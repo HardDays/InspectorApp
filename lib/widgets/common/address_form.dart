@@ -136,7 +136,10 @@ class _AddressFormState extends State<AddressForm> {
                     suggestionsCallback: (value) => widget.dictionaryService
                         .getAddresses(
                             houseNum: value,
-                            streetId: state.address.street?.id),
+                            streetId: state.address.street?.id ?? state.address.streetId,
+                            areaId: state.address.area?.id ?? state.address.areaId,
+                            districtId: state.address.district?.id ?? state.address.districtId,
+                          ),
                     onSuggestionSelected: (address) =>
                         BlocProvider.of<AddressFormBloc>(context)
                             .add(AddressFormEvent.setAddressEvent(address)),
