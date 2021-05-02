@@ -396,6 +396,7 @@ class _ControlListPageState extends State<ControlListPage> {
         BlocProvider.of<ControlListBloc>(context)
             .add(ControlListBlocEvent.refreshControlListEvent());
         return BlocProvider.of<ControlListBloc>(context)
+        .stream
             .firstWhere((state) => !state.listState.refresh);
       };
 }

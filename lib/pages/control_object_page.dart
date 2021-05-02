@@ -63,6 +63,7 @@ class ControlObjectPage extends StatelessWidget {
                   .add(ControlObjectBlocEvent.loadEvent());
               await BlocProvider.of<ControlObjectBloc>(
                       _refreshKey.currentContext)
+                      .stream
                   .firstWhere((e) => e is! LoadingState);
             },
             child: SingleChildScrollView(

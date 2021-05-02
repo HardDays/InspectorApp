@@ -76,6 +76,7 @@ class ControlViolationPage extends StatelessWidget {
                 .add(ControlViolationPageBlocEvent.refresh());
             await BlocProvider.of<ControlViolationPageBloc>(
                     _refreshKey.currentContext)
+                    .stream
                 .firstWhere((state) => !state.refresh);
           },
           child: BlocListener<ControlViolationPageBloc,
