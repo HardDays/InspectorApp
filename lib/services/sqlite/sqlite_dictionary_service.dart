@@ -148,7 +148,7 @@ class SqliteDictionaryService {
           await db.insert(TableDefinitions.metadata, {'id': 1, 'data': json.encode({})});
         },
         onOpen: (db) async {
-          await db.execute('drop table dcViolationClassificationSearchResults');
+          //await db.execute('drop table dcViolationClassificationSearchResults');
           for (final key in TableDefinitions.all.keys) {
             await db.execute(TableDefinitions.all[key]);
           }

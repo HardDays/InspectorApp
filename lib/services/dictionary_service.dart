@@ -115,18 +115,27 @@ class DictionaryService {
 
   Future<bool> isLoaded({List<String> keys}) async {
     final metadata = await _dbService.getMetadata();
+    await _reload();
     for (final key in keys ?? _loaders.keys) {
       if (!metadata.loaded.containsKey(key)) {
         return false;
       }
     }
-    // metadata.loaded.remove(DictionaryNames.violationTypes);
-    // await _dbService.saveMetadata(DictionaryMetadata(
-    //     loaded: metadata.loaded, 
-    //   )
-    // );
-
     return true;
+  }
+
+  /// If you want to reload certain dictionaries,
+  /// send their names in [keysToReload] in function [isLoaded]
+  Future<void> _reload({List<String> keysToReload = const <String>[]}) async {
+    if(keysToReload.isNotEmpty) {
+      final metadata = await _dbService.getMetadata();
+      keysToReload.forEach((key) => metadata.loaded.remove(key));
+      await _dbService.saveMetadata(
+        DictionaryMetadata(
+          loaded: metadata.loaded, 
+        ),
+      );
+    }
   }
 
   Future load({Function(String, int) notifier, List<String> keys, bool reload = false}) async {
@@ -568,7 +577,8 @@ class DictionaryService {
     return await _getData<ViolationClassificationSearchResult>(DictionaryNames.dcViolationClassificationSearchResults, 
       queries: [
         Query({
-          'violationNameName LIKE ?': '$name%',
+          if(name != null && name.isNotEmpty)
+            'violationNameName LIKE ?': '$name%',
           if(objectElement != null)
             if(objectElement.id != null)
               'objectElementId = ?': objectElement.id
