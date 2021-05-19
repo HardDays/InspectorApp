@@ -106,6 +106,10 @@ class ApiProvider {
 
   ApiProvider._internal();
 
+  void addInterceptors(List<Interceptor> interceptors) {
+    dio.interceptors.addAll(interceptors);
+  }
+
   Future<dynamic> _request(Function request) async {
     try {
       final res = (await request());  
@@ -405,7 +409,7 @@ class ApiProvider {
   }
 
   Future<dynamic> updateDCControlResult(int dcObjectId, int dcControlResultId, DCViolation violation) {
-    return _request(() => dio.patch('/dc-objects/$dcObjectId/control-results/$dcControlResultId', data: {"violation": violation}));
+    return _request(() => dio.patch('/dc-objects/$dcObjectId/control-results/$dcControlResultId', data: {"violation": violation.toJson()}));
   }
 
   Future<dynamic> removeDCControlResult(int dcObjectId, int dcControlResultId) {
