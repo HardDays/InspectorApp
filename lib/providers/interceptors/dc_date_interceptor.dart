@@ -75,10 +75,10 @@ class DepartmentControlDateInterceptor extends Interceptor {
   }
 
   RequestOptions _onPostViolationExtensionPeriod(RequestOptions options) {
-    final resolveDate = options.data['resolveDate'];
-    if(resolveDate != null) {
-      options.data['resolveDate'] = _toDate(resolveDate);
-    }
+    // final resolveDate = options.data['resolveDate'];
+    // if(resolveDate != null) {
+    //   options.data['resolveDate'] = _toDate(resolveDate);
+    // }
     return options;
   }
 
