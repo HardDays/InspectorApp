@@ -10,6 +10,7 @@ import 'package:inspector/blocs/profile/bloc.dart';
 import 'package:inspector/blocs/profile/state.dart';
 import 'package:inspector/environment_config.dart';
 import 'package:inspector/providers/api_provider.dart';
+import 'package:inspector/providers/interceptors/dc_date_interceptor.dart';
 import 'package:inspector/services/auth_service.dart';
 import 'package:inspector/services/department_control/client/api/department_control_api_client.dart';
 import 'package:inspector/services/department_control/client/local/department_control_local_service.dart';
@@ -26,6 +27,7 @@ import 'package:inspector/services/network_status_service/network_status_service
 import 'package:inspector/services/objectdb/objectdb_persistance_service.dart';
 import 'package:inspector/services/persistance_service.dart';
 import 'package:provider/provider.dart';
+import 'package:inspector/extensions.dart';
 
 import 'blocs/profile/event.dart';
 
@@ -41,7 +43,11 @@ class InjectorWidget extends StatelessWidget {
         Provider<PersistanceService>(
             create: (_) => ObjectDbPersistanceService()),
         Provider(create: (_) => Connectivity()),
-        Provider(create: (_) => ApiProvider()),
+        Provider(create: (_) => ApiProvider().apply((ApiProvider it) {
+          it.addInterceptors([
+            DepartmentControlDateInterceptor(),
+          ]);
+        })),
         Provider(create: (_) => DictionaryService()),
         Provider(
             create: (context) => DepartmentControlApiClient(
