@@ -41,7 +41,7 @@ class ViolationSearchResultWidget extends StatelessWidget {
   }
 
   bool get _canCreatePerformControl =>
-      !['Новый', 'Снят с контроля']
+      !['Новый', 'Снят с контроля', 'Новое']
           .contains(searchResult.violation.violationStatus?.name) &&
       (['ОАТИ', 'АК'].contains(searchResult.violation?.source?.name) ||
           (searchResult.violation?.source?.name == 'ЦАФАП' &&

@@ -141,11 +141,7 @@ class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
 
   Stream<ControlListBlocState> onRegisterPerformControlEvent(
       RegisterPerformControlEvent event) async* {
-    if (!_checkIfCanCreatePerformControl(event.performControl)) {
-      _notificationBloc.add(OkDialogNotificationEvent(
-          'На ${DateFormat("dd.MM.yyyy").format(DateTime.now())} уже зарегистрирован контроль устранения'));
-    } else {
-      try {
+    try {
         await _departmentControlService.registerPerformControl(
           event.object,
           event.controlResultId,
@@ -158,7 +154,6 @@ class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
         print(e.details);
         yield* (_onApiException(e));
       }
-    }
   }
 
   Stream<ControlListBlocState> _onRemovePerformControlEvent(event) async* {
