@@ -171,10 +171,8 @@ class ControlObjectPage extends StatelessWidget {
                                           performControl,
                                           _controlObject,
                                           searchResult.id));
-                              Navigator.of(ctx).pop();
                             },
                             onCancel: () {
-                              Navigator.of(ctx).pop();
                             },
                             violationNum: searchResult.violation.violationNum,
                             performControl: PerformControl(
@@ -201,10 +199,8 @@ class ControlObjectPage extends StatelessWidget {
                                   searchResult.id,
                                 ),
                               );
-                              Navigator.of(ctx).pop();
                             },
                             onCancel: () {
-                              Navigator.of(ctx).pop();
                             },
                             violationNum: searchResult.violation.violationNum,
                             performControl: PerformControl(
@@ -303,10 +299,8 @@ class ControlObjectPage extends StatelessWidget {
                               violation.id,
                             ),
                           );
-                          Navigator.of(ctx).pop();
                         },
                         onCancel: () {
-                          Navigator.of(ctx).pop();
                         },
                         violationNum: violation.violationNum,
                         performControl: PerformControl(
@@ -332,10 +326,8 @@ class ControlObjectPage extends StatelessWidget {
                               violation.id,
                             ),
                           );
-                          Navigator.of(ctx).pop();
                         },
                         onCancel: () {
-                          Navigator.of(ctx).pop();
                         },
                         violationNum: violation.violationNum,
                         performControl: PerformControl(
