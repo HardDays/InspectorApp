@@ -42,8 +42,9 @@ class ControlViolationFormBloc
             setAddressByGeoLocation: false,
             targetLandmark: initialViolation?.address ?? '',
             violationAdditionalFeature:
-                initialViolation?.additionalFeatures?.first ??
-                    ViolationAdditionalFeature(name: ''),
+            initialViolation?.additionalFeatures == null || initialViolation.additionalFeatures.isEmpty
+                ? ViolationAdditionalFeature(name: '')
+                : initialViolation?.additionalFeatures?.first,
             showClassificationField: initialViolation == null,
             violationClassification:
                 initialViolation?.eknViolationClassification ??
