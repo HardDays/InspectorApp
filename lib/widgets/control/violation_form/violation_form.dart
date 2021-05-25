@@ -22,6 +22,7 @@ import 'package:inspector/style/text_field.dart';
 import 'package:inspector/style/text_style.dart';
 import 'package:inspector/style/title.dart';
 import 'package:inspector/widgets/common/address_form.dart';
+import 'package:inspector/widgets/speech_to_text_button.dart';
 import 'package:provider/provider.dart';
 
 class ViolationFormWidget extends StatefulWidget {
@@ -49,10 +50,8 @@ class _ViolationFormWidgetState extends State<ViolationFormWidget> {
   TextEditingController _descriptionController = TextEditingController();
   TextEditingController _additionalFeatureController = TextEditingController();
   TextEditingController _contractorController = TextEditingController();
-  TextEditingController _violationClassificationController =
-      TextEditingController();
-  TextEditingController _violationClassificationControllerNoEkn =
-      TextEditingController();
+  TextEditingController _violationClassificationController = TextEditingController();
+  TextEditingController _violationClassificationControllerNoEkn = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -77,10 +76,8 @@ class _ViolationFormWidgetState extends State<ViolationFormWidget> {
                 children: [
                   Checkbox(
                     value: state.setAddressByGeoLocation,
-                    onChanged: (value) =>
-                        BlocProvider.of<ControlViolationFormBloc>(context).add(
-                            ControlViolationFormEvent
-                                .setUseGeoLocationForAddressEvent(value)),
+                    onChanged: (value) => BlocProvider.of<ControlViolationFormBloc>(context)
+                        .add(ControlViolationFormEvent.setUseGeoLocationForAddressEvent(value)),
                   ),
                   Text(
                     'Рядом со мной',
@@ -91,9 +88,8 @@ class _ViolationFormWidgetState extends State<ViolationFormWidget> {
                   Spacer(),
                   Checkbox(
                     value: state.critical,
-                    onChanged: (value) =>
-                        BlocProvider.of<ControlViolationFormBloc>(context).add(
-                            ControlViolationFormEvent.setCriticalEvent(value)),
+                    onChanged: (value) => BlocProvider.of<ControlViolationFormBloc>(context)
+                        .add(ControlViolationFormEvent.setCriticalEvent(value)),
                   ),
                   Text(
                     'Критичность',
@@ -115,9 +111,7 @@ class _ViolationFormWidgetState extends State<ViolationFormWidget> {
                           builder: (context) => Material(
                             color: Colors.transparent,
                             child: AddressForm(
-                              dictionaryService: Provider.of<DictionaryService>(
-                                  context,
-                                  listen: false),
+                              dictionaryService: Provider.of<DictionaryService>(context, listen: false),
                               onCancel: () {
                                 Navigator.of(context).pop();
                               },
@@ -125,8 +119,7 @@ class _ViolationFormWidgetState extends State<ViolationFormWidget> {
                               onConfirm: (address) {
                                 Navigator.of(context).pop();
                                 BlocProvider.of<ControlViolationFormBloc>(ctx)
-                                    .add(ControlViolationFormEvent
-                                        .setAddressEvent(address));
+                                    .add(ControlViolationFormEvent.setAddressEvent(address));
                               },
                             ),
                           ),
@@ -152,9 +145,8 @@ class _ViolationFormWidgetState extends State<ViolationFormWidget> {
                 autoValidate: true,
                 validator: (_) => state.targetLandmarkErrorString,
                 hintText: 'Введите данные',
-                onChanged: (value) =>
-                    BlocProvider.of<ControlViolationFormBloc>(context).add(
-                        ControlViolationFormEvent.setTargetLandmark(value)),
+                onChanged: (value) => BlocProvider.of<ControlViolationFormBloc>(context)
+                    .add(ControlViolationFormEvent.setTargetLandmark(value)),
               ),
               SizedBox(
                 height: 20,
@@ -167,41 +159,30 @@ class _ViolationFormWidgetState extends State<ViolationFormWidget> {
                 autoValidate: true,
                 validator: (_) => state.objectElementErrorString,
                 formatter: (objectElement) => objectElement.name,
-                onChanged: (value) =>
-                    BlocProvider.of<ControlViolationFormBloc>(context).add(
-                        ControlViolationFormEvent.setObjectElementString(
-                            value)),
-                onSuggestionSelected: (value) =>
-                    BlocProvider.of<ControlViolationFormBloc>(context)
-                        .add(ControlViolationFormEvent.setObjectElement(value)),
-                suggestionsCallback: (value) =>
-                    widget.dictionaryService.getDCObjectElements(name: value),
+                onChanged: (value) => BlocProvider.of<ControlViolationFormBloc>(context)
+                    .add(ControlViolationFormEvent.setObjectElementString(value)),
+                onSuggestionSelected: (value) => BlocProvider.of<ControlViolationFormBloc>(context)
+                    .add(ControlViolationFormEvent.setObjectElement(value)),
+                suggestionsCallback: (value) => widget.dictionaryService.getDCObjectElements(name: value),
               ),
               if (state.showClassificationField)
                 Padding(
                   padding: EdgeInsets.only(top: 20),
-                  child:
-                      ProjectAutocomplete<ViolationClassificationSearchResult>(
+                  child: ProjectAutocomplete<ViolationClassificationSearchResult>(
                     'Наименование нарушения по ЕКН',
                     controller: _violationClassificationController,
                     hintText: 'Введите данные',
                     enabled: state.objectElement.id != null,
-                    formatter: (value) =>
-                        value.violationName.violationFullName,
+                    formatter: (value) => value.violationName.violationFullName,
                     autoValidate: true,
                     validator: (_) => state.violationClassificationErrorString,
-                    onChanged: (value) =>
-                        BlocProvider.of<ControlViolationFormBloc>(context).add(
-                      ControlViolationFormEvent
-                          .setViolationClassificationString(value),
+                    onChanged: (value) => BlocProvider.of<ControlViolationFormBloc>(context).add(
+                      ControlViolationFormEvent.setViolationClassificationString(value),
                     ),
-                    onSuggestionSelected: (value) =>
-                        BlocProvider.of<ControlViolationFormBloc>(context).add(
-                      ControlViolationFormEvent.setViolationClassifications(
-                          value),
+                    onSuggestionSelected: (value) => BlocProvider.of<ControlViolationFormBloc>(context).add(
+                      ControlViolationFormEvent.setViolationClassifications(value),
                     ),
-                    suggestionsCallback: (value) => widget.dictionaryService
-                        .getViolationClassificationSearchResults(
+                    suggestionsCallback: (value) => widget.dictionaryService.getViolationClassificationSearchResults(
                       name: value,
                       objectElement: state.objectElement,
                       ekn: true,
@@ -215,23 +196,16 @@ class _ViolationFormWidgetState extends State<ViolationFormWidget> {
                   controller: _violationClassificationControllerNoEkn,
                   hintText: 'Введите данные',
                   enabled: state.objectElement.id != null,
-                  formatter: (value) =>
-                      value.violationName.violationFullName,
-                  validator: (_) =>
-                      state.violationClassificationErrorStringNoEkn,
+                  formatter: (value) => value.violationName.violationFullName,
+                  validator: (_) => state.violationClassificationErrorStringNoEkn,
                   autoValidate: true,
-                  onChanged: (value) =>
-                      BlocProvider.of<ControlViolationFormBloc>(context).add(
-                    ControlViolationFormEvent
-                        .setViolationClassificationNoEknString(value),
+                  onChanged: (value) => BlocProvider.of<ControlViolationFormBloc>(context).add(
+                    ControlViolationFormEvent.setViolationClassificationNoEknString(value),
                   ),
-                  onSuggestionSelected: (value) =>
-                      BlocProvider.of<ControlViolationFormBloc>(context).add(
-                    ControlViolationFormEvent.setViolationClassificationsNoEkn(
-                        value),
+                  onSuggestionSelected: (value) => BlocProvider.of<ControlViolationFormBloc>(context).add(
+                    ControlViolationFormEvent.setViolationClassificationsNoEkn(value),
                   ),
-                  suggestionsCallback: (value) => widget.dictionaryService
-                      .getViolationClassificationSearchResults(
+                  suggestionsCallback: (value) => widget.dictionaryService.getViolationClassificationSearchResults(
                     name: value,
                     objectElement: state.objectElement,
                     ekn: false,
@@ -247,9 +221,9 @@ class _ViolationFormWidgetState extends State<ViolationFormWidget> {
                 hintText: 'Введите данные',
                 autoValidate: true,
                 validator: (_) => state.descriptionErrorString,
-                onChanged: (value) =>
-                    BlocProvider.of<ControlViolationFormBloc>(context).add(
-                        ControlViolationFormEvent.setDescriptionEvent(value)),
+                onChanged: (value) => BlocProvider.of<ControlViolationFormBloc>(context)
+                    .add(ControlViolationFormEvent.setDescriptionEvent(value)),
+                trailing: SpeechToTextButton(_descriptionController),
               ),
               SizedBox(
                 height: 20,
@@ -262,16 +236,11 @@ class _ViolationFormWidgetState extends State<ViolationFormWidget> {
                 autoValidate: true,
                 validator: (_) => state.violationAdditionalFeatureErrorString,
                 formatter: (additionalFeature) => additionalFeature.name,
-                onChanged: (value) =>
-                    BlocProvider.of<ControlViolationFormBloc>(context).add(
-                        ControlViolationFormEvent
-                            .setViolationAdditionalFeatureStringEvent(value)),
-                onSuggestionSelected: (value) =>
-                    BlocProvider.of<ControlViolationFormBloc>(context).add(
-                        ControlViolationFormEvent
-                            .setViolationAdditionalFeatureEvent(value)),
-                suggestionsCallback: (value) => widget.dictionaryService
-                    .getViolationAdditionalFeatures(name: value),
+                onChanged: (value) => BlocProvider.of<ControlViolationFormBloc>(context)
+                    .add(ControlViolationFormEvent.setViolationAdditionalFeatureStringEvent(value)),
+                onSuggestionSelected: (value) => BlocProvider.of<ControlViolationFormBloc>(context)
+                    .add(ControlViolationFormEvent.setViolationAdditionalFeatureEvent(value)),
+                suggestionsCallback: (value) => widget.dictionaryService.getViolationAdditionalFeatures(name: value),
               ),
               SizedBox(
                 height: 20,
@@ -284,15 +253,11 @@ class _ViolationFormWidgetState extends State<ViolationFormWidget> {
                 validator: (_) => state.contractorErrorString,
                 autoValidate: true,
                 formatter: (contractor) => contractor.name,
-                onChanged: (value) =>
-                    BlocProvider.of<ControlViolationFormBloc>(context).add(
-                        ControlViolationFormEvent.setContractorStringEvent(
-                            value)),
-                onSuggestionSelected: (value) =>
-                    BlocProvider.of<ControlViolationFormBloc>(context).add(
-                        ControlViolationFormEvent.setContractorEvent(value)),
-                suggestionsCallback: (value) =>
-                    widget.dictionaryService.getContractors(name: value),
+                onChanged: (value) => BlocProvider.of<ControlViolationFormBloc>(context)
+                    .add(ControlViolationFormEvent.setContractorStringEvent(value)),
+                onSuggestionSelected: (value) => BlocProvider.of<ControlViolationFormBloc>(context)
+                    .add(ControlViolationFormEvent.setContractorEvent(value)),
+                suggestionsCallback: (value) => widget.dictionaryService.getContractors(name: value),
               ),
               ProjectTitle('Подтверждающие материалы'),
               ImagePicker(
@@ -301,12 +266,11 @@ class _ViolationFormWidgetState extends State<ViolationFormWidget> {
                 names: state.photos.map((e) => e.name ?? '').toList(),
                 enabled: true,
                 onRotated: (index, image) {
-                  BlocProvider.of<ControlViolationFormBloc>(context).add(
-                      ControlViolationFormEvent.rotatePhotoEvent(index, image));
+                  BlocProvider.of<ControlViolationFormBloc>(context)
+                      .add(ControlViolationFormEvent.rotatePhotoEvent(index, image));
                 },
                 onPicked: (file) {
-                  BlocProvider.of<ControlViolationFormBloc>(context)
-                      .add(ControlViolationFormEvent.addPhotoEvent(
+                  BlocProvider.of<ControlViolationFormBloc>(context).add(ControlViolationFormEvent.addPhotoEvent(
                     file.readAsBytesSync(),
                     file.path,
                   ));
@@ -357,26 +321,17 @@ class _ViolationFormWidgetState extends State<ViolationFormWidget> {
   }
 
   void _fillControllers(CotnrolViolationFormState state) {
-    if (_addressController.text != state.address.toLongString())
-      _addressController.text = state.address.toLongString();
-    if (_targetMarkController.text != state.targetLandmark)
-      _targetMarkController.text = state.targetLandmark;
+    if (_addressController.text != state.address.toLongString()) _addressController.text = state.address.toLongString();
+    if (_targetMarkController.text != state.targetLandmark) _targetMarkController.text = state.targetLandmark;
     if (_objectElementController.text != state.objectElement.name)
       _objectElementController.text = state.objectElement.name;
-    if (_descriptionController.text != state.description)
-      _descriptionController.text = state.description;
-    if (_additionalFeatureController.text !=
-        state.violationAdditionalFeature.name)
+    if (_descriptionController.text != state.description) _descriptionController.text = state.description;
+    if (_additionalFeatureController.text != state.violationAdditionalFeature.name)
       _additionalFeatureController.text = state.violationAdditionalFeature.name;
-    if (_contractorController.text != state.contractor.name)
-      _contractorController.text = state.contractor.name;
-    if (_violationClassificationController.text !=
-        state.violationClassification.violationName.name)
-      _violationClassificationController.text =
-          state.violationClassification.violationName.name;
-    if (_violationClassificationControllerNoEkn.text !=
-        state.violationClassificationNoEkn.violationName.name)
-      _violationClassificationControllerNoEkn.text =
-          state.violationClassificationNoEkn.violationName.name;
+    if (_contractorController.text != state.contractor.name) _contractorController.text = state.contractor.name;
+    if (_violationClassificationController.text != state.violationClassification.violationName.name)
+      _violationClassificationController.text = state.violationClassification.violationName.name;
+    if (_violationClassificationControllerNoEkn.text != state.violationClassificationNoEkn.violationName.name)
+      _violationClassificationControllerNoEkn.text = state.violationClassificationNoEkn.violationName.name;
   }
 }

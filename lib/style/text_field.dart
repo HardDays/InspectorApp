@@ -15,6 +15,7 @@ class ProjectTextField extends StatelessWidget {
   final TextInputType inputType;
   final void Function(String) onChanged;
   final bool autoValidate;
+  final Widget trailing;
 
   ProjectTextField({
     this.controller,
@@ -28,12 +29,12 @@ class ProjectTextField extends StatelessWidget {
     this.inputType,
     this.onChanged,
     this.autoValidate = false,
+    this.trailing,
   });
 
   Widget _buildField() {
     final border = OutlineInputBorder(
-        borderRadius: BorderRadius.circular(5),
-        borderSide: const BorderSide(color: ProjectColors.lightBlue, width: 1));
+        borderRadius: BorderRadius.circular(5), borderSide: const BorderSide(color: ProjectColors.lightBlue, width: 1));
     return TextFormField(
       controller: controller,
       initialValue: initialValue,
@@ -55,6 +56,7 @@ class ProjectTextField extends StatelessWidget {
         border: border,
         enabledBorder: border,
         focusedBorder: border,
+        suffixIcon: trailing
       ),
     );
   }
