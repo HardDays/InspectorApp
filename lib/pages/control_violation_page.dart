@@ -270,10 +270,8 @@ class ControlViolationPage extends StatelessWidget {
                                                         performControl,
                                                   ),
                                                 );
-                                                Navigator.of(ctx).pop();
                                               },
                                               onCancel: () {
-                                                Navigator.of(ctx).pop();
                                               },
                                               violationNum: state.searchResult
                                                   .violation.violationNum,
@@ -310,10 +308,8 @@ class ControlViolationPage extends StatelessWidget {
                                                         performControl,
                                                   ),
                                                 );
-                                                Navigator.of(ctx).pop();
                                               },
                                               onCancel: () {
-                                                Navigator.of(ctx).pop();
                                               },
                                               violationNum: state.searchResult
                                                   .violation.violationNum,
