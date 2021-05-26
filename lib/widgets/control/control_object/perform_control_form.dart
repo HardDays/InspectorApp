@@ -82,7 +82,7 @@ class _PerformControlFormWidgetState extends State<PerformControlFormWidget> {
               'Отменить',
               onPressed: () {
                 widget.onCancel();
-                Navigator.of(context).pop();
+                Navigator.of(context).maybePop();
               },
             ),
             SizedBox(width: 20),
@@ -90,7 +90,7 @@ class _PerformControlFormWidgetState extends State<PerformControlFormWidget> {
               'ОК',
               onPressed: () {
                 widget.onConfirm(performControl);
-                Navigator.of(context).pop();
+                Navigator.of(context).maybePop();
               },
             ),
           ],
