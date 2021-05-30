@@ -128,9 +128,12 @@ class ControlObjectMap extends StatelessWidget {
             options: MapOptions(
               center: location.when(
                 (longitude, latitude) => LatLng(latitude, longitude),
-                noLocationProvided: () => userLocation.when(
+                noLocationProvided: () {
+                  if(userLocation == null) return LatLng(55.74, 37.63);
+                  return userLocation.when(
                     (longitude, latitude) => LatLng(latitude, longitude),
-                    noLocationProvided: () => LatLng(55.74, 37.63)),
+                    noLocationProvided: () => LatLng(55.74, 37.63));
+                  },
               ),
               zoom: 16.5,
             ),
