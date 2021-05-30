@@ -6,6 +6,9 @@ import 'package:inspector/model/violator_info.dart';
 class ViolatorInfoOfficial extends ViolatorInfo {
   // final int id;
   // final String phone;
+  final String lastName;
+  final String firstName;
+  final String patronym;
   final int orgId;
   final String orgName;
   final String orgInn;
@@ -23,6 +26,9 @@ class ViolatorInfoOfficial extends ViolatorInfo {
     // this.phone,
     int id,
     String phone,
+    this.lastName,
+    this.firstName,
+    this.patronym,
     this.orgId,
     this.orgName,
     this.orgInn,
@@ -40,6 +46,9 @@ class ViolatorInfoOfficial extends ViolatorInfo {
     return ViolatorInfoOfficial(
       id: json['id'],
       phone: json['phone'],
+      patronym: json['patronym'],
+      lastName: json['lastName'],
+      firstName: json['firstName'],
       orgId: json['orgId'],
       orgName: json['orgName'],
       orgInn: json['orgInn'],
@@ -56,6 +65,9 @@ class ViolatorInfoOfficial extends ViolatorInfo {
 
   
   ViolatorInfoOfficial copyWith({
+      String lastName,
+      String firstName,
+      String patronym,
       String phone,
       int orgId,
       String orgName,
@@ -71,6 +83,9 @@ class ViolatorInfoOfficial extends ViolatorInfo {
   }) {
     return ViolatorInfoOfficial(
       id: id,
+      lastName: lastName ?? this.lastName,
+      firstName: firstName ?? this.firstName,
+      patronym: patronym ?? this.patronym,
       phone: phone ?? this.phone,
       orgId: orgId ?? this.orgId,
       orgName: orgName ?? this.orgName,
@@ -108,6 +123,9 @@ class ViolatorInfoOfficial extends ViolatorInfo {
     return {
       'id': id,
       'phone': phone,
+      'lastName': lastName,
+      'firstName': firstName,
+      'patronym': patronym,
       'orgId': orgId,
       'orgName': orgName,
       'orgInn': orgInn,
