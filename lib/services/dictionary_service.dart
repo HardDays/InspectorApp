@@ -238,7 +238,6 @@ class DictionaryService {
   }
 
   Future<List<Area>> getAreas({String name, int id}) async {
-    //TODO: доделать выборку в последующих словах
     return await _getData<Area>(DictionaryNames.areas,
         queries: [
           Query({'name LIKE ?': '%$name%', 'id = ?': id}, queryType: 'OR'),
@@ -466,6 +465,16 @@ class DictionaryService {
         queries: [
           Query({
             'name LIKE ?': '%$name%',
+          }),
+        ],
+        limit: 50);
+  }
+
+  Future<List<ObjectType>> getDCObjectTypesWithCode({String code}) async {
+    return await _getData<ObjectType>(DictionaryNames.dcObjectTypes,
+        queries: [
+          Query({
+            'code LIKE ?': '%$code%',
           }),
         ],
         limit: 50);
