@@ -44,11 +44,11 @@ class ReportsService {
   }
 
   Future<Report> create(Report report, {String error, bool local = false}) async {
+    return await send(report);
     // для тестирования
     if ((local || !(await _persistanceService.getDataSendingState()))) {
       await _reportsDbService.save(report, error: error);
       return (await _reportsDbService.all(query: {'localId': '"${report.localId}"'})).first;
-      
     } else {
       return await send(report);
     }

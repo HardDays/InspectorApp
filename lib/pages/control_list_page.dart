@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:geodesy/geodesy.dart';
 import 'package:inspector/blocs/control_background_service/bloc.dart';
 import 'package:inspector/blocs/control_background_service/event.dart';
 import 'package:inspector/blocs/control_background_service/state.dart';
@@ -16,14 +15,12 @@ import 'package:inspector/model/instruction.dart';
 import 'package:inspector/pages/control_object_page.dart';
 import 'package:inspector/pages/control_violation_form_page.dart';
 import 'package:inspector/providers/exceptions/api_exception.dart';
-import 'package:inspector/services/department_control/client/local/department_control_local_service.dart';
-import 'package:inspector/services/location/location.dart';
 import 'package:inspector/style/accept_dialog.dart';
 import 'package:inspector/style/colors.dart';
+import 'package:inspector/style/filter_appbar.dart';
 import 'package:inspector/style/icons.dart';
 import 'package:inspector/style/switch.dart';
 import 'package:inspector/style/text_style.dart';
-import 'package:inspector/style/filter_appbar.dart';
 import 'package:inspector/style/top_dialog.dart';
 import 'package:inspector/widgets/control/control_object_list.dart';
 import 'package:inspector/widgets/control/control_object_map.dart';
@@ -31,7 +28,6 @@ import 'package:inspector/widgets/control/control_objects_paginated_list.dart';
 import 'package:inspector/widgets/control/filters.dart';
 import 'package:inspector/widgets/sort_dialog.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
 
 typedef Future RefreshFunction();
 
@@ -41,13 +37,14 @@ class ControlListPage extends StatefulWidget {
 }
 
 class _ControlListPageState extends State<ControlListPage> {
-  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
-      new GlobalKey<RefreshIndicatorState>();
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = new GlobalKey<RefreshIndicatorState>();
+
+  MapController _mapController = MapController();
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<ControlBackgroundServiceBloc,
-        ControlBackgroundServiceBlocState>(
+
+    return BlocListener<ControlBackgroundServiceBloc, ControlBackgroundServiceBlocState>(
       child: _buildControlObjectsList(),
       listener: (context, state) {
         state.maybeMap(
@@ -62,8 +59,8 @@ class _ControlListPageState extends State<ControlListPage> {
                   ),
                 ) !=
                 null) {
-              BlocProvider.of<ControlBackgroundServiceBloc>(context).add(
-                  ControlBackgroundServiceBlocEvent.acceptLoadingEvent(true));
+              BlocProvider.of<ControlBackgroundServiceBloc>(context)
+                  .add(ControlBackgroundServiceBlocEvent.acceptLoadingEvent(true));
             } else {
               BlocProvider.of<ControlBackgroundServiceBloc>(context)
                   .add(ControlBackgroundServiceBlocEvent.cancelLoadingEvent());
@@ -73,15 +70,14 @@ class _ControlListPageState extends State<ControlListPage> {
             if (await showDialog(
                   context: context,
                   builder: (ctx) => AcceptDialog(
-                    message:
-                        'Желаете загрузить объекты ведомственного контроля для использования оффлайн?',
+                    message: 'Желаете загрузить объекты ведомственного контроля для использования оффлайн?',
                     acceptTitle: 'Да',
                     cancelTitle: 'Нет',
                   ),
                 ) !=
                 null) {
-              BlocProvider.of<ControlBackgroundServiceBloc>(context).add(
-                  ControlBackgroundServiceBlocEvent.acceptLoadingEvent(true));
+              BlocProvider.of<ControlBackgroundServiceBloc>(context)
+                  .add(ControlBackgroundServiceBlocEvent.acceptLoadingEvent(true));
             } else {
               BlocProvider.of<ControlBackgroundServiceBloc>(context)
                   .add(ControlBackgroundServiceBlocEvent.cancelLoadingEvent());
@@ -154,11 +150,11 @@ class _ControlListPageState extends State<ControlListPage> {
         if (state.showMap)
           state.map(
             (normalState) => normalState.listState.map(
-              emptyListLoadedState: (emptyListLoadedState) =>
-                  _buildEmptyObjectsList(),
+              emptyListLoadedState: (emptyListLoadedState) => _buildEmptyObjectsList(),
               loadedAllListState: (loadedAllListState) => ControlObjectMap(
                 location: BlocProvider.of<ControlListBloc>(context).location,
                 controlObjects: loadedAllListState.objects,
+                mapController: _mapController,
                 selectedObject: normalState.mapState.selectedObject,
                 openControlObject: _onOpenControlObject(context),
                 selectObject: _onSelectControlObject(context),
@@ -172,6 +168,7 @@ class _ControlListPageState extends State<ControlListPage> {
               loadedListState: (loadedListState) => ControlObjectMap(
                 location: BlocProvider.of<ControlListBloc>(context).location,
                 controlObjects: loadedListState.objects,
+                mapController: _mapController,
                 selectedObject: normalState.mapState.selectedObject,
                 openControlObject: _onOpenControlObject(context),
                 selectObject: _onSelectControlObject(context),
@@ -180,10 +177,8 @@ class _ControlListPageState extends State<ControlListPage> {
                 userLocation: state.mapState.userLocation,
               ),
             ),
-            cantWorkInThisModeState: (cantWorkInThisModeState) =>
-                _cantWorkInThisMode(),
-            apiExceptionState: (state) =>
-                _buildApiExceptionBody(state.exception),
+            cantWorkInThisModeState: (cantWorkInThisModeState) => _cantWorkInThisMode(),
+            apiExceptionState: (state) => _buildApiExceptionBody(state.exception),
           )
         else
           Expanded(
@@ -192,10 +187,8 @@ class _ControlListPageState extends State<ControlListPage> {
               key: _refreshIndicatorKey,
               child: state.map(
                 (normalState) => normalState.listState.map(
-                  emptyListLoadedState: (emptyListLoadedState) =>
-                      _buildEmptyObjectsList(),
-                  loadedAllListState: (loadedAllListState) =>
-                      ControlObjectsLoadedList(
+                  emptyListLoadedState: (emptyListLoadedState) => _buildEmptyObjectsList(),
+                  loadedAllListState: (loadedAllListState) => ControlObjectsLoadedList(
                     controlObjects: loadedAllListState.objects,
                     hasNotViolation: _onHasNotViolations(context),
                     hasViolation: _onHasViolations(context),
@@ -205,8 +198,7 @@ class _ControlListPageState extends State<ControlListPage> {
                   loadingListState: (loadingListState) => Center(
                     child: CircularProgressIndicator(),
                   ),
-                  loadedListState: (loadedListState) =>
-                      ControlObjectsPaginatedList(
+                  loadedListState: (loadedListState) => ControlObjectsPaginatedList(
                     controlObjects: loadedListState.objects,
                     hasNotViolation: _onHasNotViolations(context),
                     hasViolation: _onHasViolations(context),
@@ -215,10 +207,8 @@ class _ControlListPageState extends State<ControlListPage> {
                     loadNextPage: _onLoadNextPage(context),
                   ),
                 ),
-                cantWorkInThisModeState: (cantWorkInThisModeState) =>
-                    _cantWorkInThisMode(),
-                apiExceptionState: (state) =>
-                    _buildApiExceptionBody(state.exception),
+                cantWorkInThisModeState: (cantWorkInThisModeState) => _cantWorkInThisMode(),
+                apiExceptionState: (state) => _buildApiExceptionBody(state.exception),
               ),
             ),
           ),
@@ -329,22 +319,18 @@ class _ControlListPageState extends State<ControlListPage> {
     }
   }
 
-  void Function(ControlObject) _onOpenControlObject(BuildContext context) =>
-      (ControlObject object) {
+  void Function(ControlObject) _onOpenControlObject(BuildContext context) => (ControlObject object) {
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => ControlObjectPage(object)),
         );
       };
 
-  void Function(ControlObject) _onSelectControlObject(BuildContext context) =>
-      (ControlObject object) {
-        BlocProvider.of<ControlListBloc>(context)
-            .add(ControlListBlocEvent.selectControlObject(object));
+  void Function(ControlObject) _onSelectControlObject(BuildContext context) => (ControlObject object) {
+        BlocProvider.of<ControlListBloc>(context).add(ControlListBlocEvent.selectControlObject(object));
       };
 
-  void Function(ControlObject) _onHasNotViolations(BuildContext context) =>
-      (ControlObject object) async {
+  void Function(ControlObject) _onHasNotViolations(BuildContext context) => (ControlObject object) async {
         if ((await showDialog(
                 context: context,
                 builder: (ctx) => AcceptDialog(
@@ -359,17 +345,15 @@ class _ControlListPageState extends State<ControlListPage> {
         }
       };
 
-  void Function(ControlObject) _onHasViolations(BuildContext context) =>
-      (ControlObject object) async {
+  void Function(ControlObject) _onHasViolations(BuildContext context) => (ControlObject object) async {
         await Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) => ControlViolationFormPage(
               controlObject: object,
               onConfirm: (violation) {
-                BlocProvider.of<ControlListBloc>(context).add(
-                    ControlListBlocEvent.registerSearchResultEvent(object,
-                        violation: violation));
+                BlocProvider.of<ControlListBloc>(context)
+                    .add(ControlListBlocEvent.registerSearchResultEvent(object, violation: violation));
               },
               violationNum: 'Создать нарушение',
             ),
@@ -377,27 +361,21 @@ class _ControlListPageState extends State<ControlListPage> {
         );
       };
 
-  void Function(ControlObject) _onShowInMap(BuildContext context) =>
-      (ControlObject object) {
-        BlocProvider.of<ControlListBloc>(context)
-            .add(ControlListBlocEvent.openInMapEvent(object));
+  void Function(ControlObject) _onShowInMap(BuildContext context) => (ControlObject object) {
+        BlocProvider.of<ControlListBloc>(context).add(ControlListBlocEvent.changeShowMapEvent(true));
+        BlocProvider.of<ControlListBloc>(context).add(ControlListBlocEvent.selectControlObject(object));
       };
 
   void Function(bool) _onMapChanged(BuildContext context) => (bool value) {
-        BlocProvider.of<ControlListBloc>(context)
-            .add(ControlListBlocEvent.changeShowMapEvent(value));
+        BlocProvider.of<ControlListBloc>(context).add(ControlListBlocEvent.changeShowMapEvent(value));
       };
 
   void Function() _onLoadNextPage(BuildContext context) =>
-      () => BlocProvider.of<ControlListBloc>(context)
-          .add(ControlListBlocEvent.loadNextPageControlListEvent());
+      () => BlocProvider.of<ControlListBloc>(context).add(ControlListBlocEvent.loadNextPageControlListEvent());
 
   RefreshFunction _onRefreshList(BuildContext context) => () async {
-        BlocProvider.of<ControlListBloc>(context)
-            .add(ControlListBlocEvent.refreshControlListEvent());
-        return BlocProvider.of<ControlListBloc>(context)
-        .stream
-            .firstWhere((state) => !state.listState.refresh);
+        BlocProvider.of<ControlListBloc>(context).add(ControlListBlocEvent.refreshControlListEvent());
+        return BlocProvider.of<ControlListBloc>(context).stream.firstWhere((state) => !state.listState.refresh);
       };
 }
 

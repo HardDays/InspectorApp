@@ -6,9 +6,9 @@ import 'package:inspector/model/violator_info.dart';
 class ViolatorInfoOfficial extends ViolatorInfo {
   // final int id;
   // final String phone;
-  final String lastName;
-  final String firstName;
-  final String patronym;
+  final String lastName;  //not contained in swagger
+  final String firstName; //not contained in swagger
+  final String patronym;  //not contained in swagger
   final int orgId;
   final String orgName;
   final String orgInn;

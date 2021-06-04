@@ -1544,7 +1544,6 @@ class TotalReportPageState extends State<TotalReportPage> with SingleTickerProvi
   }
 
   Widget _buildViolator(BuildContext context, Violator violator, int index, {ViolatorResolution resolution}) {
-    print(violator.toJson());
     return Theme(
      data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
       child: ExpansionTile(
