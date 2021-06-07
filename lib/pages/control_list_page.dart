@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -43,7 +45,6 @@ class _ControlListPageState extends State<ControlListPage> {
 
   @override
   Widget build(BuildContext context) {
-
     return BlocListener<ControlBackgroundServiceBloc, ControlBackgroundServiceBlocState>(
       child: _buildControlObjectsList(),
       listener: (context, state) {
@@ -147,71 +148,76 @@ class _ControlListPageState extends State<ControlListPage> {
             ],
           ),
         ),
-        if (state.showMap)
-          state.map(
-            (normalState) => normalState.listState.map(
-              emptyListLoadedState: (emptyListLoadedState) => _buildEmptyObjectsList(),
-              loadedAllListState: (loadedAllListState) => ControlObjectMap(
-                location: BlocProvider.of<ControlListBloc>(context).location,
-                controlObjects: loadedAllListState.objects,
-                mapController: _mapController,
-                selectedObject: normalState.mapState.selectedObject,
-                openControlObject: _onOpenControlObject(context),
-                selectObject: _onSelectControlObject(context),
-                hasNotViolations: _onHasNotViolations(context),
-                hasViolation: _onHasViolations(context),
-                userLocation: state.mapState.userLocation,
-              ),
-              loadingListState: (loadingListState) => Center(
-                child: CircularProgressIndicator(),
-              ),
-              loadedListState: (loadedListState) => ControlObjectMap(
-                location: BlocProvider.of<ControlListBloc>(context).location,
-                controlObjects: loadedListState.objects,
-                mapController: _mapController,
-                selectedObject: normalState.mapState.selectedObject,
-                openControlObject: _onOpenControlObject(context),
-                selectObject: _onSelectControlObject(context),
-                hasNotViolations: _onHasNotViolations(context),
-                hasViolation: _onHasViolations(context),
-                userLocation: state.mapState.userLocation,
-              ),
-            ),
-            cantWorkInThisModeState: (cantWorkInThisModeState) => _cantWorkInThisMode(),
-            apiExceptionState: (state) => _buildApiExceptionBody(state.exception),
-          )
-        else
-          Expanded(
-            child: RefreshIndicator(
-              onRefresh: _onRefreshList(context),
-              key: _refreshIndicatorKey,
-              child: state.map(
+        Expanded(
+          child: IndexedStack(
+            index: state.showMap ? 0 : 1,
+            children: [
+              state.map(
                 (normalState) => normalState.listState.map(
                   emptyListLoadedState: (emptyListLoadedState) => _buildEmptyObjectsList(),
-                  loadedAllListState: (loadedAllListState) => ControlObjectsLoadedList(
+                  loadedAllListState: (loadedAllListState) => ControlObjectMap(
+                    location: BlocProvider.of<ControlListBloc>(context).location,
                     controlObjects: loadedAllListState.objects,
-                    hasNotViolation: _onHasNotViolations(context),
+                    mapController: _mapController,
+                    selectedObject: normalState.mapState.selectedObject,
+                    openControlObject: _onOpenControlObject(context),
+                    selectObject: _onSelectControlObject(context),
+                    hasNotViolations: _onHasNotViolations(context),
                     hasViolation: _onHasViolations(context),
-                    open: _onOpenControlObject(context),
-                    showInMap: _onShowInMap(context),
+                    userLocation: state.mapState.userLocation,
                   ),
                   loadingListState: (loadingListState) => Center(
                     child: CircularProgressIndicator(),
                   ),
-                  loadedListState: (loadedListState) => ControlObjectsPaginatedList(
+                  loadedListState: (loadedListState) => ControlObjectMap(
+                    location: BlocProvider.of<ControlListBloc>(context).location,
                     controlObjects: loadedListState.objects,
-                    hasNotViolation: _onHasNotViolations(context),
+                    mapController: _mapController,
+                    selectedObject: normalState.mapState.selectedObject,
+                    openControlObject: _onOpenControlObject(context),
+                    selectObject: _onSelectControlObject(context),
+                    hasNotViolations: _onHasNotViolations(context),
                     hasViolation: _onHasViolations(context),
-                    open: _onOpenControlObject(context),
-                    showInMap: _onShowInMap(context),
-                    loadNextPage: _onLoadNextPage(context),
+                    userLocation: state.mapState.userLocation,
                   ),
                 ),
                 cantWorkInThisModeState: (cantWorkInThisModeState) => _cantWorkInThisMode(),
                 apiExceptionState: (state) => _buildApiExceptionBody(state.exception),
               ),
-            ),
+              Expanded(
+                child: RefreshIndicator(
+                  onRefresh: _onRefreshList(context),
+                  key: _refreshIndicatorKey,
+                  child: state.map(
+                    (normalState) => normalState.listState.map(
+                      emptyListLoadedState: (emptyListLoadedState) => _buildEmptyObjectsList(),
+                      loadedAllListState: (loadedAllListState) => ControlObjectsLoadedList(
+                        controlObjects: loadedAllListState.objects,
+                        hasNotViolation: _onHasNotViolations(context),
+                        hasViolation: _onHasViolations(context),
+                        open: _onOpenControlObject(context),
+                        showInMap: _onShowInMap(context),
+                      ),
+                      loadingListState: (loadingListState) => Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                      loadedListState: (loadedListState) => ControlObjectsPaginatedList(
+                        controlObjects: loadedListState.objects,
+                        hasNotViolation: _onHasNotViolations(context),
+                        hasViolation: _onHasViolations(context),
+                        open: _onOpenControlObject(context),
+                        showInMap: _onShowInMap(context),
+                        loadNextPage: _onLoadNextPage(context),
+                      ),
+                    ),
+                    cantWorkInThisModeState: (cantWorkInThisModeState) => _cantWorkInThisMode(),
+                    apiExceptionState: (state) => _buildApiExceptionBody(state.exception),
+                  ),
+                ),
+              ),
+            ],
           ),
+        ),
       ],
     );
   }
@@ -362,8 +368,7 @@ class _ControlListPageState extends State<ControlListPage> {
       };
 
   void Function(ControlObject) _onShowInMap(BuildContext context) => (ControlObject object) {
-        BlocProvider.of<ControlListBloc>(context).add(ControlListBlocEvent.changeShowMapEvent(true));
-        BlocProvider.of<ControlListBloc>(context).add(ControlListBlocEvent.selectControlObject(object));
+        BlocProvider.of<ControlListBloc>(context).add(ControlListBlocEvent.openInMapEvent(object));
       };
 
   void Function(bool) _onMapChanged(BuildContext context) => (bool value) {
