@@ -50,8 +50,9 @@ class ApiDictionaryService {
 
   ApiDictionaryService._internal();
 
-  Future<List<T>> _loadDictionary<T>(Converter<T> converter, int from, int to, {String sort}) async {
-    final data = await api.getDictionary<T>(from, to, sort: sort);
+  Future<List<T>> _loadDictionary<T>(Converter<T> converter, int from, int to,
+      {String sort, String violationKindIds}) async {
+    final data = await api.getDictionary<T>(from, to, sort: sort, violationKindIds: violationKindIds);
     try {
       return List<T>.from(
         data['data']
@@ -68,8 +69,8 @@ class ApiDictionaryService {
       _loadDictionary<SpecialObject>((d) => SpecialObject.fromJson(d), from, to);
 
   Future<List<ObjectCategory>> getObjectCategories(int from, int to) =>
-      _loadDictionary<ObjectCategory>((d) => ObjectCategory.fromJson(d), from, to);
-  
+      _loadDictionary<ObjectCategory>((d) => ObjectCategory.fromJson(d), from, to, violationKindIds: "19");
+
   Future<List<CheckStatus>> getCheckStatuses(int from, int to) =>
       _loadDictionary<CheckStatus>((d) => CheckStatus.fromJson(d), from, to);
 

@@ -221,13 +221,14 @@ class ApiProvider {
     );
   }
 
-  Future<dynamic> getDictionary<T>(int from, int to, {String sort}) async {
+  Future<dynamic> getDictionary<T>(int from, int to, {String sort, String violationKindIds}) async {
     return _request(
       () => dio.get(_dictionaryMap[T], 
         queryParameters: {
           'from': from,
           'to': to,
           'sort': sort,
+          'violationKindIds': violationKindIds,
         },
       ),
     );
