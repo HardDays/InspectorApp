@@ -4,6 +4,8 @@ import 'dart:math';
 import 'dart:typed_data';
 import 'package:inspector/model/kladdr_address_object_type.dart';
 import 'package:inspector/model/report_status_info.dart';
+import 'package:inspector/style/icons.dart';
+import 'package:inspector/style/switch.dart';
 import 'package:inspector/widgets/instruction/resolution.dart';
 import 'package:intl/intl.dart';
 import 'package:path/path.dart' as p;
@@ -113,6 +115,7 @@ class TotalReportPageState extends State<TotalReportPage>
   final _docSeriesControllers = [TextEditingController()];
   final _docNumberControllers = [TextEditingController()];
   final _innControllers = [TextEditingController()];
+  final _genderControllers = [TextEditingController()];
   final _snilsControllers = [TextEditingController()];
   final _ogrnControllers = [TextEditingController()];
   final _kppControllers = [TextEditingController()];
@@ -147,7 +150,8 @@ class TotalReportPageState extends State<TotalReportPage>
       _postalAddressControllers,
       _registrationAddressControllers,
       _birthPlaceControllers,
-      _departmentCodeControllers
+      _departmentCodeControllers,
+      _genderControllers
     ];
 
     if (widget.report.violationNotPresent) {
@@ -239,6 +243,10 @@ class TotalReportPageState extends State<TotalReportPage>
       BuildContext context, int index, List<DateTime> value) {
     _birthDates[index] = value?.first;
     BlocProvider.of<TotalReportBloc>(context).add(FlushEvent());
+  }
+
+  void _onGenderSelected(int res, int index) {
+    _genderControllers[index].text = (res ?? 0).toString();
   }
 
   void _onRegisterDateSelect(
@@ -743,6 +751,7 @@ class TotalReportPageState extends State<TotalReportPage>
                 final person = (violator?.violatorPerson as ViolatorInfoIp);
                 final newViolator = violator.copyWith(
                   violatorPerson: person.copyWith(
+                      gender: int.tryParse(_genderControllers[i].text),
                       name: _violatorControllers[i].text,
                       firstName: _firstNameControllers[i].text,
                       lastName: _lastNameControllers[i].text,
@@ -762,6 +771,7 @@ class TotalReportPageState extends State<TotalReportPage>
                     (violator?.violatorPerson as ViolatorInfoPrivate);
                 final newViolator = violator.copyWith(
                   violatorPerson: person.copyWith(
+                      gender: int.tryParse(_genderControllers[i].text),
                       firstName: _firstNameControllers[i].text,
                       lastName: _lastNameControllers[i].text,
                       patronym: _patronymControllers[i].text,
@@ -912,11 +922,13 @@ class TotalReportPageState extends State<TotalReportPage>
   }
 
   void _ipToControllers(int index, ViolatorInfoIp violator) {
+    _genderControllers[index].text = violator.gender.toString() ?? '';
     _firstNameControllers[index].text = violator.firstName ?? '';
     _lastNameControllers[index].text = violator.lastName ?? '';
     _patronymControllers[index].text = violator.patronym ?? '';
     _innControllers[index].text = violator.inn ?? '';
     _ogrnControllers[index].text = violator.ogrnip ?? '';
+    _genderControllers[index].text = violator.gender.toString() ?? 0;
     _snilsControllers[index].text = violator.snils ?? '';
     _phoneControllers[index].text = violator.phone ?? '';
     _birthPlaceControllers[index].text = violator.birthPlace ?? '';
@@ -927,6 +939,7 @@ class TotalReportPageState extends State<TotalReportPage>
   }
 
   void _privateToControllers(int index, ViolatorInfoPrivate violator) {
+    _genderControllers[index].text = violator.gender.toString() ?? '';
     _firstNameControllers[index].text = violator.firstName ?? '';
     _lastNameControllers[index].text = violator.lastName ?? '';
     _patronymControllers[index].text = violator.patronym ?? '';
@@ -934,6 +947,7 @@ class TotalReportPageState extends State<TotalReportPage>
     _docNumberControllers[index].text = violator.docNumber ?? '';
     _docTypeControllers[index].text = violator.docType?.toString() ?? '';
     _innControllers[index].text = violator.inn ?? '';
+    _genderControllers[index].text = violator.gender.toString() ?? 0;
     // if(_innControllers[index].text.isNotEmpty)_innControllers[index].
     _snilsControllers[index].text = violator.snils ?? '';
     _phoneControllers[index].text = violator.phone ?? '';
@@ -2052,6 +2066,7 @@ class TotalReportPageState extends State<TotalReportPage>
         _buildTextField(
             'Отчество', 'Введите данные', _patronymControllers[index],
             enabled: enabled, validator: textValidator),
+        _buildGenderRadio(index),
         Row(
           mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -2177,6 +2192,7 @@ class TotalReportPageState extends State<TotalReportPage>
         _buildTextField(
             'Отчество', 'Введите данные', _patronymControllers[index],
             enabled: enabled, validator: textValidator),
+        _buildGenderRadio(index),
         Row(
           mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -2525,6 +2541,52 @@ class TotalReportPageState extends State<TotalReportPage>
           enabled: widget.report.isUpdatable && enabled && _validKind,
           inputType: inputType,
         ));
+  }
+
+  Widget _buildSwitchText(String title) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 10, right: 10),
+      child: Text(
+        title,
+        style: ProjectTextStyles.medium.apply(color: ProjectColors.black),
+      ),
+    );
+  }
+
+  Widget _buildGenderRadio(int index) {
+    int toggled = int.tryParse(_genderControllers[index].text);
+
+    return StatefulBuilder(
+        builder: (BuildContext context, StateSetter setState) => Container(
+            padding: const EdgeInsets.only(top: 20, right: 20, bottom: 20),
+            child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              Radio(
+                value: 0,
+                groupValue: toggled,
+                onChanged: (val) {
+                  setState(() {
+                    toggled = val;
+                  });
+                  _onGenderSelected(toggled, index);
+                },
+              ),
+              _buildSwitchText(
+                'Женщина',
+              ),
+              Radio(
+                value: 1,
+                groupValue: toggled,
+                onChanged: (val) {
+                  setState(() {
+                    toggled = val;
+                  });
+                  _onGenderSelected(toggled, index);
+                },
+              ),
+              _buildSwitchText(
+                'Мужчина',
+              ),
+            ])));
   }
 
   Widget _buildAutocomplete(
