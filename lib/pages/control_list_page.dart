@@ -125,101 +125,93 @@ class _ControlListPageState extends State<ControlListPage> {
   }
 
   Widget _buildBody(BuildContext context, ControlListBlocState state) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.end,
-      children: [
-        Container(
-          padding: const EdgeInsets.only(top: 20, right: 20, bottom: 20),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              _buildSwitchIcon(
-                Icon(Icons.format_list_bulleted, color: ProjectColors.darkBlue),
-                'Списком',
-              ),
-              ProjectSwitch(
-                checked: state.showMap,
-                onChanged: _onMapChanged(context),
-              ),
-              _buildSwitchIcon(
-                ProjectIcons.pinIcon(color: ProjectColors.darkBlue),
-                'На карте',
-              ),
-            ],
-          ),
+    return Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
+      Container(
+        padding: const EdgeInsets.only(top: 20, right: 20, bottom: 20),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            _buildSwitchIcon(
+              Icon(Icons.format_list_bulleted, color: ProjectColors.darkBlue),
+              'Списком',
+            ),
+            ProjectSwitch(
+              checked: state.showMap,
+              onChanged: _onMapChanged(context),
+            ),
+            _buildSwitchIcon(
+              ProjectIcons.pinIcon(color: ProjectColors.darkBlue),
+              'На карте',
+            ),
+          ],
         ),
+      ),
+      if (state.showMap)
+        state.map(
+          (normalState) => normalState.listState.map(
+            emptyListLoadedState: (emptyListLoadedState) => _buildEmptyObjectsList(),
+            loadedAllListState: (loadedAllListState) => ControlObjectMap(
+              location: BlocProvider.of<ControlListBloc>(context).location,
+              controlObjects: loadedAllListState.objects,
+              mapController: _mapController,
+              selectedObject: normalState.mapState.selectedObject,
+              openControlObject: _onOpenControlObject(context),
+              selectObject: _onSelectControlObject(context),
+              hasNotViolations: _onHasNotViolations(context),
+              hasViolation: _onHasViolations(context),
+              userLocation: state.mapState.userLocation,
+            ),
+            loadingListState: (loadingListState) => Center(
+              child: CircularProgressIndicator(),
+            ),
+            loadedListState: (loadedListState) => ControlObjectMap(
+              location: BlocProvider.of<ControlListBloc>(context).location,
+              controlObjects: loadedListState.objects,
+              mapController: _mapController,
+              selectedObject: normalState.mapState.selectedObject,
+              openControlObject: _onOpenControlObject(context),
+              selectObject: _onSelectControlObject(context),
+              hasNotViolations: _onHasNotViolations(context),
+              hasViolation: _onHasViolations(context),
+              userLocation: state.mapState.userLocation,
+            ),
+          ),
+          cantWorkInThisModeState: (cantWorkInThisModeState) => _cantWorkInThisMode(),
+          apiExceptionState: (state) => _buildApiExceptionBody(state.exception),
+        )
+      else
         Expanded(
-          child: IndexedStack(
-            index: state.showMap ? 0 : 1,
-            children: [
-              state.map(
-                (normalState) => normalState.listState.map(
-                  emptyListLoadedState: (emptyListLoadedState) => _buildEmptyObjectsList(),
-                  loadedAllListState: (loadedAllListState) => ControlObjectMap(
-                    location: BlocProvider.of<ControlListBloc>(context).location,
-                    controlObjects: loadedAllListState.objects,
-                    mapController: _mapController,
-                    selectedObject: normalState.mapState.selectedObject,
-                    openControlObject: _onOpenControlObject(context),
-                    selectObject: _onSelectControlObject(context),
-                    hasNotViolations: _onHasNotViolations(context),
-                    hasViolation: _onHasViolations(context),
-                    userLocation: state.mapState.userLocation,
-                  ),
-                  loadingListState: (loadingListState) => Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                  loadedListState: (loadedListState) => ControlObjectMap(
-                    location: BlocProvider.of<ControlListBloc>(context).location,
-                    controlObjects: loadedListState.objects,
-                    mapController: _mapController,
-                    selectedObject: normalState.mapState.selectedObject,
-                    openControlObject: _onOpenControlObject(context),
-                    selectObject: _onSelectControlObject(context),
-                    hasNotViolations: _onHasNotViolations(context),
-                    hasViolation: _onHasViolations(context),
-                    userLocation: state.mapState.userLocation,
-                  ),
+          child: RefreshIndicator(
+            onRefresh: _onRefreshList(context),
+            key: _refreshIndicatorKey,
+            child: state.map(
+              (normalState) => normalState.listState.map(
+                emptyListLoadedState: (emptyListLoadedState) => _buildEmptyObjectsList(),
+                loadedAllListState: (loadedAllListState) => ControlObjectsLoadedList(
+                  controlObjects: loadedAllListState.objects,
+                  hasNotViolation: _onHasNotViolations(context),
+                  hasViolation: _onHasViolations(context),
+                  open: _onOpenControlObject(context),
+                  showInMap: _onShowInMap(context),
                 ),
-                cantWorkInThisModeState: (cantWorkInThisModeState) => _cantWorkInThisMode(),
-                apiExceptionState: (state) => _buildApiExceptionBody(state.exception),
-              ),
-              Expanded(
-                child: RefreshIndicator(
-                  onRefresh: _onRefreshList(context),
-                  key: _refreshIndicatorKey,
-                  child: state.map(
-                    (normalState) => normalState.listState.map(
-                      emptyListLoadedState: (emptyListLoadedState) => _buildEmptyObjectsList(),
-                      loadedAllListState: (loadedAllListState) => ControlObjectsLoadedList(
-                        controlObjects: loadedAllListState.objects,
-                        hasNotViolation: _onHasNotViolations(context),
-                        hasViolation: _onHasViolations(context),
-                        open: _onOpenControlObject(context),
-                        showInMap: _onShowInMap(context),
-                      ),
-                      loadingListState: (loadingListState) => Center(
-                        child: CircularProgressIndicator(),
-                      ),
-                      loadedListState: (loadedListState) => ControlObjectsPaginatedList(
-                        controlObjects: loadedListState.objects,
-                        hasNotViolation: _onHasNotViolations(context),
-                        hasViolation: _onHasViolations(context),
-                        open: _onOpenControlObject(context),
-                        showInMap: _onShowInMap(context),
-                        loadNextPage: _onLoadNextPage(context),
-                      ),
-                    ),
-                    cantWorkInThisModeState: (cantWorkInThisModeState) => _cantWorkInThisMode(),
-                    apiExceptionState: (state) => _buildApiExceptionBody(state.exception),
-                  ),
+                loadingListState: (loadingListState) => Center(
+                  child: CircularProgressIndicator(),
+                ),
+                loadedListState: (loadedListState) => ControlObjectsPaginatedList(
+                  controlObjects: loadedListState.objects,
+                  hasNotViolation: _onHasNotViolations(context),
+                  hasViolation: _onHasViolations(context),
+                  open: _onOpenControlObject(context),
+                  showInMap: _onShowInMap(context),
+                  loadNextPage: _onLoadNextPage(context),
                 ),
               ),
-            ],
+              cantWorkInThisModeState: (cantWorkInThisModeState) => _cantWorkInThisMode(),
+              apiExceptionState: (state) => _buildApiExceptionBody(state.exception),
+            ),
           ),
         ),
-      ],
-    );
+    ]);
   }
 
   Widget _buildEmptyObjectsList() {
