@@ -15,20 +15,30 @@ import 'package:inspector/model/district.dart';
 import 'package:inspector/model/street.dart';
 import 'package:inspector/services/dictionary_service.dart';
 
-class ControlFiltersBloc extends Bloc<ControlFiltersBlocEvent, ControlFiltersBlocState> {
-
+class ControlFiltersBloc
+    extends Bloc<ControlFiltersBlocEvent, ControlFiltersBlocState> {
   final _dictionarySevice = DictionaryService();
   final bool _showInMap;
 
-  ControlFiltersBloc(ControlFiltersBlocState state, this._showInMap)  : super(state);
+  ControlFiltersBloc(ControlFiltersBlocState state, this._showInMap)
+      : super(state);
 
   Future<List<ObjectType>> getDCObjectTypes(String name) async {
-    return await _dictionarySevice.getDCObjectTypes(name: name).then((types) {
-      if(_showInMap) {
-        return types.where((element) => ['ОДХ', 'ДТ', 'КП'].contains(element.code)).toList();
+    final List<ObjectType> fResult =
+        await _dictionarySevice.getDCObjectTypes(name: name).then((types) {
+      if (_showInMap) {
+        return types
+            .where((element) => ['ОДХ', 'ДТ', 'КП'].contains(element.code))
+            .toList();
       }
       return types;
     });
+    final List<ObjectType> sResult =
+        await _dictionarySevice.getDCObjectTypesWithCode(code: name);
+    sResult.forEach((element) {
+      if (fResult.contains(element)) fResult.remove(element);
+    });
+    return fResult + sResult;
   }
 
   Future<List<ObjectKind>> getDCObjectKinds(String name) async {
@@ -40,15 +50,21 @@ class ControlFiltersBloc extends Bloc<ControlFiltersBlocEvent, ControlFiltersBlo
   }
 
   Future<List<District>> getDistricts(String name) async {
-    return await _dictionarySevice.getDitricts(name: name, areaId: state.area?.id);
+    return await _dictionarySevice.getDitricts(
+        name: name, areaId: state.area?.id);
   }
 
   Future<List<Street>> getStreets(String name) async {
-    return await _dictionarySevice.getStreets(name: name, districtId: state.district?.id);
+    return await _dictionarySevice.getStreets(
+        name: name, districtId: state.district?.id);
   }
 
   Future<List<Address>> getAddresses(String name) async {
-    return await _dictionarySevice.getAddresses(houseNum: name, districtId: state.district?.id, areaId: state.area?.id, streetId: state.street?.id);
+    return await _dictionarySevice.getAddresses(
+        houseNum: name,
+        districtId: state.district?.id,
+        areaId: state.area?.id,
+        streetId: state.street?.id);
   }
 
   Future<List<ViolationName>> getDCViolationNames(String name) async {
@@ -68,13 +84,10 @@ class ControlFiltersBloc extends Bloc<ControlFiltersBlocEvent, ControlFiltersBlo
   }
 
   @override
-  Stream<ControlFiltersBlocState> mapEventToState(ControlFiltersBlocEvent event) async* {
-    yield * (
-      event.map(
-        copyState: (event) async* {
-          yield event.state.copyWith();
-        }
-      )
-    );
+  Stream<ControlFiltersBlocState> mapEventToState(
+      ControlFiltersBlocEvent event) async* {
+    yield* (event.map(copyState: (event) async* {
+      yield event.state.copyWith();
+    }));
   }
 }
