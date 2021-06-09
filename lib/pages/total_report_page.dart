@@ -922,7 +922,6 @@ class TotalReportPageState extends State<TotalReportPage>
   }
 
   void _ipToControllers(int index, ViolatorInfoIp violator) {
-    _genderControllers[index].text = violator.gender.toString() ?? '';
     _firstNameControllers[index].text = violator.firstName ?? '';
     _lastNameControllers[index].text = violator.lastName ?? '';
     _patronymControllers[index].text = violator.patronym ?? '';
@@ -939,7 +938,6 @@ class TotalReportPageState extends State<TotalReportPage>
   }
 
   void _privateToControllers(int index, ViolatorInfoPrivate violator) {
-    _genderControllers[index].text = violator.gender.toString() ?? '';
     _firstNameControllers[index].text = violator.firstName ?? '';
     _lastNameControllers[index].text = violator.lastName ?? '';
     _patronymControllers[index].text = violator.patronym ?? '';
@@ -948,7 +946,6 @@ class TotalReportPageState extends State<TotalReportPage>
     _docTypeControllers[index].text = violator.docType?.toString() ?? '';
     _innControllers[index].text = violator.inn ?? '';
     _genderControllers[index].text = violator.gender.toString() ?? 0;
-    // if(_innControllers[index].text.isNotEmpty)_innControllers[index].
     _snilsControllers[index].text = violator.snils ?? '';
     _phoneControllers[index].text = violator.phone ?? '';
     _birthPlaceControllers[index].text = violator.birthPlace ?? '';
