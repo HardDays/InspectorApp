@@ -1,3 +1,4 @@
+
 import 'package:inspector/model/report_status.dart';
 import 'package:inspector/model/resolution_type.dart';
 import 'package:json_annotation/json_annotation.dart';

@@ -194,8 +194,8 @@ class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
           final resultString = event.violation == null
               ? 'Нарушений не выявлено'
               : 'Выявлено нарушение';
-          _notificationBloc.add(SnackBarNotificationEvent(
-              'Результат обследования "$resultString" сохранен успешно'));
+          _notificationBloc.add(OkDialogNotificationEvent(
+              'Результат ведомственного контроля "$resultString" успешно сохранен'));
         } on ApiException catch (e) {
           print(e.message);
           print(e.details);

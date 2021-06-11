@@ -24,6 +24,7 @@ class _$DCViolationTearOff {
       ViolationClassification otherViolationClassification,
       Address btiAddress,
       String address,
+      Address btiRefAddress,
       bool refAddressTinao,
       ObjectElement objectElement,
       String description,
@@ -40,6 +41,7 @@ class _$DCViolationTearOff {
       otherViolationClassification: otherViolationClassification,
       btiAddress: btiAddress,
       address: address,
+      btiRefAddress: btiRefAddress,
       refAddressTinao: refAddressTinao,
       objectElement: objectElement,
       description: description,
@@ -70,6 +72,7 @@ mixin _$DCViolation {
   ViolationClassification get otherViolationClassification;
   Address get btiAddress;
   String get address;
+  Address get btiRefAddress;
   bool get refAddressTinao;
   ObjectElement get objectElement;
   String get description;
@@ -97,6 +100,7 @@ abstract class $DCViolationCopyWith<$Res> {
       ViolationClassification otherViolationClassification,
       Address btiAddress,
       String address,
+      Address btiRefAddress,
       bool refAddressTinao,
       ObjectElement objectElement,
       String description,
@@ -129,6 +133,7 @@ class _$DCViolationCopyWithImpl<$Res> implements $DCViolationCopyWith<$Res> {
     Object otherViolationClassification = freezed,
     Object btiAddress = freezed,
     Object address = freezed,
+    Object btiRefAddress = freezed,
     Object refAddressTinao = freezed,
     Object objectElement = freezed,
     Object description = freezed,
@@ -153,6 +158,9 @@ class _$DCViolationCopyWithImpl<$Res> implements $DCViolationCopyWith<$Res> {
       btiAddress:
           btiAddress == freezed ? _value.btiAddress : btiAddress as Address,
       address: address == freezed ? _value.address : address as String,
+      btiRefAddress: btiRefAddress == freezed
+          ? _value.btiRefAddress
+          : btiRefAddress as Address,
       refAddressTinao: refAddressTinao == freezed
           ? _value.refAddressTinao
           : refAddressTinao as bool,
@@ -231,6 +239,7 @@ abstract class _$DCViolationCopyWith<$Res>
       ViolationClassification otherViolationClassification,
       Address btiAddress,
       String address,
+      Address btiRefAddress,
       bool refAddressTinao,
       ObjectElement objectElement,
       String description,
@@ -269,6 +278,7 @@ class __$DCViolationCopyWithImpl<$Res> extends _$DCViolationCopyWithImpl<$Res>
     Object otherViolationClassification = freezed,
     Object btiAddress = freezed,
     Object address = freezed,
+    Object btiRefAddress = freezed,
     Object refAddressTinao = freezed,
     Object objectElement = freezed,
     Object description = freezed,
@@ -293,6 +303,9 @@ class __$DCViolationCopyWithImpl<$Res> extends _$DCViolationCopyWithImpl<$Res>
       btiAddress:
           btiAddress == freezed ? _value.btiAddress : btiAddress as Address,
       address: address == freezed ? _value.address : address as String,
+      btiRefAddress: btiRefAddress == freezed
+          ? _value.btiRefAddress
+          : btiRefAddress as Address,
       refAddressTinao: refAddressTinao == freezed
           ? _value.refAddressTinao
           : refAddressTinao as bool,
@@ -326,6 +339,7 @@ class _$_DCViolation implements _DCViolation {
       this.otherViolationClassification,
       this.btiAddress,
       this.address,
+      this.btiRefAddress,
       this.refAddressTinao,
       this.objectElement,
       this.description,
@@ -352,6 +366,8 @@ class _$_DCViolation implements _DCViolation {
   @override
   final String address;
   @override
+  final Address btiRefAddress;
+  @override
   final bool refAddressTinao;
   @override
   final ObjectElement objectElement;
@@ -372,7 +388,7 @@ class _$_DCViolation implements _DCViolation {
 
   @override
   String toString() {
-    return 'DCViolation(id: $id, detectionDate: $detectionDate, eknViolationClassification: $eknViolationClassification, otherViolationClassification: $otherViolationClassification, btiAddress: $btiAddress, address: $address, refAddressTinao: $refAddressTinao, objectElement: $objectElement, description: $description, violator: $violator, critical: $critical, resolveDate: $resolveDate, controlDate: $controlDate, additionalFeatures: $additionalFeatures, photos: $photos)';
+    return 'DCViolation(id: $id, detectionDate: $detectionDate, eknViolationClassification: $eknViolationClassification, otherViolationClassification: $otherViolationClassification, btiAddress: $btiAddress, address: $address, btiRefAddress: $btiRefAddress, refAddressTinao: $refAddressTinao, objectElement: $objectElement, description: $description, violator: $violator, critical: $critical, resolveDate: $resolveDate, controlDate: $controlDate, additionalFeatures: $additionalFeatures, photos: $photos)';
   }
 
   @override
@@ -398,6 +414,9 @@ class _$_DCViolation implements _DCViolation {
             (identical(other.address, address) ||
                 const DeepCollectionEquality()
                     .equals(other.address, address)) &&
+            (identical(other.btiRefAddress, btiRefAddress) ||
+                const DeepCollectionEquality()
+                    .equals(other.btiRefAddress, btiRefAddress)) &&
             (identical(other.refAddressTinao, refAddressTinao) ||
                 const DeepCollectionEquality()
                     .equals(other.refAddressTinao, refAddressTinao)) &&
@@ -417,10 +436,8 @@ class _$_DCViolation implements _DCViolation {
                 const DeepCollectionEquality()
                     .equals(other.resolveDate, resolveDate)) &&
             (identical(other.controlDate, controlDate) ||
-                const DeepCollectionEquality()
-                    .equals(other.controlDate, controlDate)) &&
-            (identical(other.additionalFeatures, additionalFeatures) ||
-                const DeepCollectionEquality().equals(other.additionalFeatures, additionalFeatures)) &&
+                const DeepCollectionEquality().equals(other.controlDate, controlDate)) &&
+            (identical(other.additionalFeatures, additionalFeatures) || const DeepCollectionEquality().equals(other.additionalFeatures, additionalFeatures)) &&
             (identical(other.photos, photos) || const DeepCollectionEquality().equals(other.photos, photos)));
   }
 
@@ -433,6 +450,7 @@ class _$_DCViolation implements _DCViolation {
       const DeepCollectionEquality().hash(otherViolationClassification) ^
       const DeepCollectionEquality().hash(btiAddress) ^
       const DeepCollectionEquality().hash(address) ^
+      const DeepCollectionEquality().hash(btiRefAddress) ^
       const DeepCollectionEquality().hash(refAddressTinao) ^
       const DeepCollectionEquality().hash(objectElement) ^
       const DeepCollectionEquality().hash(description) ^
@@ -462,6 +480,7 @@ abstract class _DCViolation implements DCViolation {
       ViolationClassification otherViolationClassification,
       Address btiAddress,
       String address,
+      Address btiRefAddress,
       bool refAddressTinao,
       ObjectElement objectElement,
       String description,
@@ -487,6 +506,8 @@ abstract class _DCViolation implements DCViolation {
   Address get btiAddress;
   @override
   String get address;
+  @override
+  Address get btiRefAddress;
   @override
   bool get refAddressTinao;
   @override

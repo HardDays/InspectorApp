@@ -42,8 +42,9 @@ class ControlViolationFormBloc
             setAddressByGeoLocation: false,
             targetLandmark: initialViolation?.address ?? '',
             violationAdditionalFeature:
-                initialViolation?.additionalFeatures?.first ??
-                    ViolationAdditionalFeature(name: ''),
+            initialViolation?.additionalFeatures == null || initialViolation.additionalFeatures.isEmpty
+                ? ViolationAdditionalFeature(name: '')
+                : initialViolation?.additionalFeatures?.first,
             showClassificationField: initialViolation == null,
             violationClassification:
                 initialViolation?.eknViolationClassification ??
@@ -196,6 +197,7 @@ class ControlViolationFormBloc
                 _violation.copyWith(
                   btiAddress: state.address,
                   address: state.targetLandmark,
+                  btiRefAddress: state.address,
                   objectElement: state.objectElement,
                   description: state.description,
                   eknViolationClassification: state
@@ -363,6 +365,7 @@ class ControlViolationFormBloc
   CotnrolViolationFormState _validate(CotnrolViolationFormState state) =>
       state.copyWith(
         adressErrorString: _validateAddress(state),
+        violationAdditionalFeatureErrorString: _validateAdditionalFeature(state),
         objectElementErrorString: _validateObjectElemet(state),
         descriptionErrorString: _validateDescription(state),
         violationClassificationErrorString:
@@ -370,6 +373,13 @@ class ControlViolationFormBloc
         violationClassificationErrorStringNoEkn:
             _validateViolationClassification(state),
       );
+
+  String _validateAdditionalFeature(CotnrolViolationFormState state) {
+    if (state.violationAdditionalFeature.name.isEmpty) {
+      return 'Введите дополнительный признак';
+    }
+    return null;
+  }
 
   String _validateAddress(CotnrolViolationFormState state) {
     if (state.address.toLongString().isEmpty) {

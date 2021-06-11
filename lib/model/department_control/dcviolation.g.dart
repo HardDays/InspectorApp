@@ -24,6 +24,9 @@ _$_DCViolation _$_$_DCViolationFromJson(Map<String, dynamic> json) {
         ? null
         : Address.fromJson(json['btiAddress'] as Map<String, dynamic>),
     address: json['address'] as String,
+    btiRefAddress: json['btiRefAddress'] == null
+        ? null
+        : Address.fromJson(json['btiRefAddress'] as Map<String, dynamic>),
     refAddressTinao: json['refAddressTinao'] as bool,
     objectElement: json['objectElement'] == null
         ? null
@@ -61,6 +64,7 @@ Map<String, dynamic> _$_$_DCViolationToJson(_$_DCViolation instance) =>
           instance.otherViolationClassification?.toJson(),
       'btiAddress': instance.btiAddress?.toJson(),
       'address': instance.address,
+      'btiRefAddress': instance.btiRefAddress?.toJson(),
       'refAddressTinao': instance.refAddressTinao,
       'objectElement': instance.objectElement?.toJson(),
       'description': instance.description,

@@ -18,6 +18,7 @@ abstract class DCViolation with _$DCViolation {
     ViolationClassification otherViolationClassification,
     Address btiAddress,
     String address,
+    Address btiRefAddress,
     bool refAddressTinao,
     ObjectElement objectElement,
     String description,

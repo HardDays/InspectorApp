@@ -48,7 +48,7 @@ class ControlObjectCard extends StatelessWidget {
             child: Slidable(
               actionExtentRatio: 0.15,
               actionPane: SlidableDrawerActionPane(),
-              secondaryActions: [
+              actions: [
                 _buildAction(
                   ProjectIcons.thumbUpIcon(
                       padding: const EdgeInsets.only(bottom: 7)),

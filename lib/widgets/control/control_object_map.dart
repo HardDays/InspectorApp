@@ -19,15 +19,13 @@ class MapObject {
 class PolygonObject extends MapObject {
   final List<LatLng> points;
 
-  PolygonObject({this.points, LatLng point, ControlObject object})
-      : super(object: object, point: point);
+  PolygonObject({this.points, LatLng point, ControlObject object}) : super(object: object, point: point);
 }
 
 class PolylineObject extends MapObject {
   final List<LatLng> points;
 
-  PolylineObject({this.points, LatLng point, ControlObject object})
-      : super(object: object, point: point);
+  PolylineObject({this.points, LatLng point, ControlObject object}) : super(object: object, point: point);
 }
 
 class ControlObjectMap extends StatelessWidget {
@@ -36,6 +34,7 @@ class ControlObjectMap extends StatelessWidget {
     this.location,
     this.selectedObject,
     this.controlObjects,
+    this.mapController,
     @required this.selectObject,
     @required this.openControlObject,
     @required this.hasNotViolations,
@@ -43,7 +42,7 @@ class ControlObjectMap extends StatelessWidget {
     this.userLocation,
   }) : super(key: key);
 
-  final MapController mapController = MapController();
+  final MapController mapController;
   final Location location;
   final ControlObject selectedObject;
   final List<ControlObject> controlObjects;
@@ -65,8 +64,7 @@ class ControlObjectMap extends StatelessWidget {
       for (final geom in object.geometry) {
         if (geom.type == MapGeometricObjectType.point) {
           for (final point in geom.points) {
-            points.add(
-                MapObject(object: object, point: LatLng(point.x, point.y)));
+            points.add(MapObject(object: object, point: LatLng(point.x, point.y)));
           }
         }
       }
@@ -84,10 +82,8 @@ class ControlObjectMap extends StatelessWidget {
         if (geom.type == MapGeometricObjectType.polygon) {
           final points = geom.points.map((e) => LatLng(e.x, e.y)).toList();
           final bounds = LatLngBounds.fromPoints(points);
-          final center = geodesy.midPointBetweenTwoGeoPoints(
-              bounds.northEast, bounds.southWest);
-          polys.add(
-              PolygonObject(object: object, point: center, points: points));
+          final center = geodesy.midPointBetweenTwoGeoPoints(bounds.northEast, bounds.southWest);
+          polys.add(PolygonObject(object: object, point: center, points: points));
         }
       }
     }
@@ -104,10 +100,8 @@ class ControlObjectMap extends StatelessWidget {
         if (geom.type == MapGeometricObjectType.polyline) {
           final points = geom.points.map((e) => LatLng(e.x, e.y)).toList();
           final bounds = LatLngBounds.fromPoints(points);
-          final center = geodesy.midPointBetweenTwoGeoPoints(
-              bounds.northEast, bounds.southWest);
-          polys.add(
-              PolylineObject(object: object, point: center, points: points));
+          final center = geodesy.midPointBetweenTwoGeoPoints(bounds.northEast, bounds.southWest);
+          polys.add(PolylineObject(object: object, point: center, points: points));
         }
       }
     }
@@ -128,17 +122,17 @@ class ControlObjectMap extends StatelessWidget {
             options: MapOptions(
               center: location.when(
                 (longitude, latitude) => LatLng(latitude, longitude),
-                noLocationProvided: () => userLocation.when(
-                    (longitude, latitude) => LatLng(latitude, longitude),
-                    noLocationProvided: () => LatLng(55.74, 37.63)),
+                noLocationProvided: () {
+                  if (userLocation == null) return LatLng(55.74, 37.63);
+                  return userLocation.when((longitude, latitude) => LatLng(latitude, longitude),
+                      noLocationProvided: () => LatLng(55.74, 37.63));
+                },
               ),
               zoom: 16.5,
             ),
             layers: [
               TileLayerOptions(
-                  urlTemplate:
-                      'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                  subdomains: ['a', 'b', 'c']),
+                  urlTemplate: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', subdomains: ['a', 'b', 'c']),
               MarkerLayerOptions(
                 markers: List.generate(
                   points.length,
@@ -263,13 +257,22 @@ class ControlObjectMap extends StatelessWidget {
                   padding: const EdgeInsets.all(10),
                   child: Column(
                     children: [
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: ProjectButton.buildOutlineButton(
+                          'Назад',
+                          color: ProjectColors.blue,
+                          onPressed: () => selectObject(
+                            selectedObject.copyWith(geometry: null),
+                          ),
+                        ),
+                      ),
                       ControlObjectWidget(
                         controlObject: selectedObject,
                         onTap: openControlObject,
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(
-                            top: 10, right: 20, left: 20, bottom: 10),
+                        padding: const EdgeInsets.only(top: 10, right: 20, left: 20, bottom: 10),
                         child: Row(
                           children: [
                             ProjectButton.buildOutlineButton(

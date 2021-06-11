@@ -236,6 +236,7 @@ class ControlObjectPage extends StatelessWidget {
                               btiAddress: searchResult.violation.btiAddress,
                               controlDate: searchResult.violation.controlDate,
                               critical: searchResult.violation.critical,
+                              btiRefAddress: searchResult.violation.btiRefAddress,
                               description: searchResult.violation.description,
                               detectionDate:
                                   searchResult.violation.detectionDate,
