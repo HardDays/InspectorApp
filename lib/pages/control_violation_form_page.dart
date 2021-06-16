@@ -10,7 +10,7 @@ import 'package:provider/provider.dart';
 class ControlViolationFormPage extends StatelessWidget {
   const ControlViolationFormPage({
     Key key,
-    @required this.controlObject, 
+    @required this.controlObject,
     @required this.onConfirm,
     this.violation,
     @required this.violationNum,
@@ -34,7 +34,9 @@ class ControlViolationFormPage extends StatelessWidget {
                 controlObject: controlObject,
               ),
               ViolationFormWidget(
-                dictionaryService: Provider.of<DictionaryService>(context, listen: false),
+                controlObject: controlObject,
+                dictionaryService:
+                    Provider.of<DictionaryService>(context, listen: false),
                 onConfirm: (DCViolation violation) {
                   onConfirm(violation);
                   Navigator.of(context).pop();

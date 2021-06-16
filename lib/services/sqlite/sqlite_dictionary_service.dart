@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 
 import 'package:inspector/model/dictionary_metadata.dart';
@@ -34,67 +33,96 @@ class DictionaryNames {
   static const dcContractors = 'dcContractors';
   static const dcViolationAdditionalFeatures = 'dcViolationAdditionalFeatures';
   static const dcSources = 'dcSources';
-  static const dcViolationClassificationSearchResults = 'dcViolationClassificationSearchResults';
+  static const dcViolationClassificationSearchResults =
+      'dcViolationClassificationSearchResults';
   static const dcViolationExtensionReasons = 'dcViolationExtensionReasons';
 }
 
 class TableDefinitions {
-
   static const metadata = 'dictionaryMetadata';
-  static const metadataDefinition = 'CREATE TABLE IF NOT EXISTS dictionaryMetadata(id INTEGER PRIMARY KEY, data TEXT)';
+  static const metadataDefinition =
+      'CREATE TABLE IF NOT EXISTS dictionaryMetadata(id INTEGER PRIMARY KEY, data TEXT)';
 
   static const Map<String, String> all = {
-    DictionaryNames.addresses: '''CREATE TABLE IF NOT EXISTS addresses(id INTEGER PRIMARY KEY, latitude FLOAT, longitude FLOAT, 
+    DictionaryNames.addresses:
+        '''CREATE TABLE IF NOT EXISTS addresses(id INTEGER PRIMARY KEY, latitude FLOAT, longitude FLOAT, 
       houseNum TEXT, buildNum TEXT, constructionNum TEXT, specifiedAddress TEXT, unom INTEGER, unad INTEGER,
       area TEXT, district TEXT, street TEXT, areaId INTEGER, streetId INTEGER, districtId INTEGER
     )''',
-    DictionaryNames.streets: '''CREATE TABLE IF NOT EXISTS streets(id INTEGER PRIMARY KEY, name TEXT, code TEXT, 
+    DictionaryNames.streets:
+        '''CREATE TABLE IF NOT EXISTS streets(id INTEGER PRIMARY KEY, name TEXT, code TEXT, 
       areaId INTEGER, districtId INTEGER
     )''',
-    DictionaryNames.areas: '''CREATE TABLE IF NOT EXISTS areas(id INTEGER PRIMARY KEY, name TEXT, code TEXT)''',
-    DictionaryNames.districts: '''CREATE TABLE IF NOT EXISTS districts(id INTEGER PRIMARY KEY, name TEXT, code TEXT, areaId INTEGER)''',
-    DictionaryNames.instructionStatuses: '''CREATE TABLE IF NOT EXISTS instructionStatuses(id INTEGER PRIMARY KEY, name TEXT)''',
-    DictionaryNames.specialObjects: '''CREATE TABLE IF NOT EXISTS specialObjects(id INTEGER PRIMARY KEY, name TEXT, code TEXT)''',
-    DictionaryNames.normativeActs: '''CREATE TABLE IF NOT EXISTS normativeActs(id INTEGER PRIMARY KEY, name TEXT, code TEXT)''',
-    DictionaryNames.normativeActArticles: '''CREATE TABLE IF NOT EXISTS normativeActArticles(id INTEGER PRIMARY KEY, name TEXT, 
+    DictionaryNames.areas:
+        '''CREATE TABLE IF NOT EXISTS areas(id INTEGER PRIMARY KEY, name TEXT, code TEXT)''',
+    DictionaryNames.districts:
+        '''CREATE TABLE IF NOT EXISTS districts(id INTEGER PRIMARY KEY, name TEXT, code TEXT, areaId INTEGER)''',
+    DictionaryNames.instructionStatuses:
+        '''CREATE TABLE IF NOT EXISTS instructionStatuses(id INTEGER PRIMARY KEY, name TEXT)''',
+    DictionaryNames.specialObjects:
+        '''CREATE TABLE IF NOT EXISTS specialObjects(id INTEGER PRIMARY KEY, name TEXT, code TEXT)''',
+    DictionaryNames.normativeActs:
+        '''CREATE TABLE IF NOT EXISTS normativeActs(id INTEGER PRIMARY KEY, name TEXT, code TEXT)''',
+    DictionaryNames.normativeActArticles:
+        '''CREATE TABLE IF NOT EXISTS normativeActArticles(id INTEGER PRIMARY KEY, name TEXT, 
       code TEXT, normativeActId INTEGER, normativeAct TEXT
     )''',
-    DictionaryNames.violationTypes: '''CREATE TABLE IF NOT EXISTS violationTypes(id INTEGER PRIMARY KEY, name TEXT, code TEXT, koap TEXT)''',
-    DictionaryNames.violatorTypes: '''CREATE TABLE IF NOT EXISTS violatorTypes(id INTEGER PRIMARY KEY, name TEXT, code TEXT)''',
-    DictionaryNames.departmentCodes: '''CREATE TABLE IF NOT EXISTS departmentCodes(id INTEGER PRIMARY KEY, name TEXT, code TEXT)''',
-    DictionaryNames.objectCategories: '''CREATE TABLE IF NOT EXISTS objectCategories(id INTEGER PRIMARY KEY, name TEXT, code TEXT)''',
-    DictionaryNames.violatorInfoIps: '''CREATE TABLE IF NOT EXISTS violatorInfoIps(id INTEGER PRIMARY KEY, phone TEXT, name TEXT, 
+    DictionaryNames.violationTypes:
+        '''CREATE TABLE IF NOT EXISTS violationTypes(id INTEGER PRIMARY KEY, name TEXT, code TEXT, koap TEXT)''',
+    DictionaryNames.violatorTypes:
+        '''CREATE TABLE IF NOT EXISTS violatorTypes(id INTEGER PRIMARY KEY, name TEXT, code TEXT)''',
+    DictionaryNames.departmentCodes:
+        '''CREATE TABLE IF NOT EXISTS departmentCodes(id INTEGER PRIMARY KEY, name TEXT, code TEXT)''',
+    DictionaryNames.objectCategories:
+        '''CREATE TABLE IF NOT EXISTS objectCategories(id INTEGER PRIMARY KEY, name TEXT, code TEXT)''',
+    DictionaryNames.violatorInfoIps:
+        '''CREATE TABLE IF NOT EXISTS violatorInfoIps(id INTEGER PRIMARY KEY, phone TEXT, name TEXT, 
       lastName TEXT, firstName TEXT, patronym TEXT, 
       inn TEXT, snils TEXT, ogrnip TEXT, registrationDate TEXT, gender INTEGER, birthDate TEXT, birthPlace TEXT, 
       registrationAddress TEXT, registrationAddressString TEXT,
       account TEXT, corrAccount TEXT, bank TEXT, bik TEXT
     )''',
-    DictionaryNames.violatorInfoLegals: '''CREATE TABLE IF NOT EXISTS violatorInfoLegals(id INTEGER PRIMARY KEY, phone TEXT, name TEXT, 
+    DictionaryNames.violatorInfoLegals:
+        '''CREATE TABLE IF NOT EXISTS violatorInfoLegals(id INTEGER PRIMARY KEY, phone TEXT, name TEXT, 
       inn TEXT, ogrn TEXT, kpp TEXT, regDate TEXT, 
       legalAddress TEXT, postalAddress TEXT, legalAddressString TEXT, postalAddressString TEXT,
       account TEXT, corrAccount TEXT, bank TEXT, bik TEXT
     )''',
-    DictionaryNames.violatorInfoOfficials: '''CREATE TABLE IF NOT EXISTS violatorInfoOfficials(id INTEGER PRIMARY KEY, phone TEXT, orgId INTEGER, orgName TEXT,
+    DictionaryNames.violatorInfoOfficials:
+        '''CREATE TABLE IF NOT EXISTS violatorInfoOfficials(id INTEGER PRIMARY KEY, phone TEXT, lastName TEXT, firstName TEXT, orgId INTEGER, orgName TEXT,
       orgInn TEXT, orgOgrn TEXT, orgKpp TEXT, orgRegDate TEXT, orgPhone TEXT, 
       orgLegalAddress TEXT, orgPostalAddress TEXT, orgLegalAddressString TEXT, orgPostalAddressString TEXT
     )''',
-    DictionaryNames.violatorInfoPrivates: '''CREATE TABLE IF NOT EXISTS violatorInfoPrivates(id INTEGER PRIMARY KEY, phone TEXT,
+    DictionaryNames.violatorInfoPrivates:
+        '''CREATE TABLE IF NOT EXISTS violatorInfoPrivates(id INTEGER PRIMARY KEY, phone TEXT,
       lastName TEXT, firstName TEXT, patronym TEXT, 
       inn TEXT, snils TEXT, docType TEXT, docSeries TEXT, docNumber TEXT, gender INTEGER, birthDate TEXT, birthPlace TEXT, 
       registrationAddress TEXT, registrationAddressString TEXT
     )''',
-    DictionaryNames.violatorDocumentTypes: '''CREATE TABLE IF NOT EXISTS violatorDocumentTypes(id INTEGER PRIMARY KEY, name TEXT)''',
-    DictionaryNames.reportStatuses: '''CREATE TABLE IF NOT EXISTS reportStatuses(id INTEGER PRIMARY KEY, name TEXT)''',
-    DictionaryNames.kladdrAddressTypes: '''CREATE TABLE IF NOT EXISTS kladdrAddressTypes(id INTEGER PRIMARY KEY, name TEXT, code TEXT, level TEXT)''',
-    DictionaryNames.dcObjectElements: '''CREATE TABLE IF NOT EXISTS dcObjectElements(id INTEGER PRIMARY KEY, name TEXT, typeId INTEGER, typeName TEXT, typeCode TEXT)''',
-    DictionaryNames.dcObjectKinds: '''CREATE TABLE IF NOT EXISTS dcObjectKinds(id INTEGER PRIMARY KEY, name TEXT)''',
-    DictionaryNames.dcObjectTypes: '''CREATE TABLE IF NOT EXISTS dcObjectTypes(id INTEGER PRIMARY KEY, name TEXT, code TEXT)''',
-    DictionaryNames.dcViolationNames: '''CREATE TABLE IF NOT EXISTS dcViolationNames(id INTEGER PRIMARY KEY, name TEXT, externalId INTEGER, violationFullName TEXT)''',
-    DictionaryNames.dcViolationStatuses: '''CREATE TABLE IF NOT EXISTS dcViolationStatuses(id INTEGER PRIMARY KEY, name TEXT)''',
-    DictionaryNames.dcContractors: '''CREATE TABLE IF NOT EXISTS dcContractors(id INTEGER PRIMARY KEY, name TEXT, inn TEXT)''',
-    DictionaryNames.dcViolationAdditionalFeatures: '''CREATE TABLE IF NOT EXISTS dcViolationAdditionalFeatures(id INTEGER PRIMARY KEY, name TEXT)''',
-    DictionaryNames.dcSources: '''CREATE TABLE IF NOT EXISTS dcSources(id INTEGER PRIMARY KEY, name TEXT)''',
-    DictionaryNames.dcViolationClassificationSearchResults: '''CREATE TABLE IF NOT EXISTS dcViolationClassificationSearchResults(
+    DictionaryNames.violatorDocumentTypes:
+        '''CREATE TABLE IF NOT EXISTS violatorDocumentTypes(id INTEGER PRIMARY KEY, name TEXT)''',
+    DictionaryNames.reportStatuses:
+        '''CREATE TABLE IF NOT EXISTS reportStatuses(id INTEGER PRIMARY KEY, name TEXT)''',
+    DictionaryNames.kladdrAddressTypes:
+        '''CREATE TABLE IF NOT EXISTS kladdrAddressTypes(id INTEGER PRIMARY KEY, name TEXT, code TEXT, level TEXT)''',
+    DictionaryNames.dcObjectElements:
+        '''CREATE TABLE IF NOT EXISTS dcObjectElements(id INTEGER PRIMARY KEY, name TEXT, typeId INTEGER, typeName TEXT, typeCode TEXT)''',
+    DictionaryNames.dcObjectKinds:
+        '''CREATE TABLE IF NOT EXISTS dcObjectKinds(id INTEGER PRIMARY KEY, name TEXT)''',
+    DictionaryNames.dcObjectTypes:
+        '''CREATE TABLE IF NOT EXISTS dcObjectTypes(id INTEGER PRIMARY KEY, name TEXT, code TEXT)''',
+    DictionaryNames.dcViolationNames:
+        '''CREATE TABLE IF NOT EXISTS dcViolationNames(id INTEGER PRIMARY KEY, name TEXT, externalId INTEGER, violationFullName TEXT)''',
+    DictionaryNames.dcViolationStatuses:
+        '''CREATE TABLE IF NOT EXISTS dcViolationStatuses(id INTEGER PRIMARY KEY, name TEXT)''',
+    DictionaryNames.dcContractors:
+        '''CREATE TABLE IF NOT EXISTS dcContractors(id INTEGER PRIMARY KEY, name TEXT, inn TEXT)''',
+    DictionaryNames.dcViolationAdditionalFeatures:
+        '''CREATE TABLE IF NOT EXISTS dcViolationAdditionalFeatures(id INTEGER PRIMARY KEY, name TEXT)''',
+    DictionaryNames.dcSources:
+        '''CREATE TABLE IF NOT EXISTS dcSources(id INTEGER PRIMARY KEY, name TEXT)''',
+    DictionaryNames.dcViolationClassificationSearchResults:
+        '''CREATE TABLE IF NOT EXISTS dcViolationClassificationSearchResults(
       id INTEGER PRIMARY KEY,
       ekn INTEGER,
       warning TEXT,
@@ -118,7 +146,8 @@ class TableDefinitions {
       objectElementObjectTypeName TEXT,
       objectElementObjectTypeCode TEXT
     )''',
-    DictionaryNames.dcViolationExtensionReasons: '''CREATE TABLE IF NOT EXISTS dcViolationExtensionReasons(id INTEGER PRIMARY KEY, name TEXT)''',
+    DictionaryNames.dcViolationExtensionReasons:
+        '''CREATE TABLE IF NOT EXISTS dcViolationExtensionReasons(id INTEGER PRIMARY KEY, name TEXT)''',
   };
 }
 
@@ -128,12 +157,13 @@ class Query {
 
   Query(this.params, {this.queryType = 'AND'});
 
-  String get keys => params.keys.where((key) => params[key] != null).join(' $queryType ');
-  List<dynamic> get values => params.values.where((value) => value != null).toList();
+  String get keys =>
+      params.keys.where((key) => params[key] != null).join(' $queryType ');
+  List<dynamic> get values =>
+      params.values.where((value) => value != null).toList();
 }
 
 class SqliteDictionaryService {
-
   Database _database;
 
   Future init() async {
@@ -145,7 +175,8 @@ class SqliteDictionaryService {
             await db.execute(TableDefinitions.all[key]);
           }
           await db.execute(TableDefinitions.metadataDefinition);
-          await db.insert(TableDefinitions.metadata, {'id': 1, 'data': json.encode({})});
+          await db.insert(
+              TableDefinitions.metadata, {'id': 1, 'data': json.encode({})});
         },
         onOpen: (db) async {
           //await db.execute('drop table dcViolationClassificationSearchResults');
@@ -164,12 +195,23 @@ class SqliteDictionaryService {
     }
   }
 
-  Future<List<T>> all<T>(String name, Function(Map<String, dynamic>) fromJson, {List<Query> queries = const [], int limit}) async {
+  Future<List<T>> all<T>(String name, Function(Map<String, dynamic>) fromJson,
+      {List<Query> queries = const [], int limit}) async {
     await init();
     try {
-      final whereKeys = queries.where((e) => e.keys.isNotEmpty).map((e) => '(${e.keys})').join(' AND ');
-      final whereValues = queries.where((e) => e.values.isNotEmpty).map((e) => e.values).expand((e) => e).toList();
-      final data = await _database.query(name, where: whereKeys.isNotEmpty ? whereKeys : null, whereArgs: whereValues, limit: limit);
+      final whereKeys = queries
+          .where((e) => e.keys.isNotEmpty)
+          .map((e) => '(${e.keys})')
+          .join(' AND ');
+      final whereValues = queries
+          .where((e) => e.values.isNotEmpty)
+          .map((e) => e.values)
+          .expand((e) => e)
+          .toList();
+      final data = await _database.query(name,
+          where: whereKeys.isNotEmpty ? whereKeys : null,
+          whereArgs: whereValues,
+          limit: limit);
       return List<T>.from(data.map((e) => fromJson(e)));
     } catch (ex) {
       print(ex);
@@ -182,7 +224,8 @@ class SqliteDictionaryService {
     try {
       final batch = _database.batch();
       for (final value in values) {
-        batch.insert(name, value.toSqliteJson(), conflictAlgorithm: ConflictAlgorithm.ignore);
+        batch.insert(name, value.toSqliteJson(),
+            conflictAlgorithm: ConflictAlgorithm.ignore);
       }
       await batch.commit();
     } catch (ex) {
@@ -197,12 +240,14 @@ class SqliteDictionaryService {
 
   Future saveMetadata(DictionaryMetadata value) async {
     await init();
-    await _database.update(TableDefinitions.metadata, {'id': 1, 'data': json.encode(value.toJson())});
+    await _database.update(TableDefinitions.metadata,
+        {'id': 1, 'data': json.encode(value.toJson())});
   }
 
   Future<DictionaryMetadata> getMetadata() async {
     await init();
-    final data = await _database.query(TableDefinitions.metadata, where: 'id = ?', whereArgs: [1]);
+    final data = await _database
+        .query(TableDefinitions.metadata, where: 'id = ?', whereArgs: [1]);
     if (data.isNotEmpty) {
       return DictionaryMetadata.fromJson(json.decode(data.first['data']));
     } else {
