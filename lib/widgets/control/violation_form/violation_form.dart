@@ -59,6 +59,7 @@ class _ViolationFormWidgetState extends State<ViolationFormWidget> {
 
   @override
   Widget build(BuildContext context) {
+    _addressController.text = widget.controlObject.address;
     return BlocProvider<ControlViolationFormBloc>(
       create: (context) => ControlViolationFormBloc(
         widget.initialViolation,
