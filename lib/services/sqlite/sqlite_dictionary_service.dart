@@ -89,7 +89,7 @@ class TableDefinitions {
       account TEXT, corrAccount TEXT, bank TEXT, bik TEXT
     )''',
     DictionaryNames.violatorInfoOfficials:
-        '''CREATE TABLE IF NOT EXISTS violatorInfoOfficials(id INTEGER PRIMARY KEY, phone TEXT, lastName TEXT, firstName TEXT, orgId INTEGER, orgName TEXT,
+        '''CREATE TABLE IF NOT EXISTS violatorInfoOfficials(id INTEGER PRIMARY KEY, phone TEXT, lastName TEXT, firstName TEXT, patronym TEXT, orgId INTEGER, orgName TEXT,
       orgInn TEXT, orgOgrn TEXT, orgKpp TEXT, orgRegDate TEXT, orgPhone TEXT, 
       orgLegalAddress TEXT, orgPostalAddress TEXT, orgLegalAddressString TEXT, orgPostalAddressString TEXT
     )''',
