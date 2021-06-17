@@ -18,6 +18,7 @@ import 'package:inspector/services/dictionary_service.dart';
 import 'package:inspector/services/location/location.dart';
 import 'package:inspector/services/network_status_service/network_status.dart';
 import 'package:inspector/extensions.dart';
+import 'package:flutter/foundation.dart';
 
 class DepartmentControlService {
   DepartmentControlService(
@@ -242,9 +243,10 @@ class DepartmentControlService {
       );
 
   DepartmentControlServiceClient _getClient(NetworkStatus networkStatus) =>
-      networkStatus.connectionStatus == ConnectionStatus.online
+      networkStatus.connectionStatus == ConnectionStatus.online || !kReleaseMode
           ? _apiClient
           : _localClient;
+  //TODO: в случае когда сборка Debug версии, подключение к интрнету всегда будет возвращать true(сделано для отладки) позже удалить
 
   Future<void> saveControlObjectsLocally(void Function(int) notifier) async {
     _canceled = false;
