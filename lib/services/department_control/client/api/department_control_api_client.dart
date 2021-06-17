@@ -132,20 +132,26 @@ class DepartmentControlApiClient with DepartmentControlServiceClient {
         request.violationExtensionPeriod);
   }
 
-  Future<List<ControlResultSearchResult>> getControlResults(DepartmentControlControlResultsRequest request) =>
-      apiProvider.getControlResults(
-        dcObjectId: request.dcObjectId,
-        forCurrentUser: request.forCurrentUser,
-        surveyDateFrom: request.surveyDateFrom,
-        surveyDateTo: request.surveyDateTo,
-        violationExists: request.violationExists,
-        violationNum: request.violationNum,
-        dcViolationStatusIds: request.dcViolationStatusIds,
-        dcViolationTypeId: request.dcViolationTypeId,
-        dcViolationKindId: request.dcViolationKindId,
-        sourceId: request.sourceId,
-        from: request.from,
-        to: request.to,
-        sort: request.sort,
-      ).then((value) => value['data'].map((e) => ControlResultSearchResult.fromJson(e)).cast<ControlResultSearchResult>().toList());
+  Future<List<ControlResultSearchResult>> getControlResults(
+          DepartmentControlControlResultsRequest request) =>
+      apiProvider
+          .getControlResults(
+            dcObjectId: request.dcObjectId,
+            forCurrentUser: request.forCurrentUser,
+            surveyDateFrom: request.surveyDateFrom,
+            surveyDateTo: request.surveyDateTo,
+            violationExists: request.violationExists,
+            violationNum: request.violationNum,
+            dcViolationStatusIds: request.dcViolationStatusIds,
+            dcViolationTypeId: request.dcViolationTypeId,
+            dcViolationKindId: request.dcViolationKindId,
+            sourceId: request.sourceId,
+            from: request.from,
+            to: request.to,
+            sort: request.sort,
+          )
+          .then((value) => value['data']
+              .map((e) => ControlResultSearchResult.fromJson(e))
+              .cast<ControlResultSearchResult>()
+              .toList());
 }

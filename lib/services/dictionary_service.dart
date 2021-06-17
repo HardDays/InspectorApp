@@ -178,6 +178,7 @@ class DictionaryService {
             await _dbService.clear(key);
             metadata.loaded.remove(key);
             await _dbService.saveMetadata(metadata);
+            print(key);
 
             int count = 0;
             int attempts = 10000;

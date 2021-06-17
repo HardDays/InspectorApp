@@ -9,6 +9,7 @@ import 'package:inspector/blocs/notification_bloc/bloc.dart';
 import 'package:inspector/blocs/notification_bloc/events.dart';
 import 'package:inspector/model/address.dart';
 import 'package:inspector/model/department_control/contractor.dart';
+import 'package:inspector/model/department_control/control_object.dart';
 import 'package:inspector/model/department_control/dcphoto.dart';
 import 'package:inspector/model/department_control/dcviolation.dart';
 import 'package:inspector/model/department_control/object_element.dart';
@@ -42,9 +43,10 @@ class ControlViolationFormBloc
             setAddressByGeoLocation: false,
             targetLandmark: initialViolation?.address ?? '',
             violationAdditionalFeature:
-            initialViolation?.additionalFeatures == null || initialViolation.additionalFeatures.isEmpty
-                ? ViolationAdditionalFeature(name: '')
-                : initialViolation?.additionalFeatures?.first,
+                initialViolation?.additionalFeatures == null ||
+                        initialViolation.additionalFeatures.isEmpty
+                    ? ViolationAdditionalFeature(name: '')
+                    : initialViolation?.additionalFeatures?.first,
             showClassificationField: initialViolation == null,
             violationClassification:
                 initialViolation?.eknViolationClassification ??
@@ -68,6 +70,7 @@ class ControlViolationFormBloc
       _location = location;
     });
   }
+
   final NotificationBloc notificationBloc;
   final LocationService locationService;
   final DictionaryService dictionaryService;
@@ -185,9 +188,7 @@ class ControlViolationFormBloc
               ScaffoldMessenger.of(event.context).showSnackBar(
                 SnackBar(
                   backgroundColor: ProjectColors.darkBlue,
-                  content: Text(
-                    'Необходимо загрузить хотя бы одну фотографию'
-                  ),
+                  content: Text('Необходимо загрузить хотя бы одну фотографию'),
                 ),
               ); // TODO: fix it, use NotificationBloc
               // notificationBloc.add(SnackBarNotificationEvent(
@@ -199,7 +200,7 @@ class ControlViolationFormBloc
                   address: state.targetLandmark,
                   btiRefAddress: state.address,
                   objectElement: state.objectElement,
-                  description: state.description,
+                  description: state.description ?? '',
                   eknViolationClassification: state
                           .violationClassification.violationName.name.isNotEmpty
                       ? state.violationClassification
@@ -365,7 +366,8 @@ class ControlViolationFormBloc
   CotnrolViolationFormState _validate(CotnrolViolationFormState state) =>
       state.copyWith(
         adressErrorString: _validateAddress(state),
-        violationAdditionalFeatureErrorString: _validateAdditionalFeature(state),
+        violationAdditionalFeatureErrorString:
+            _validateAdditionalFeature(state),
         objectElementErrorString: _validateObjectElemet(state),
         descriptionErrorString: _validateDescription(state),
         violationClassificationErrorString:
@@ -389,9 +391,10 @@ class ControlViolationFormBloc
   }
 
   String _validateDescription(CotnrolViolationFormState state) {
-    if (state.description.isEmpty) {
-      return 'Введите описание нарушения';
-    }
+    //* выключена валидация строки описания(она может быть пустой)
+    // if (state.description.isEmpty) {
+    //   return 'Введите описание нарушения';
+    // }
     return null;
   }
 
@@ -410,7 +413,8 @@ class ControlViolationFormBloc
         state.violationClassificationNoEkn.violationName.name.isEmpty) {
       return 'Должно быть заполнено хотя бы одно поле классификации нарушения';
     }
-    if(state.violationClassification.id == null && state.violationClassificationNoEkn.id == null) {
+    if (state.violationClassification.id == null &&
+        state.violationClassificationNoEkn.id == null) {
       return 'Классификация нарушения должна быть выбрана из списка';
     }
     return null;

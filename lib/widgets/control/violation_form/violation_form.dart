@@ -59,7 +59,6 @@ class _ViolationFormWidgetState extends State<ViolationFormWidget> {
 
   @override
   Widget build(BuildContext context) {
-    _addressController.text = widget.controlObject.address;
     return BlocProvider<ControlViolationFormBloc>(
       create: (context) => ControlViolationFormBloc(
         widget.initialViolation,
@@ -107,49 +106,46 @@ class _ViolationFormWidgetState extends State<ViolationFormWidget> {
                   ),
                 ],
               ),
-              widget.controlObject.address.isNotEmpty
-                  ? InkWell(
-                      onTap: !state.setAddressByGeoLocation
-                          ? () async {
-                              final ctx = context;
-                              await showModalBottomSheet(
-                                context: context,
-                                isScrollControlled: true,
-                                isDismissible: true,
-                                backgroundColor: Colors.transparent,
-                                builder: (context) => Material(
-                                  color: Colors.transparent,
-                                  child: AddressForm(
-                                    dictionaryService:
-                                        Provider.of<DictionaryService>(context,
-                                            listen: false),
-                                    onCancel: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                    initialAddress: state.address,
-                                    onConfirm: (address) {
-                                      Navigator.of(context).pop();
-                                      BlocProvider.of<ControlViolationFormBloc>(
-                                              ctx)
-                                          .add(ControlViolationFormEvent
-                                              .setAddressEvent(address));
-                                    },
-                                  ),
-                                ),
-                              );
-                            }
-                          : null,
-                      child: IgnorePointer(
-                        child: ProjectTextField(
-                          title: 'Адрес нарушения',
-                          hintText: 'Выберите значение',
-                          controller: _addressController,
-                          validator: (_) => state.adressErrorString,
-                          autoValidate: true,
-                        ),
-                      ),
-                    )
-                  : null,
+              InkWell(
+                onTap: !state.setAddressByGeoLocation
+                    ? () async {
+                        final ctx = context;
+                        await showModalBottomSheet(
+                          context: context,
+                          isScrollControlled: true,
+                          isDismissible: true,
+                          backgroundColor: Colors.transparent,
+                          builder: (context) => Material(
+                            color: Colors.transparent,
+                            child: AddressForm(
+                              dictionaryService: Provider.of<DictionaryService>(
+                                  context,
+                                  listen: false),
+                              onCancel: () {
+                                Navigator.of(context).pop();
+                              },
+                              initialAddress: state.address,
+                              onConfirm: (address) {
+                                Navigator.of(context).pop();
+                                BlocProvider.of<ControlViolationFormBloc>(ctx)
+                                    .add(ControlViolationFormEvent
+                                        .setAddressEvent(address));
+                              },
+                            ),
+                          ),
+                        );
+                      }
+                    : null,
+                child: IgnorePointer(
+                  child: ProjectTextField(
+                    title: 'Адрес нарушения',
+                    hintText: 'Выберите значение',
+                    controller: _addressController,
+                    validator: (_) => state.adressErrorString,
+                    autoValidate: true,
+                  ),
+                ),
+              ),
               SizedBox(
                 height: 20,
               ),
