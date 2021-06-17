@@ -214,7 +214,10 @@ class ControlViolationFormBloc
                       : null,
                   violator: state.contractor,
                   critical: state.critical,
-                  additionalFeatures: [state.violationAdditionalFeature],
+                  additionalFeatures:
+                      state.violationAdditionalFeature.id != null
+                          ? [state.violationAdditionalFeature]
+                          : [],
                   photos: state.photos,
                 ),
               );
@@ -377,9 +380,11 @@ class ControlViolationFormBloc
       );
 
   String _validateAdditionalFeature(CotnrolViolationFormState state) {
-    if (state.violationAdditionalFeature.name.isEmpty) {
-      return 'Введите дополнительный признак';
-    }
+    //* выключена валидация строки дополнительного признака (она может быть пустой)
+    //* будет удалён метод вместе с полем в состоянии после подтверждения
+    // if (state.violationAdditionalFeature.name.isEmpty) {
+    //   return 'Введите дополнительный признак';
+    // }
     return null;
   }
 
@@ -392,6 +397,7 @@ class ControlViolationFormBloc
 
   String _validateDescription(CotnrolViolationFormState state) {
     //* выключена валидация строки описания(она может быть пустой)
+    //* будет удалён метод вместе с полем в состоянии после подтверждения
     // if (state.description.isEmpty) {
     //   return 'Введите описание нарушения';
     // }
