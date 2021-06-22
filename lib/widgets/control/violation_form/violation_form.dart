@@ -6,6 +6,7 @@ import 'package:inspector/blocs/control_violation_form_bloc/bloc.dart';
 import 'package:inspector/blocs/control_violation_form_bloc/event.dart';
 import 'package:inspector/blocs/control_violation_form_bloc/state.dart';
 import 'package:inspector/blocs/notification_bloc/bloc.dart';
+import 'package:inspector/model/address.dart';
 import 'package:inspector/model/department_control/contractor.dart';
 import 'package:inspector/model/department_control/control_object.dart';
 import 'package:inspector/model/department_control/dcviolation.dart';
@@ -61,13 +62,13 @@ class _ViolationFormWidgetState extends State<ViolationFormWidget> {
   Widget build(BuildContext context) {
     return BlocProvider<ControlViolationFormBloc>(
       create: (context) => ControlViolationFormBloc(
-        widget.initialViolation,
-        widget.onConfirm,
-        Provider.of<LocationService>(context, listen: false),
-        Provider.of<DictionaryService>(context, listen: false),
-        Provider.of<NetworkStatusService>(context, listen: false),
-        notificationBloc: BlocProvider.of<NotificationBloc>(context),
-      ),
+          widget.initialViolation,
+          widget.onConfirm,
+          Provider.of<LocationService>(context, listen: false),
+          Provider.of<DictionaryService>(context, listen: false),
+          Provider.of<NetworkStatusService>(context, listen: false),
+          notificationBloc: BlocProvider.of<NotificationBloc>(context),
+          controlObject: widget.controlObject),
       child: BlocConsumer<ControlViolationFormBloc, CotnrolViolationFormState>(
         listener: (context, state) {
           _fillControllers(state);
@@ -106,46 +107,60 @@ class _ViolationFormWidgetState extends State<ViolationFormWidget> {
                   ),
                 ],
               ),
-              InkWell(
-                onTap: !state.setAddressByGeoLocation
-                    ? () async {
-                        final ctx = context;
-                        await showModalBottomSheet(
-                          context: context,
-                          isScrollControlled: true,
-                          isDismissible: true,
-                          backgroundColor: Colors.transparent,
-                          builder: (context) => Material(
-                            color: Colors.transparent,
-                            child: AddressForm(
-                              dictionaryService: Provider.of<DictionaryService>(
-                                  context,
-                                  listen: false),
-                              onCancel: () {
-                                Navigator.of(context).pop();
-                              },
-                              initialAddress: state.address,
-                              onConfirm: (address) {
-                                Navigator.of(context).pop();
-                                BlocProvider.of<ControlViolationFormBloc>(ctx)
-                                    .add(ControlViolationFormEvent
-                                        .setAddressEvent(address));
-                              },
-                            ),
-                          ),
-                        );
-                      }
-                    : null,
-                child: IgnorePointer(
-                  child: ProjectTextField(
-                    title: 'Адрес нарушения',
-                    hintText: 'Выберите значение',
-                    controller: _addressController,
-                    validator: (_) => state.adressErrorString,
-                    autoValidate: true,
-                  ),
-                ),
-              ),
+              widget.controlObject != null &&
+                      widget.controlObject.address.isNotEmpty
+                  ? ProjectTextField(
+                      title: 'Адрес нарушения',
+                      hintText: 'Выберите значение',
+                      controller: _addressController,
+                      validator: (_) => state.adressErrorString,
+                      autoValidate: true,
+                      onChanged: (val) =>
+                          BlocProvider.of<ControlViolationFormBloc>(context)
+                              .add(ControlViolationFormEvent.setAddressEvent(
+                                  Address(houseNum: val))),
+                    )
+                  : InkWell(
+                      onTap: !state.setAddressByGeoLocation
+                          ? () async {
+                              final ctx = context;
+                              await showModalBottomSheet(
+                                context: context,
+                                isScrollControlled: true,
+                                isDismissible: true,
+                                backgroundColor: Colors.transparent,
+                                builder: (context) => Material(
+                                  color: Colors.transparent,
+                                  child: AddressForm(
+                                    dictionaryService:
+                                        Provider.of<DictionaryService>(context,
+                                            listen: false),
+                                    onCancel: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    initialAddress: state.address,
+                                    onConfirm: (address) {
+                                      Navigator.of(context).pop();
+                                      BlocProvider.of<ControlViolationFormBloc>(
+                                              ctx)
+                                          .add(ControlViolationFormEvent
+                                              .setAddressEvent(address));
+                                    },
+                                  ),
+                                ),
+                              );
+                            }
+                          : null,
+                      child: IgnorePointer(
+                        child: ProjectTextField(
+                          title: 'Адрес нарушения',
+                          hintText: 'Выберите значение',
+                          controller: _addressController,
+                          validator: (_) => state.adressErrorString,
+                          autoValidate: true,
+                        ),
+                      ),
+                    ),
               SizedBox(
                 height: 20,
               ),

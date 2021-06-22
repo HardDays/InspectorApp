@@ -112,17 +112,19 @@ class ApiProvider {
 
   Future<dynamic> _request(Function request) async {
     try {
-      final res = (await request());  
+      final res = (await request());
       //print(res.request.queryParameters);
+      // print('response' + res.data.toString());
+      // String ss = res.data.toString();
+      // String sss = res.toString();
+      // print(ss + sss);
       return res.data;
     } on DioError catch (ex) {
       print(ex);
       if (ex.type == DioErrorType.response) {
-        if (ex.response.statusCode == 401)  {
-          throw UnauthorizedException(
-            ex.response.data?.toString()
-          );
-        } else {  
+        if (ex.response.statusCode == 401) {
+          throw UnauthorizedException(ex.response.data?.toString());
+        } else {
           print(ex.response.request.uri);
           print(ex.response.data);
           throw ServerException(
@@ -130,7 +132,9 @@ class ApiProvider {
             ex.response.data?.toString(),
           );
         }
-      } else if (ex.type == DioErrorType.connectTimeout || ex.type == DioErrorType.receiveTimeout || ex.type == DioErrorType.sendTimeout) {
+      } else if (ex.type == DioErrorType.connectTimeout ||
+          ex.type == DioErrorType.receiveTimeout ||
+          ex.type == DioErrorType.sendTimeout) {
         throw TimeoutException(ex.response.data?.toString());
       } else {
         if (ex.error is SocketException) {
@@ -141,7 +145,7 @@ class ApiProvider {
           throw UnhandledException(ex.message);
         }
       }
-    } 
+    }
   }
 
   Map<String, dynamic> _removeJsonNulls(Map<String, dynamic> json) {
@@ -160,17 +164,15 @@ class ApiProvider {
     return json;
   }
 
-  String _formatDate(DateTime date) 
-    => date != null ? date.toIso8601String() : null;
+  String _formatDate(DateTime date) =>
+      date != null ? date.toIso8601String() : null;
 
   void setToken(String token) {
     if (token == null) {
       dio.options.headers.remove('Authorization');
     } else {
       print(token);
-      dio.options.headers = {
-        'Authorization': "Bearer " + token
-      };
+      dio.options.headers = {'Authorization': "Bearer " + token};
     }
   }
 
@@ -183,47 +185,27 @@ class ApiProvider {
   }
 
   Future<dynamic> login(String user, String password, String deviceId) async {
-    return _request(
-      ()=> dio.post(_loginPath,
-        data: {
-          'user': user,
-          'password': password
-        },
-        options: Options(
-          headers: {
-            'Device-UID': deviceId
-          }
-        )
-      )
-    );
+    return _request(() => dio.post(_loginPath,
+        data: {'user': user, 'password': password},
+        options: Options(headers: {'Device-UID': deviceId})));
   }
 
   Future<dynamic> refresh(String refreshToken, String deviceId) async {
-    return _request(
-      ()=> dio.post(_refreshPath,
+    return _request(() => dio.post(_refreshPath,
         data: refreshToken,
-        options: Options(
-          headers: {
-            'Device-UID': deviceId
-          }
-        )
-      )
-    );
+        options: Options(headers: {'Device-UID': deviceId})));
   }
 
   Future<dynamic> getInstructions() async {
-    return _request(
-      ()=> dio.get(_instructionsPath, 
-        queryParameters: {
-          'engagedUserId': 'me'
-        }
-      )
-    );
+    return _request(() =>
+        dio.get(_instructionsPath, queryParameters: {'engagedUserId': 'me'}));
   }
 
-  Future<dynamic> getDictionary<T>(int from, int to, {String sort, String violationKindIds}) async {
+  Future<dynamic> getDictionary<T>(int from, int to,
+      {String sort, String violationKindIds}) async {
     return _request(
-      () => dio.get(_dictionaryMap[T], 
+      () => dio.get(
+        _dictionaryMap[T],
         queryParameters: {
           'from': from,
           'to': to,
@@ -235,61 +217,45 @@ class ApiProvider {
   }
 
   Future<dynamic> getInstruction(int id) async {
-    return _request(
-      ()=> dio.get(_instructionsPath + '/$id')
-    );
+    return _request(() => dio.get(_instructionsPath + '/$id'));
   }
 
   Future<dynamic> getInstructionReports(int id) async {
-    return _request(
-      ()=> dio.get(_instructionsPath + '/$id' + _reportsPath)
-    );
+    return _request(() => dio.get(_instructionsPath + '/$id' + _reportsPath));
   }
 
-  Future<dynamic> updateInstruction(int id, {InstructionStatus instructionStatus, String rejectReason}) async {
-    return _request(
-      ()=> dio.patch(_instructionsPath + '/$id',
-        data: {
+  Future<dynamic> updateInstruction(int id,
+      {InstructionStatus instructionStatus, String rejectReason}) async {
+    return _request(() => dio.patch(_instructionsPath + '/$id', data: {
           'instructionStatus': instructionStatus.toJson(),
-          if(rejectReason != null)
-            'rejectReason': rejectReason,
-        }
-      )
-    );
+          if (rejectReason != null) 'rejectReason': rejectReason,
+        }));
   }
-  
+
   Future<dynamic> createReport(Report report) async {
     final json = report.toJson();
     _removeJsonNulls(json);
     // var t = c.json.encode(json);
     //  print(report.reportNum);
     //  print(report.violations.first.violationDate);
-     //print(t);
-    return _request(
-      ()=> dio.post(_reportsPath,
-        data: json
-      )
-    );
+    //print(t);
+    return _request(() => dio.post(_reportsPath, data: json));
   }
 
   Future<dynamic> updateReport(Report report) async {
     final json = report.toJson();
     _removeJsonNulls(json);
-     //var t = c.json.encode(json);
+    //var t = c.json.encode(json);
     //  print(report.reportNum);
     //  print(report.violations.first.violationDate);
-     //print(t);
-    return _request(
-      ()=> dio.put(_reportsPath + '/${report.id}',
-        data: json
-      )
-    );
+    //print(t);
+    return _request(() => dio.put(_reportsPath + '/${report.id}', data: json));
   }
 
   Future removeReport(Report report) async {
-    return _request(
-      ()=> dio.delete(_reportsPath + '/${report.id}', )
-    );
+    return _request(() => dio.delete(
+          _reportsPath + '/${report.id}',
+        ));
   }
 
   Future<dynamic> getReportStatusInfo(Report report) async {
@@ -305,7 +271,7 @@ class ApiProvider {
   }
 
   Future<dynamic> getControlObjects({
-    int dcObjectTypesIds, 
+    int dcObjectTypesIds,
     String dcObjectKind,
     int externalId,
     String objectName,
@@ -336,43 +302,46 @@ class ApiProvider {
     int from,
     int to,
     String sort,
-  }) async => 
-    _request(() => dio.get('$_departmentControlPath', queryParameters: _removeJsonNulls({
-      'dcObjectTypesIds': dcObjectTypesIds,
-      'dcObjectKind': dcObjectKind,
-      'externalId': externalId,
-      'objectName': objectName,
-      'areaIds': areaIds,
-      'districtIds': districtIds,
-      'streetIds': streetIds,
-      'addressIds': addressIds,
-      'onlyNearObjects': onlyNearObjects,
-      'userPositionX': userPositionX,
-      'userPositionY': userPositionY,
-      'searchRadius': searchRadius,
-      'balanceOwner': balanceOwner,
-      'daysFromLastSurvey': daysFromLastSurvey,
-      'lastSurveyDateFrom': _formatDate(lastSurveyDateFrom),
-      'lastSurveyDateTo': _formatDate(lastSurveyDateTo),
-      'camerasExist': camerasExist,
-      'ignoreViolations': ignoreViolations,
-      'forCurrentUser': forCurrentUser,
-      'objectElementIds': objectElementIds,
-      'violationNameIds': violationNameIds,
-      'sourceId': sourceId,
-      'violationNum': violationNum,
-      'violationStatusIds': violationStatusIds,
-      'detectionDateFrom': _formatDate(detectionDateFrom),
-      'detectionDateTo': _formatDate(detectionDateTo),
-      'controlDateFrom': _formatDate(controlDateFrom),
-      'controlDateTo': _formatDate(controlDateTo),
-      'from': from,
-      'to': to,
-      'sort': sort,
-    })),
-  );
+  }) async =>
+      _request(
+        () => dio.get('$_departmentControlPath',
+            queryParameters: _removeJsonNulls({
+              'dcObjectTypesIds': dcObjectTypesIds,
+              'dcObjectKind': dcObjectKind,
+              'externalId': externalId,
+              'objectName': objectName,
+              'areaIds': areaIds,
+              'districtIds': districtIds,
+              'streetIds': streetIds,
+              'addressIds': addressIds,
+              'onlyNearObjects': onlyNearObjects,
+              'userPositionX': userPositionX,
+              'userPositionY': userPositionY,
+              'searchRadius': searchRadius,
+              'balanceOwner': balanceOwner,
+              'daysFromLastSurvey': daysFromLastSurvey,
+              'lastSurveyDateFrom': _formatDate(lastSurveyDateFrom),
+              'lastSurveyDateTo': _formatDate(lastSurveyDateTo),
+              'camerasExist': camerasExist,
+              'ignoreViolations': ignoreViolations,
+              'forCurrentUser': forCurrentUser,
+              'objectElementIds': objectElementIds,
+              'violationNameIds': violationNameIds,
+              'sourceId': sourceId,
+              'violationNum': violationNum,
+              'violationStatusIds': violationStatusIds,
+              'detectionDateFrom': _formatDate(detectionDateFrom),
+              'detectionDateTo': _formatDate(detectionDateTo),
+              'controlDateFrom': _formatDate(controlDateFrom),
+              'controlDateTo': _formatDate(controlDateTo),
+              'from': from,
+              'to': to,
+              'sort': sort,
+            })),
+      );
 
-  Future<dynamic> getControlSearchResults(int dcObjectId, {
+  Future<dynamic> getControlSearchResults(
+    int dcObjectId, {
     bool forCurrentUser,
     DateTime surveyDateFrom,
     DateTime surveyDateTo,
@@ -384,53 +353,72 @@ class ApiProvider {
     int sourceId,
     int from,
     int to,
-    List<String> sort, 
+    List<String> sort,
   }) async {
-    return _request(() => dio.get('/dc-objects/$dcObjectId/control-results', queryParameters: _removeJsonNulls({
-      'forCurrentUser': forCurrentUser,
-      'surveyDateFrom': surveyDateFrom,
-      'surveyDateTo': surveyDateTo,
-      'violationExists': violationExists,
-      'violationNum': violationNum,
-      'dcViolationStatusIds': dcViolationStatusIds,
-      'dcViolationTypeId': dcViolationTypeId,
-      'dcViolationKindId': dcViolationKindId,
-      'sourceId': sourceId,
-      'from': from,
-      'sort': sort,
-    })));
+    return _request(() => dio.get('/dc-objects/$dcObjectId/control-results',
+        queryParameters: _removeJsonNulls({
+          'forCurrentUser': forCurrentUser,
+          'surveyDateFrom': surveyDateFrom,
+          'surveyDateTo': surveyDateTo,
+          'violationExists': violationExists,
+          'violationNum': violationNum,
+          'dcViolationStatusIds': dcViolationStatusIds,
+          'dcViolationTypeId': dcViolationTypeId,
+          'dcViolationKindId': dcViolationKindId,
+          'sourceId': sourceId,
+          'from': from,
+          'sort': sort,
+        })));
   }
 
-  Future<dynamic> getControlSearchResultsByIds(int dcObjectId, int dcControlResultId) {
-    return _request(() => dio.get('/dc-objects/$dcObjectId/control-results/$dcControlResultId'));
+  Future<dynamic> getControlSearchResultsByIds(
+      int dcObjectId, int dcControlResultId) {
+    return _request(() =>
+        dio.get('/dc-objects/$dcObjectId/control-results/$dcControlResultId'));
   }
 
   Future<dynamic> createDCControlResult(int dcObjectId, ControlResult result) {
-    return _request(() => dio.post('/dc-objects/$dcObjectId/control-results', data: result.toJson()));
+    return _request(() => dio.post('/dc-objects/$dcObjectId/control-results',
+        data: result.toJson()));
   }
 
-  Future<dynamic> updateDCControlResult(int dcObjectId, int dcControlResultId, DCViolation violation) {
-    return _request(() => dio.patch('/dc-objects/$dcObjectId/control-results/$dcControlResultId', data: {"violation": violation.toJson()}));
+  Future<dynamic> updateDCControlResult(
+      int dcObjectId, int dcControlResultId, DCViolation violation) {
+    return _request(() => dio.patch(
+        '/dc-objects/$dcObjectId/control-results/$dcControlResultId',
+        data: {"violation": violation.toJson()}));
   }
 
   Future<dynamic> removeDCControlResult(int dcObjectId, int dcControlResultId) {
-    return _request(() => dio.delete('/dc-objects/$dcObjectId/control-results/$dcControlResultId'));
+    return _request(() => dio
+        .delete('/dc-objects/$dcObjectId/control-results/$dcControlResultId'));
   }
 
-  Future<dynamic> createDCPerformControlResult(int dcObjectId, int dcControlResultId, PerformControl performControl) {
-    return _request(() => dio.post('/dc-objects/$dcObjectId/control-results/$dcControlResultId/perform-controls', data: performControl.toJson()));
+  Future<dynamic> createDCPerformControlResult(
+      int dcObjectId, int dcControlResultId, PerformControl performControl) {
+    return _request(() => dio.post(
+        '/dc-objects/$dcObjectId/control-results/$dcControlResultId/perform-controls',
+        data: performControl.toJson()));
   }
 
-  Future<dynamic> updateDCPerformControlResult(int dcObjectId, int dcControlResultId, PerformControl performControl) {
-    return _request(() => dio.patch('/dc-objects/$dcObjectId/control-results/$dcControlResultId/perform-controls', data: performControl.toJson()));
+  Future<dynamic> updateDCPerformControlResult(
+      int dcObjectId, int dcControlResultId, PerformControl performControl) {
+    return _request(() => dio.patch(
+        '/dc-objects/$dcObjectId/control-results/$dcControlResultId/perform-controls',
+        data: performControl.toJson()));
   }
 
-  Future<dynamic> removeDCPerformControlResult(int dcObjectId, int dcControlResultId, int performControlId) {
-    return _request(() => dio.delete('/dc-objects/$dcObjectId/control-results/$dcControlResultId/perform-controls/$performControlId'));
+  Future<dynamic> removeDCPerformControlResult(
+      int dcObjectId, int dcControlResultId, int performControlId) {
+    return _request(() => dio.delete(
+        '/dc-objects/$dcObjectId/control-results/$dcControlResultId/perform-controls/$performControlId'));
   }
 
-  Future<dynamic> extendPeriod(int dcObjectId, int dcControlResultId, ViolationExtensionPeriod violationExtensionPeriod) {
-    return _request(() => dio.post('/dc-objects/${dcObjectId}/control-results/${dcControlResultId}/op/extend-resolution-period', data: violationExtensionPeriod.toJson()));
+  Future<dynamic> extendPeriod(int dcObjectId, int dcControlResultId,
+      ViolationExtensionPeriod violationExtensionPeriod) {
+    return _request(() => dio.post(
+        '/dc-objects/${dcObjectId}/control-results/${dcControlResultId}/op/extend-resolution-period',
+        data: violationExtensionPeriod.toJson()));
   }
 
   Future<dynamic> getControlResults({
@@ -447,22 +435,23 @@ class ApiProvider {
     int from,
     int to,
     List<String> sort,
-  }) => _request(() => dio.get('/dc-objects/control-results', queryParameters: _removeJsonNulls({
-    "dcObjectId": dcObjectId,
-    "forCurrentUser": forCurrentUser,
-    "surveyDateFrom": surveyDateFrom,
-    "surveyDateTo": surveyDateTo,
-    "violationExists": violationExists,
-    "violationNum": violationNum,
-    "dcViolationStatusIds": dcViolationStatusIds,
-    "dcViolationTypeId": dcViolationTypeId,
-    "dcViolationKindId": dcViolationKindId,
-    "sourceId": sourceId,
-    "from": from,
-    "to": to,
-    "sort": sort,
-  })));
+  }) =>
+      _request(() => dio.get('/dc-objects/control-results',
+          queryParameters: _removeJsonNulls({
+            "dcObjectId": dcObjectId,
+            "forCurrentUser": forCurrentUser,
+            "surveyDateFrom": surveyDateFrom,
+            "surveyDateTo": surveyDateTo,
+            "violationExists": violationExists,
+            "violationNum": violationNum,
+            "dcViolationStatusIds": dcViolationStatusIds,
+            "dcViolationTypeId": dcViolationTypeId,
+            "dcViolationKindId": dcViolationKindId,
+            "sourceId": sourceId,
+            "from": from,
+            "to": to,
+            "sort": sort,
+          })));
 
-  Future<dynamic> getParams() 
-    => _request(() => dio.get('/parameters'));
+  Future<dynamic> getParams() => _request(() => dio.get('/parameters'));
 }

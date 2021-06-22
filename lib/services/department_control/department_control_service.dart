@@ -165,14 +165,24 @@ class DepartmentControlService {
     int dcControlResultId,
     DCViolation violation,
     NetworkStatus networkStatus,
-  ) =>
-      _getClient(networkStatus).updateControlResult(
-        DepartmentControlUpdateControlRequest(
-          object,
-          dcControlResultId,
-          violation,
-        ),
-      );
+  ) {
+    var obj = DepartmentControlUpdateControlRequest(
+      object,
+      dcControlResultId,
+      violation,
+    );
+
+    print(obj.toString());
+    var res = _getClient(networkStatus).updateControlResult(
+      DepartmentControlUpdateControlRequest(
+        object,
+        dcControlResultId,
+        violation,
+      ),
+    );
+    print(res.toString());
+    return res;
+  }
 
   Future<void> removeControlResult(
     ControlObject object,

@@ -76,7 +76,7 @@ class ControlViolationPage extends StatelessWidget {
                 .add(ControlViolationPageBlocEvent.refresh());
             await BlocProvider.of<ControlViolationPageBloc>(
                     _refreshKey.currentContext)
-                    .stream
+                .stream
                 .firstWhere((state) => !state.refresh);
           },
           child: BlocListener<ControlViolationPageBloc,
@@ -234,7 +234,7 @@ class ControlViolationPage extends StatelessWidget {
               children: [
                 _buildTitle(
                   'Контроль устранения нарушения',
-                  rightWidget: state.editable
+                  rightWidget: !state.editable
                       ? FlatButton(
                           child: Row(
                             children: [
@@ -271,8 +271,7 @@ class ControlViolationPage extends StatelessWidget {
                                                   ),
                                                 );
                                               },
-                                              onCancel: () {
-                                              },
+                                              onCancel: () {},
                                               violationNum: state.searchResult
                                                   .violation.violationNum,
                                               performControl: PerformControl(
@@ -284,6 +283,7 @@ class ControlViolationPage extends StatelessWidget {
                                             ),
                                           ),
                                         );
+                                        Navigator.of(ctx).pop();
                                       },
                                     ),
                                     Padding(
@@ -309,8 +309,7 @@ class ControlViolationPage extends StatelessWidget {
                                                   ),
                                                 );
                                               },
-                                              onCancel: () {
-                                              },
+                                              onCancel: () {},
                                               violationNum: state.searchResult
                                                   .violation.violationNum,
                                               performControl: PerformControl(

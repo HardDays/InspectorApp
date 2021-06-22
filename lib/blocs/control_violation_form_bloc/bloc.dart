@@ -30,10 +30,11 @@ class ControlViolationFormBloc
     extends Bloc<ControlViolationFormEvent, CotnrolViolationFormState> {
   ControlViolationFormBloc(DCViolation initialViolation, this.onConfirm,
       this.locationService, this.dictionaryService, this.networkStatusService,
-      {this.notificationBloc})
+      {this.notificationBloc, this.controlObject})
       : super(
           CotnrolViolationFormState(
-            address: initialViolation?.btiAddress ?? Address(),
+            address: initialViolation?.btiAddress ??
+                Address(houseNum: controlObject.address),
             contractor: initialViolation?.violator ?? Contractor(name: ''),
             critical: initialViolation?.critical ?? false,
             description: initialViolation?.description ?? '',
@@ -76,7 +77,7 @@ class ControlViolationFormBloc
   final DictionaryService dictionaryService;
   final void Function(DCViolation) onConfirm;
   final NetworkStatusService networkStatusService;
-
+  final ControlObject controlObject;
   final _geoService = GeoService(); // TODO: fix it
 
   DCViolation _violation;
@@ -389,9 +390,11 @@ class ControlViolationFormBloc
   }
 
   String _validateAddress(CotnrolViolationFormState state) {
-    if (state.address.toLongString().isEmpty) {
+    if (state.address.toLongString().isEmpty && controlObject.address.isEmpty) {
       return 'Введите адрес';
     }
+    this._onSetAddressEvent(SetAddressEvent(state.address));
+
     return null;
   }
 
