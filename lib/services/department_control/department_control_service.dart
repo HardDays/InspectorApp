@@ -172,7 +172,6 @@ class DepartmentControlService {
       violation,
     );
 
-    print(obj.toString());
     var res = _getClient(networkStatus).updateControlResult(
       DepartmentControlUpdateControlRequest(
         object,
@@ -180,7 +179,7 @@ class DepartmentControlService {
         violation,
       ),
     );
-    print(res.toString());
+
     return res;
   }
 

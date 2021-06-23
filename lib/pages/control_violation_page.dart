@@ -234,7 +234,7 @@ class ControlViolationPage extends StatelessWidget {
               children: [
                 _buildTitle(
                   'Контроль устранения нарушения',
-                  rightWidget: !state.editable
+                  rightWidget: state.editable
                       ? FlatButton(
                           child: Row(
                             children: [
