@@ -6,6 +6,7 @@ import 'package:inspector/blocs/control_list/event.dart';
 import 'package:inspector/blocs/control_list/map_state.dart';
 import 'package:inspector/blocs/control_list/sort_state.dart';
 import 'package:inspector/blocs/control_list/state.dart';
+import 'package:inspector/blocs/control_object/event.dart';
 import 'package:inspector/blocs/notification_bloc/bloc.dart';
 import 'package:inspector/blocs/notification_bloc/events.dart';
 import 'package:inspector/model/department_control/control_object.dart';
@@ -97,7 +98,7 @@ class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
         event.violation,
         _networkStatus,
       );
-
+      event.controlObjectBloc.add(ControlObjectBlocEvent.loadEvent());
       _notificationBloc.add(OkDialogNotificationEvent('Обновлено успешно'));
     } on ApiException catch (e) {
       print(e.message);

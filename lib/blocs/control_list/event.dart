@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:inspector/blocs/control_filters/state.dart';
+import 'package:inspector/blocs/control_object/bloc.dart';
 import 'package:inspector/model/department_control/control_object.dart';
 import 'package:inspector/model/department_control/dcviolation.dart';
 import 'package:inspector/model/department_control/violation_extension_reason.dart';
@@ -27,8 +28,10 @@ abstract class ControlListBlocEvent with _$ControlListBlocEvent {
 
   const factory ControlListBlocEvent.changeSort(String state) = ChangeSortEvent;
 
-  const factory ControlListBlocEvent.openInMapEvent(ControlObject object) = OpenInMapEvent;
-  const factory ControlListBlocEvent.selectControlObject(ControlObject object) = SelectControlObjectEvent;
+  const factory ControlListBlocEvent.openInMapEvent(ControlObject object) =
+      OpenInMapEvent;
+  const factory ControlListBlocEvent.selectControlObject(ControlObject object) =
+      SelectControlObjectEvent;
 
   const factory ControlListBlocEvent.registerSearchResultEvent(
       ControlObject object,
@@ -72,6 +75,7 @@ abstract class ControlListBlocEvent with _$ControlListBlocEvent {
     ControlObject object,
     int controlResultId,
     DCViolation violation,
+    ControlObjectBloc controlObjectBloc,
   ) = UpdateControlResultEvent;
 
   const factory ControlListBlocEvent.changeNetworkStatusEvent(

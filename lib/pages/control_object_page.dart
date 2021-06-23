@@ -63,7 +63,7 @@ class ControlObjectPage extends StatelessWidget {
                   .add(ControlObjectBlocEvent.loadEvent());
               await BlocProvider.of<ControlObjectBloc>(
                       _refreshKey.currentContext)
-                      .stream
+                  .stream
                   .firstWhere((e) => e is! LoadingState);
             },
             child: SingleChildScrollView(
@@ -86,8 +86,8 @@ class ControlObjectPage extends StatelessWidget {
                         child: state.maybeMap(
                           loadedWithListState: (state) => _buildSearchResults(
                               state.controlSearchResults, context),
-                          orElse: () => Container(),//_buildViolationsList(
-                              //state.object.violations, context),
+                          orElse: () => Container(), //_buildViolationsList(
+                          //state.object.violations, context),
                         ),
                       ),
                     ],
@@ -123,7 +123,8 @@ class ControlObjectPage extends StatelessWidget {
     );
   }
 
-  Widget _buildFiltersSection(BuildContext context, ControlObjectFilters filters) {
+  Widget _buildFiltersSection(
+      BuildContext context, ControlObjectFilters filters) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
@@ -172,8 +173,7 @@ class ControlObjectPage extends StatelessWidget {
                                           _controlObject,
                                           searchResult.id));
                             },
-                            onCancel: () {
-                            },
+                            onCancel: () {},
                             violationNum: searchResult.violation.violationNum,
                             performControl: PerformControl(
                               factDate: DateTime.now(),
@@ -200,8 +200,7 @@ class ControlObjectPage extends StatelessWidget {
                                 ),
                               );
                             },
-                            onCancel: () {
-                            },
+                            onCancel: () {},
                             violationNum: searchResult.violation.violationNum,
                             performControl: PerformControl(
                               factDate: DateTime.now(),
@@ -236,7 +235,8 @@ class ControlObjectPage extends StatelessWidget {
                               btiAddress: searchResult.violation.btiAddress,
                               controlDate: searchResult.violation.controlDate,
                               critical: searchResult.violation.critical,
-                              btiRefAddress: searchResult.violation.btiRefAddress,
+                              btiRefAddress:
+                                  searchResult.violation.btiRefAddress,
                               description: searchResult.violation.description,
                               detectionDate:
                                   searchResult.violation.detectionDate,
@@ -254,9 +254,14 @@ class ControlObjectPage extends StatelessWidget {
                             onConfirm: (result) {
                               BlocProvider.of<ControlListBloc>(context).add(
                                   ControlListBlocEvent.updateControlResultEvent(
-                                      _controlObject, searchResult.id, result));
+                                      _controlObject,
+                                      searchResult.id,
+                                      result,
+                                      BlocProvider.of<ControlObjectBloc>(
+                                          context)));
                             },
-                            violationNum: 'Нарушение №${searchResult.violation.violationNum} от ${DateFormat("dd.MM.yyyy")}',
+                            violationNum:
+                                'Нарушение №${searchResult.violation.violationNum} от ${DateFormat("dd.MM.yyyy")}',
                           ),
                         ),
                       );
@@ -301,8 +306,7 @@ class ControlObjectPage extends StatelessWidget {
                             ),
                           );
                         },
-                        onCancel: () {
-                        },
+                        onCancel: () {},
                         violationNum: violation.violationNum,
                         performControl: PerformControl(
                           factDate: DateTime.now(),
@@ -328,8 +332,7 @@ class ControlObjectPage extends StatelessWidget {
                             ),
                           );
                         },
-                        onCancel: () {
-                        },
+                        onCancel: () {},
                         violationNum: violation.violationNum,
                         performControl: PerformControl(
                           factDate: DateTime.now(),
@@ -378,7 +381,8 @@ class ControlObjectPage extends StatelessWidget {
             violationTypes: types,
             violationKinds: kinds,
             onConfirm: (filters) async {
-              BlocProvider.of<ControlObjectBloc>(context).add(ControlObjectBlocEvent.changeFitersEvent(filters));
+              BlocProvider.of<ControlObjectBloc>(context)
+                  .add(ControlObjectBlocEvent.changeFitersEvent(filters));
             },
           ),
         );
