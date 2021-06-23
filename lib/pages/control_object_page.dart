@@ -85,7 +85,9 @@ class ControlObjectPage extends StatelessWidget {
                         padding: EdgeInsets.only(bottom: 30, top: 15),
                         child: state.maybeMap(
                           loadedWithListState: (state) => _buildSearchResults(
-                              state.controlSearchResults, context),
+                              state.controlSearchResults,
+                              context,
+                              _refreshKey.currentContext),
                           orElse: () => Container(), //_buildViolationsList(
                           //state.object.violations, context),
                         ),
@@ -140,8 +142,8 @@ class ControlObjectPage extends StatelessWidget {
     );
   }
 
-  Widget _buildSearchResults(
-      List<ControlResultSearchResult> searchResults, BuildContext context) {
+  Widget _buildSearchResults(List<ControlResultSearchResult> searchResults,
+      BuildContext context, BuildContext blocContext) {
     return ListView(
       shrinkWrap: true,
       physics: ScrollPhysics(),
@@ -258,7 +260,7 @@ class ControlObjectPage extends StatelessWidget {
                                       searchResult.id,
                                       result,
                                       BlocProvider.of<ControlObjectBloc>(
-                                          context)));
+                                          blocContext)));
                             },
                             violationNum:
                                 'Нарушение №${searchResult.violation.violationNum} от ${DateFormat("dd.MM.yyyy")}',
