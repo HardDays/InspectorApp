@@ -10,13 +10,17 @@ import 'package:inspector/blocs/notification_bloc/events.dart';
 import 'package:inspector/model/address.dart';
 import 'package:inspector/model/department_control/contractor.dart';
 import 'package:inspector/model/department_control/control_object.dart';
+import 'package:inspector/model/department_control/control_result_search_result.dart';
 import 'package:inspector/model/department_control/dcphoto.dart';
 import 'package:inspector/model/department_control/dcviolation.dart';
 import 'package:inspector/model/department_control/object_element.dart';
+import 'package:inspector/model/department_control/perform_control.dart';
 import 'package:inspector/model/department_control/violation_additional_feature.dart';
 import 'package:inspector/model/department_control/violation_classification.dart';
 import 'package:inspector/model/department_control/violation_name.dart';
 import 'package:inspector/model/street.dart';
+import 'package:inspector/services/department_control/client/request.dart';
+import 'package:inspector/services/department_control/department_control_service.dart';
 import 'package:inspector/services/dictionary_service.dart';
 import 'package:inspector/services/geo_service.dart';
 import 'package:inspector/services/location/location.dart';
@@ -30,7 +34,9 @@ class ControlViolationFormBloc
     extends Bloc<ControlViolationFormEvent, CotnrolViolationFormState> {
   ControlViolationFormBloc(DCViolation initialViolation, this.onConfirm,
       this.locationService, this.dictionaryService, this.networkStatusService,
-      {this.notificationBloc, this.controlObject})
+      {this.notificationBloc,
+      this.controlObject,
+      this.departmentControlService})
       : super(
           CotnrolViolationFormState(
             address: initialViolation?.btiAddress ??
@@ -73,13 +79,15 @@ class ControlViolationFormBloc
   }
 
   final NotificationBloc notificationBloc;
+  final DepartmentControlService departmentControlService;
   final LocationService locationService;
   final DictionaryService dictionaryService;
   final void Function(DCViolation) onConfirm;
   final NetworkStatusService networkStatusService;
   final ControlObject controlObject;
   final _geoService = GeoService(); // TODO: fix it
-
+  bool disableEdition =
+      false; //* присваевается при инициализации блока после евента  _onUpdatePerformControl и  указывает, будем ли мы сохранять данные или выведем ошибку
   DCViolation _violation;
 
   Location _location;
@@ -89,6 +97,7 @@ class ControlViolationFormBloc
   Stream<CotnrolViolationFormState> mapEventToState(
           ControlViolationFormEvent event) =>
       event.map(
+        updatePerformInfoEvent: _onUpdatePerformControl,
         setAddressEvent: _onSetAddressEvent,
         setContractorEvent: _onSetContractorEvent,
         setContractorStringEvent: _onSetContractorStringEvent,
@@ -194,7 +203,7 @@ class ControlViolationFormBloc
               ); // TODO: fix it, use NotificationBloc
               // notificationBloc.add(SnackBarNotificationEvent(
               //     'Необходимо загрузить хотя бы одну фотографию'));
-            } else {
+            } else if (!disableEdition) {
               onConfirm(
                 _violation.copyWith(
                   btiAddress: state.address,
@@ -222,12 +231,34 @@ class ControlViolationFormBloc
                   photos: state.photos,
                 ),
               );
+            } else {
+              ScaffoldMessenger.of(event.context).showSnackBar(
+                SnackBar(
+                  backgroundColor: ProjectColors.darkBlue,
+                  content: Text(
+                      'Контроль устранения передан в ЦАФАП. Редактирование невозможно. Данные не сохранены'),
+                ),
+              );
+              Navigator.of(event.context).pop();
             }
           } else {
             yield newState;
           }
         },
       );
+
+  Stream<CotnrolViolationFormState> _onUpdatePerformControl(
+      UpdatePerformInfoEvent event) async* {
+    ControlResultSearchResult searchResult =
+        await departmentControlService.getControlResultFromId(
+            controlObject.id, _violation.id, await networkStatusService.actual);
+    disableEdition = (searchResult.violation.performControls != null &&
+            searchResult.violation.performControls.isNotEmpty &&
+            searchResult.violation.performControls.last.sentToCafap) ||
+        (searchResult.violation.performMarks != null &&
+            searchResult.violation.performMarks.isNotEmpty);
+    yield (state);
+  }
 
   Stream<CotnrolViolationFormState> _onSetAddressEvent(
       SetAddressEvent event) async* {

@@ -160,6 +160,19 @@ class DepartmentControlService {
         ),
       );
 
+  Future<ControlResultSearchResult> getControlResultFromId(
+    int objectId,
+    int resultId,
+    NetworkStatus networkStatus,
+  ) {
+    return _getClient(networkStatus).getControlSearchResultByIds(
+      DepartmentControlSearchResultByIdsRequest(
+        objectId,
+        resultId,
+      ),
+    );
+  }
+
   Future<ControlResult> updateControlResult(
     ControlObject object,
     int dcControlResultId,

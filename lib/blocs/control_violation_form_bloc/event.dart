@@ -16,12 +16,13 @@ abstract class ControlViolationFormEvent with _$ControlViolationFormEvent {
     bool value,
   ) = SetCriticalEvent;
 
-  // const factory ControlViolationFormEvent.updateSendingTofacapEvent() =
-  //     updateSendingTofacapEvent;
-
   const factory ControlViolationFormEvent.setUseGeoLocationForAddressEvent(
     bool value,
   ) = SetUseGeoLocationForAddressEvent;
+
+  const factory ControlViolationFormEvent.updatePerformInfoEvent(
+    bool value,
+  ) = UpdatePerformInfoEvent;
 
   const factory ControlViolationFormEvent.setAddressEvent(
     Address address,

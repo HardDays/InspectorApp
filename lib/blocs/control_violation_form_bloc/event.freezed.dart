@@ -29,6 +29,13 @@ class _$ControlViolationFormEventTearOff {
   }
 
 // ignore: unused_element
+  UpdatePerformInfoEvent updatePerformInfoEvent(bool value) {
+    return UpdatePerformInfoEvent(
+      value,
+    );
+  }
+
+// ignore: unused_element
   SetAddressEvent setAddressEvent(Address address) {
     return SetAddressEvent(
       address,
@@ -167,6 +174,7 @@ mixin _$ControlViolationFormEvent {
   TResult when<TResult extends Object>({
     @required TResult setCriticalEvent(bool value),
     @required TResult setUseGeoLocationForAddressEvent(bool value),
+    @required TResult updatePerformInfoEvent(bool value),
     @required TResult setAddressEvent(Address address),
     @required TResult setTargetLandmark(String targetLandmark),
     @required TResult setObjectElementString(String objectElement),
@@ -198,6 +206,7 @@ mixin _$ControlViolationFormEvent {
   TResult maybeWhen<TResult extends Object>({
     TResult setCriticalEvent(bool value),
     TResult setUseGeoLocationForAddressEvent(bool value),
+    TResult updatePerformInfoEvent(bool value),
     TResult setAddressEvent(Address address),
     TResult setTargetLandmark(String targetLandmark),
     TResult setObjectElementString(String objectElement),
@@ -227,6 +236,7 @@ mixin _$ControlViolationFormEvent {
     @required
         TResult setUseGeoLocationForAddressEvent(
             SetUseGeoLocationForAddressEvent value),
+    @required TResult updatePerformInfoEvent(UpdatePerformInfoEvent value),
     @required TResult setAddressEvent(SetAddressEvent value),
     @required TResult setTargetLandmark(SetTargetLandmark value),
     @required TResult setObjectElementString(SetObjectElementString value),
@@ -261,6 +271,7 @@ mixin _$ControlViolationFormEvent {
     TResult setCriticalEvent(SetCriticalEvent value),
     TResult setUseGeoLocationForAddressEvent(
         SetUseGeoLocationForAddressEvent value),
+    TResult updatePerformInfoEvent(UpdatePerformInfoEvent value),
     TResult setAddressEvent(SetAddressEvent value),
     TResult setTargetLandmark(SetTargetLandmark value),
     TResult setObjectElementString(SetObjectElementString value),
@@ -367,6 +378,7 @@ class _$SetCriticalEvent implements SetCriticalEvent {
   TResult when<TResult extends Object>({
     @required TResult setCriticalEvent(bool value),
     @required TResult setUseGeoLocationForAddressEvent(bool value),
+    @required TResult updatePerformInfoEvent(bool value),
     @required TResult setAddressEvent(Address address),
     @required TResult setTargetLandmark(String targetLandmark),
     @required TResult setObjectElementString(String objectElement),
@@ -396,6 +408,7 @@ class _$SetCriticalEvent implements SetCriticalEvent {
   }) {
     assert(setCriticalEvent != null);
     assert(setUseGeoLocationForAddressEvent != null);
+    assert(updatePerformInfoEvent != null);
     assert(setAddressEvent != null);
     assert(setTargetLandmark != null);
     assert(setObjectElementString != null);
@@ -421,6 +434,7 @@ class _$SetCriticalEvent implements SetCriticalEvent {
   TResult maybeWhen<TResult extends Object>({
     TResult setCriticalEvent(bool value),
     TResult setUseGeoLocationForAddressEvent(bool value),
+    TResult updatePerformInfoEvent(bool value),
     TResult setAddressEvent(Address address),
     TResult setTargetLandmark(String targetLandmark),
     TResult setObjectElementString(String objectElement),
@@ -458,6 +472,7 @@ class _$SetCriticalEvent implements SetCriticalEvent {
     @required
         TResult setUseGeoLocationForAddressEvent(
             SetUseGeoLocationForAddressEvent value),
+    @required TResult updatePerformInfoEvent(UpdatePerformInfoEvent value),
     @required TResult setAddressEvent(SetAddressEvent value),
     @required TResult setTargetLandmark(SetTargetLandmark value),
     @required TResult setObjectElementString(SetObjectElementString value),
@@ -489,6 +504,7 @@ class _$SetCriticalEvent implements SetCriticalEvent {
   }) {
     assert(setCriticalEvent != null);
     assert(setUseGeoLocationForAddressEvent != null);
+    assert(updatePerformInfoEvent != null);
     assert(setAddressEvent != null);
     assert(setTargetLandmark != null);
     assert(setObjectElementString != null);
@@ -515,6 +531,7 @@ class _$SetCriticalEvent implements SetCriticalEvent {
     TResult setCriticalEvent(SetCriticalEvent value),
     TResult setUseGeoLocationForAddressEvent(
         SetUseGeoLocationForAddressEvent value),
+    TResult updatePerformInfoEvent(UpdatePerformInfoEvent value),
     TResult setAddressEvent(SetAddressEvent value),
     TResult setTargetLandmark(SetTargetLandmark value),
     TResult setObjectElementString(SetObjectElementString value),
@@ -623,6 +640,7 @@ class _$SetUseGeoLocationForAddressEvent
   TResult when<TResult extends Object>({
     @required TResult setCriticalEvent(bool value),
     @required TResult setUseGeoLocationForAddressEvent(bool value),
+    @required TResult updatePerformInfoEvent(bool value),
     @required TResult setAddressEvent(Address address),
     @required TResult setTargetLandmark(String targetLandmark),
     @required TResult setObjectElementString(String objectElement),
@@ -652,6 +670,7 @@ class _$SetUseGeoLocationForAddressEvent
   }) {
     assert(setCriticalEvent != null);
     assert(setUseGeoLocationForAddressEvent != null);
+    assert(updatePerformInfoEvent != null);
     assert(setAddressEvent != null);
     assert(setTargetLandmark != null);
     assert(setObjectElementString != null);
@@ -677,6 +696,7 @@ class _$SetUseGeoLocationForAddressEvent
   TResult maybeWhen<TResult extends Object>({
     TResult setCriticalEvent(bool value),
     TResult setUseGeoLocationForAddressEvent(bool value),
+    TResult updatePerformInfoEvent(bool value),
     TResult setAddressEvent(Address address),
     TResult setTargetLandmark(String targetLandmark),
     TResult setObjectElementString(String objectElement),
@@ -714,6 +734,7 @@ class _$SetUseGeoLocationForAddressEvent
     @required
         TResult setUseGeoLocationForAddressEvent(
             SetUseGeoLocationForAddressEvent value),
+    @required TResult updatePerformInfoEvent(UpdatePerformInfoEvent value),
     @required TResult setAddressEvent(SetAddressEvent value),
     @required TResult setTargetLandmark(SetTargetLandmark value),
     @required TResult setObjectElementString(SetObjectElementString value),
@@ -745,6 +766,7 @@ class _$SetUseGeoLocationForAddressEvent
   }) {
     assert(setCriticalEvent != null);
     assert(setUseGeoLocationForAddressEvent != null);
+    assert(updatePerformInfoEvent != null);
     assert(setAddressEvent != null);
     assert(setTargetLandmark != null);
     assert(setObjectElementString != null);
@@ -771,6 +793,7 @@ class _$SetUseGeoLocationForAddressEvent
     TResult setCriticalEvent(SetCriticalEvent value),
     TResult setUseGeoLocationForAddressEvent(
         SetUseGeoLocationForAddressEvent value),
+    TResult updatePerformInfoEvent(UpdatePerformInfoEvent value),
     TResult setAddressEvent(SetAddressEvent value),
     TResult setTargetLandmark(SetTargetLandmark value),
     TResult setObjectElementString(SetObjectElementString value),
@@ -812,6 +835,264 @@ abstract class SetUseGeoLocationForAddressEvent
   @JsonKey(ignore: true)
   $SetUseGeoLocationForAddressEventCopyWith<SetUseGeoLocationForAddressEvent>
       get copyWith;
+}
+
+/// @nodoc
+abstract class $UpdatePerformInfoEventCopyWith<$Res> {
+  factory $UpdatePerformInfoEventCopyWith(UpdatePerformInfoEvent value,
+          $Res Function(UpdatePerformInfoEvent) then) =
+      _$UpdatePerformInfoEventCopyWithImpl<$Res>;
+  $Res call({bool value});
+}
+
+/// @nodoc
+class _$UpdatePerformInfoEventCopyWithImpl<$Res>
+    extends _$ControlViolationFormEventCopyWithImpl<$Res>
+    implements $UpdatePerformInfoEventCopyWith<$Res> {
+  _$UpdatePerformInfoEventCopyWithImpl(UpdatePerformInfoEvent _value,
+      $Res Function(UpdatePerformInfoEvent) _then)
+      : super(_value, (v) => _then(v as UpdatePerformInfoEvent));
+
+  @override
+  UpdatePerformInfoEvent get _value => super._value as UpdatePerformInfoEvent;
+
+  @override
+  $Res call({
+    Object value = freezed,
+  }) {
+    return _then(UpdatePerformInfoEvent(
+      value == freezed ? _value.value : value as bool,
+    ));
+  }
+}
+
+/// @nodoc
+class _$UpdatePerformInfoEvent implements UpdatePerformInfoEvent {
+  const _$UpdatePerformInfoEvent(this.value) : assert(value != null);
+
+  @override
+  final bool value;
+
+  @override
+  String toString() {
+    return 'ControlViolationFormEvent.updatePerformInfoEvent(value: $value)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is UpdatePerformInfoEvent &&
+            (identical(other.value, value) ||
+                const DeepCollectionEquality().equals(other.value, value)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^ const DeepCollectionEquality().hash(value);
+
+  @JsonKey(ignore: true)
+  @override
+  $UpdatePerformInfoEventCopyWith<UpdatePerformInfoEvent> get copyWith =>
+      _$UpdatePerformInfoEventCopyWithImpl<UpdatePerformInfoEvent>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object>({
+    @required TResult setCriticalEvent(bool value),
+    @required TResult setUseGeoLocationForAddressEvent(bool value),
+    @required TResult updatePerformInfoEvent(bool value),
+    @required TResult setAddressEvent(Address address),
+    @required TResult setTargetLandmark(String targetLandmark),
+    @required TResult setObjectElementString(String objectElement),
+    @required TResult setObjectElement(ObjectElement objectElement),
+    @required TResult setDescriptionEvent(String description),
+    @required
+        TResult setViolationAdditionalFeatureStringEvent(
+            String violationAdditionalFeature),
+    @required
+        TResult setViolationAdditionalFeatureEvent(
+            ViolationAdditionalFeature violationAdditionalFeature),
+    @required TResult setContractorStringEvent(String contractor),
+    @required TResult setContractorEvent(Contractor contractor),
+    @required TResult addPhotoEvent(Uint8List photo, String name),
+    @required TResult removePhotoEvent(int index),
+    @required TResult rotatePhotoEvent(int index, Uint8List photo),
+    @required TResult setViolationClassificationString(String classification),
+    @required
+        TResult setViolationClassifications(
+            ViolationClassificationSearchResult classification),
+    @required
+        TResult setViolationClassificationNoEknString(String classification),
+    @required
+        TResult setViolationClassificationsNoEkn(
+            ViolationClassificationSearchResult classification),
+    @required TResult saveEvent(BuildContext context),
+  }) {
+    assert(setCriticalEvent != null);
+    assert(setUseGeoLocationForAddressEvent != null);
+    assert(updatePerformInfoEvent != null);
+    assert(setAddressEvent != null);
+    assert(setTargetLandmark != null);
+    assert(setObjectElementString != null);
+    assert(setObjectElement != null);
+    assert(setDescriptionEvent != null);
+    assert(setViolationAdditionalFeatureStringEvent != null);
+    assert(setViolationAdditionalFeatureEvent != null);
+    assert(setContractorStringEvent != null);
+    assert(setContractorEvent != null);
+    assert(addPhotoEvent != null);
+    assert(removePhotoEvent != null);
+    assert(rotatePhotoEvent != null);
+    assert(setViolationClassificationString != null);
+    assert(setViolationClassifications != null);
+    assert(setViolationClassificationNoEknString != null);
+    assert(setViolationClassificationsNoEkn != null);
+    assert(saveEvent != null);
+    return updatePerformInfoEvent(value);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object>({
+    TResult setCriticalEvent(bool value),
+    TResult setUseGeoLocationForAddressEvent(bool value),
+    TResult updatePerformInfoEvent(bool value),
+    TResult setAddressEvent(Address address),
+    TResult setTargetLandmark(String targetLandmark),
+    TResult setObjectElementString(String objectElement),
+    TResult setObjectElement(ObjectElement objectElement),
+    TResult setDescriptionEvent(String description),
+    TResult setViolationAdditionalFeatureStringEvent(
+        String violationAdditionalFeature),
+    TResult setViolationAdditionalFeatureEvent(
+        ViolationAdditionalFeature violationAdditionalFeature),
+    TResult setContractorStringEvent(String contractor),
+    TResult setContractorEvent(Contractor contractor),
+    TResult addPhotoEvent(Uint8List photo, String name),
+    TResult removePhotoEvent(int index),
+    TResult rotatePhotoEvent(int index, Uint8List photo),
+    TResult setViolationClassificationString(String classification),
+    TResult setViolationClassifications(
+        ViolationClassificationSearchResult classification),
+    TResult setViolationClassificationNoEknString(String classification),
+    TResult setViolationClassificationsNoEkn(
+        ViolationClassificationSearchResult classification),
+    TResult saveEvent(BuildContext context),
+    @required TResult orElse(),
+  }) {
+    assert(orElse != null);
+    if (updatePerformInfoEvent != null) {
+      return updatePerformInfoEvent(value);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object>({
+    @required TResult setCriticalEvent(SetCriticalEvent value),
+    @required
+        TResult setUseGeoLocationForAddressEvent(
+            SetUseGeoLocationForAddressEvent value),
+    @required TResult updatePerformInfoEvent(UpdatePerformInfoEvent value),
+    @required TResult setAddressEvent(SetAddressEvent value),
+    @required TResult setTargetLandmark(SetTargetLandmark value),
+    @required TResult setObjectElementString(SetObjectElementString value),
+    @required TResult setObjectElement(SetObjectElement value),
+    @required TResult setDescriptionEvent(SetDescriptionEvent value),
+    @required
+        TResult setViolationAdditionalFeatureStringEvent(
+            SetViolationAdditionalFeatureStringEvent value),
+    @required
+        TResult setViolationAdditionalFeatureEvent(
+            SetViolationAdditionalFeatureEvent value),
+    @required TResult setContractorStringEvent(SetContractorStringEvent value),
+    @required TResult setContractorEvent(SetContractorEvent value),
+    @required TResult addPhotoEvent(AddPhotoEvent value),
+    @required TResult removePhotoEvent(RemovePhotoEvent value),
+    @required TResult rotatePhotoEvent(RotatePhotoEvent value),
+    @required
+        TResult setViolationClassificationString(
+            SetViolationClassificationString value),
+    @required
+        TResult setViolationClassifications(SetViolationClassification value),
+    @required
+        TResult setViolationClassificationNoEknString(
+            SetViolationClassificationStringNoEkn value),
+    @required
+        TResult setViolationClassificationsNoEkn(
+            SetViolationClassificationNoEkn value),
+    @required TResult saveEvent(SaveControlViolation value),
+  }) {
+    assert(setCriticalEvent != null);
+    assert(setUseGeoLocationForAddressEvent != null);
+    assert(updatePerformInfoEvent != null);
+    assert(setAddressEvent != null);
+    assert(setTargetLandmark != null);
+    assert(setObjectElementString != null);
+    assert(setObjectElement != null);
+    assert(setDescriptionEvent != null);
+    assert(setViolationAdditionalFeatureStringEvent != null);
+    assert(setViolationAdditionalFeatureEvent != null);
+    assert(setContractorStringEvent != null);
+    assert(setContractorEvent != null);
+    assert(addPhotoEvent != null);
+    assert(removePhotoEvent != null);
+    assert(rotatePhotoEvent != null);
+    assert(setViolationClassificationString != null);
+    assert(setViolationClassifications != null);
+    assert(setViolationClassificationNoEknString != null);
+    assert(setViolationClassificationsNoEkn != null);
+    assert(saveEvent != null);
+    return updatePerformInfoEvent(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object>({
+    TResult setCriticalEvent(SetCriticalEvent value),
+    TResult setUseGeoLocationForAddressEvent(
+        SetUseGeoLocationForAddressEvent value),
+    TResult updatePerformInfoEvent(UpdatePerformInfoEvent value),
+    TResult setAddressEvent(SetAddressEvent value),
+    TResult setTargetLandmark(SetTargetLandmark value),
+    TResult setObjectElementString(SetObjectElementString value),
+    TResult setObjectElement(SetObjectElement value),
+    TResult setDescriptionEvent(SetDescriptionEvent value),
+    TResult setViolationAdditionalFeatureStringEvent(
+        SetViolationAdditionalFeatureStringEvent value),
+    TResult setViolationAdditionalFeatureEvent(
+        SetViolationAdditionalFeatureEvent value),
+    TResult setContractorStringEvent(SetContractorStringEvent value),
+    TResult setContractorEvent(SetContractorEvent value),
+    TResult addPhotoEvent(AddPhotoEvent value),
+    TResult removePhotoEvent(RemovePhotoEvent value),
+    TResult rotatePhotoEvent(RotatePhotoEvent value),
+    TResult setViolationClassificationString(
+        SetViolationClassificationString value),
+    TResult setViolationClassifications(SetViolationClassification value),
+    TResult setViolationClassificationNoEknString(
+        SetViolationClassificationStringNoEkn value),
+    TResult setViolationClassificationsNoEkn(
+        SetViolationClassificationNoEkn value),
+    TResult saveEvent(SaveControlViolation value),
+    @required TResult orElse(),
+  }) {
+    assert(orElse != null);
+    if (updatePerformInfoEvent != null) {
+      return updatePerformInfoEvent(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class UpdatePerformInfoEvent implements ControlViolationFormEvent {
+  const factory UpdatePerformInfoEvent(bool value) = _$UpdatePerformInfoEvent;
+
+  bool get value;
+  @JsonKey(ignore: true)
+  $UpdatePerformInfoEventCopyWith<UpdatePerformInfoEvent> get copyWith;
 }
 
 /// @nodoc
@@ -877,6 +1158,7 @@ class _$SetAddressEvent implements SetAddressEvent {
   TResult when<TResult extends Object>({
     @required TResult setCriticalEvent(bool value),
     @required TResult setUseGeoLocationForAddressEvent(bool value),
+    @required TResult updatePerformInfoEvent(bool value),
     @required TResult setAddressEvent(Address address),
     @required TResult setTargetLandmark(String targetLandmark),
     @required TResult setObjectElementString(String objectElement),
@@ -906,6 +1188,7 @@ class _$SetAddressEvent implements SetAddressEvent {
   }) {
     assert(setCriticalEvent != null);
     assert(setUseGeoLocationForAddressEvent != null);
+    assert(updatePerformInfoEvent != null);
     assert(setAddressEvent != null);
     assert(setTargetLandmark != null);
     assert(setObjectElementString != null);
@@ -931,6 +1214,7 @@ class _$SetAddressEvent implements SetAddressEvent {
   TResult maybeWhen<TResult extends Object>({
     TResult setCriticalEvent(bool value),
     TResult setUseGeoLocationForAddressEvent(bool value),
+    TResult updatePerformInfoEvent(bool value),
     TResult setAddressEvent(Address address),
     TResult setTargetLandmark(String targetLandmark),
     TResult setObjectElementString(String objectElement),
@@ -968,6 +1252,7 @@ class _$SetAddressEvent implements SetAddressEvent {
     @required
         TResult setUseGeoLocationForAddressEvent(
             SetUseGeoLocationForAddressEvent value),
+    @required TResult updatePerformInfoEvent(UpdatePerformInfoEvent value),
     @required TResult setAddressEvent(SetAddressEvent value),
     @required TResult setTargetLandmark(SetTargetLandmark value),
     @required TResult setObjectElementString(SetObjectElementString value),
@@ -999,6 +1284,7 @@ class _$SetAddressEvent implements SetAddressEvent {
   }) {
     assert(setCriticalEvent != null);
     assert(setUseGeoLocationForAddressEvent != null);
+    assert(updatePerformInfoEvent != null);
     assert(setAddressEvent != null);
     assert(setTargetLandmark != null);
     assert(setObjectElementString != null);
@@ -1025,6 +1311,7 @@ class _$SetAddressEvent implements SetAddressEvent {
     TResult setCriticalEvent(SetCriticalEvent value),
     TResult setUseGeoLocationForAddressEvent(
         SetUseGeoLocationForAddressEvent value),
+    TResult updatePerformInfoEvent(UpdatePerformInfoEvent value),
     TResult setAddressEvent(SetAddressEvent value),
     TResult setTargetLandmark(SetTargetLandmark value),
     TResult setObjectElementString(SetObjectElementString value),
@@ -1133,6 +1420,7 @@ class _$SetTargetLandmark implements SetTargetLandmark {
   TResult when<TResult extends Object>({
     @required TResult setCriticalEvent(bool value),
     @required TResult setUseGeoLocationForAddressEvent(bool value),
+    @required TResult updatePerformInfoEvent(bool value),
     @required TResult setAddressEvent(Address address),
     @required TResult setTargetLandmark(String targetLandmark),
     @required TResult setObjectElementString(String objectElement),
@@ -1162,6 +1450,7 @@ class _$SetTargetLandmark implements SetTargetLandmark {
   }) {
     assert(setCriticalEvent != null);
     assert(setUseGeoLocationForAddressEvent != null);
+    assert(updatePerformInfoEvent != null);
     assert(setAddressEvent != null);
     assert(setTargetLandmark != null);
     assert(setObjectElementString != null);
@@ -1187,6 +1476,7 @@ class _$SetTargetLandmark implements SetTargetLandmark {
   TResult maybeWhen<TResult extends Object>({
     TResult setCriticalEvent(bool value),
     TResult setUseGeoLocationForAddressEvent(bool value),
+    TResult updatePerformInfoEvent(bool value),
     TResult setAddressEvent(Address address),
     TResult setTargetLandmark(String targetLandmark),
     TResult setObjectElementString(String objectElement),
@@ -1224,6 +1514,7 @@ class _$SetTargetLandmark implements SetTargetLandmark {
     @required
         TResult setUseGeoLocationForAddressEvent(
             SetUseGeoLocationForAddressEvent value),
+    @required TResult updatePerformInfoEvent(UpdatePerformInfoEvent value),
     @required TResult setAddressEvent(SetAddressEvent value),
     @required TResult setTargetLandmark(SetTargetLandmark value),
     @required TResult setObjectElementString(SetObjectElementString value),
@@ -1255,6 +1546,7 @@ class _$SetTargetLandmark implements SetTargetLandmark {
   }) {
     assert(setCriticalEvent != null);
     assert(setUseGeoLocationForAddressEvent != null);
+    assert(updatePerformInfoEvent != null);
     assert(setAddressEvent != null);
     assert(setTargetLandmark != null);
     assert(setObjectElementString != null);
@@ -1281,6 +1573,7 @@ class _$SetTargetLandmark implements SetTargetLandmark {
     TResult setCriticalEvent(SetCriticalEvent value),
     TResult setUseGeoLocationForAddressEvent(
         SetUseGeoLocationForAddressEvent value),
+    TResult updatePerformInfoEvent(UpdatePerformInfoEvent value),
     TResult setAddressEvent(SetAddressEvent value),
     TResult setTargetLandmark(SetTargetLandmark value),
     TResult setObjectElementString(SetObjectElementString value),
@@ -1387,6 +1680,7 @@ class _$SetObjectElementString implements SetObjectElementString {
   TResult when<TResult extends Object>({
     @required TResult setCriticalEvent(bool value),
     @required TResult setUseGeoLocationForAddressEvent(bool value),
+    @required TResult updatePerformInfoEvent(bool value),
     @required TResult setAddressEvent(Address address),
     @required TResult setTargetLandmark(String targetLandmark),
     @required TResult setObjectElementString(String objectElement),
@@ -1416,6 +1710,7 @@ class _$SetObjectElementString implements SetObjectElementString {
   }) {
     assert(setCriticalEvent != null);
     assert(setUseGeoLocationForAddressEvent != null);
+    assert(updatePerformInfoEvent != null);
     assert(setAddressEvent != null);
     assert(setTargetLandmark != null);
     assert(setObjectElementString != null);
@@ -1441,6 +1736,7 @@ class _$SetObjectElementString implements SetObjectElementString {
   TResult maybeWhen<TResult extends Object>({
     TResult setCriticalEvent(bool value),
     TResult setUseGeoLocationForAddressEvent(bool value),
+    TResult updatePerformInfoEvent(bool value),
     TResult setAddressEvent(Address address),
     TResult setTargetLandmark(String targetLandmark),
     TResult setObjectElementString(String objectElement),
@@ -1478,6 +1774,7 @@ class _$SetObjectElementString implements SetObjectElementString {
     @required
         TResult setUseGeoLocationForAddressEvent(
             SetUseGeoLocationForAddressEvent value),
+    @required TResult updatePerformInfoEvent(UpdatePerformInfoEvent value),
     @required TResult setAddressEvent(SetAddressEvent value),
     @required TResult setTargetLandmark(SetTargetLandmark value),
     @required TResult setObjectElementString(SetObjectElementString value),
@@ -1509,6 +1806,7 @@ class _$SetObjectElementString implements SetObjectElementString {
   }) {
     assert(setCriticalEvent != null);
     assert(setUseGeoLocationForAddressEvent != null);
+    assert(updatePerformInfoEvent != null);
     assert(setAddressEvent != null);
     assert(setTargetLandmark != null);
     assert(setObjectElementString != null);
@@ -1535,6 +1833,7 @@ class _$SetObjectElementString implements SetObjectElementString {
     TResult setCriticalEvent(SetCriticalEvent value),
     TResult setUseGeoLocationForAddressEvent(
         SetUseGeoLocationForAddressEvent value),
+    TResult updatePerformInfoEvent(UpdatePerformInfoEvent value),
     TResult setAddressEvent(SetAddressEvent value),
     TResult setTargetLandmark(SetTargetLandmark value),
     TResult setObjectElementString(SetObjectElementString value),
@@ -1654,6 +1953,7 @@ class _$SetObjectElement implements SetObjectElement {
   TResult when<TResult extends Object>({
     @required TResult setCriticalEvent(bool value),
     @required TResult setUseGeoLocationForAddressEvent(bool value),
+    @required TResult updatePerformInfoEvent(bool value),
     @required TResult setAddressEvent(Address address),
     @required TResult setTargetLandmark(String targetLandmark),
     @required TResult setObjectElementString(String objectElement),
@@ -1683,6 +1983,7 @@ class _$SetObjectElement implements SetObjectElement {
   }) {
     assert(setCriticalEvent != null);
     assert(setUseGeoLocationForAddressEvent != null);
+    assert(updatePerformInfoEvent != null);
     assert(setAddressEvent != null);
     assert(setTargetLandmark != null);
     assert(setObjectElementString != null);
@@ -1708,6 +2009,7 @@ class _$SetObjectElement implements SetObjectElement {
   TResult maybeWhen<TResult extends Object>({
     TResult setCriticalEvent(bool value),
     TResult setUseGeoLocationForAddressEvent(bool value),
+    TResult updatePerformInfoEvent(bool value),
     TResult setAddressEvent(Address address),
     TResult setTargetLandmark(String targetLandmark),
     TResult setObjectElementString(String objectElement),
@@ -1745,6 +2047,7 @@ class _$SetObjectElement implements SetObjectElement {
     @required
         TResult setUseGeoLocationForAddressEvent(
             SetUseGeoLocationForAddressEvent value),
+    @required TResult updatePerformInfoEvent(UpdatePerformInfoEvent value),
     @required TResult setAddressEvent(SetAddressEvent value),
     @required TResult setTargetLandmark(SetTargetLandmark value),
     @required TResult setObjectElementString(SetObjectElementString value),
@@ -1776,6 +2079,7 @@ class _$SetObjectElement implements SetObjectElement {
   }) {
     assert(setCriticalEvent != null);
     assert(setUseGeoLocationForAddressEvent != null);
+    assert(updatePerformInfoEvent != null);
     assert(setAddressEvent != null);
     assert(setTargetLandmark != null);
     assert(setObjectElementString != null);
@@ -1802,6 +2106,7 @@ class _$SetObjectElement implements SetObjectElement {
     TResult setCriticalEvent(SetCriticalEvent value),
     TResult setUseGeoLocationForAddressEvent(
         SetUseGeoLocationForAddressEvent value),
+    TResult updatePerformInfoEvent(UpdatePerformInfoEvent value),
     TResult setAddressEvent(SetAddressEvent value),
     TResult setTargetLandmark(SetTargetLandmark value),
     TResult setObjectElementString(SetObjectElementString value),
@@ -1907,6 +2212,7 @@ class _$SetDescriptionEvent implements SetDescriptionEvent {
   TResult when<TResult extends Object>({
     @required TResult setCriticalEvent(bool value),
     @required TResult setUseGeoLocationForAddressEvent(bool value),
+    @required TResult updatePerformInfoEvent(bool value),
     @required TResult setAddressEvent(Address address),
     @required TResult setTargetLandmark(String targetLandmark),
     @required TResult setObjectElementString(String objectElement),
@@ -1936,6 +2242,7 @@ class _$SetDescriptionEvent implements SetDescriptionEvent {
   }) {
     assert(setCriticalEvent != null);
     assert(setUseGeoLocationForAddressEvent != null);
+    assert(updatePerformInfoEvent != null);
     assert(setAddressEvent != null);
     assert(setTargetLandmark != null);
     assert(setObjectElementString != null);
@@ -1961,6 +2268,7 @@ class _$SetDescriptionEvent implements SetDescriptionEvent {
   TResult maybeWhen<TResult extends Object>({
     TResult setCriticalEvent(bool value),
     TResult setUseGeoLocationForAddressEvent(bool value),
+    TResult updatePerformInfoEvent(bool value),
     TResult setAddressEvent(Address address),
     TResult setTargetLandmark(String targetLandmark),
     TResult setObjectElementString(String objectElement),
@@ -1998,6 +2306,7 @@ class _$SetDescriptionEvent implements SetDescriptionEvent {
     @required
         TResult setUseGeoLocationForAddressEvent(
             SetUseGeoLocationForAddressEvent value),
+    @required TResult updatePerformInfoEvent(UpdatePerformInfoEvent value),
     @required TResult setAddressEvent(SetAddressEvent value),
     @required TResult setTargetLandmark(SetTargetLandmark value),
     @required TResult setObjectElementString(SetObjectElementString value),
@@ -2029,6 +2338,7 @@ class _$SetDescriptionEvent implements SetDescriptionEvent {
   }) {
     assert(setCriticalEvent != null);
     assert(setUseGeoLocationForAddressEvent != null);
+    assert(updatePerformInfoEvent != null);
     assert(setAddressEvent != null);
     assert(setTargetLandmark != null);
     assert(setObjectElementString != null);
@@ -2055,6 +2365,7 @@ class _$SetDescriptionEvent implements SetDescriptionEvent {
     TResult setCriticalEvent(SetCriticalEvent value),
     TResult setUseGeoLocationForAddressEvent(
         SetUseGeoLocationForAddressEvent value),
+    TResult updatePerformInfoEvent(UpdatePerformInfoEvent value),
     TResult setAddressEvent(SetAddressEvent value),
     TResult setTargetLandmark(SetTargetLandmark value),
     TResult setObjectElementString(SetObjectElementString value),
@@ -2173,6 +2484,7 @@ class _$SetViolationAdditionalFeatureStringEvent
   TResult when<TResult extends Object>({
     @required TResult setCriticalEvent(bool value),
     @required TResult setUseGeoLocationForAddressEvent(bool value),
+    @required TResult updatePerformInfoEvent(bool value),
     @required TResult setAddressEvent(Address address),
     @required TResult setTargetLandmark(String targetLandmark),
     @required TResult setObjectElementString(String objectElement),
@@ -2202,6 +2514,7 @@ class _$SetViolationAdditionalFeatureStringEvent
   }) {
     assert(setCriticalEvent != null);
     assert(setUseGeoLocationForAddressEvent != null);
+    assert(updatePerformInfoEvent != null);
     assert(setAddressEvent != null);
     assert(setTargetLandmark != null);
     assert(setObjectElementString != null);
@@ -2227,6 +2540,7 @@ class _$SetViolationAdditionalFeatureStringEvent
   TResult maybeWhen<TResult extends Object>({
     TResult setCriticalEvent(bool value),
     TResult setUseGeoLocationForAddressEvent(bool value),
+    TResult updatePerformInfoEvent(bool value),
     TResult setAddressEvent(Address address),
     TResult setTargetLandmark(String targetLandmark),
     TResult setObjectElementString(String objectElement),
@@ -2265,6 +2579,7 @@ class _$SetViolationAdditionalFeatureStringEvent
     @required
         TResult setUseGeoLocationForAddressEvent(
             SetUseGeoLocationForAddressEvent value),
+    @required TResult updatePerformInfoEvent(UpdatePerformInfoEvent value),
     @required TResult setAddressEvent(SetAddressEvent value),
     @required TResult setTargetLandmark(SetTargetLandmark value),
     @required TResult setObjectElementString(SetObjectElementString value),
@@ -2296,6 +2611,7 @@ class _$SetViolationAdditionalFeatureStringEvent
   }) {
     assert(setCriticalEvent != null);
     assert(setUseGeoLocationForAddressEvent != null);
+    assert(updatePerformInfoEvent != null);
     assert(setAddressEvent != null);
     assert(setTargetLandmark != null);
     assert(setObjectElementString != null);
@@ -2322,6 +2638,7 @@ class _$SetViolationAdditionalFeatureStringEvent
     TResult setCriticalEvent(SetCriticalEvent value),
     TResult setUseGeoLocationForAddressEvent(
         SetUseGeoLocationForAddressEvent value),
+    TResult updatePerformInfoEvent(UpdatePerformInfoEvent value),
     TResult setAddressEvent(SetAddressEvent value),
     TResult setTargetLandmark(SetTargetLandmark value),
     TResult setObjectElementString(SetObjectElementString value),
@@ -2454,6 +2771,7 @@ class _$SetViolationAdditionalFeatureEvent
   TResult when<TResult extends Object>({
     @required TResult setCriticalEvent(bool value),
     @required TResult setUseGeoLocationForAddressEvent(bool value),
+    @required TResult updatePerformInfoEvent(bool value),
     @required TResult setAddressEvent(Address address),
     @required TResult setTargetLandmark(String targetLandmark),
     @required TResult setObjectElementString(String objectElement),
@@ -2483,6 +2801,7 @@ class _$SetViolationAdditionalFeatureEvent
   }) {
     assert(setCriticalEvent != null);
     assert(setUseGeoLocationForAddressEvent != null);
+    assert(updatePerformInfoEvent != null);
     assert(setAddressEvent != null);
     assert(setTargetLandmark != null);
     assert(setObjectElementString != null);
@@ -2508,6 +2827,7 @@ class _$SetViolationAdditionalFeatureEvent
   TResult maybeWhen<TResult extends Object>({
     TResult setCriticalEvent(bool value),
     TResult setUseGeoLocationForAddressEvent(bool value),
+    TResult updatePerformInfoEvent(bool value),
     TResult setAddressEvent(Address address),
     TResult setTargetLandmark(String targetLandmark),
     TResult setObjectElementString(String objectElement),
@@ -2545,6 +2865,7 @@ class _$SetViolationAdditionalFeatureEvent
     @required
         TResult setUseGeoLocationForAddressEvent(
             SetUseGeoLocationForAddressEvent value),
+    @required TResult updatePerformInfoEvent(UpdatePerformInfoEvent value),
     @required TResult setAddressEvent(SetAddressEvent value),
     @required TResult setTargetLandmark(SetTargetLandmark value),
     @required TResult setObjectElementString(SetObjectElementString value),
@@ -2576,6 +2897,7 @@ class _$SetViolationAdditionalFeatureEvent
   }) {
     assert(setCriticalEvent != null);
     assert(setUseGeoLocationForAddressEvent != null);
+    assert(updatePerformInfoEvent != null);
     assert(setAddressEvent != null);
     assert(setTargetLandmark != null);
     assert(setObjectElementString != null);
@@ -2602,6 +2924,7 @@ class _$SetViolationAdditionalFeatureEvent
     TResult setCriticalEvent(SetCriticalEvent value),
     TResult setUseGeoLocationForAddressEvent(
         SetUseGeoLocationForAddressEvent value),
+    TResult updatePerformInfoEvent(UpdatePerformInfoEvent value),
     TResult setAddressEvent(SetAddressEvent value),
     TResult setTargetLandmark(SetTargetLandmark value),
     TResult setObjectElementString(SetObjectElementString value),
@@ -2713,6 +3036,7 @@ class _$SetContractorStringEvent implements SetContractorStringEvent {
   TResult when<TResult extends Object>({
     @required TResult setCriticalEvent(bool value),
     @required TResult setUseGeoLocationForAddressEvent(bool value),
+    @required TResult updatePerformInfoEvent(bool value),
     @required TResult setAddressEvent(Address address),
     @required TResult setTargetLandmark(String targetLandmark),
     @required TResult setObjectElementString(String objectElement),
@@ -2742,6 +3066,7 @@ class _$SetContractorStringEvent implements SetContractorStringEvent {
   }) {
     assert(setCriticalEvent != null);
     assert(setUseGeoLocationForAddressEvent != null);
+    assert(updatePerformInfoEvent != null);
     assert(setAddressEvent != null);
     assert(setTargetLandmark != null);
     assert(setObjectElementString != null);
@@ -2767,6 +3092,7 @@ class _$SetContractorStringEvent implements SetContractorStringEvent {
   TResult maybeWhen<TResult extends Object>({
     TResult setCriticalEvent(bool value),
     TResult setUseGeoLocationForAddressEvent(bool value),
+    TResult updatePerformInfoEvent(bool value),
     TResult setAddressEvent(Address address),
     TResult setTargetLandmark(String targetLandmark),
     TResult setObjectElementString(String objectElement),
@@ -2804,6 +3130,7 @@ class _$SetContractorStringEvent implements SetContractorStringEvent {
     @required
         TResult setUseGeoLocationForAddressEvent(
             SetUseGeoLocationForAddressEvent value),
+    @required TResult updatePerformInfoEvent(UpdatePerformInfoEvent value),
     @required TResult setAddressEvent(SetAddressEvent value),
     @required TResult setTargetLandmark(SetTargetLandmark value),
     @required TResult setObjectElementString(SetObjectElementString value),
@@ -2835,6 +3162,7 @@ class _$SetContractorStringEvent implements SetContractorStringEvent {
   }) {
     assert(setCriticalEvent != null);
     assert(setUseGeoLocationForAddressEvent != null);
+    assert(updatePerformInfoEvent != null);
     assert(setAddressEvent != null);
     assert(setTargetLandmark != null);
     assert(setObjectElementString != null);
@@ -2861,6 +3189,7 @@ class _$SetContractorStringEvent implements SetContractorStringEvent {
     TResult setCriticalEvent(SetCriticalEvent value),
     TResult setUseGeoLocationForAddressEvent(
         SetUseGeoLocationForAddressEvent value),
+    TResult updatePerformInfoEvent(UpdatePerformInfoEvent value),
     TResult setAddressEvent(SetAddressEvent value),
     TResult setTargetLandmark(SetTargetLandmark value),
     TResult setObjectElementString(SetObjectElementString value),
@@ -2978,6 +3307,7 @@ class _$SetContractorEvent implements SetContractorEvent {
   TResult when<TResult extends Object>({
     @required TResult setCriticalEvent(bool value),
     @required TResult setUseGeoLocationForAddressEvent(bool value),
+    @required TResult updatePerformInfoEvent(bool value),
     @required TResult setAddressEvent(Address address),
     @required TResult setTargetLandmark(String targetLandmark),
     @required TResult setObjectElementString(String objectElement),
@@ -3007,6 +3337,7 @@ class _$SetContractorEvent implements SetContractorEvent {
   }) {
     assert(setCriticalEvent != null);
     assert(setUseGeoLocationForAddressEvent != null);
+    assert(updatePerformInfoEvent != null);
     assert(setAddressEvent != null);
     assert(setTargetLandmark != null);
     assert(setObjectElementString != null);
@@ -3032,6 +3363,7 @@ class _$SetContractorEvent implements SetContractorEvent {
   TResult maybeWhen<TResult extends Object>({
     TResult setCriticalEvent(bool value),
     TResult setUseGeoLocationForAddressEvent(bool value),
+    TResult updatePerformInfoEvent(bool value),
     TResult setAddressEvent(Address address),
     TResult setTargetLandmark(String targetLandmark),
     TResult setObjectElementString(String objectElement),
@@ -3069,6 +3401,7 @@ class _$SetContractorEvent implements SetContractorEvent {
     @required
         TResult setUseGeoLocationForAddressEvent(
             SetUseGeoLocationForAddressEvent value),
+    @required TResult updatePerformInfoEvent(UpdatePerformInfoEvent value),
     @required TResult setAddressEvent(SetAddressEvent value),
     @required TResult setTargetLandmark(SetTargetLandmark value),
     @required TResult setObjectElementString(SetObjectElementString value),
@@ -3100,6 +3433,7 @@ class _$SetContractorEvent implements SetContractorEvent {
   }) {
     assert(setCriticalEvent != null);
     assert(setUseGeoLocationForAddressEvent != null);
+    assert(updatePerformInfoEvent != null);
     assert(setAddressEvent != null);
     assert(setTargetLandmark != null);
     assert(setObjectElementString != null);
@@ -3126,6 +3460,7 @@ class _$SetContractorEvent implements SetContractorEvent {
     TResult setCriticalEvent(SetCriticalEvent value),
     TResult setUseGeoLocationForAddressEvent(
         SetUseGeoLocationForAddressEvent value),
+    TResult updatePerformInfoEvent(UpdatePerformInfoEvent value),
     TResult setAddressEvent(SetAddressEvent value),
     TResult setTargetLandmark(SetTargetLandmark value),
     TResult setObjectElementString(SetObjectElementString value),
@@ -3240,6 +3575,7 @@ class _$AddPhotoEvent implements AddPhotoEvent {
   TResult when<TResult extends Object>({
     @required TResult setCriticalEvent(bool value),
     @required TResult setUseGeoLocationForAddressEvent(bool value),
+    @required TResult updatePerformInfoEvent(bool value),
     @required TResult setAddressEvent(Address address),
     @required TResult setTargetLandmark(String targetLandmark),
     @required TResult setObjectElementString(String objectElement),
@@ -3269,6 +3605,7 @@ class _$AddPhotoEvent implements AddPhotoEvent {
   }) {
     assert(setCriticalEvent != null);
     assert(setUseGeoLocationForAddressEvent != null);
+    assert(updatePerformInfoEvent != null);
     assert(setAddressEvent != null);
     assert(setTargetLandmark != null);
     assert(setObjectElementString != null);
@@ -3294,6 +3631,7 @@ class _$AddPhotoEvent implements AddPhotoEvent {
   TResult maybeWhen<TResult extends Object>({
     TResult setCriticalEvent(bool value),
     TResult setUseGeoLocationForAddressEvent(bool value),
+    TResult updatePerformInfoEvent(bool value),
     TResult setAddressEvent(Address address),
     TResult setTargetLandmark(String targetLandmark),
     TResult setObjectElementString(String objectElement),
@@ -3331,6 +3669,7 @@ class _$AddPhotoEvent implements AddPhotoEvent {
     @required
         TResult setUseGeoLocationForAddressEvent(
             SetUseGeoLocationForAddressEvent value),
+    @required TResult updatePerformInfoEvent(UpdatePerformInfoEvent value),
     @required TResult setAddressEvent(SetAddressEvent value),
     @required TResult setTargetLandmark(SetTargetLandmark value),
     @required TResult setObjectElementString(SetObjectElementString value),
@@ -3362,6 +3701,7 @@ class _$AddPhotoEvent implements AddPhotoEvent {
   }) {
     assert(setCriticalEvent != null);
     assert(setUseGeoLocationForAddressEvent != null);
+    assert(updatePerformInfoEvent != null);
     assert(setAddressEvent != null);
     assert(setTargetLandmark != null);
     assert(setObjectElementString != null);
@@ -3388,6 +3728,7 @@ class _$AddPhotoEvent implements AddPhotoEvent {
     TResult setCriticalEvent(SetCriticalEvent value),
     TResult setUseGeoLocationForAddressEvent(
         SetUseGeoLocationForAddressEvent value),
+    TResult updatePerformInfoEvent(UpdatePerformInfoEvent value),
     TResult setAddressEvent(SetAddressEvent value),
     TResult setTargetLandmark(SetTargetLandmark value),
     TResult setObjectElementString(SetObjectElementString value),
@@ -3492,6 +3833,7 @@ class _$RemovePhotoEvent implements RemovePhotoEvent {
   TResult when<TResult extends Object>({
     @required TResult setCriticalEvent(bool value),
     @required TResult setUseGeoLocationForAddressEvent(bool value),
+    @required TResult updatePerformInfoEvent(bool value),
     @required TResult setAddressEvent(Address address),
     @required TResult setTargetLandmark(String targetLandmark),
     @required TResult setObjectElementString(String objectElement),
@@ -3521,6 +3863,7 @@ class _$RemovePhotoEvent implements RemovePhotoEvent {
   }) {
     assert(setCriticalEvent != null);
     assert(setUseGeoLocationForAddressEvent != null);
+    assert(updatePerformInfoEvent != null);
     assert(setAddressEvent != null);
     assert(setTargetLandmark != null);
     assert(setObjectElementString != null);
@@ -3546,6 +3889,7 @@ class _$RemovePhotoEvent implements RemovePhotoEvent {
   TResult maybeWhen<TResult extends Object>({
     TResult setCriticalEvent(bool value),
     TResult setUseGeoLocationForAddressEvent(bool value),
+    TResult updatePerformInfoEvent(bool value),
     TResult setAddressEvent(Address address),
     TResult setTargetLandmark(String targetLandmark),
     TResult setObjectElementString(String objectElement),
@@ -3583,6 +3927,7 @@ class _$RemovePhotoEvent implements RemovePhotoEvent {
     @required
         TResult setUseGeoLocationForAddressEvent(
             SetUseGeoLocationForAddressEvent value),
+    @required TResult updatePerformInfoEvent(UpdatePerformInfoEvent value),
     @required TResult setAddressEvent(SetAddressEvent value),
     @required TResult setTargetLandmark(SetTargetLandmark value),
     @required TResult setObjectElementString(SetObjectElementString value),
@@ -3614,6 +3959,7 @@ class _$RemovePhotoEvent implements RemovePhotoEvent {
   }) {
     assert(setCriticalEvent != null);
     assert(setUseGeoLocationForAddressEvent != null);
+    assert(updatePerformInfoEvent != null);
     assert(setAddressEvent != null);
     assert(setTargetLandmark != null);
     assert(setObjectElementString != null);
@@ -3640,6 +3986,7 @@ class _$RemovePhotoEvent implements RemovePhotoEvent {
     TResult setCriticalEvent(SetCriticalEvent value),
     TResult setUseGeoLocationForAddressEvent(
         SetUseGeoLocationForAddressEvent value),
+    TResult updatePerformInfoEvent(UpdatePerformInfoEvent value),
     TResult setAddressEvent(SetAddressEvent value),
     TResult setTargetLandmark(SetTargetLandmark value),
     TResult setObjectElementString(SetObjectElementString value),
@@ -3753,6 +4100,7 @@ class _$RotatePhotoEvent implements RotatePhotoEvent {
   TResult when<TResult extends Object>({
     @required TResult setCriticalEvent(bool value),
     @required TResult setUseGeoLocationForAddressEvent(bool value),
+    @required TResult updatePerformInfoEvent(bool value),
     @required TResult setAddressEvent(Address address),
     @required TResult setTargetLandmark(String targetLandmark),
     @required TResult setObjectElementString(String objectElement),
@@ -3782,6 +4130,7 @@ class _$RotatePhotoEvent implements RotatePhotoEvent {
   }) {
     assert(setCriticalEvent != null);
     assert(setUseGeoLocationForAddressEvent != null);
+    assert(updatePerformInfoEvent != null);
     assert(setAddressEvent != null);
     assert(setTargetLandmark != null);
     assert(setObjectElementString != null);
@@ -3807,6 +4156,7 @@ class _$RotatePhotoEvent implements RotatePhotoEvent {
   TResult maybeWhen<TResult extends Object>({
     TResult setCriticalEvent(bool value),
     TResult setUseGeoLocationForAddressEvent(bool value),
+    TResult updatePerformInfoEvent(bool value),
     TResult setAddressEvent(Address address),
     TResult setTargetLandmark(String targetLandmark),
     TResult setObjectElementString(String objectElement),
@@ -3844,6 +4194,7 @@ class _$RotatePhotoEvent implements RotatePhotoEvent {
     @required
         TResult setUseGeoLocationForAddressEvent(
             SetUseGeoLocationForAddressEvent value),
+    @required TResult updatePerformInfoEvent(UpdatePerformInfoEvent value),
     @required TResult setAddressEvent(SetAddressEvent value),
     @required TResult setTargetLandmark(SetTargetLandmark value),
     @required TResult setObjectElementString(SetObjectElementString value),
@@ -3875,6 +4226,7 @@ class _$RotatePhotoEvent implements RotatePhotoEvent {
   }) {
     assert(setCriticalEvent != null);
     assert(setUseGeoLocationForAddressEvent != null);
+    assert(updatePerformInfoEvent != null);
     assert(setAddressEvent != null);
     assert(setTargetLandmark != null);
     assert(setObjectElementString != null);
@@ -3901,6 +4253,7 @@ class _$RotatePhotoEvent implements RotatePhotoEvent {
     TResult setCriticalEvent(SetCriticalEvent value),
     TResult setUseGeoLocationForAddressEvent(
         SetUseGeoLocationForAddressEvent value),
+    TResult updatePerformInfoEvent(UpdatePerformInfoEvent value),
     TResult setAddressEvent(SetAddressEvent value),
     TResult setTargetLandmark(SetTargetLandmark value),
     TResult setObjectElementString(SetObjectElementString value),
@@ -4016,6 +4369,7 @@ class _$SetViolationClassificationString
   TResult when<TResult extends Object>({
     @required TResult setCriticalEvent(bool value),
     @required TResult setUseGeoLocationForAddressEvent(bool value),
+    @required TResult updatePerformInfoEvent(bool value),
     @required TResult setAddressEvent(Address address),
     @required TResult setTargetLandmark(String targetLandmark),
     @required TResult setObjectElementString(String objectElement),
@@ -4045,6 +4399,7 @@ class _$SetViolationClassificationString
   }) {
     assert(setCriticalEvent != null);
     assert(setUseGeoLocationForAddressEvent != null);
+    assert(updatePerformInfoEvent != null);
     assert(setAddressEvent != null);
     assert(setTargetLandmark != null);
     assert(setObjectElementString != null);
@@ -4070,6 +4425,7 @@ class _$SetViolationClassificationString
   TResult maybeWhen<TResult extends Object>({
     TResult setCriticalEvent(bool value),
     TResult setUseGeoLocationForAddressEvent(bool value),
+    TResult updatePerformInfoEvent(bool value),
     TResult setAddressEvent(Address address),
     TResult setTargetLandmark(String targetLandmark),
     TResult setObjectElementString(String objectElement),
@@ -4107,6 +4463,7 @@ class _$SetViolationClassificationString
     @required
         TResult setUseGeoLocationForAddressEvent(
             SetUseGeoLocationForAddressEvent value),
+    @required TResult updatePerformInfoEvent(UpdatePerformInfoEvent value),
     @required TResult setAddressEvent(SetAddressEvent value),
     @required TResult setTargetLandmark(SetTargetLandmark value),
     @required TResult setObjectElementString(SetObjectElementString value),
@@ -4138,6 +4495,7 @@ class _$SetViolationClassificationString
   }) {
     assert(setCriticalEvent != null);
     assert(setUseGeoLocationForAddressEvent != null);
+    assert(updatePerformInfoEvent != null);
     assert(setAddressEvent != null);
     assert(setTargetLandmark != null);
     assert(setObjectElementString != null);
@@ -4164,6 +4522,7 @@ class _$SetViolationClassificationString
     TResult setCriticalEvent(SetCriticalEvent value),
     TResult setUseGeoLocationForAddressEvent(
         SetUseGeoLocationForAddressEvent value),
+    TResult updatePerformInfoEvent(UpdatePerformInfoEvent value),
     TResult setAddressEvent(SetAddressEvent value),
     TResult setTargetLandmark(SetTargetLandmark value),
     TResult setObjectElementString(SetObjectElementString value),
@@ -4290,6 +4649,7 @@ class _$SetViolationClassification implements SetViolationClassification {
   TResult when<TResult extends Object>({
     @required TResult setCriticalEvent(bool value),
     @required TResult setUseGeoLocationForAddressEvent(bool value),
+    @required TResult updatePerformInfoEvent(bool value),
     @required TResult setAddressEvent(Address address),
     @required TResult setTargetLandmark(String targetLandmark),
     @required TResult setObjectElementString(String objectElement),
@@ -4319,6 +4679,7 @@ class _$SetViolationClassification implements SetViolationClassification {
   }) {
     assert(setCriticalEvent != null);
     assert(setUseGeoLocationForAddressEvent != null);
+    assert(updatePerformInfoEvent != null);
     assert(setAddressEvent != null);
     assert(setTargetLandmark != null);
     assert(setObjectElementString != null);
@@ -4344,6 +4705,7 @@ class _$SetViolationClassification implements SetViolationClassification {
   TResult maybeWhen<TResult extends Object>({
     TResult setCriticalEvent(bool value),
     TResult setUseGeoLocationForAddressEvent(bool value),
+    TResult updatePerformInfoEvent(bool value),
     TResult setAddressEvent(Address address),
     TResult setTargetLandmark(String targetLandmark),
     TResult setObjectElementString(String objectElement),
@@ -4381,6 +4743,7 @@ class _$SetViolationClassification implements SetViolationClassification {
     @required
         TResult setUseGeoLocationForAddressEvent(
             SetUseGeoLocationForAddressEvent value),
+    @required TResult updatePerformInfoEvent(UpdatePerformInfoEvent value),
     @required TResult setAddressEvent(SetAddressEvent value),
     @required TResult setTargetLandmark(SetTargetLandmark value),
     @required TResult setObjectElementString(SetObjectElementString value),
@@ -4412,6 +4775,7 @@ class _$SetViolationClassification implements SetViolationClassification {
   }) {
     assert(setCriticalEvent != null);
     assert(setUseGeoLocationForAddressEvent != null);
+    assert(updatePerformInfoEvent != null);
     assert(setAddressEvent != null);
     assert(setTargetLandmark != null);
     assert(setObjectElementString != null);
@@ -4438,6 +4802,7 @@ class _$SetViolationClassification implements SetViolationClassification {
     TResult setCriticalEvent(SetCriticalEvent value),
     TResult setUseGeoLocationForAddressEvent(
         SetUseGeoLocationForAddressEvent value),
+    TResult updatePerformInfoEvent(UpdatePerformInfoEvent value),
     TResult setAddressEvent(SetAddressEvent value),
     TResult setTargetLandmark(SetTargetLandmark value),
     TResult setObjectElementString(SetObjectElementString value),
@@ -4554,6 +4919,7 @@ class _$SetViolationClassificationStringNoEkn
   TResult when<TResult extends Object>({
     @required TResult setCriticalEvent(bool value),
     @required TResult setUseGeoLocationForAddressEvent(bool value),
+    @required TResult updatePerformInfoEvent(bool value),
     @required TResult setAddressEvent(Address address),
     @required TResult setTargetLandmark(String targetLandmark),
     @required TResult setObjectElementString(String objectElement),
@@ -4583,6 +4949,7 @@ class _$SetViolationClassificationStringNoEkn
   }) {
     assert(setCriticalEvent != null);
     assert(setUseGeoLocationForAddressEvent != null);
+    assert(updatePerformInfoEvent != null);
     assert(setAddressEvent != null);
     assert(setTargetLandmark != null);
     assert(setObjectElementString != null);
@@ -4608,6 +4975,7 @@ class _$SetViolationClassificationStringNoEkn
   TResult maybeWhen<TResult extends Object>({
     TResult setCriticalEvent(bool value),
     TResult setUseGeoLocationForAddressEvent(bool value),
+    TResult updatePerformInfoEvent(bool value),
     TResult setAddressEvent(Address address),
     TResult setTargetLandmark(String targetLandmark),
     TResult setObjectElementString(String objectElement),
@@ -4645,6 +5013,7 @@ class _$SetViolationClassificationStringNoEkn
     @required
         TResult setUseGeoLocationForAddressEvent(
             SetUseGeoLocationForAddressEvent value),
+    @required TResult updatePerformInfoEvent(UpdatePerformInfoEvent value),
     @required TResult setAddressEvent(SetAddressEvent value),
     @required TResult setTargetLandmark(SetTargetLandmark value),
     @required TResult setObjectElementString(SetObjectElementString value),
@@ -4676,6 +5045,7 @@ class _$SetViolationClassificationStringNoEkn
   }) {
     assert(setCriticalEvent != null);
     assert(setUseGeoLocationForAddressEvent != null);
+    assert(updatePerformInfoEvent != null);
     assert(setAddressEvent != null);
     assert(setTargetLandmark != null);
     assert(setObjectElementString != null);
@@ -4702,6 +5072,7 @@ class _$SetViolationClassificationStringNoEkn
     TResult setCriticalEvent(SetCriticalEvent value),
     TResult setUseGeoLocationForAddressEvent(
         SetUseGeoLocationForAddressEvent value),
+    TResult updatePerformInfoEvent(UpdatePerformInfoEvent value),
     TResult setAddressEvent(SetAddressEvent value),
     TResult setTargetLandmark(SetTargetLandmark value),
     TResult setObjectElementString(SetObjectElementString value),
@@ -4830,6 +5201,7 @@ class _$SetViolationClassificationNoEkn
   TResult when<TResult extends Object>({
     @required TResult setCriticalEvent(bool value),
     @required TResult setUseGeoLocationForAddressEvent(bool value),
+    @required TResult updatePerformInfoEvent(bool value),
     @required TResult setAddressEvent(Address address),
     @required TResult setTargetLandmark(String targetLandmark),
     @required TResult setObjectElementString(String objectElement),
@@ -4859,6 +5231,7 @@ class _$SetViolationClassificationNoEkn
   }) {
     assert(setCriticalEvent != null);
     assert(setUseGeoLocationForAddressEvent != null);
+    assert(updatePerformInfoEvent != null);
     assert(setAddressEvent != null);
     assert(setTargetLandmark != null);
     assert(setObjectElementString != null);
@@ -4884,6 +5257,7 @@ class _$SetViolationClassificationNoEkn
   TResult maybeWhen<TResult extends Object>({
     TResult setCriticalEvent(bool value),
     TResult setUseGeoLocationForAddressEvent(bool value),
+    TResult updatePerformInfoEvent(bool value),
     TResult setAddressEvent(Address address),
     TResult setTargetLandmark(String targetLandmark),
     TResult setObjectElementString(String objectElement),
@@ -4921,6 +5295,7 @@ class _$SetViolationClassificationNoEkn
     @required
         TResult setUseGeoLocationForAddressEvent(
             SetUseGeoLocationForAddressEvent value),
+    @required TResult updatePerformInfoEvent(UpdatePerformInfoEvent value),
     @required TResult setAddressEvent(SetAddressEvent value),
     @required TResult setTargetLandmark(SetTargetLandmark value),
     @required TResult setObjectElementString(SetObjectElementString value),
@@ -4952,6 +5327,7 @@ class _$SetViolationClassificationNoEkn
   }) {
     assert(setCriticalEvent != null);
     assert(setUseGeoLocationForAddressEvent != null);
+    assert(updatePerformInfoEvent != null);
     assert(setAddressEvent != null);
     assert(setTargetLandmark != null);
     assert(setObjectElementString != null);
@@ -4978,6 +5354,7 @@ class _$SetViolationClassificationNoEkn
     TResult setCriticalEvent(SetCriticalEvent value),
     TResult setUseGeoLocationForAddressEvent(
         SetUseGeoLocationForAddressEvent value),
+    TResult updatePerformInfoEvent(UpdatePerformInfoEvent value),
     TResult setAddressEvent(SetAddressEvent value),
     TResult setTargetLandmark(SetTargetLandmark value),
     TResult setObjectElementString(SetObjectElementString value),
@@ -5086,6 +5463,7 @@ class _$SaveControlViolation implements SaveControlViolation {
   TResult when<TResult extends Object>({
     @required TResult setCriticalEvent(bool value),
     @required TResult setUseGeoLocationForAddressEvent(bool value),
+    @required TResult updatePerformInfoEvent(bool value),
     @required TResult setAddressEvent(Address address),
     @required TResult setTargetLandmark(String targetLandmark),
     @required TResult setObjectElementString(String objectElement),
@@ -5115,6 +5493,7 @@ class _$SaveControlViolation implements SaveControlViolation {
   }) {
     assert(setCriticalEvent != null);
     assert(setUseGeoLocationForAddressEvent != null);
+    assert(updatePerformInfoEvent != null);
     assert(setAddressEvent != null);
     assert(setTargetLandmark != null);
     assert(setObjectElementString != null);
@@ -5140,6 +5519,7 @@ class _$SaveControlViolation implements SaveControlViolation {
   TResult maybeWhen<TResult extends Object>({
     TResult setCriticalEvent(bool value),
     TResult setUseGeoLocationForAddressEvent(bool value),
+    TResult updatePerformInfoEvent(bool value),
     TResult setAddressEvent(Address address),
     TResult setTargetLandmark(String targetLandmark),
     TResult setObjectElementString(String objectElement),
@@ -5177,6 +5557,7 @@ class _$SaveControlViolation implements SaveControlViolation {
     @required
         TResult setUseGeoLocationForAddressEvent(
             SetUseGeoLocationForAddressEvent value),
+    @required TResult updatePerformInfoEvent(UpdatePerformInfoEvent value),
     @required TResult setAddressEvent(SetAddressEvent value),
     @required TResult setTargetLandmark(SetTargetLandmark value),
     @required TResult setObjectElementString(SetObjectElementString value),
@@ -5208,6 +5589,7 @@ class _$SaveControlViolation implements SaveControlViolation {
   }) {
     assert(setCriticalEvent != null);
     assert(setUseGeoLocationForAddressEvent != null);
+    assert(updatePerformInfoEvent != null);
     assert(setAddressEvent != null);
     assert(setTargetLandmark != null);
     assert(setObjectElementString != null);
@@ -5234,6 +5616,7 @@ class _$SaveControlViolation implements SaveControlViolation {
     TResult setCriticalEvent(SetCriticalEvent value),
     TResult setUseGeoLocationForAddressEvent(
         SetUseGeoLocationForAddressEvent value),
+    TResult updatePerformInfoEvent(UpdatePerformInfoEvent value),
     TResult setAddressEvent(SetAddressEvent value),
     TResult setTargetLandmark(SetTargetLandmark value),
     TResult setObjectElementString(SetObjectElementString value),

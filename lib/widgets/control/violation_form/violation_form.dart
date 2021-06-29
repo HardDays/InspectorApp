@@ -13,6 +13,7 @@ import 'package:inspector/model/department_control/dcviolation.dart';
 import 'package:inspector/model/department_control/object_element.dart';
 import 'package:inspector/model/department_control/violation_additional_feature.dart';
 import 'package:inspector/model/department_control/violation_classification_search_result.dart';
+import 'package:inspector/services/department_control/department_control_service.dart';
 import 'package:inspector/services/dictionary_service.dart';
 import 'package:inspector/services/location/location_service.dart';
 import 'package:inspector/services/network_status_service/network_status_service.dart';
@@ -62,13 +63,16 @@ class _ViolationFormWidgetState extends State<ViolationFormWidget> {
   Widget build(BuildContext context) {
     return BlocProvider<ControlViolationFormBloc>(
       create: (context) => ControlViolationFormBloc(
-          widget.initialViolation,
-          widget.onConfirm,
-          Provider.of<LocationService>(context, listen: false),
-          Provider.of<DictionaryService>(context, listen: false),
-          Provider.of<NetworkStatusService>(context, listen: false),
-          notificationBloc: BlocProvider.of<NotificationBloc>(context),
-          controlObject: widget.controlObject),
+        widget.initialViolation,
+        widget.onConfirm,
+        Provider.of<LocationService>(context, listen: false),
+        Provider.of<DictionaryService>(context, listen: false),
+        Provider.of<NetworkStatusService>(context, listen: false),
+        notificationBloc: BlocProvider.of<NotificationBloc>(context),
+        controlObject: widget.controlObject,
+        departmentControlService:
+            Provider.of<DepartmentControlService>(context, listen: false),
+      )..add(UpdatePerformInfoEvent(true)),
       child: BlocConsumer<ControlViolationFormBloc, CotnrolViolationFormState>(
         listener: (context, state) {
           _fillControllers(state);

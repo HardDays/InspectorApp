@@ -146,7 +146,12 @@ class _$ControlListBlocEventTearOff {
       ControlObjectBloc controlObjectBloc,
       bool sentToCafap) {
     return UpdateControlResultEvent(
-        object, controlResultId, violation, controlObjectBloc, sentToCafap);
+      object,
+      controlResultId,
+      violation,
+      controlObjectBloc,
+      sentToCafap,
+    );
   }
 
 // ignore: unused_element
@@ -4255,15 +4260,16 @@ class _$UpdateControlResultEventCopyWithImpl<$Res>
     Object sentToCafap = freezed,
   }) {
     return _then(UpdateControlResultEvent(
-        object == freezed ? _value.object : object as ControlObject,
-        controlResultId == freezed
-            ? _value.controlResultId
-            : controlResultId as int,
-        violation == freezed ? _value.violation : violation as DCViolation,
-        controlObjectBloc == freezed
-            ? _value.controlObjectBloc
-            : controlObjectBloc as ControlObjectBloc,
-        sentToCafap == freezed ? _value.sentToCafap : sentToCafap as bool));
+      object == freezed ? _value.object : object as ControlObject,
+      controlResultId == freezed
+          ? _value.controlResultId
+          : controlResultId as int,
+      violation == freezed ? _value.violation : violation as DCViolation,
+      controlObjectBloc == freezed
+          ? _value.controlObjectBloc
+          : controlObjectBloc as ControlObjectBloc,
+      sentToCafap == freezed ? _value.sentToCafap : sentToCafap as bool,
+    ));
   }
 
   @override
@@ -4310,24 +4316,27 @@ class _$UpdateControlResultEvent implements UpdateControlResultEvent {
 
   @override
   String toString() {
-    return 'ControlListBlocEvent.updateControlResultEvent(object: $object, controlResultId: $controlResultId, violation: $violation, ControlObjectBloc $controlObjectBloc, sentToCafap $sentToCafap)';
+    return 'ControlListBlocEvent.updateControlResultEvent(object: $object, controlResultId: $controlResultId, violation: $violation, controlObjectBloc: $controlObjectBloc, sentToCafap: $sentToCafap)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other is UpdateControlResultEvent &&
-                (identical(other.object, object) ||
-                    const DeepCollectionEquality()
-                        .equals(other.object, object)) &&
-                (identical(other.controlResultId, controlResultId) ||
-                    const DeepCollectionEquality()
-                        .equals(other.controlResultId, controlResultId)) &&
-                (identical(other.violation, violation) ||
-                    const DeepCollectionEquality()
-                        .equals(other.violation, violation)) ||
-            const DeepCollectionEquality()
-                .equals(other.controlObjectBloc, controlObjectBloc));
+            (identical(other.object, object) ||
+                const DeepCollectionEquality().equals(other.object, object)) &&
+            (identical(other.controlResultId, controlResultId) ||
+                const DeepCollectionEquality()
+                    .equals(other.controlResultId, controlResultId)) &&
+            (identical(other.violation, violation) ||
+                const DeepCollectionEquality()
+                    .equals(other.violation, violation)) &&
+            (identical(other.controlObjectBloc, controlObjectBloc) ||
+                const DeepCollectionEquality()
+                    .equals(other.controlObjectBloc, controlObjectBloc)) &&
+            (identical(other.sentToCafap, sentToCafap) ||
+                const DeepCollectionEquality()
+                    .equals(other.sentToCafap, sentToCafap)));
   }
 
   @override
@@ -4335,7 +4344,9 @@ class _$UpdateControlResultEvent implements UpdateControlResultEvent {
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(object) ^
       const DeepCollectionEquality().hash(controlResultId) ^
-      const DeepCollectionEquality().hash(violation);
+      const DeepCollectionEquality().hash(violation) ^
+      const DeepCollectionEquality().hash(controlObjectBloc) ^
+      const DeepCollectionEquality().hash(sentToCafap);
 
   @JsonKey(ignore: true)
   @override
