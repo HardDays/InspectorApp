@@ -222,6 +222,7 @@ class ControlObjectPage extends StatelessWidget {
                         ),
                       );
                     },
+                    //TODO: 1566
                     onEdit: () async {
                       await Navigator.push(
                         context,
@@ -260,7 +261,9 @@ class ControlObjectPage extends StatelessWidget {
                                       searchResult.id,
                                       result,
                                       BlocProvider.of<ControlObjectBloc>(
-                                          blocContext)));
+                                          blocContext),
+                                      searchResult.violation.performControls !=
+                                          null));
                             },
                             violationNum:
                                 'Нарушение №${searchResult.violation.violationNum} от ${DateFormat("dd.MM.yyyy")}',
@@ -326,6 +329,8 @@ class ControlObjectPage extends StatelessWidget {
                     builder: (BuildContext ctx) => ProjectDialog(
                       child: PerformControlFormWidget(
                         onConfirm: (performControl) {
+                          //TODO: перенести реализацию проверки отправки в ЦАФАП в блок
+
                           BlocProvider.of<ControlListBloc>(context).add(
                             ControlListBlocEvent.registerPerformControlEvent(
                               performControl,

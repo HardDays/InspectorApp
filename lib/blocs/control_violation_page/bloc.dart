@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:core';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:inspector/blocs/control_violation_page/event.dart';
 import 'package:inspector/blocs/control_violation_page/state.dart';
@@ -77,8 +79,13 @@ class ControlViolationPageBloc
           } on ApiException catch (e) {
             print(e.message);
             print(e.details);
-            notificationBloc.add(SnackBarNotificationEvent(
-                'Произошла ошибка: ${e.message}, ${e.details}'));
+            if (e.details.contains('Код: 422')) {
+              notificationBloc.add(SnackBarNotificationEvent(
+                  'Контроль устранения передан в ЦАФАП. Редактирование невозможно. Данные не сохранены'));
+            } else {
+              notificationBloc.add(SnackBarNotificationEvent(
+                  'Произошла ошибка: ${e.message}, ${e.details}'));
+            }
           }
         },
         discardChanges: (event) async* {
@@ -239,7 +246,9 @@ class ControlViolationPageBloc
       );
 
   bool _checkIfEditable() {
-    if (_networkStatus.connectionStatus != ConnectionStatus.online) {
+    //TODO: DEBUG в режиме отладки всегда онлайн
+    if (_networkStatus.connectionStatus != ConnectionStatus.online &&
+        kReleaseMode) {
       return false;
     }
     if (state is LoadedControlViolationPageBlocState) {

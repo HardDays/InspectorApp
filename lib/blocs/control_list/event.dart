@@ -76,6 +76,7 @@ abstract class ControlListBlocEvent with _$ControlListBlocEvent {
     int controlResultId,
     DCViolation violation,
     ControlObjectBloc controlObjectBloc,
+    bool sentToCafap,
   ) = UpdateControlResultEvent;
 
   const factory ControlListBlocEvent.changeNetworkStatusEvent(

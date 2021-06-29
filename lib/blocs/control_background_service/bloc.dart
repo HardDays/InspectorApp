@@ -51,7 +51,8 @@ class ControlBackgroundServiceBloc extends Bloc<
 
   Stream<ControlBackgroundServiceBlocState> _onInitEvent(
       InitEvent event) async* {
-    if ((await networkStatusService.actual).connectionStatus == ConnectionStatus.online &&
+    if ((await networkStatusService.actual).connectionStatus ==
+            ConnectionStatus.online &&
         !showed) {
       final metadata = await departmentControlService.localMetadata;
       if (metadata.loaded) {
@@ -63,14 +64,16 @@ class ControlBackgroundServiceBloc extends Bloc<
       showed = true;
     }
     if (_networkStatus?.connectionStatus == ConnectionStatus.online) {
-      final operation = departmentControlService.getUploadOperation((e) async => notificationBloc.add(SnackBarNotificationEvent(
-              'Ошибка ${e.message}: ${e.details}')));
+      final operation = departmentControlService.getUploadOperation((e) async =>
+          notificationBloc.add(
+              SnackBarNotificationEvent('Ошибка ${e.message}: ${e.details}')));
       backgroundLoadingBloc.add(
         BackgroundLoadingBlocEvent.updateStatusTextEvent(
           'Синхронизация результатов обследования',
         ),
       );
-      backgroundLoadingBloc.add(BackgroundLoadingBlocEvent.addOperationToQueueEvent(operation));
+      backgroundLoadingBloc
+          .add(BackgroundLoadingBlocEvent.addOperationToQueueEvent(operation));
     }
   }
 
@@ -101,7 +104,7 @@ class ControlBackgroundServiceBloc extends Bloc<
           });
           notificationBloc.add(SnackBarNotificationEvent(
               'Объекты ведомстенного контроля загружены'));
-          if(loadSearchResults) {
+          if (loadSearchResults) {
             backgroundLoadingBloc.add(
               BackgroundLoadingBlocEvent.updateStatusTextEvent(
                 'Идет загрузка нарушений',
@@ -114,8 +117,8 @@ class ControlBackgroundServiceBloc extends Bloc<
                 ),
               );
             });
-            notificationBloc.add(SnackBarNotificationEvent(
-                'Нарушения загружены'));
+            notificationBloc
+                .add(SnackBarNotificationEvent('Нарушения загружены'));
           }
         }),
         onCancel: departmentControlService.cancelLoading,
@@ -125,5 +128,5 @@ class ControlBackgroundServiceBloc extends Bloc<
   Future<void> close() async {
     await _networkStatusStreamSubscription.cancel();
     await super.close();
-  } 
+  }
 }

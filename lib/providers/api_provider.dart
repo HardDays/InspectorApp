@@ -111,13 +111,11 @@ class ApiProvider {
   }
 
   Future<dynamic> _request(Function request) async {
+    //TODO: получение ответа от сервера
     try {
       final res = (await request());
-      //print(res.request.queryParameters);
-      // print('response' + res.data.toString());
-      // String ss = res.data.toString();
-      // String sss = res.toString();
-      // print(ss + sss);
+      final pisosdos = res.data.toString();
+      print(pisosdos);
       return res.data;
     } on DioError catch (ex) {
       print(ex);
@@ -233,9 +231,12 @@ class ApiProvider {
   }
 
   Future<dynamic> createReport(Report report) async {
+    //TODO: убрать дебаг строки
     final json = report.toJson();
     _removeJsonNulls(json);
-    // var t = c.json.encode(json);
+    var h = json;
+    String GG = h.toString();
+    print(GG);
     //  print(report.reportNum);
     //  print(report.violations.first.violationDate);
     //print(t);
@@ -384,6 +385,9 @@ class ApiProvider {
 
   Future<dynamic> updateDCControlResult(
       int dcObjectId, int dcControlResultId, DCViolation violation) {
+    //TODO: убрать дебаг строки
+    String FG = {"violation": violation.toJson()}.toString();
+    print(FG);
     return _request(() => dio.patch(
         '/dc-objects/$dcObjectId/control-results/$dcControlResultId',
         data: {"violation": violation.toJson()}));

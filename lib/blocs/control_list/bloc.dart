@@ -88,23 +88,31 @@ class ControlListBloc extends Bloc<ControlListBlocEvent, ControlListBlocState> {
         changeNetworkStatusEvent: (event) async* {},
       );
 
-  Stream<ControlListBlocState> _onUpdateControlResultEvent(event) async* {
-    try {
-      _notificationBloc
-          .add(SnackBarNotificationEvent('Обновление результата обследования'));
-      var res = await _departmentControlService.updateControlResult(
-        event.object,
-        event.controlResultId,
-        event.violation,
-        _networkStatus,
-      );
-      event.controlObjectBloc.add(ControlObjectBlocEvent.loadEvent());
-      _notificationBloc.add(OkDialogNotificationEvent('Обновлено успешно'));
-    } on ApiException catch (e) {
-      print(e.message);
-      print(e.details);
-      yield* (_onApiException(e));
+  Stream<ControlListBlocState> _onUpdateControlResultEvent(
+      UpdateControlResultEvent event) async* {
+    if (!event.sentToCafap) {
+      try {
+        _notificationBloc.add(
+            SnackBarNotificationEvent('Обновление результата обследования'));
+        //TODO: дописать проверку на отправку в цафап
+
+        await _departmentControlService.updateControlResult(
+          event.object,
+          event.controlResultId,
+          event.violation,
+          _networkStatus,
+        );
+        event.controlObjectBloc.add(ControlObjectBlocEvent.loadEvent());
+        _notificationBloc.add(OkDialogNotificationEvent('Обновлено успешно'));
+      } on ApiException catch (e) {
+        print(e.message);
+        print(e.details);
+        yield* (_onApiException(e));
+      }
+    } else {
+      yield* (_onApiException(ApiException('Нарушение нарушениеееее')));
     }
+    ;
   }
 
   Stream<ControlListBlocState> _onRemoveViolationEvent(event) async* {

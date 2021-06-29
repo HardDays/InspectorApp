@@ -166,12 +166,6 @@ class DepartmentControlService {
     DCViolation violation,
     NetworkStatus networkStatus,
   ) {
-    var obj = DepartmentControlUpdateControlRequest(
-      object,
-      dcControlResultId,
-      violation,
-    );
-
     var res = _getClient(networkStatus).updateControlResult(
       DepartmentControlUpdateControlRequest(
         object,

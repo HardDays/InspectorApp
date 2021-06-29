@@ -16,6 +16,9 @@ abstract class ControlViolationFormEvent with _$ControlViolationFormEvent {
     bool value,
   ) = SetCriticalEvent;
 
+  // const factory ControlViolationFormEvent.updateSendingTofacapEvent() =
+  //     updateSendingTofacapEvent;
+
   const factory ControlViolationFormEvent.setUseGeoLocationForAddressEvent(
     bool value,
   ) = SetUseGeoLocationForAddressEvent;
@@ -86,5 +89,6 @@ abstract class ControlViolationFormEvent with _$ControlViolationFormEvent {
     ViolationClassificationSearchResult classification,
   ]) = SetViolationClassificationNoEkn;
 
-  const factory ControlViolationFormEvent.saveEvent(BuildContext context) = SaveControlViolation;
+  const factory ControlViolationFormEvent.saveEvent(BuildContext context) =
+      SaveControlViolation;
 }

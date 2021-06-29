@@ -1788,10 +1788,10 @@ class TotalReportPageState extends State<TotalReportPage>
     final person = violator?.violatorPerson as ViolatorInfoLegal;
     final enabled = true; //person?.id == null;
     //! проверка авто-ввода ИНН
+    //TODO: убрать дебаг строки
     final enabledInn = _innControllers[index].text.isEmpty ?? false;
     final textValidator = enabled ? _emptyValidator : null;
-    print(violator.foreign);
-    print('FFGGER + enabled');
+
     return Column(
       children: [
         Row(

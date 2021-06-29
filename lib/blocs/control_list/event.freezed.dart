@@ -143,9 +143,10 @@ class _$ControlListBlocEventTearOff {
       ControlObject object,
       int controlResultId,
       DCViolation violation,
-      ControlObjectBloc controlObjectBloc) {
+      ControlObjectBloc controlObjectBloc,
+      bool sentToCafap) {
     return UpdateControlResultEvent(
-        object, controlResultId, violation, controlObjectBloc);
+        object, controlResultId, violation, controlObjectBloc, sentToCafap);
   }
 
 // ignore: unused_element
@@ -200,7 +201,8 @@ mixin _$ControlListBlocEvent {
             ControlObject object,
             int controlResultId,
             DCViolation violation,
-            ControlObjectBloc controlObjectBloc),
+            ControlObjectBloc controlObjectBloc,
+            bool sentToCafap),
     @required TResult changeNetworkStatusEvent(NetworkStatus networkStatus),
   });
   @optionalTypeArgs
@@ -225,8 +227,12 @@ mixin _$ControlListBlocEvent {
     TResult updateResolveDateEvent(ControlObject object, int controlResultId,
         DateTime resolveDate, ViolationExtensionReason reason, String comments),
     TResult changeShowMapEvent(bool showMap),
-    TResult updateControlResultEvent(ControlObject object, int controlResultId,
-        DCViolation violation, ControlObjectBloc controlObjectBloc),
+    TResult updateControlResultEvent(
+        ControlObject object,
+        int controlResultId,
+        DCViolation violation,
+        ControlObjectBloc controlObjectBloc,
+        bool sentToCafap),
     TResult changeNetworkStatusEvent(NetworkStatus networkStatus),
     @required TResult orElse(),
   });
@@ -370,7 +376,8 @@ class _$LoadControlListEvent implements LoadControlListEvent {
             ControlObject object,
             int controlResultId,
             DCViolation violation,
-            ControlObjectBloc controlObjectBloc),
+            ControlObjectBloc controlObjectBloc,
+            bool sentToCafap),
     @required TResult changeNetworkStatusEvent(NetworkStatus networkStatus),
   }) {
     assert(loadControlListEvent != null);
@@ -416,8 +423,12 @@ class _$LoadControlListEvent implements LoadControlListEvent {
     TResult updateResolveDateEvent(ControlObject object, int controlResultId,
         DateTime resolveDate, ViolationExtensionReason reason, String comments),
     TResult changeShowMapEvent(bool showMap),
-    TResult updateControlResultEvent(ControlObject object, int controlResultId,
-        DCViolation violation, ControlObjectBloc controlObjectBloc),
+    TResult updateControlResultEvent(
+        ControlObject object,
+        int controlResultId,
+        DCViolation violation,
+        ControlObjectBloc controlObjectBloc,
+        bool sentToCafap),
     TResult changeNetworkStatusEvent(NetworkStatus networkStatus),
     @required TResult orElse(),
   }) {
@@ -583,7 +594,8 @@ class _$CantWorkInThisModeEvent implements CantWorkInThisModeEvent {
             ControlObject object,
             int controlResultId,
             DCViolation violation,
-            ControlObjectBloc controlObjectBloc),
+            ControlObjectBloc controlObjectBloc,
+            bool sentToCafap),
     @required TResult changeNetworkStatusEvent(NetworkStatus networkStatus),
   }) {
     assert(loadControlListEvent != null);
@@ -629,8 +641,12 @@ class _$CantWorkInThisModeEvent implements CantWorkInThisModeEvent {
     TResult updateResolveDateEvent(ControlObject object, int controlResultId,
         DateTime resolveDate, ViolationExtensionReason reason, String comments),
     TResult changeShowMapEvent(bool showMap),
-    TResult updateControlResultEvent(ControlObject object, int controlResultId,
-        DCViolation violation, ControlObjectBloc controlObjectBloc),
+    TResult updateControlResultEvent(
+        ControlObject object,
+        int controlResultId,
+        DCViolation violation,
+        ControlObjectBloc controlObjectBloc,
+        bool sentToCafap),
     TResult changeNetworkStatusEvent(NetworkStatus networkStatus),
     @required TResult orElse(),
   }) {
@@ -796,7 +812,8 @@ class _$RefreshControlListEvent implements RefreshControlListEvent {
             ControlObject object,
             int controlResultId,
             DCViolation violation,
-            ControlObjectBloc controlObjectBloc),
+            ControlObjectBloc controlObjectBloc,
+            bool sentToCafap),
     @required TResult changeNetworkStatusEvent(NetworkStatus networkStatus),
   }) {
     assert(loadControlListEvent != null);
@@ -842,8 +859,12 @@ class _$RefreshControlListEvent implements RefreshControlListEvent {
     TResult updateResolveDateEvent(ControlObject object, int controlResultId,
         DateTime resolveDate, ViolationExtensionReason reason, String comments),
     TResult changeShowMapEvent(bool showMap),
-    TResult updateControlResultEvent(ControlObject object, int controlResultId,
-        DCViolation violation, ControlObjectBloc controlObjectBloc),
+    TResult updateControlResultEvent(
+        ControlObject object,
+        int controlResultId,
+        DCViolation violation,
+        ControlObjectBloc controlObjectBloc,
+        bool sentToCafap),
     TResult changeNetworkStatusEvent(NetworkStatus networkStatus),
     @required TResult orElse(),
   }) {
@@ -1012,7 +1033,8 @@ class _$LoadNextPageControlListEvent implements LoadNextPageControlListEvent {
             ControlObject object,
             int controlResultId,
             DCViolation violation,
-            ControlObjectBloc controlObjectBloc),
+            ControlObjectBloc controlObjectBloc,
+            bool sentToCafap),
     @required TResult changeNetworkStatusEvent(NetworkStatus networkStatus),
   }) {
     assert(loadControlListEvent != null);
@@ -1058,8 +1080,12 @@ class _$LoadNextPageControlListEvent implements LoadNextPageControlListEvent {
     TResult updateResolveDateEvent(ControlObject object, int controlResultId,
         DateTime resolveDate, ViolationExtensionReason reason, String comments),
     TResult changeShowMapEvent(bool showMap),
-    TResult updateControlResultEvent(ControlObject object, int controlResultId,
-        DCViolation violation, ControlObjectBloc controlObjectBloc),
+    TResult updateControlResultEvent(
+        ControlObject object,
+        int controlResultId,
+        DCViolation violation,
+        ControlObjectBloc controlObjectBloc,
+        bool sentToCafap),
     TResult changeNetworkStatusEvent(NetworkStatus networkStatus),
     @required TResult orElse(),
   }) {
@@ -1259,7 +1285,8 @@ class _$ChangeFiltersEvent implements ChangeFiltersEvent {
             ControlObject object,
             int controlResultId,
             DCViolation violation,
-            ControlObjectBloc controlObjectBloc),
+            ControlObjectBloc controlObjectBloc,
+            bool sentToCafap),
     @required TResult changeNetworkStatusEvent(NetworkStatus networkStatus),
   }) {
     assert(loadControlListEvent != null);
@@ -1305,8 +1332,12 @@ class _$ChangeFiltersEvent implements ChangeFiltersEvent {
     TResult updateResolveDateEvent(ControlObject object, int controlResultId,
         DateTime resolveDate, ViolationExtensionReason reason, String comments),
     TResult changeShowMapEvent(bool showMap),
-    TResult updateControlResultEvent(ControlObject object, int controlResultId,
-        DCViolation violation, ControlObjectBloc controlObjectBloc),
+    TResult updateControlResultEvent(
+        ControlObject object,
+        int controlResultId,
+        DCViolation violation,
+        ControlObjectBloc controlObjectBloc,
+        bool sentToCafap),
     TResult changeNetworkStatusEvent(NetworkStatus networkStatus),
     @required TResult orElse(),
   }) {
@@ -1499,7 +1530,8 @@ class _$ChangeSortEvent implements ChangeSortEvent {
             ControlObject object,
             int controlResultId,
             DCViolation violation,
-            ControlObjectBloc controlObjectBloc),
+            ControlObjectBloc controlObjectBloc,
+            bool sentToCafap),
     @required TResult changeNetworkStatusEvent(NetworkStatus networkStatus),
   }) {
     assert(loadControlListEvent != null);
@@ -1545,8 +1577,12 @@ class _$ChangeSortEvent implements ChangeSortEvent {
     TResult updateResolveDateEvent(ControlObject object, int controlResultId,
         DateTime resolveDate, ViolationExtensionReason reason, String comments),
     TResult changeShowMapEvent(bool showMap),
-    TResult updateControlResultEvent(ControlObject object, int controlResultId,
-        DCViolation violation, ControlObjectBloc controlObjectBloc),
+    TResult updateControlResultEvent(
+        ControlObject object,
+        int controlResultId,
+        DCViolation violation,
+        ControlObjectBloc controlObjectBloc,
+        bool sentToCafap),
     TResult changeNetworkStatusEvent(NetworkStatus networkStatus),
     @required TResult orElse(),
   }) {
@@ -1750,7 +1786,8 @@ class _$OpenInMapEvent implements OpenInMapEvent {
             ControlObject object,
             int controlResultId,
             DCViolation violation,
-            ControlObjectBloc controlObjectBloc),
+            ControlObjectBloc controlObjectBloc,
+            bool sentToCafap),
     @required TResult changeNetworkStatusEvent(NetworkStatus networkStatus),
   }) {
     assert(loadControlListEvent != null);
@@ -1796,8 +1833,12 @@ class _$OpenInMapEvent implements OpenInMapEvent {
     TResult updateResolveDateEvent(ControlObject object, int controlResultId,
         DateTime resolveDate, ViolationExtensionReason reason, String comments),
     TResult changeShowMapEvent(bool showMap),
-    TResult updateControlResultEvent(ControlObject object, int controlResultId,
-        DCViolation violation, ControlObjectBloc controlObjectBloc),
+    TResult updateControlResultEvent(
+        ControlObject object,
+        int controlResultId,
+        DCViolation violation,
+        ControlObjectBloc controlObjectBloc,
+        bool sentToCafap),
     TResult changeNetworkStatusEvent(NetworkStatus networkStatus),
     @required TResult orElse(),
   }) {
@@ -2003,7 +2044,8 @@ class _$SelectControlObjectEvent implements SelectControlObjectEvent {
             ControlObject object,
             int controlResultId,
             DCViolation violation,
-            ControlObjectBloc controlObjectBloc),
+            ControlObjectBloc controlObjectBloc,
+            bool sentToCafap),
     @required TResult changeNetworkStatusEvent(NetworkStatus networkStatus),
   }) {
     assert(loadControlListEvent != null);
@@ -2049,8 +2091,12 @@ class _$SelectControlObjectEvent implements SelectControlObjectEvent {
     TResult updateResolveDateEvent(ControlObject object, int controlResultId,
         DateTime resolveDate, ViolationExtensionReason reason, String comments),
     TResult changeShowMapEvent(bool showMap),
-    TResult updateControlResultEvent(ControlObject object, int controlResultId,
-        DCViolation violation, ControlObjectBloc controlObjectBloc),
+    TResult updateControlResultEvent(
+        ControlObject object,
+        int controlResultId,
+        DCViolation violation,
+        ControlObjectBloc controlObjectBloc,
+        bool sentToCafap),
     TResult changeNetworkStatusEvent(NetworkStatus networkStatus),
     @required TResult orElse(),
   }) {
@@ -2279,7 +2325,8 @@ class _$RegisterSearchResultEvent implements RegisterSearchResultEvent {
             ControlObject object,
             int controlResultId,
             DCViolation violation,
-            ControlObjectBloc controlObjectBloc),
+            ControlObjectBloc controlObjectBloc,
+            bool sentToCafap),
     @required TResult changeNetworkStatusEvent(NetworkStatus networkStatus),
   }) {
     assert(loadControlListEvent != null);
@@ -2325,8 +2372,12 @@ class _$RegisterSearchResultEvent implements RegisterSearchResultEvent {
     TResult updateResolveDateEvent(ControlObject object, int controlResultId,
         DateTime resolveDate, ViolationExtensionReason reason, String comments),
     TResult changeShowMapEvent(bool showMap),
-    TResult updateControlResultEvent(ControlObject object, int controlResultId,
-        DCViolation violation, ControlObjectBloc controlObjectBloc),
+    TResult updateControlResultEvent(
+        ControlObject object,
+        int controlResultId,
+        DCViolation violation,
+        ControlObjectBloc controlObjectBloc,
+        bool sentToCafap),
     TResult changeNetworkStatusEvent(NetworkStatus networkStatus),
     @required TResult orElse(),
   }) {
@@ -2544,7 +2595,8 @@ class _$RemoveViolationEvent implements RemoveViolationEvent {
             ControlObject object,
             int controlResultId,
             DCViolation violation,
-            ControlObjectBloc controlObjectBloc),
+            ControlObjectBloc controlObjectBloc,
+            bool sentToCafap),
     @required TResult changeNetworkStatusEvent(NetworkStatus networkStatus),
   }) {
     assert(loadControlListEvent != null);
@@ -2590,8 +2642,12 @@ class _$RemoveViolationEvent implements RemoveViolationEvent {
     TResult updateResolveDateEvent(ControlObject object, int controlResultId,
         DateTime resolveDate, ViolationExtensionReason reason, String comments),
     TResult changeShowMapEvent(bool showMap),
-    TResult updateControlResultEvent(ControlObject object, int controlResultId,
-        DCViolation violation, ControlObjectBloc controlObjectBloc),
+    TResult updateControlResultEvent(
+        ControlObject object,
+        int controlResultId,
+        DCViolation violation,
+        ControlObjectBloc controlObjectBloc,
+        bool sentToCafap),
     TResult changeNetworkStatusEvent(NetworkStatus networkStatus),
     @required TResult orElse(),
   }) {
@@ -2839,7 +2895,8 @@ class _$RegisterPerformControlEvent implements RegisterPerformControlEvent {
             ControlObject object,
             int controlResultId,
             DCViolation violation,
-            ControlObjectBloc controlObjectBloc),
+            ControlObjectBloc controlObjectBloc,
+            bool sentToCafap),
     @required TResult changeNetworkStatusEvent(NetworkStatus networkStatus),
   }) {
     assert(loadControlListEvent != null);
@@ -2885,8 +2942,12 @@ class _$RegisterPerformControlEvent implements RegisterPerformControlEvent {
     TResult updateResolveDateEvent(ControlObject object, int controlResultId,
         DateTime resolveDate, ViolationExtensionReason reason, String comments),
     TResult changeShowMapEvent(bool showMap),
-    TResult updateControlResultEvent(ControlObject object, int controlResultId,
-        DCViolation violation, ControlObjectBloc controlObjectBloc),
+    TResult updateControlResultEvent(
+        ControlObject object,
+        int controlResultId,
+        DCViolation violation,
+        ControlObjectBloc controlObjectBloc,
+        bool sentToCafap),
     TResult changeNetworkStatusEvent(NetworkStatus networkStatus),
     @required TResult orElse(),
   }) {
@@ -3138,7 +3199,8 @@ class _$RemovePerformControlEvent implements RemovePerformControlEvent {
             ControlObject object,
             int controlResultId,
             DCViolation violation,
-            ControlObjectBloc controlObjectBloc),
+            ControlObjectBloc controlObjectBloc,
+            bool sentToCafap),
     @required TResult changeNetworkStatusEvent(NetworkStatus networkStatus),
   }) {
     assert(loadControlListEvent != null);
@@ -3184,8 +3246,12 @@ class _$RemovePerformControlEvent implements RemovePerformControlEvent {
     TResult updateResolveDateEvent(ControlObject object, int controlResultId,
         DateTime resolveDate, ViolationExtensionReason reason, String comments),
     TResult changeShowMapEvent(bool showMap),
-    TResult updateControlResultEvent(ControlObject object, int controlResultId,
-        DCViolation violation, ControlObjectBloc controlObjectBloc),
+    TResult updateControlResultEvent(
+        ControlObject object,
+        int controlResultId,
+        DCViolation violation,
+        ControlObjectBloc controlObjectBloc,
+        bool sentToCafap),
     TResult changeNetworkStatusEvent(NetworkStatus networkStatus),
     @required TResult orElse(),
   }) {
@@ -3433,7 +3499,8 @@ class _$UpdatePerformControlEvent implements UpdatePerformControlEvent {
             ControlObject object,
             int controlResultId,
             DCViolation violation,
-            ControlObjectBloc controlObjectBloc),
+            ControlObjectBloc controlObjectBloc,
+            bool sentToCafap),
     @required TResult changeNetworkStatusEvent(NetworkStatus networkStatus),
   }) {
     assert(loadControlListEvent != null);
@@ -3479,8 +3546,12 @@ class _$UpdatePerformControlEvent implements UpdatePerformControlEvent {
     TResult updateResolveDateEvent(ControlObject object, int controlResultId,
         DateTime resolveDate, ViolationExtensionReason reason, String comments),
     TResult changeShowMapEvent(bool showMap),
-    TResult updateControlResultEvent(ControlObject object, int controlResultId,
-        DCViolation violation, ControlObjectBloc controlObjectBloc),
+    TResult updateControlResultEvent(
+        ControlObject object,
+        int controlResultId,
+        DCViolation violation,
+        ControlObjectBloc controlObjectBloc,
+        bool sentToCafap),
     TResult changeNetworkStatusEvent(NetworkStatus networkStatus),
     @required TResult orElse(),
   }) {
@@ -3744,7 +3815,8 @@ class _$UpdateResolveDateEvent implements UpdateResolveDateEvent {
             ControlObject object,
             int controlResultId,
             DCViolation violation,
-            ControlObjectBloc controlObjectBloc),
+            ControlObjectBloc controlObjectBloc,
+            bool sentToCafap),
     @required TResult changeNetworkStatusEvent(NetworkStatus networkStatus),
   }) {
     assert(loadControlListEvent != null);
@@ -3791,8 +3863,12 @@ class _$UpdateResolveDateEvent implements UpdateResolveDateEvent {
     TResult updateResolveDateEvent(ControlObject object, int controlResultId,
         DateTime resolveDate, ViolationExtensionReason reason, String comments),
     TResult changeShowMapEvent(bool showMap),
-    TResult updateControlResultEvent(ControlObject object, int controlResultId,
-        DCViolation violation, ControlObjectBloc controlObjectBloc),
+    TResult updateControlResultEvent(
+        ControlObject object,
+        int controlResultId,
+        DCViolation violation,
+        ControlObjectBloc controlObjectBloc,
+        bool sentToCafap),
     TResult changeNetworkStatusEvent(NetworkStatus networkStatus),
     @required TResult orElse(),
   }) {
@@ -3994,7 +4070,8 @@ class _$ChangeShowMapEvent implements ChangeShowMapEvent {
             ControlObject object,
             int controlResultId,
             DCViolation violation,
-            ControlObjectBloc controlObjectBloc),
+            ControlObjectBloc controlObjectBloc,
+            bool sentToCafap),
     @required TResult changeNetworkStatusEvent(NetworkStatus networkStatus),
   }) {
     assert(loadControlListEvent != null);
@@ -4040,8 +4117,12 @@ class _$ChangeShowMapEvent implements ChangeShowMapEvent {
     TResult updateResolveDateEvent(ControlObject object, int controlResultId,
         DateTime resolveDate, ViolationExtensionReason reason, String comments),
     TResult changeShowMapEvent(bool showMap),
-    TResult updateControlResultEvent(ControlObject object, int controlResultId,
-        DCViolation violation, ControlObjectBloc controlObjectBloc),
+    TResult updateControlResultEvent(
+        ControlObject object,
+        int controlResultId,
+        DCViolation violation,
+        ControlObjectBloc controlObjectBloc,
+        bool sentToCafap),
     TResult changeNetworkStatusEvent(NetworkStatus networkStatus),
     @required TResult orElse(),
   }) {
@@ -4146,7 +4227,8 @@ abstract class $UpdateControlResultEventCopyWith<$Res> {
       {ControlObject object,
       int controlResultId,
       DCViolation violation,
-      ControlObjectBloc controlObjectBloc});
+      ControlObjectBloc controlObjectBloc,
+      bool sentToCafap});
 
   $ControlObjectCopyWith<$Res> get object;
   $DCViolationCopyWith<$Res> get violation;
@@ -4170,17 +4252,18 @@ class _$UpdateControlResultEventCopyWithImpl<$Res>
     Object controlResultId = freezed,
     Object violation = freezed,
     Object controlObjectBloc = freezed,
+    Object sentToCafap = freezed,
   }) {
     return _then(UpdateControlResultEvent(
-      object == freezed ? _value.object : object as ControlObject,
-      controlResultId == freezed
-          ? _value.controlResultId
-          : controlResultId as int,
-      violation == freezed ? _value.violation : violation as DCViolation,
-      controlObjectBloc == freezed
-          ? _value.controlObjectBloc
-          : controlObjectBloc as ControlObjectBloc,
-    ));
+        object == freezed ? _value.object : object as ControlObject,
+        controlResultId == freezed
+            ? _value.controlResultId
+            : controlResultId as int,
+        violation == freezed ? _value.violation : violation as DCViolation,
+        controlObjectBloc == freezed
+            ? _value.controlObjectBloc
+            : controlObjectBloc as ControlObjectBloc,
+        sentToCafap == freezed ? _value.sentToCafap : sentToCafap as bool));
   }
 
   @override
@@ -4206,12 +4289,13 @@ class _$UpdateControlResultEventCopyWithImpl<$Res>
 
 /// @nodoc
 class _$UpdateControlResultEvent implements UpdateControlResultEvent {
-  const _$UpdateControlResultEvent(
-      this.object, this.controlResultId, this.violation, this.controlObjectBloc)
+  const _$UpdateControlResultEvent(this.object, this.controlResultId,
+      this.violation, this.controlObjectBloc, this.sentToCafap)
       : assert(object != null),
         assert(controlResultId != null),
         assert(violation != null),
-        assert(controlObjectBloc != null);
+        assert(controlObjectBloc != null),
+        assert(sentToCafap != null);
 
   @override
   final ControlObject object;
@@ -4221,10 +4305,12 @@ class _$UpdateControlResultEvent implements UpdateControlResultEvent {
   final DCViolation violation;
   @override
   final ControlObjectBloc controlObjectBloc;
+  @override
+  final bool sentToCafap;
 
   @override
   String toString() {
-    return 'ControlListBlocEvent.updateControlResultEvent(object: $object, controlResultId: $controlResultId, violation: $violation, ControlObjectBloc $controlObjectBloc)';
+    return 'ControlListBlocEvent.updateControlResultEvent(object: $object, controlResultId: $controlResultId, violation: $violation, ControlObjectBloc $controlObjectBloc, sentToCafap $sentToCafap)';
   }
 
   @override
@@ -4295,7 +4381,8 @@ class _$UpdateControlResultEvent implements UpdateControlResultEvent {
             ControlObject object,
             int controlResultId,
             DCViolation violation,
-            ControlObjectBloc controlObjectBloc),
+            ControlObjectBloc controlObjectBloc,
+            bool sentToCafap),
     @required TResult changeNetworkStatusEvent(NetworkStatus networkStatus),
   }) {
     assert(loadControlListEvent != null);
@@ -4316,7 +4403,7 @@ class _$UpdateControlResultEvent implements UpdateControlResultEvent {
     assert(updateControlResultEvent != null);
     assert(changeNetworkStatusEvent != null);
     return updateControlResultEvent(
-        object, controlResultId, violation, controlObjectBloc);
+        object, controlResultId, violation, controlObjectBloc, sentToCafap);
   }
 
   @override
@@ -4342,15 +4429,19 @@ class _$UpdateControlResultEvent implements UpdateControlResultEvent {
     TResult updateResolveDateEvent(ControlObject object, int controlResultId,
         DateTime resolveDate, ViolationExtensionReason reason, String comments),
     TResult changeShowMapEvent(bool showMap),
-    TResult updateControlResultEvent(ControlObject object, int controlResultId,
-        DCViolation violation, ControlObjectBloc controlObjectBloc),
+    TResult updateControlResultEvent(
+        ControlObject object,
+        int controlResultId,
+        DCViolation violation,
+        ControlObjectBloc controlObjectBloc,
+        bool sentToCafap),
     TResult changeNetworkStatusEvent(NetworkStatus networkStatus),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
     if (updateControlResultEvent != null) {
       return updateControlResultEvent(
-          object, controlResultId, violation, controlObjectBloc);
+          object, controlResultId, violation, controlObjectBloc, sentToCafap);
     }
     return orElse();
   }
@@ -4437,12 +4528,14 @@ abstract class UpdateControlResultEvent implements ControlListBlocEvent {
       ControlObject object,
       int controlResultId,
       DCViolation violation,
-      ControlObjectBloc controlObjectBloc) = _$UpdateControlResultEvent;
+      ControlObjectBloc controlObjectBloc,
+      bool sentToCafap) = _$UpdateControlResultEvent;
 
   ControlObject get object;
   int get controlResultId;
   DCViolation get violation;
   ControlObjectBloc get controlObjectBloc;
+  bool get sentToCafap;
   @JsonKey(ignore: true)
   $UpdateControlResultEventCopyWith<UpdateControlResultEvent> get copyWith;
 }
@@ -4549,7 +4642,8 @@ class _$ChangeNetworkStatusEvent implements ChangeNetworkStatusEvent {
             ControlObject object,
             int controlResultId,
             DCViolation violation,
-            ControlObjectBloc controlObjectBloc),
+            ControlObjectBloc controlObjectBloc,
+            bool sentToCafap),
     @required TResult changeNetworkStatusEvent(NetworkStatus networkStatus),
   }) {
     assert(loadControlListEvent != null);
@@ -4595,8 +4689,12 @@ class _$ChangeNetworkStatusEvent implements ChangeNetworkStatusEvent {
     TResult updateResolveDateEvent(ControlObject object, int controlResultId,
         DateTime resolveDate, ViolationExtensionReason reason, String comments),
     TResult changeShowMapEvent(bool showMap),
-    TResult updateControlResultEvent(ControlObject object, int controlResultId,
-        DCViolation violation, ControlObjectBloc controlObjectBloc),
+    TResult updateControlResultEvent(
+        ControlObject object,
+        int controlResultId,
+        DCViolation violation,
+        ControlObjectBloc controlObjectBloc,
+        bool sentToCafap),
     TResult changeNetworkStatusEvent(NetworkStatus networkStatus),
     @required TResult orElse(),
   }) {
