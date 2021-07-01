@@ -22,6 +22,6 @@ abstract class ControlViolationPageBlocEvent
     PerformControl performControl,
   }) = CreatePerformControlEvent;
   const factory ControlViolationPageBlocEvent.saveChanges() = SaveChangesEvent;
-  const factory ControlViolationPageBlocEvent.discardChanges() = DiscardChangesEvent;
-  
+  const factory ControlViolationPageBlocEvent.discardChanges() =
+      DiscardChangesEvent;
 }

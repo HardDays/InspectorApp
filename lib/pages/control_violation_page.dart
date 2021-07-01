@@ -11,6 +11,8 @@ import 'package:inspector/model/department_control/control_object.dart';
 import 'package:inspector/model/department_control/control_result_search_result.dart';
 import 'package:inspector/model/department_control/dcphoto.dart';
 import 'package:inspector/model/department_control/perform_control.dart';
+import 'package:inspector/model/department_control/violation_status.dart';
+import 'package:inspector/model/violation.dart';
 import 'package:inspector/services/department_control/department_control_service.dart';
 import 'package:inspector/services/dictionary_service.dart';
 import 'package:inspector/services/network_status_service/network_status_service.dart';
@@ -117,7 +119,9 @@ class ControlViolationPage extends StatelessWidget {
                     ProjectSection(
                       'Срок устранения',
                       description: _resolveDate,
-                      child: _buildExtensionButton(),
+                      child: checkExtensionPeriodChanging(searchResult)
+                          ? _buildExtensionButton()
+                          : null,
                     ),
                     _buildDivider(),
                     _buildDescriptionSection(),
@@ -444,9 +448,10 @@ class ControlViolationPage extends StatelessWidget {
                   Navigator.of(ctx).pop();
                 },
                 onConfirm: (value) {
-                  BlocProvider.of<ControlViolationPageBloc>(context).add(
-                      ControlViolationPageBlocEvent.extendPeriod(
-                          extensionPeriod: value));
+                  BlocProvider.of<ControlViolationPageBloc>(context)
+                      .add(ControlViolationPageBlocEvent.extendPeriod(
+                    extensionPeriod: value,
+                  ));
                   Navigator.of(ctx).pop();
                 },
                 dictionaryService: Provider.of<DictionaryService>(
@@ -512,4 +517,24 @@ class ControlViolationPage extends StatelessWidget {
               .join(', '),
         },
       );
+
+  bool checkExtensionPeriodChanging(ControlResultSearchResult searchResult) {
+    if (searchResult.violationExists) {
+      print(searchResult.violation);
+      //* id = 3 значит что на контроле инспектора
+      if (searchResult.violation.violationStatus.id == 3) {
+        return true;
+      }
+      if (searchResult.violation.source.id == 1 &&
+          searchResult.violation.performControls != null &&
+          searchResult.violation.performControls.last.sentToCafap) {
+        return true;
+      }
+      if (searchResult.violation.source.id == 4 ||
+          searchResult.violation.source.id == 2) {
+        return true;
+      }
+    }
+    return false;
+  }
 }

@@ -12,6 +12,7 @@ import 'package:inspector/model/department_control/control_object.dart';
 import 'package:inspector/model/department_control/control_result_search_result.dart';
 import 'package:inspector/model/department_control/perform_control.dart';
 import 'package:inspector/model/department_control/perform_control_search_result.dart';
+import 'package:inspector/model/department_control/violation_extension_period.dart';
 import 'package:inspector/providers/exceptions/api_exception.dart';
 import 'package:inspector/services/department_control/department_control_service.dart';
 import 'package:inspector/services/network_status_service/network_status.dart';
@@ -81,7 +82,7 @@ class ControlViolationPageBloc
             print(e.details);
             if (e.details.contains('Код: 422')) {
               notificationBloc.add(SnackBarNotificationEvent(
-                  'Контроль устранения передан в ЦАФАП. Редактирование невозможно. Данные не сохранены'));
+                  'Контроль устранения передан в ЦАФАП. Редактирование невозможно. Данные не сохранены.'));
             } else {
               notificationBloc.add(SnackBarNotificationEvent(
                   'Произошла ошибка: ${e.message}, ${e.details}'));
@@ -127,25 +128,44 @@ class ControlViolationPageBloc
           }
         },
         extendPeriod: (event) async* {
-          try {
-            notificationBloc
-                .add(SnackBarNotificationEvent('Сохранение данных'));
-            await departmentControlService.extendPeriod(
-              controlObject,
-              searchResult.id,
-              event.extensionPeriod,
-              _networkStatus,
-            );
-            notificationBloc
-                .add(OkDialogNotificationEvent('Успешно сохранено'));
-          } on ApiException catch (e) {
-            print(e.message);
-            print(e.details);
-            notificationBloc.add(SnackBarNotificationEvent(
-                'Произошла ошибка: ${e.message}, ${e.details}'));
-          } on UnimplementedError catch (e) {
-            notificationBloc
-                .add(SnackBarNotificationEvent('Недоступно в оффлайн версии'));
+          switch (_canChangeExtension(event.extensionPeriod)) {
+            case 0:
+              try {
+                notificationBloc
+                    .add(SnackBarNotificationEvent('Сохранение данных'));
+                await departmentControlService.extendPeriod(
+                  controlObject,
+                  searchResult.id,
+                  event.extensionPeriod,
+                  _networkStatus,
+                );
+                notificationBloc
+                    .add(OkDialogNotificationEvent('Успешно сохранено'));
+              } on ApiException catch (e) {
+                print(e.message);
+                print(e.details);
+                notificationBloc.add(SnackBarNotificationEvent(
+                    'Произошла ошибка: ${e.message}, ${e.details}'));
+              } on UnimplementedError catch (e) {
+                notificationBloc.add(
+                    SnackBarNotificationEvent('Недоступно в оффлайн версии'));
+              }
+              break;
+            case 1:
+              notificationBloc.add(SnackBarNotificationEvent(
+                  'Новый срок устранения не должен быть меньше текущей даты. Данные не сохранены'));
+              break;
+            case 2:
+              notificationBloc.add(SnackBarNotificationEvent(
+                  'Новый срок устранения не должен быть меньше текущего срока устранения. Данные не сохранены'));
+              break;
+            case 3:
+              notificationBloc.add(SnackBarNotificationEvent(
+                  'Разница «Новый срок устранения» - «Старый срок устранения» не должна превышать 240 дней. Данные не сохранены'));
+              break;
+            default:
+              notificationBloc.add(
+                  SnackBarNotificationEvent('Произошла непредвиденная ошибка'));
           }
         },
         refresh: (event) async* {
@@ -268,5 +288,27 @@ class ControlViolationPageBloc
   Future<void> close() async {
     await super.close();
     _networkStatusStreamSubscription.cancel();
+  }
+
+  int _canChangeExtension(ViolationExtensionPeriod extensionPeriod) {
+    //TODO: возможно необходимо будет здесь дописать проверки
+    if (extensionPeriod.resolveDate.isBefore(DateTime.now())) {
+      return 1;
+    }
+
+    if (state.searchResult.violation.resolveDate != null &&
+        extensionPeriod.resolveDate
+            .isBefore(state.searchResult.violation.resolveDate)) {
+      return 2;
+    }
+    if (state.searchResult.violation.resolveDate != null &&
+        extensionPeriod.resolveDate
+                .difference(state.searchResult.violation.resolveDate)
+                .inDays >=
+            240) {
+      return 3;
+    }
+    return 0;
+    // if(extensionPeriod.resolveDate.isBefore(state.controlObject.violations.)
   }
 }
